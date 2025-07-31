@@ -1,0 +1,13 @@
+/* dropdown styles */
+
+.dml-menu-dropdown {
+  box-shadow: 0px 4px 16px 0px #00000040;
+}
+.dml-Menu-item-custom {
+  .dml-Menu-itemSection[data-position="left"] {
+    margin-right: 8px;
+  }
+  &:where([data-hovered]) {
+    background-color: var(--dml-color-primary-light);
+  }
+}

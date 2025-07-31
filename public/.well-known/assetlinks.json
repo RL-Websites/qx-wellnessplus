@@ -1,0 +1,16 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "docmedilink_android_app",
+      "package_name": "com.app.docmedilink",
+      "sha256_cert_fingerprints": [
+        "CF:E8:2A:E6:27:61:2F:75:21:83:9E:5E:EF:10:D6:50:74:86:6B:57:D9:CD:9E:33:2E:05:11:74:17:25:21:7B",
+        "1D:52:1F:54:58:A5:1A:D7:04:39:9F:0A:F7:41:F1:E6:FC:3D:76:C5:EE:24:7A:09:0C:39:AD:74:8D:7D:DB:79",
+        "CF:E8:2A:E6:27:61:2F:75:21:83:9E:5E:EF:10:D6:50:74:86:6B:57:D9:CD:9E:33:2E:05:11:74:17:25:21:7B"
+      ]
+    }
+  }
+]

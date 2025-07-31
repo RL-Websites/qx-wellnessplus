@@ -1,0 +1,243 @@
+<mjml>
+  <mj-head>
+    <mj-title>Iprescription Order Form</mj-title>
+    <mj-font
+      name="Poppins"
+      href="https://fonts.googleapis.com/css2?family=Poppins"
+    />
+    <mj-attributes>
+      <mj-all font-family="Arial" />
+      <mj-divider
+        border-width="1px"
+        border-color="#FF8800"
+      />
+    </mj-attributes>
+    <mj-style inline="inline"> .uppercase { text-transform: uppercase; } .capitalize { text-transform: capitalize; } </mj-style>
+  </mj-head>
+
+  <mj-body
+    background-color="#fff"
+    font-family="Arial"
+    width="1200px"
+  >
+    <mj-hero>
+      <mj-image
+        width="150px"
+        src="https://mjml.io/assets/img/logo-small.png"
+      ></mj-image>
+      <mj-text
+        font-size="16px"
+        color="#000"
+        text-transform="uppercase"
+        align="center"
+      >
+        Adonis Health Inc
+      </mj-text>
+      <mj-text
+        font-size="16px"
+        color="#000"
+        text-transform="uppercase"
+        align="center"
+      >
+        580 California Street Suite 1200 | San Francisco, CA 94104-1071 | (909) 787-2342
+      </mj-text>
+      <mj-text
+        font-size="30px"
+        color="#000"
+        text-transform="uppercase"
+        font-weight="bold"
+      >
+        <span style="color: green">I</span>Prescription
+        <span style="color: green">Order Form</span>
+      </mj-text>
+    </mj-hero>
+    <!--Hero Section End-->
+
+    <mj-wrapper>
+      <mj-section>
+        <mj-column width="50%">
+          <mj-text
+            font-size="16px"
+            color="#000"
+            align="left"
+          >
+            <p>Patient</p>
+            <p>Kevin Edward Toole</p>
+          </mj-text>
+        </mj-column>
+
+        <mj-column width="25%"
+          ><mj-text
+            font-size="16px"
+            color="#000"
+            align="left"
+          >
+            <p>Phone</p>
+            <p>(912) 257-5415</p>
+          </mj-text>
+        </mj-column>
+        <mj-column width="25%"
+          ><mj-text
+            font-size="16px"
+            color="#000"
+            align="left"
+          >
+            <p>Date of Birth</p>
+            <p>1979-05-06</p>
+          </mj-text>
+        </mj-column>
+        <mj-column width="50%">
+          <mj-text
+            font-size="16px"
+            color="#000"
+            align="left"
+          >
+            <p>Shipping Address</p>
+            <p>6040 Baltimore Ave<br />Cocoa, FL 32927</p>
+          </mj-text>
+        </mj-column>
+        <mj-column width="50%">
+          <mj-group>
+            <mj-column width="50%">
+              <mj-text
+                font-size="16px"
+                color="#000"
+                align="left"
+              >
+                <p>Diagnosis</p>
+                <p>E29.1</p>
+              </mj-text>
+            </mj-column>
+            <mj-column width="50%">
+              <mj-text
+                font-size="16px"
+                color="#000"
+                align="left"
+              >
+                <p>Appointment Date (LOV)</p>
+                <p>2025-01-20</p>
+              </mj-text>
+            </mj-column>
+            <mj-column width="100%">
+              <mj-text
+                font-size="16px"
+                color="#000"
+                align="left"
+              >
+                <p>Patient Email</p>
+                <p>toolebox@gmail.com</p>
+              </mj-text>
+            </mj-column>
+          </mj-group>
+        </mj-column>
+
+        <mj-column width="50%">
+          <mj-table>
+            <tr>
+              <td style="padding: 5px 15px; text-align: left">
+                <span>SHIP TO:</span>
+                <span style="display: inline-block; width: 14px; height: 14px; border: 1px solid #000; line-height: 14px; text-align: center">✔</span>
+                <span>Patient</span>
+              </td>
+              <td style="padding: 5px 15px">
+                <span style="display: inline-block; width: 14px; height: 14px; border: 1px solid #000; margin-right: 8px; text-align: center">✔</span>
+                <span>Office</span>
+              </td>
+              <td style="padding: 5px 15px">
+                <span style="display: inline-block; width: 14px; height: 14px; border: 1px solid #000; line-height: 14px; text-align: center">✔</span>
+                <span>2-Day Shipping</span>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 5px 15px; text-align: left">
+                <span>BILL TO:</span>
+                <span style="display: inline-block; width: 14px; height: 14px; border: 1px solid #000; line-height: 14px; text-align: center; border-radius: 4px"></span>
+                <span>Patient</span>
+              </td>
+              <td style="padding: 5px 15px">
+                <span style="display: inline-block; width: 14px; height: 14px; border: 1px solid #000; line-height: 14px; text-align: center"></span>
+                <span>Patient</span>
+              </td>
+              <td style="padding: 5px 15px">
+                <span style="display: inline-block; width: 14px; height: 14px; border: 1px solid #000; line-height: 14px; text-align: center">✔</span>
+                <span>Overnight Shipping</span>
+              </td>
+            </tr>
+          </mj-table>
+        </mj-column>
+        <mj-column width="50%">
+          <mj-group>
+            <mj-column width="50%">
+              <mj-text
+                font-size="16px"
+                color="#000"
+                align="left"
+              >
+                <p>Known Allergies:</p>
+                <p>NKDA</p>
+              </mj-text>
+            </mj-column>
+            <mj-column width="50%">
+              <mj-text
+                font-size="16px"
+                color="#000"
+                align="left"
+              >
+                <p>Patient ID:</p>
+                <p>FL T400-505-79-166-0</p>
+              </mj-text>
+            </mj-column>
+          </mj-group>
+        </mj-column>
+      </mj-section>
+      <!--Form Section End-->
+
+      <mj-section padding="0 20px">
+        <mj-column width="100%">
+          <mj-raw>
+            <p
+              font-size="30px"
+              color="#000"
+              text-transform="uppercase"
+              font-weight="bold"
+              background-color="#999999"
+              style="font-size: 30px; color: white; text-transform: uppercase; background: green; padding-left: 10px"
+            >
+              Medications
+            </p>
+          </mj-raw>
+        </mj-column>
+
+        <mj-column width="100%">
+          <mj-group>
+            <mj-column>
+              <mj-text
+                font-size="16px"
+                color="#000"
+                align="left"
+              >
+                <mj-raw>
+                  <div style="display: flex">
+                    <div style="display: flex; gap: 10px; justify-content: space-between; align-items: center">
+                      <p>
+                        <span style="display: inline-block; width: 30px; height: 30px; border: 1px solid #000; margin-right: 8px; text-align: center"
+                          ><span style="margin-top: 5px">✔</span></span
+                        >
+                        Sig
+                      </p>
+
+                      <div>
+                        <p>Kyzatrex 200mg</p>
+                        <p>Take one capsule two times a day with food </p>
+                      </div>
+                    </div>
+                  </div>
+                </mj-raw>
+              </mj-text>
+            </mj-column>
+          </mj-group>
+        </mj-column>
+      </mj-section>
+    </mj-wrapper>
+  </mj-body>
+</mjml>

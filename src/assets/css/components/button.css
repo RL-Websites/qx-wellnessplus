@@ -1,0 +1,24 @@
+.dml {
+  &-modal-btn {
+    margin: auto;
+    width: 100%;
+    max-width: 256px;
+  }
+  &-set-schedule-btn {
+    height: 50px;
+    width: 256px;
+    padding: 14px, 16px, 14px, 16px;
+    border-radius: 8px;
+    background-color: var(--dml-color-foreground);
+    color: #ffffff;
+  }
+  &-Button {
+    &-root {
+      &[data-size="esm"] {
+        .dml-Button-section[data-position="left"] {
+          margin-inline-end: 8px;
+        }
+      }
+    }
+  }
+}

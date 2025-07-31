@@ -1,0 +1,8 @@
+[
+  { "value": "alpha_bio_meds", "label": "Alpha Biomed Labs" },
+  { "value": "epiq_scripts", "label": "EpiqScripts" },
+  { "value": "pdrx-pharma", "label": "PDRX-PHARMA" },
+  { "value": "emerald_pharmacy", "label": "Emerald Pharmacy" },
+  { "value": "txpm-pharma", "label": "TXPM-PHARMA" },
+  { "value": "dosespot", "label": "DoseSpot" }
+]

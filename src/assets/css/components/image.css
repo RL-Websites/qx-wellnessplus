@@ -1,0 +1,37 @@
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+}
+.user {
+  &-profile {
+    &-img {
+      &-xl {
+        width: 208px;
+        height: 208px;
+      }
+    }
+  }
+  &-avatar {
+    &::after {
+      @apply absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center transition delay-300 z-10;
+      cursor: pointer;
+    }
+    &:hover::after {
+      content: "\e923";
+      font-family: "IcoMoon";
+      font-size: 28px;
+      background-color: rgba(0, 0, 0, 0.6);
+      color: white;
+      margin-top: 0;
+    }
+    &::before {
+      @apply absolute top-7 left-0 w-full h-full flex flex-col items-center justify-center transition delay-300 z-20;
+      cursor: pointer;
+    }
+    &:hover::before {
+      content: "Change Image";
+      font-size: 12px;
+      color: white;
+    }
+  }
+}

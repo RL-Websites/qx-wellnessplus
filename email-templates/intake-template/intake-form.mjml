@@ -1,0 +1,973 @@
+<mjml>
+  <mj-body
+    width="100%"
+    margin="auto"
+    background-color="#fff"
+  >
+    <mj-section full-width="full-width">
+      <mj-column width="100%">
+        <mj-text
+          font-size="20px"
+          color="#0C0C0D"
+          align="left"
+          font-family="Helvetica"
+          font-weight="700"
+          >Intake form</mj-text
+        >
+      </mj-column>
+      <mj-column width="100%">
+        <mj-divider
+          border-width="1px"
+          border-color="#efefef"
+        ></mj-divider>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+          >1. What brings the client to DocUspa at this time? Check all that apply. If "other" is selected, you must explain in the text box provided below. We will NOT approve a
+          blanket treatment request. The client MUST have some knowledge of the treatment type they wish to receive. It is the clinic/clinician's responsibility to advise the
+          client of treatment options within their clinic and scope of practice. DocUspa DOES NOT determine the treatment route. This is only to be determined by the
+          clinic/clinician.</mj-text
+        >
+        <mj-text
+          color="#0C0C0D"
+          font-size="18px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          -Chemical Peel
+        </mj-text>
+      </mj-column>
+      <mj-column width="100%">
+        <mj-divider
+          border-width="1px"
+          border-color="#efefef"
+        ></mj-divider>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          2. Please answer the questions below pertaining to the upcoming treatment(s): Have you had the treatment(s) before?
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="18px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          -yes
+        </mj-text>
+      </mj-column>
+      <mj-column width="100%">
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          Result of previous treatment(s):
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="18px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          - Very good
+        </mj-text>
+      </mj-column>
+      <mj-column width="100%">
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          Please explain further if needed here:
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="18px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          - As my wish
+        </mj-text>
+      </mj-column>
+      <mj-column width="100%">
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          What are your expectation(s) and goal(s) of requested treatment(s)?
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="18px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          - Nothing
+        </mj-text>
+      </mj-column>
+      <mj-column width="100%">
+        <mj-divider
+          border-width="1px"
+          border-color="#efefef"
+        ></mj-divider>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          3. Within the last year, have you been under a physician's care?
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="18px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          - yes
+        </mj-text>
+      </mj-column>
+      <mj-column width="100%">
+        <mj-divider
+          border-width="1px"
+          border-color="#efefef"
+        ></mj-divider>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          4. If answered "yes" to the above question, please list the name of your provider here. If answered no, put "not applicable".
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="18px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          - Dr. PMP Sir
+        </mj-text>
+      </mj-column>
+      <mj-column width="100%">
+        <mj-divider
+          border-width="1px"
+          border-color="#efefef"
+        ></mj-divider>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          5. Within the last year, have you been under a dermatologist's care?
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="18px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          - no
+        </mj-text>
+      </mj-column>
+      <mj-column width="100%">
+        <mj-divider
+          border-width="1px"
+          border-color="#efefef"
+        ></mj-divider>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          6. If answered "yes" to the above question, please list the name of your provider here. If answered no, put "not applicable".
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="18px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          -
+        </mj-text>
+      </mj-column>
+      <mj-column width="100%">
+        <mj-divider
+          border-width="1px"
+          border-color="#efefef"
+        ></mj-divider>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          7. Please list any prescribed and over the counter medications you take. It is important that you list ALL medications AND dosages you are currently taking. We ensure the
+          safety of our clinics. and clients. If medication is not disclosed at the time of the visit, you may be deferred or denied for treatment. If you do not take any
+          prescribed medications or over the counter medications or supplements, select “None”.
+        </mj-text>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          Do you take any prescribed medications?
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="18px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          -yes
+        </mj-text>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+        >
+          Medicines
+        </mj-text>
+        <mj-table cellpadding="5px">
+          <tr style="color: #949494; font-size: 16px; font-weight: 500">
+            <th align="left">Name</th>
+            <th align="left">Dosage</th>
+            <th align="left">How Long? (month)</th>
+          </tr>
+          <tr style="font-size: 14px">
+            <td>Semaglutide</td>
+            <td>5</td>
+            <td>3</td>
+          </tr>
+        </mj-table>
+      </mj-column>
+      <mj-column width="100%">
+        <mj-divider
+          border-width="1px"
+          border-color="#efefef"
+        ></mj-divider>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          8. Any allergies to medications, environmental, or other? If yes, please specify below. If you do not have any type of allergies, please select "None".
+        </mj-text>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          Do you take any prescribed medications?
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="18px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          -yes
+        </mj-text>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+        >
+          Medicines
+        </mj-text>
+        <mj-table cellpadding="5px">
+          <tr style="color: #949494; font-size: 16px; font-weight: 500">
+            <th align="left">Name</th>
+            <th align="left">Dosage</th>
+            <th align="left">How Long? (month)</th>
+          </tr>
+          <tr style="font-size: 14px">
+            <td>Semaglutide</td>
+            <td>5</td>
+            <td>3</td>
+          </tr>
+        </mj-table>
+      </mj-column>
+      <mj-column width="100%">
+        <mj-divider
+          border-width="1px"
+          border-color="#efefef"
+        ></mj-divider>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          9. Health history - Circulatory and Respiratory (Please select all that apply):
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="16px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          - Chest Pains, Congestive Heart Failure, Dizziness, Heart Condition, Hypoglycemic, Emphysema, COPD, Chills, Blood Clots
+        </mj-text>
+      </mj-column>
+      <mj-column width="100%">
+        <mj-divider
+          border-width="1px"
+          border-color="#efefef"
+        ></mj-divider>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          10. Health history - Nervous System (Please select all that apply):
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="16px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          - Brain Tumor, Chronic Pain, Epilepsy, Migraine, Fatigue, Multiple Sclerosis
+        </mj-text>
+      </mj-column>
+      <mj-column width="100%">
+        <mj-divider
+          border-width="1px"
+          border-color="#efefef"
+        ></mj-divider>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          11. Health history - Digestive (Please select all that apply):
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="16px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          - Dairy/Lactose Intolerance, Food Allergies, Indigestion, Loss of Appetite, Intestinal Gas, Ulcerative Colitis (UC), Ulcer
+        </mj-text>
+      </mj-column>
+      <mj-column width="100%">
+        <mj-divider
+          border-width="1px"
+          border-color="#efefef"
+        ></mj-divider>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          12. Health history - Urinary System (Please select all that apply):
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="16px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          - Liver Disease, Bladder Infection, Incontinence, Kidney Stone
+        </mj-text>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          If "other", please specify
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="16px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          - Extra History
+        </mj-text>
+      </mj-column>
+      <mj-column width="100%">
+        <mj-divider
+          border-width="1px"
+          border-color="#efefef"
+        ></mj-divider>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          13. Health history Other (Please select all that apply):
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="16px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          - Current lllness, Diabetes Type 1, Diabetes Type 2, Pancreatitis
+        </mj-text>
+      </mj-column>
+      <mj-column width="100%">
+        <mj-divider
+          border-width="1px"
+          border-color="#efefef"
+        ></mj-divider>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          14. Health history Skin (Please select all that apply):
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="16px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          - Cold Sores, Dryness, Fungus, Psoriasis, Sensitive, Rashes, Hives
+        </mj-text>
+      </mj-column>
+      <mj-column width="100%">
+        <mj-divider
+          border-width="1px"
+          border-color="#efefef"
+        ></mj-divider>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          15. For female clients only:
+        </mj-text>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          Are you currently pregnant?
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="16px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          - No
+        </mj-text>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          Are you trying to become pregnant?
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="16px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          - No
+        </mj-text>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          Are you currently breastfeeding?
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="16px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          - No
+        </mj-text>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          Are you currently taking any contraceptive?
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="16px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          - No
+        </mj-text>
+      </mj-column>
+      <mj-column width="100%">
+        <mj-divider
+          border-width="1px"
+          border-color="#efefef"
+        ></mj-divider>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          16. Please answer the following questions:
+        </mj-text>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          What level of stress do you consider yourself to be under?
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="16px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          - As usual
+        </mj-text>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          Do you smoke or vape?
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="16px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          - Yes
+        </mj-text>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          Do you drink alcohol?
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="16px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          - Never
+        </mj-text>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          Do you use recreational drugs?
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="16px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          - Never
+        </mj-text>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          Do you drink caffeinated products?
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="16px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          - Never
+        </mj-text>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          Do you follow a specific diet?
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="16px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          - tryQuit
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="16px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          - Healthy, Other
+        </mj-text>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          How much water do you drink per day?
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="16px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          - 10 glass
+        </mj-text>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          Surgical History:
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="16px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          - Not Applicable
+        </mj-text>
+      </mj-column>
+      <mj-column width="100%">
+        <mj-divider
+          border-width="1px"
+          border-color="#efefef"
+        ></mj-divider>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          17. Hygiene and cosmetics:
+        </mj-text>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          Do you have any permanent cosmetics?
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="16px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          - No
+        </mj-text>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          Do you use daily sunblock with SPF 30 or higher?
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="16px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          - No
+        </mj-text>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          Do you tan either outside or in a tanning bed?
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="16px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          - No
+        </mj-text>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          Do you use sunless tanning cream?
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="16px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          - No
+        </mj-text>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          Do you use any products that contain active ingredients such as AHAs, BHAs, Retin-A, or scrubs?
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="16px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          - No
+        </mj-text>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          Have you used Isotretinoin, Accutane or products like Accutane (high dose of Retin-A) within the last year?
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="16px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          - No
+        </mj-text>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          Do you have a history of cold sores?
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="16px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          - No
+        </mj-text>
+      </mj-column>
+      <mj-column width="100%">
+        <mj-divider
+          border-width="1px"
+          border-color="#efefef"
+        ></mj-divider>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          18. Please answer the questions below pertaining to your United States government issued identification information. This is for your patient protection and safety.
+        </mj-text>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          Please select the state of where your ID is issued in:
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="16px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          - 90
+        </mj-text>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          Please enter in the space below your ID number:
+        </mj-text>
+        <mj-text
+          color="#0C0C0D"
+          font-size="16px"
+          font-weight="500"
+          font-family="Helvetica"
+        >
+          - US-1234
+        </mj-text>
+      </mj-column>
+      <mj-column width="100%">
+        <mj-divider
+          border-width="1px"
+          border-color="#efefef"
+        ></mj-divider>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="28px"
+        >
+          19. Please answer the questions below pertaining to your United States government issued identification information. This is for your patient protection and safety.
+        </mj-text>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="24px"
+        >
+          INFORMED CONSENT FOR TELEMEDICINE SERVICES INTRODUCTION Telemedicine involves the use of electronic communications to enable health care providers at different locations
+          to share individual patient medical information for the purpose of improving patient care. Providers may include primary care practitioners, specialists, and/or
+          sub-specialists. The information may be used for diagnosis, therapy. follow-up and/or education, and may include any of the following: Patient medical records Medical
+          images Live two way audio and video Output data from medical devices and sound and video files Electronic systems used will incorporate network and software security
+          protocols to protect the confidentiality of patient identification and imaging data and will include measures to safeguard the data and to ensure its integrity against
+          intentional or unintentional corruption. EXPECTED BENEFITS Improved access to medical care by enabling a patient to remain in his/her office (or at a remote site) while
+          the physician obtains test results and consults from healthcare practitioners at distant/other sites. More efficient medical evaluation and management. Obtaining
+          expertise of a distant specialist. POSSIBLE RISKS As with any medical procedure, there are potential risks associated with the use of telemedicine. These risks include,
+          but may not be limited to; In rare cases, information transmitted may not be sufficient (e.g. poor resolution of images) to allow for appropriate medical decision making
+          by the physician and consultant(s); Delays in medical evaluation and treatment could occur due to deficiencies or failures of the equipment; In very rare instances,
+          security protocols could fail, causing a breach of privacy of personal medical information; In rare cases, a lack of access to complete medical records may result in
+          adverse drug interactions or allergic reaction or other judgment error. BY SIGNING THIS FORM, I ATTEST TO AND UNDERSTAND THE FOLLOWING: I understand that the laws that
+          protect privacy and the confidentiality of medical information also apply to telemedicine, and that no information obtained in the use of telemedicine which identifies me
+          will be disclosed to researchers or other entities without my consent, I understand that I have the right to withhold or withdraw my consent to the use of telemedicine in
+          the course of my care at any time, without affecting my right to future care or treatment, I understand that I have the right to inspect all information obtained and
+          recorded in the course of telemedicine interaction, and may receive copies of this information for a reasonable fee, I understand that a variety of alternative methods of
+          medical care may be available to me, and that I may choose one or more of these at any time. My provider has explained the alternatives to my satisfaction, I understand
+          that telemedicine may involve electronic communication of my personal medical information to other medical practitioners who may be located in other areas, including out
+          of state. I understand that it is my duty to inform my provider of electronic interactions regarding my care that I may have with other healthcare providers. I understand
+          that I may expect the anticipated benefits from the use of telemedicine in my care, but that no results can be guaranteed or assured. PATIENT CONSENT TO THE USE OF
+          TELEMEDICINE I have read and understand the information provided above regarding telemedicine, have discussed it with my physician or such assistants as may be
+          designated, and all of my questions have been answered to my satisfaction. I hereby give my informed consent for the use of telemedicine for my medical care. A copy of
+          this form will be available in your documents. I hereby authorize DocUspa to use telemedicine in the course of my diagnosis and treatment.
+        </mj-text>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="24px"
+        >
+          I consent to sharing the information provided here in this Good Faith Exam with my Med Spa or Clinic for the treatment or procedure to follow my exam. All clients must
+          e-Sign this form. The information provided here will be provided to the Med Spa or Clinic requesting the Good Faith Exam.
+        </mj-text>
+        <mj-text
+          font-size="18px"
+          font-weight="300"
+          font-family="Helvetica"
+          color="#949494"
+          line-height="24px"
+        >
+          Signature:
+        </mj-text>
+        <mj-image
+          width="500px"
+          height="200px"
+          src="https://placehold.co/600x400"
+        ></mj-image>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

@@ -1,0 +1,23 @@
+{
+  "editor.wordWrap": "on",
+  "editor.tabSize": 2,
+  "editor.renderWhitespace": "none",
+  "editor.renderControlCharacters": false,
+  "debug.showBreakpointsInOverviewRuler": true,
+  "editor.guides.bracketPairs": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  },
+  "auto-close-tag.insertSpaceBeforeSelfClosingTag": true,
+  "html.format.wrapAttributes": "force-expand-multiline",
+  "html.format.indentInnerHtml": true,
+  "html.format.templating": true,
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "cSpell.words": ["Enanthate"],
+  "html.format.wrapLineLength": 0,
+  "prettier.printWidth": 180,
+  "postman.settings.dotenv-detection-notification-visibility": false
+}

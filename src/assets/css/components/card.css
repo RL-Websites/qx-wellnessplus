@@ -1,0 +1,45 @@
+@layer components {
+  .card {
+    padding-block: 20px;
+    padding-inline: 24px;
+    @apply bg-white shadow-dml-box-shadow rounded-xl;
+    &-title {
+      h6 {
+      }
+      @apply font-uber;
+      color: var(--dml-color-foreground);
+      &.with-border {
+        padding-bottom: 15px;
+        border-bottom: 1px solid var(--dml-color-grey-low);
+      }
+    }
+    &-with-header {
+      @apply border border-grey-low flex flex-col divide-y divide-grey-low rounded-xl;
+    }
+
+    &-thumb {
+      @apply w-full sm:w-[180px];
+    }
+  }
+  .admin-overall-stats-cards {
+    .swiper-wrapper {
+      @media screen and (max-width: 1440) {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 20px;
+      }
+    }
+    .swiper-slide {
+      min-width: 200px;
+      width: auto;
+      @media screen and (max-width: 1440) {
+        width: 200px;
+      }
+    }
+  }
+  .admin-overall-stats-nav {
+    @media screen and (min-width: 1300px) {
+      display: none !important;
+    }
+  }
+}

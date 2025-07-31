@@ -1,0 +1,340 @@
+@font-face {
+  font-family: 'icomoon';
+  src:  url('fonts/icomoon.eot?mfsz4g');
+  src:  url('fonts/icomoon.eot?mfsz4g#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.woff2?mfsz4g') format('woff2'),
+    url('fonts/icomoon.ttf?mfsz4g') format('truetype'),
+    url('fonts/icomoon.woff?mfsz4g') format('woff'),
+    url('fonts/icomoon.svg?mfsz4g#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-Icon:before {
+  content: "\e949";
+}
+.icon-Component-222-1:before {
+  content: "\e946";
+}
+.icon-Component-222:before {
+  content: "\e947";
+}
+.icon-dot1:before {
+  content: "\e948";
+}
+.icon-Icon-cross:before {
+  content: "\e94a";
+}
+.icon-note1:before {
+  content: "\e94b";
+}
+.icon-soap-note:before {
+  content: "\e94c";
+}
+.icon-view-intake-form:before {
+  content: "\e958";
+}
+.icon-patients-new:before {
+  content: "\e967";
+}
+.icon-Retake-Photo:before {
+  content: "\e965";
+}
+.icon-Take-Photo:before {
+  content: "\e966";
+}
+.icon-Client:before {
+  content: "\e963";
+}
+.icon-Partner:before {
+  content: "\e964";
+}
+.icon-Pharmacy:before {
+  content: "\e962";
+}
+.icon-Invited:before {
+  content: "\e94d";
+}
+.icon-docu-spa1:before {
+  content: "\e960";
+}
+.icon-Service:before {
+  content: "\e95f";
+}
+.icon-dollar:before {
+  content: "\e95e";
+}
+.icon-icon-printer:before {
+  content: "\e95d";
+}
+.icon-Spa:before {
+  content: "\e95c";
+}
+.icon-Patient-in-Progress:before {
+  content: "\e959";
+}
+.icon-prescribed-patients:before {
+  content: "\e95a";
+}
+.icon-injection:before {
+  content: "\e95b";
+}
+.icon-orders:before {
+  content: "\e945";
+}
+.icon-next_arrow:before {
+  content: "\e954";
+}
+.icon-Icon1:before {
+  content: "\e951";
+}
+.icon-billing-1:before {
+  content: "\e952";
+}
+.icon-billing:before {
+  content: "\e953";
+}
+.icon-clinics:before {
+  content: "\e955";
+}
+.icon-mg:before {
+  content: "\e956";
+}
+.icon-oral:before {
+  content: "\e957";
+}
+.icon-mic:before {
+  content: "\e94e";
+}
+.icon-micoff:before {
+  content: "\e94f";
+}
+.icon-videooff:before {
+  content: "\e950";
+}
+.icon-cross1:before {
+  content: "\e90e";
+}
+.icon-pdf:before {
+  content: "\e922";
+}
+.icon-pencil-edit:before {
+  content: "\e923";
+}
+.icon-tick:before {
+  content: "\e961";
+}
+.icon-profile:before {
+  content: "\e944";
+}
+.icon-change_password:before {
+  content: "\e943";
+}
+.icon-in_queue:before {
+  content: "\e942";
+}
+.icon-all_source:before {
+  content: "\e93e";
+}
+.icon-available:before {
+  content: "\e93f";
+}
+.icon-deactive:before {
+  content: "\e940";
+}
+.icon-not_available:before {
+  content: "\e941";
+}
+.icon-approve-doctor1:before {
+  content: "\e93d";
+}
+.icon-Through:before {
+  content: "\e93c";
+}
+.icon-prescription:before {
+  content: "\e925";
+}
+.icon-menu:before {
+  content: "\e93b";
+}
+.icon-prev-arrow:before {
+  content: "\e93a";
+}
+.icon-dot:before {
+  content: "\e900";
+}
+.icon-add-request:before {
+  content: "\e901";
+}
+.icon-add:before {
+  content: "\e902";
+}
+.icon-approve-doctor:before {
+  content: "\e903";
+}
+.icon-calendar:before {
+  content: "\e904";
+}
+.icon-calender-1:before {
+  content: "\e905";
+}
+.icon-calender-fill:before {
+  content: "\e906";
+}
+.icon-checkbox-select:before {
+  content: "\e907";
+}
+.icon-checkbox-selected-filled:before {
+  content: "\e908";
+}
+.icon-checkbox:before {
+  content: "\e909";
+}
+.icon-checkmark-circle:before {
+  content: "\e90a";
+}
+.icon-clients:before {
+  content: "\e90b";
+}
+.icon-copy:before {
+  content: "\e90c";
+}
+.icon-cross:before {
+  content: "\e90d";
+}
+.icon-dashboard:before {
+  content: "\e90f";
+}
+.icon-delete:before {
+  content: "\e910";
+}
+.icon-document-upload:before {
+  content: "\e911";
+}
+.icon-down-arrow:before {
+  content: "\e912";
+}
+.icon-download-04:before {
+  content: "\e913";
+}
+.icon-filter:before {
+  content: "\e914";
+}
+.icon-info:before {
+  content: "\e915";
+}
+.icon-list:before {
+  content: "\e916";
+}
+.icon-logout:before {
+  content: "\e917";
+}
+.icon-message:before {
+  content: "\e918";
+}
+.icon-microphone:before {
+  content: "\e919";
+}
+.icon-next-arrow:before {
+  content: "\e91a";
+}
+.icon-note:before {
+  content: "\e91b";
+}
+.icon-notification-alert:before {
+  content: "\e91c";
+}
+.icon-notification:before {
+  content: "\e91d";
+}
+.icon-nurse:before {
+  content: "\e91e";
+}
+.icon-order-approve:before {
+  content: "\e91f";
+}
+.icon-order:before {
+  content: "\e920";
+}
+.icon-pause:before {
+  content: "\e921";
+}
+.icon-phone:before {
+  content: "\e924";
+}
+.icon-radio-button-deselected:before {
+  content: "\e926";
+}
+.icon-radio-button-selected:before {
+  content: "\e927";
+}
+.icon-rating:before {
+  content: "\e928";
+}
+.icon-requests:before {
+  content: "\e929";
+}
+.icon-search:before {
+  content: "\e92a";
+}
+.icon-select:before {
+  content: "\e92b";
+}
+.icon-send:before {
+  content: "\e92c";
+}
+.icon-setting-01:before {
+  content: "\e92d";
+}
+.icon-stethoscope:before {
+  content: "\e92e";
+}
+.icon-total-available-doctor:before {
+  content: "\e92f";
+}
+.icon-total-declined:before {
+  content: "\e930";
+}
+.icon-total-doctor:before {
+  content: "\e931";
+}
+.icon-total-order:before {
+  content: "\e932";
+}
+.icon-total-prescription:before {
+  content: "\e933";
+}
+.icon-upload-04:before {
+  content: "\e934";
+}
+.icon-user-group:before {
+  content: "\e935";
+}
+.icon-video-error:before {
+  content: "\e936";
+}
+.icon-video:before {
+  content: "\e937";
+}
+.icon-view-off:before {
+  content: "\e938";
+}
+.icon-view:before {
+  content: "\e939";
+}

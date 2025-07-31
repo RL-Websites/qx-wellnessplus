@@ -1,0 +1,1029 @@
+<mjml>
+  <mj-body
+    width="100%"
+    margin="auto"
+    background-color="#fff"
+  >
+    <mj-section>
+      <mj-column width="100%">
+        <mj-text
+          font-size="20px"
+          color="#0C0C0D"
+          align="left"
+          font-family="Helvetica"
+          font-weight="700"
+          >View Prescription</mj-text
+        >
+      </mj-column>
+    </mj-section>
+
+    <mj-section full-width="full-width">
+      <mj-column width="100%">
+        <mj-text
+          font-size="18px"
+          font-weight="500"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Prescriber Details:</mj-text
+        >
+      </mj-column>
+      <mj-column width="100%">
+        <mj-divider
+          border-width="1px"
+          border-color="#efefef"
+        ></mj-divider
+      ></mj-column>
+      <mj-column width="20%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Name:</mj-text
+        >
+      </mj-column>
+      <mj-column width="80%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >Max grober</mj-text
+        >
+      </mj-column>
+      <mj-column width="20%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >DEA:</mj-text
+        >
+      </mj-column>
+      <mj-column width="80%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >738143543543</mj-text
+        >
+      </mj-column>
+      <mj-column width="20%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >NPI:</mj-text
+        >
+      </mj-column>
+      <mj-column width="80%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >SNOMED - 111551000</mj-text
+        >
+      </mj-column>
+      <mj-column width="20%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Specialty:</mj-text
+        >
+      </mj-column>
+      <mj-column width="80%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >-</mj-text
+        >
+      </mj-column>
+    </mj-section>
+
+    <mj-section full-width="full-width">
+      <mj-column width="100%">
+        <mj-text
+          font-size="18px"
+          font-weight="500"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Patient Details:</mj-text
+        >
+      </mj-column>
+      <mj-column width="100%">
+        <mj-divider
+          border-width="1px"
+          border-color="#efefef"
+        ></mj-divider
+      ></mj-column>
+      <mj-column width="20%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Name:</mj-text
+        >
+      </mj-column>
+      <mj-column width="80%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >JENNY J BAIR</mj-text
+        >
+      </mj-column>
+      <mj-column width="20%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Gender:</mj-text
+        >
+      </mj-column>
+      <mj-column width="80%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >F</mj-text
+        >
+      </mj-column>
+      <mj-column width="20%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Call Phone:</mj-text
+        >
+      </mj-column>
+      <mj-column width="80%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >9727414339</mj-text
+        >
+      </mj-column>
+      <mj-column width="20%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Email:</mj-text
+        >
+      </mj-column>
+      <mj-column width="80%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >jenny.bair@yopmail.com</mj-text
+        >
+      </mj-column>
+      <mj-column width="20%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Allergy Info:</mj-text
+        >
+      </mj-column>
+      <mj-column width="80%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >0.003 ml</mj-text
+        >
+      </mj-column>
+    </mj-section>
+
+    <mj-section full-width="full-width">
+      <mj-column width="100%">
+        <mj-text
+          font-size="18px"
+          font-weight="500"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Prescription Details:</mj-text
+        >
+      </mj-column>
+      <mj-column width="100%">
+        <mj-divider
+          border-width="1px"
+          border-color="#efefef"
+        ></mj-divider
+      ></mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Transaction ID:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >178369</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Transaction Date:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >May 14, 2024</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Transaction Time:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >01:37:27</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >RX Number:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >22682</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >RX Source:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >3 - Electronic</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Fill Number:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >1</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Fill Date:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >May 13, 2024</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Fill Time:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >15:20:36</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Filled By:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >1006</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Quantity:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >30</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Quantity Filled:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >30</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Days Supply:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >30</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Refills Authorized:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >0</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Refills Remaining:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >0</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Refill Exp Date:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >May 10, 2025</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Item Upc Code:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >-</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Lot Number:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >05072024@1</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Lot Exp Date:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >Oct 21, 2024</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >RPH Initials:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >EM</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >RX Serial Number:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >-</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Dispense Using:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >Safety Caps</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >RX Remark:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >-</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Written Date:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >May 11, 2024</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Pharmacy Receive Date:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >-</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Prescriber Sent Date:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >-</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Refills Remaining:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >0</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Refill Number:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >0</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Signature:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+        >
+          WEEKS 1-4: PLACE ONE TABLET UNDER THE TONGUE AND LET FULLY DISSOLVE ONCE DAILY 30 MINUTES BEFORE EATING OR DRINKING</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Retail:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >80. 10</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Total Paid:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >80. 10</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Margin</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >50. 1</mj-text
+        >
+      </mj-column>
+    </mj-section>
+
+    <mj-section full-width="full-width">
+      <mj-column width="100%">
+        <mj-text
+          font-size="18px"
+          font-weight="500"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Medication Details:</mj-text
+        >
+      </mj-column>
+      <mj-column width="100%">
+        <mj-divider
+          border-width="1px"
+          border-color="#efefef"
+        ></mj-divider
+      ></mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Drug name:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >SEMAGLUTIDE 0.50MG/PYRIDOXINE HCL 10MG - 250MG ODT</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Drug NDC:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >99999001601</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Drug GPI:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >-</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Drug Strength:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >-</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Drug Schedule:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >-</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Drug Generic:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >True</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Drug Brand Name:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >-</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Drug Package Size:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >-</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Drug Form:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >Tablet</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Drug Color:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >Dark Green</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Drug Shape:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >Round Convex Tablet - 8mm diameter</mj-text
+        >
+      </mj-column>
+      <mj-column width="30%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Drug Front Imprint:</mj-text
+        >
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >N/A</mj-text
+        >
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

@@ -1,0 +1,299 @@
+<mjml>
+  <mj-body
+    width="100%"
+    margin="auto"
+    background-color="#fff"
+  >
+    <mj-section>
+      <mj-column width="100%">
+        <mj-text
+          font-size="20px"
+          color="#0C0C0D"
+          align="left"
+          font-family="Helvetica"
+          font-weight="700"
+          >Soap Notes</mj-text
+        >
+      </mj-column>
+    </mj-section>
+
+    <mj-section full-width="full-width">
+      <mj-column width="100%">
+        <mj-divider
+          border-width="1px"
+          border-color="#efefef"
+        ></mj-divider
+      ></mj-column>
+      <mj-column width="20%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Drug Name:</mj-text
+        >
+      </mj-column>
+      <mj-column width="80%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >KYZATREX 200 MG CAPSULE</mj-text
+        >
+      </mj-column>
+      <mj-column width="20%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Drug No:</mj-text
+        >
+      </mj-column>
+      <mj-column width="80%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >7381</mj-text
+        >
+      </mj-column>
+      <mj-column width="20%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#0C0C0D"
+          >Diagnosis:</mj-text
+        >
+      </mj-column>
+      <mj-column width="80%">
+        <mj-text
+          font-size="12px"
+          font-weight="400"
+          font-family="Helvetica"
+          color="#949494"
+          >SNOMED - 111551000</mj-text
+        >
+      </mj-column>
+      <mj-column width="100%">
+        <mj-divider
+          border-width="1px"
+          border-color="#efefef"
+        ></mj-divider>
+      </mj-column>
+    </mj-section>
+
+    <mj-section full-width="full-width">
+      <mj-column width="50%">
+        <mj-text
+          color="#0C0C0D"
+          font-size="12px"
+          font-family="Helvetica"
+        >
+          Patient Name
+          <br />
+          <br />
+          <span style="color: #7c7c7c; font-size: 12px; font-weight: 400; font-family: Helvetica">Michael Scott</span>
+        </mj-text>
+      </mj-column>
+      <mj-column width="50%">
+        <mj-text
+          color="#0C0C0D"
+          font-size="12px"
+          font-family="Helvetica"
+        >
+          Drug Name
+          <br />
+          <br />
+          <span style="color: #7c7c7c; font-size: 12px; font-weight: 400; font-family: Helvetica">KYZATREX</span>
+        </mj-text>
+      </mj-column>
+      <mj-column width="50%">
+        <mj-text
+          color="#0C0C0D"
+          font-size="12px"
+          font-family="Helvetica"
+        >
+          Client Name
+          <br />
+          <br />
+          <span style="color: #7c7c7c; font-size: 12px; font-weight: 400; font-family: Helvetica">Mango</span>
+        </mj-text>
+      </mj-column>
+      <mj-column width="50%">
+        <mj-text
+          color="#0C0C0D"
+          font-size="12px"
+          font-family="Helvetica"
+        >
+          DOB
+          <br />
+          <br />
+          <span style="color: #7c7c7c; font-size: 12px; font-weight: 400; font-family: Helvetica">08-06-1949</span>
+        </mj-text>
+      </mj-column>
+      <mj-column width="50%">
+        <mj-text
+          color="#0C0C0D"
+          font-size="12px"
+          font-family="Helvetica"
+        >
+          Age
+          <br />
+          <br />
+          <span style="color: #7c7c7c; font-size: 12px; font-weight: 400; font-family: Helvetica">76</span>
+        </mj-text>
+      </mj-column>
+      <mj-column width="50%">
+        <mj-text
+          color="#0C0C0D"
+          font-size="12px"
+          font-family="Helvetica"
+        >
+          Sex
+          <br />
+          <br />
+          <span style="color: #7c7c7c; font-size: 12px; font-weight: 400; font-family: Helvetica">Male</span>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section full-width="full-width">
+      <mj-column width="100%">
+        <mj-divider
+          border-width="1px"
+          border-color="#efefef"
+        ></mj-divider
+      ></mj-column>
+      <mj-column width="100%">
+        <mj-text
+          color="#7C7C7C"
+          font-size="12px"
+          font-family="Helvetica"
+          font-weight="400"
+          >ICD Codes</mj-text
+        >
+        <mj-text
+          align="left"
+          color="#0C0C0D"
+          font-size="14px"
+          font-weight="400"
+          font-family="Helvetica"
+          >E66.01 - Morbid (Severe) obesity due to excess calories
+        </mj-text>
+        <mj-text
+          align="left"
+          color="#0C0C0D"
+          font-size="14px"
+          font-weight="400"
+          font-family="Helvetica"
+          >E66.01 - Morbid (Severe) obesity due to excess calories
+        </mj-text>
+        <mj-text
+          align="left"
+          color="#0C0C0D"
+          font-size="14px"
+          font-weight="400"
+          font-family="Helvetica"
+          >E66.01 - Morbid (Severe) obesity due to excess calories
+        </mj-text>
+      </mj-column>
+      <mj-column width="100%">
+        <mj-text
+          color="#7C7C7C"
+          font-size="12px"
+          font-family="Helvetica"
+          font-weight="400"
+          >CPT Codes</mj-text
+        >
+        <mj-text
+          align="left"
+          color="#0C0C0D"
+          font-size="14px"
+          font-weight="400"
+          font-family="Helvetica"
+          >99201 (E/M New)
+        </mj-text>
+        <mj-text
+          align="left"
+          color="#0C0C0D"
+          font-size="14px"
+          font-weight="400"
+          font-family="Helvetica"
+          >99201 (E/M New)
+        </mj-text>
+      </mj-column>
+      <mj-column width="100%">
+        <mj-text
+          color="#7C7C7C"
+          font-size="12px"
+          font-family="Helvetica"
+          font-weight="400"
+          >Subjective Symptoms</mj-text
+        >
+        <mj-text
+          align="left"
+          color="#0C0C0D"
+          font-size="14px"
+          font-weight="400"
+          font-family="Helvetica"
+          >Lorem ipsum dolor sit amet consectetur. Porttitor amet in sodales semper ut placerat etiam venenatis hac.
+        </mj-text>
+      </mj-column>
+      <mj-column width="100%">
+        <mj-text
+          color="#7C7C7C"
+          font-size="12px"
+          font-family="Helvetica"
+          font-weight="400"
+          >Objective Findings</mj-text
+        >
+        <mj-text
+          align="left"
+          color="#0C0C0D"
+          font-size="14px"
+          font-weight="400"
+          font-family="Helvetica"
+          >Lorem ipsum dolor sit amet consectetur. Porttitor amet in sodales semper ut placerat etiam venenatis hac.
+        </mj-text>
+      </mj-column>
+      <mj-column width="100%">
+        <mj-text
+          color="#7C7C7C"
+          font-size="12px"
+          font-family="Helvetica"
+          font-weight="400"
+          >Assessment Goals</mj-text
+        >
+        <mj-text
+          align="left"
+          color="#0C0C0D"
+          font-size="14px"
+          font-weight="400"
+          font-family="Helvetica"
+          >Lorem ipsum dolor sit amet consectetur. Porttitor amet in sodales semper ut placerat etiam venenatis hac.
+        </mj-text>
+      </mj-column>
+      <mj-column width="100%">
+        <mj-text
+          color="#7C7C7C"
+          font-size="12px"
+          font-family="Helvetica"
+          font-weight="400"
+          >Plan of Treatment
+        </mj-text>
+        <mj-text
+          align="left"
+          color="#0C0C0D"
+          font-size="14px"
+          font-weight="400"
+          font-family="Helvetica"
+          >Lorem ipsum dolor sit amet consectetur. Porttitor amet in sodales semper ut placerat etiam venenatis hac.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

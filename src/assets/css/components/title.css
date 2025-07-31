@@ -1,0 +1,12 @@
+.table-title {
+  @apply flex justify-between gap-5;
+  &-inner {
+    @apply flex items-center sm:gap-10 gap-5;
+    &-btn {
+      @apply flex justify-center sm:gap-9 gap-5;
+      button {
+        @apply text-grey text-fs-md;
+      }
+    }
+  }
+}
