@@ -6,13 +6,13 @@
     &-empty {
       @apply max-w-[553px] mx-auto my-20 text-center;
       &-title {
-        @apply text-grey font-uber;
+        @apply text-grey font-kneyan;
       }
       &-title-ms {
-        @apply text-secondary font-uber pt-20;
+        @apply text-secondary font-kneyan pt-20;
       }
       &-description {
-        @apply text-fs-lg font-uberText pt-3 text-grey;
+        @apply text-fs-lg font-kneyanText pt-3 text-grey;
       }
     }
   }
@@ -71,7 +71,7 @@
 
   .doctor-details {
     h2 {
-      @apply text-grey-medium font-uber;
+      @apply text-grey-medium font-kneyan;
     }
     &-menu {
       @apply flex items-center gap-1 bg-grey-low py-1 px-4 mt-2.5 mb-6 scale-[1.03];

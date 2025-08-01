@@ -10,8 +10,8 @@
   .heading-xxl {
     font-size: var(--dml-heading-fs-xxl);
     line-height: var(--dml-heading-lh-xxl);
-    font-weight: var(--dml-fw-bold);
-    font-family: "UberMove", sans-serif;
+    font-weight: var(--dml-fw-normal);
+    font-family: "Kenyan Coffee", sans-serif;
   }
 
   h2,
@@ -19,8 +19,8 @@
   .heading-xl {
     font-size: var(--dml-heading-fs-xl);
     line-height: var(--dml-heading-lh-xl);
-    font-weight: var(--dml-fw-bold);
-    font-family: "UberMove", sans-serif;
+    font-weight: var(--dml-fw-normal);
+    font-family: "Kenyan Coffee", sans-serif;
   }
 
   h3,
@@ -28,46 +28,46 @@
   .heading-lg {
     font-size: var(--dml-heading-fs-lg);
     line-height: var(--dml-heading-lh-lg);
-    font-weight: var(--dml-fw-bold);
-    font-family: "UberMove", sans-serif;
+    font-weight: var(--dml-fw-normal);
+    font-family: "Kenyan Coffee", sans-serif;
   }
   h4,
   .h4,
   .heading-md {
     font-size: var(--dml-heading-fs-md);
     line-height: var(--dml-heading-lh-md);
-    font-weight: var(--dml-fw-bold);
-    font-family: "UberMove", sans-serif;
+    font-weight: var(--dml-fw-normal);
+    font-family: "Kenyan Coffee", sans-serif;
   }
   h5,
   .h5,
   .heading-sm {
     font-size: var(--dml-heading-fs-sm);
     line-height: var(--dml-heading-lh-sm);
-    font-weight: var(--dml-fw-bold);
-    font-family: "UberMove", sans-serif;
+    font-weight: var(--dml-fw-normal);
+    font-family: "Kenyan Coffee", sans-serif;
   }
   h6,
   .h6,
   .heading-xs {
     font-size: var(--dml-heading-fs-xs);
     line-height: var(--dml-heading-lh-xs);
-    font-weight: var(--dml-fw-bold);
-    font-family: "UberMove", sans-serif;
+    font-weight: var(--dml-fw-normal);
+    font-family: "Kenyan Coffee", sans-serif;
   }
 
   .heading-xxs {
     font-size: var(--dml-heading-fs-xxs);
     line-height: var(--dml-heading-lh-xxs);
-    font-weight: var(--dml-fw-bold);
-    font-family: "UberMove", sans-serif;
+    font-weight: var(--dml-fw-normal);
+    font-family: "Kenyan Coffee", sans-serif;
   }
 
   .heading-xxxs {
     font-size: var(--dml-para-fs-sm);
     line-height: var(--dml-para-lh-sm);
-    font-weight: var(--dml-fw-bold);
-    font-family: "UberMove", sans-serif;
+    font-weight: var(--dml-fw-normal);
+    font-family: "Kenyan Coffee", sans-serif;
   }
 
   /* Paragraph classes */
