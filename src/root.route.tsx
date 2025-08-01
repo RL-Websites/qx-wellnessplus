@@ -1,10 +1,11 @@
 import { lazy } from "react";
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Outlet } from "react-router-dom";
 import AuthGuard from "./common/components/AuthGuard";
 import UserNotFoundPage from "./common/components/UserNotFound";
+import HomeLayout from "./common/layouts/HomeLayout";
+import { AdminAppRoute } from "./pages/admin-app/admin-app.route";
 import { AuthRoute } from "./pages/auth/auth.route";
-import VerifyUser from "./pages/auth/login/verify-otp";
-import { WebAppRoute } from "./pages/website/web-app.route";
+import { PublicPagesRoute } from "./pages/public-pages/public-pages.route";
 const PanelNavigator = lazy(() => import("./common/components/NavigateToPanel"));
 const NotFoundPage = lazy(() => import("./common/components/not-found.page"));
 
@@ -19,19 +20,22 @@ export const RootRoute = createBrowserRouter([
   },
   {
     path: "",
-    element: <AuthGuard userType={["admin"]} />,
-    children: WebAppRoute,
+    element: (
+      <HomeLayout>
+        <Outlet />
+      </HomeLayout>
+    ),
+    children: PublicPagesRoute,
   },
   {
-    path: "auth-verification",
-    element: <VerifyUser />,
+    path: "",
+    element: <AuthGuard userType={["admin"]} />,
+    children: AdminAppRoute,
   },
-
   {
     path: "user-not-found",
     element: <UserNotFoundPage />,
   },
-
   {
     path: "*",
     element: <NotFoundPage />,
