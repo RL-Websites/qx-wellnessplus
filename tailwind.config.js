@@ -4,8 +4,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        uber: ["UberMove", "sans-serif"],
-        uberText: ["UberMoveText", "sans-serif"],
+        kneyan: ["Kenyan Coffee", "sans-serif"],
       },
       colors: {
         background: "var(--dml-color-background)",

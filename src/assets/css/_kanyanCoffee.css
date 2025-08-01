@@ -1,0 +1,7 @@
+/* all fonts family added here */
+
+@font-face {
+  font-family: "Kenyan Coffee";
+  src: url("/fonts/KenyanCoffeeRg.otf");
+  font-weight: 400;
+}
