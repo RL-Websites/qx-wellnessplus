@@ -18,28 +18,28 @@
     &-lg {
       @apply mt-0;
       th {
-        @apply sm:w-[320px] w-[140px] sm:extra-form-text-medium text-base/none text-grey font-uber;
+        @apply sm:w-[320px] w-[140px] sm:extra-form-text-medium text-base/none text-grey font-kneyan;
       }
       td {
-        @apply sm:extra-form-text-regular text-base/none text-grey font-uberText;
+        @apply sm:extra-form-text-regular text-base/none text-grey font-kneyan;
       }
     }
     &-md {
       @apply mt-0;
       th {
-        @apply sm:w-[260px] w-[140px] sm:extra-form-text-medium text-sm/none text-grey font-uber;
+        @apply sm:w-[260px] w-[140px] sm:extra-form-text-medium text-sm/none text-grey font-kneyan;
       }
       td {
-        @apply sm:extra-form-text-regular text-sm/none text-grey font-uberText;
+        @apply sm:extra-form-text-regular text-sm/none text-grey font-kneyan;
       }
     }
     &-sm {
       @apply mt-0;
       th {
-        @apply w-[173px] extra-form-text-medium text-grey font-uber;
+        @apply w-[173px] extra-form-text-medium text-grey font-kneyan;
       }
       td {
-        @apply extra-form-text-regular text-grey font-uberText;
+        @apply extra-form-text-regular text-grey font-kneyan;
       }
     }
   }

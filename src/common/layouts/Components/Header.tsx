@@ -205,7 +205,7 @@ const Header = ({ onToggle }: HeaderPropsType) => {
                 <i className="icon-notification text-2xl"></i>
 
                 {dmlNotification?.unreadCount != undefined && dmlNotification?.unreadCount > 0 ? (
-                  <div className="bg-danger-badge text-white text-sm font-bold font-uber absolute -top-1.5 -right-5 rounded-full h-5 w-8 flex items-center justify-center">
+                  <div className="bg-danger-badge text-white text-sm font-bold font-kneyan absolute -top-1.5 -right-5 rounded-full h-5 w-8 flex items-center justify-center">
                     {dmlNotification?.unreadCount > 99 ? "99+" : dmlNotification?.unreadCount}
                   </div>
                 ) : (
@@ -242,7 +242,7 @@ const Header = ({ onToggle }: HeaderPropsType) => {
                 </Avatar>
               </div>
               <div className="md:flex flex-col gap-1 hidden">
-                <Text className="text-foreground text-base font-bold font-uber">{`${userData?.name}`}</Text>
+                <Text className="text-foreground text-base font-bold font-kneyan">{`${userData?.name}`}</Text>
                 <Text className="text-xs text-grey-medium capitalize">{getUserTypeText(userData)}</Text>
               </div>
             </Group>
