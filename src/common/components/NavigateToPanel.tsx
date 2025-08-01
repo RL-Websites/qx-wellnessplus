@@ -26,20 +26,12 @@ const NavigateToPanel = () => {
       case "admin":
         return <Navigate to="/home" />;
 
-      case "client":
-        return <Navigate to="/client" />;
-      case "customer":
-        return <Navigate to="/partner" />;
-      case "customer_standard_user":
-        return <Navigate to="/partner" />;
-      case "partner_patient":
-        return <Navigate to="/partner-patient" />;
       default:
         if (loginRedirectCount == 0) {
           console.log("did i came here");
           setLoginRedirectCount((prevCount) => ++prevCount);
           setTimeout(() => {
-            navigate("/login");
+            navigate("/home");
           }, 50);
         }
     }
