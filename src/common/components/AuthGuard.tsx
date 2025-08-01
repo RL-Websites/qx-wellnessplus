@@ -22,7 +22,7 @@ const AuthGuard = ({ userType }: { userType: string[] }) => {
   // }
 
   if (userLoading) {
-    debugger
+    // debugger
     return (
       <LoadingOverlay
         visible={true}

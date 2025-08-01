@@ -76,11 +76,9 @@ const LoginPage = () => {
 
   const onSubmit = (data: LoginSchemaType) => {
     const payload = { email: data.emailAddress, password: data.password };
-    debugger
     if (data?.emailAddress.includes("rl_")) {
       noOTPLoginMutation.mutate(payload, {
         onSuccess: (res) => {
-          debugger
           setUserEmail(data.emailAddress);
           setAccessToken(res?.data.access_token);
           switch (res.data?.user?.userable_type) {
@@ -113,7 +111,6 @@ const LoginPage = () => {
     } else {
       LoginMutation.mutate(payload, {
         onSuccess: (res) => {
-          debugger
           setUserEmail(data.emailAddress);
           setAuthAccessCode(res.data.access_code);
           localStorage.setItem("otpExpired", res.data.otp_expired);

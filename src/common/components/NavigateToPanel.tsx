@@ -24,7 +24,7 @@ const NavigateToPanel = () => {
     console.log(userData?.userable_type || "navigateToPanel");
     switch (userData?.userable_type) {
       case "admin":
-        return <Navigate to="/admin-client/dashboard" />;
+        return <Navigate to="/home" />;
 
       case "client":
         return <Navigate to="/client" />;

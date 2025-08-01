@@ -98,14 +98,7 @@ const VerifyUser = () => {
         onSuccess: (res) => {
           removeAuthAccessCode();
           setAccessToken(res?.data?.data?.access_token);
-          switch (res?.data?.data?.user?.userable_type) {
-            case "spa_clinic":
-              localStorage.setItem("isSpaClinic", "1");
-              break;
-            case "customer":
-              localStorage.setItem("isPartner", "1");
-              break;
-          }
+
           // if (res?.data?.data?.user?.userable_type == "spa_clinic") {
           //   localStorage.setItem("isSpaClinic", "1");
           // }
@@ -113,7 +106,7 @@ const VerifyUser = () => {
             onSettled: (res) => {
               console.log(res);
               localStorage.removeItem("otpExpired");
-              // window.location.href = "/";
+              window.location.href = "/";
             },
           });
         },
