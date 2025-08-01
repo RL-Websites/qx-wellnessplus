@@ -26,7 +26,7 @@
         @apply max-w-[400px] mx-auto sm:px-0 px-5 h-full flex flex-col justify-center;
       }
       .auth-title {
-        @apply text-secondary mb-[31px] xl:heading-xl md:heading-md heading-sm pb-[11px] font-uber;
+        @apply text-secondary mb-[31px] xl:heading-xl md:heading-md heading-sm pb-[11px] font-kneyan;
         &.auth-underline {
           @apply after:absolute after:block after:left-0 after:top-full after:h-[1px] after:w-[65%] after:bg-[#175BCC];
         }
