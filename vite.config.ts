@@ -139,7 +139,7 @@ export default defineConfig({
   },
   server: {
     host: true,
-    port: 2550,
+    port: 2800,
     strictPort: true,
   },
   resolve: {
