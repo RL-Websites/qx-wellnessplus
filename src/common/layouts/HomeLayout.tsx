@@ -37,7 +37,7 @@ const HomeLayout = ({ children }: homeLayoutProps) => {
             </Button>
           </div>
         </div>
-        <div className="h-[calc(100vh_-_160px)] pt-12">{children}</div>
+        <div className="h-[calc(100vh_-_100px)] pt-12">{children}</div>
       </div>
     </div>
   );
