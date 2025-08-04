@@ -72,6 +72,9 @@ export default {
         xl: "1280px",
         "2xl": "1536px",
       },
+      backgroundSize: {
+        "home-bg": "40%",
+      },
     },
   },
   plugins: [],
