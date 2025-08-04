@@ -74,6 +74,7 @@ export default {
       },
       backgroundSize: {
         "home-bg": "33%",
+      },
       container: {
         padding: {
           DEFAULT: "1rem",
