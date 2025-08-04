@@ -5,15 +5,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import * as yup from "yup";
 
-const registrationSchema = yup.object({
-  firstName: yup
-    .string()
-    .required(({ label }) => `${label} is required.`)
-    .label("First Name"),
-  lastName: yup
-    .string()
-    .required(({ label }) => `${label} is required.`)
-    .label("Last Name"),
+const loginSchema = yup.object({
   emailAddress: yup
     .string()
     .required(({ label }) => `${label} is required.`)
@@ -28,15 +20,11 @@ const registrationSchema = yup.object({
     .matches(/^((?=.*[A-Z]){1}).*$/, "Password must contain at least one upper case alphabetical character")
     .matches(/^(?=.*[!@#$%^&()\-+=\{\};:,<.>]).*$/, "Password must contain at least one upper case special character")
     .label("Password"),
-  confirmPassword: yup
-    .string()
-    .oneOf([yup.ref("password")], "Passwords must match")
-    .required("Confirm Password is required"),
 });
 
-type registrationSchemaType = yup.InferType<typeof registrationSchema>;
+type loginSchemaType = yup.InferType<typeof loginSchema>;
 
-const RegistrationPage = () => {
+const Login = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [queryParams, setQueryParams] = useSearchParams();
   const [doctorDetails, setDoctorDetails] = useState<any>({});
@@ -49,52 +37,27 @@ const RegistrationPage = () => {
     watch,
     trigger,
     formState: { errors },
-  } = useForm<registrationSchemaType>({
-    resolver: yupResolver(registrationSchema),
+  } = useForm<loginSchemaType>({
+    resolver: yupResolver(loginSchema),
   });
 
   const passwordValue = watch("password");
 
-  const onSubmit = (data: registrationSchemaType) => {
+  const onSubmit = (data: loginSchemaType) => {
     const finalData = { ...data, ...{ type: "admin", u_id: uid } };
     console.log(finalData);
   };
 
   return (
     <div className="lg:pt-16 md:pt-10 pt-4">
-      <h2 className="heading-text  text-foreground uppercase  text-center">Registration</h2>
+      <h2 className="heading-text  text-foreground uppercase  text-center">Login</h2>
       <form
         className="w-full "
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="card-auth flex flex-col lg:gap-7 md:gap-5 gap-3">
-          <p className="font-semibold lg:text-3xl md:text-xl text-base text-foreground ">Registration Details</p>
-          <Input.Wrapper
-            label="First Name"
-            required
-            error={errors.firstName?.message ? errors.firstName?.message : false}
-            classNames={{
-              label: "!text-sm md:!text-base lg:!text-lg",
-            }}
-          >
-            <Input
-              type="text"
-              {...register("firstName")}
-            />
-          </Input.Wrapper>
-          <Input.Wrapper
-            label="Last Name"
-            required
-            error={errors.lastName?.message ? errors.lastName?.message : false}
-            classNames={{
-              label: "!text-sm md:!text-base lg:!text-lg",
-            }}
-          >
-            <Input
-              type="text"
-              {...register("lastName")}
-            />
-          </Input.Wrapper>
+          <p className="font-semibold lg:text-3xl md:text-xl text-base text-foreground ">Login Details</p>
+
           <Input.Wrapper
             label="Email Address"
             required
@@ -114,26 +77,12 @@ const RegistrationPage = () => {
             required
             error={errors.password?.message ? errors.password?.message : false}
             classNames={{
-              label: "!text-sm !md:text-base !lg:text-lg",
+              label: "!text-sm md:!text-base lg:!text-lg",
             }}
           >
             <PasswordInput
               visibilityToggleIcon={({ reveal }) => (reveal ? <i className="icon-view text-2xl"></i> : <i className="icon-view-off text-2xl"></i>)}
               {...register("password")}
-            />
-          </Input.Wrapper>
-          <Input.Wrapper
-            label="Confirm password"
-            mt="12"
-            required
-            error={errors.confirmPassword?.message ? errors.confirmPassword?.message : false}
-            classNames={{
-              label: "!text-sm !md:text-base !lg:text-lg",
-            }}
-          >
-            <PasswordInput
-              visibilityToggleIcon={({ reveal }) => (reveal ? <i className="icon-view text-2xl"></i> : <i className="icon-view-off text-2xl"></i>)}
-              {...register("confirmPassword")}
             />
           </Input.Wrapper>
         </div>
@@ -151,4 +100,4 @@ const RegistrationPage = () => {
   );
 };
 
-export default RegistrationPage;
+export default Login;
