@@ -7,11 +7,11 @@ import { Link, NavLink as RdNavLink } from "react-router-dom";
 const HomePage = () => {
   const userData = useAtomValue<IUserData | null>(userAtom);
   return (
-    <div className="bg-[url(./public/images/home-bg.png)] bg-cover bg-no-repeat  h-screen ">
-      <div className="bg-[url(./public/images/home-banner.jpg)] bg-right bg-home-bg bg-no-repeat h-screen">
+    <div className="bg-[url(./public/images/home-bg.png)] bg-cover bg-no-repeat  md:h-screen ">
+      <div className="md:bg-[url(./public/images/home-banner.png)] bg-none bg-right bg-home-bg bg-no-repeat md:h-screen">
         <div className="container mx-auto">
-          <div className="header grid grid-cols-2  items-center justify-between ">
-            <div className="flex flex-col gap-7 py-20">
+          <div className="header grid md:grid-cols-2  items-center justify-between ">
+            <div className="flex flex-col gap-7 lg:py-20 py-10">
               <div className="logo flex items-center gap-2">
                 <NavLink
                   to={userData?.userable_type == "admin" ? "/admin-client/dashboard" : ""}
@@ -21,20 +21,19 @@ const HomePage = () => {
                     <Image
                       src="/images/logo.svg"
                       alt="QX-Wellness Logo"
-                      w={225}
-                      h={32}
+                      className="lg:w-[225px] md:w-[200px] w-[150px]"
                     />
                   }
                 />
               </div>
-              <h1 className="heading-xxxl text-foreground uppercase mt-12">Thanks for stopping by</h1>
+              <h1 className="heading-xxxl text-foreground uppercase lg:mt-12 md:mt-8 mt-5 md:text-start text-center">Thanks for stopping by</h1>
 
-              <p className="text-[30px] font-semibold text-primary capitalize">Your Wellness Journey Starts Here</p>
+              <p className="lg:text-[30px] md:text-2xl text-base font-semibold text-primary capitalize md:text-start text-center">Your Wellness Journey Starts Here</p>
 
               <Button
                 bg="primary"
                 c="white"
-                className="w-[370px] sm:text-lg text-base capitalize mt-8 rounded-xl"
+                className="md:w-[370px] w-[270px] sm:text-lg text-base capitalize lg:mt-8 md:mt-4 mt-0 rounded-xl md:mx-0 mx-auto"
               >
                 Star Your Journey Now
               </Button>
@@ -42,13 +41,20 @@ const HomePage = () => {
                 Are you an existing customer?{" "}
                 <Link
                   className="text-primary font-semibold underline"
-                  to={""}
+                  to={"/"}
                 >
                   Login Now
                 </Link>
               </p>
             </div>
           </div>
+        </div>
+        <div className="md:bg-transparent bg-[#6949FF]">
+          <Image
+            src="/images/home-banner.png"
+            alt="QX-Wellness Logo"
+            className="w-full md:hidden block"
+          />
         </div>
       </div>
     </div>
