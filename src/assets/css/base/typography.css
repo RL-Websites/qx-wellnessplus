@@ -56,6 +56,10 @@
     font-family: "Kenyan Coffee", sans-serif;
   }
 
+  .heading-xxxl {
+    @apply lg:text-[147px] md:text-8xl text-6xl;
+  }
+
   .heading-xxs {
     font-size: var(--dml-heading-fs-xxs);
     line-height: var(--dml-heading-lh-xxs);
