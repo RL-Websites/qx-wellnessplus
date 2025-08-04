@@ -5,6 +5,7 @@ interface IMedicationProps {
   image: string;
   title: string;
   const: string;
+  onAddToCart: () => void;
 }
 
 const MedicationCard = (medicationProps: IMedicationProps) => {
@@ -34,6 +35,7 @@ const MedicationCard = (medicationProps: IMedicationProps) => {
         classNames={{
           root: "w-full",
         }}
+        onClick={medicationProps?.onAddToCart}
       >
         Add to Cart
       </Button>
