@@ -10,7 +10,7 @@ interface homeLayoutProps {
 const HomeLayout = ({ children }: homeLayoutProps) => {
   const userData = useAtomValue<IUserData | null>(userAtom);
   return (
-    <div className="bg-[url(./public/images/home-bg.png)] bg-cover bg-no-repeat py-[60px]">
+    <div className="bg-[url(./public/images/home-bg.png)] bg-cover bg-no-repeat lg:py-20 py-10">
       <div className="container mx-auto">
         <div className="header flex items-center justify-between pb-12">
           <div className="logo flex items-center gap-2">
@@ -22,8 +22,7 @@ const HomeLayout = ({ children }: homeLayoutProps) => {
                 <Image
                   src="/images/logo.svg"
                   alt="QX-Wellness Logo"
-                  w={225}
-                  h={74}
+                  className="lg:w-[225px] md:w-[200px] w-[150px]"
                 />
               }
             />
@@ -31,7 +30,9 @@ const HomeLayout = ({ children }: homeLayoutProps) => {
           <div className="flex items-center gap-3">
             <Button
               variant="outline"
-              size="sm-2"
+              size="sm-3"
+              color="primary"
+              className="font-semibold lg:text-lg md:text-base text-sm"
             >
               Login
             </Button>

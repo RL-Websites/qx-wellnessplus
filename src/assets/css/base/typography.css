@@ -60,6 +60,10 @@
     @apply lg:text-[147px] md:text-8xl text-6xl;
   }
 
+  .heading-text {
+    @apply lg:text-[90px] md:text-6xl text-[40px];
+  }
+
   .heading-xxs {
     font-size: var(--dml-heading-fs-xxs);
     line-height: var(--dml-heading-lh-xxs);
