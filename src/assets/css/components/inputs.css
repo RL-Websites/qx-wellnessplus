@@ -11,7 +11,7 @@
     font-size: var(--dml-text-input-fs);
     height: var(--dml-input-height);
     min-height: var(--dml-input-height);
-    background-color: var(--dml-color-grey-btn);
+    background-color: white;
     border-radius: var(--dml-input-br);
     --input-padding-inline-start: 16px;
     --input-padding-inline-end: 16px;
