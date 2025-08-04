@@ -38,6 +38,7 @@ export default {
         "yellow-medium": "var(--dml-color-yellow-medium)",
         "yellow-deep": "var(--dml-color-yellow-deep)",
         "green-extra-light": "var(--dml-color-green-extra-light)",
+        "green-badge": "var(--dml-color-green-badge)",
         "green-light": "var(--dml-color-green-light)",
         "green-medium": "var(--dml-color-green-medium)",
         "green-middle": "var(--dml-color-green-middle)",
