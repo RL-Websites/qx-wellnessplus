@@ -12,7 +12,7 @@ const HomeLayout = ({ children }: homeLayoutProps) => {
   return (
     <div className="bg-[url(./public/images/home-bg.png)] bg-cover bg-no-repeat py-[60px]">
       <div className="container mx-auto">
-        <div className="header flex items-center justify-between">
+        <div className="header flex items-center justify-between pb-12">
           <div className="logo flex items-center gap-2">
             <NavLink
               to={userData?.userable_type == "admin" ? "/admin-client/dashboard" : ""}
@@ -22,8 +22,8 @@ const HomeLayout = ({ children }: homeLayoutProps) => {
                 <Image
                   src="/images/logo.svg"
                   alt="QX-Wellness Logo"
-                  w={148}
-                  h={32}
+                  w={225}
+                  h={74}
                 />
               }
             />
@@ -37,7 +37,7 @@ const HomeLayout = ({ children }: homeLayoutProps) => {
             </Button>
           </div>
         </div>
-        <div className="h-[calc(100vh_-_100px)] pt-12">{children}</div>
+        <div className="">{children}</div>
       </div>
     </div>
   );

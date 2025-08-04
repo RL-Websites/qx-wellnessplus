@@ -11,4 +11,12 @@ export const categoryCard = [
     image: "images/hair-loos.png",
     title: "Hair Health",
   },
+  {
+    image: "images/hair-loos.png",
+    title: "Hair Health",
+  },
+  {
+    image: "images/hair-loos.png",
+    title: "Hair Health",
+  },
 ];
