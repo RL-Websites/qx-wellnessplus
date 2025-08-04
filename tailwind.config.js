@@ -73,7 +73,7 @@ export default {
         "2xl": "1536px",
       },
       backgroundSize: {
-        "home-bg": "40%",
+        "home-bg": "33%",
       },
     },
   },
