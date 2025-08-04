@@ -1,6 +1,6 @@
 import { Button, Image, NavLink } from "@mantine/core";
 import { useAtomValue } from "jotai";
-import { NavLink as RdNavLink } from "react-router-dom";
+import { Link, NavLink as RdNavLink } from "react-router-dom";
 import { IUserData } from "../api/models/interfaces/User.model";
 import { userAtom } from "../states/user.atom";
 
@@ -10,7 +10,7 @@ interface homeLayoutProps {
 const HomeLayout = ({ children }: homeLayoutProps) => {
   const userData = useAtomValue<IUserData | null>(userAtom);
   return (
-    <div className="bg-[url(./public/images/home-bg.png)] bg-cover bg-no-repeat lg:py-20 py-10">
+    <div className="bg-[url(./public/images/home-bg.png)] bg-repeat min-h-screen bg-cover lg:pt-16 pt-10 lg:pb-24 pb-10">
       <div className="container mx-auto">
         <div className="header flex items-center justify-between pb-12">
           <div className="logo flex items-center gap-2">
@@ -33,6 +33,8 @@ const HomeLayout = ({ children }: homeLayoutProps) => {
               size="sm-3"
               color="primary"
               className="font-semibold lg:text-lg md:text-base text-sm"
+              component={Link}
+              to="/login"
             >
               Login
             </Button>
