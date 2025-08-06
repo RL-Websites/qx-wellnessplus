@@ -41,7 +41,7 @@ const HomePage = () => {
                 Are you an existing customer?{" "}
                 <Link
                   className="text-primary font-semibold underline"
-                  to={"/"}
+                  to={"/login"}
                 >
                   Login Now
                 </Link>
