@@ -7,8 +7,8 @@ import { Link, NavLink as RdNavLink } from "react-router-dom";
 const HomePage = () => {
   const userData = useAtomValue<IUserData | null>(userAtom);
   return (
-    <div className="bg-[url(./public/images/home-bg.png)] bg-cover bg-no-repeat  md:h-screen ">
-      <div className="md:bg-[url(./public/images/home-banner.png)] bg-none bg-right bg-home-bg bg-no-repeat md:h-screen">
+    <div className="bg-[url(images/home-bg.png)] site__main bg-cover bg-no-repeat  md:h-screen ">
+      <div className="md:bg-[url(images/home-banner.png)] home__hero-bg bg-none bg-right bg-home-bg bg-no-repeat md:h-screen">
         <div className="container mx-auto">
           <div className="header grid md:grid-cols-2  items-center justify-between ">
             <div className="flex flex-col gap-7 lg:py-20 py-10">
