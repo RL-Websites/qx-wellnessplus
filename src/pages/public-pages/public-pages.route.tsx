@@ -5,6 +5,7 @@ import LoadingPage from "./loading/loading.page";
 import Login from "./login/login.page";
 import MedicationsPage from "./medication/medications.page";
 import OrderSummary from "./order-summary/order-summary.page";
+import DateOfBirth from "./quiz/date-of-birth.page";
 import RegistrationPage from "./registration/registration.page";
 
 export const PublicPagesRoute: RouteObject[] = [
@@ -39,5 +40,9 @@ export const PublicPagesRoute: RouteObject[] = [
   {
     path: "order-summary",
     element: <OrderSummary />,
+  },
+  {
+    path: "date-of-birth",
+    element: <DateOfBirth />,
   },
 ];
