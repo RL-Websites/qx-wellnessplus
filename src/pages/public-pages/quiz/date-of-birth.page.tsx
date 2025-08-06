@@ -44,8 +44,7 @@ const DateOfBirth = () => {
                 <DateInput
                   {...field}
                   clearable
-                  dropdownType="modal"
-                  rightSection={<i className="icon-calender-1 text-2xl"></i>}
+                  rightSection={!field.value ? <i className="icon-calender-1 text-2xl"></i> : null}
                 />
               </Input.Wrapper>
             )}
