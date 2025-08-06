@@ -4,6 +4,7 @@ import HomePage from "./home/home.page";
 import LoadingPage from "./loading/loading.page";
 import Login from "./login/login.page";
 import MedicationsPage from "./medication/medications.page";
+import OrderSummary from "./order-summary/order-summary.page";
 import RegistrationPage from "./registration/registration.page";
 
 export const PublicPagesRoute: RouteObject[] = [
@@ -34,5 +35,9 @@ export const PublicPagesRoute: RouteObject[] = [
   {
     path: "loading",
     element: <LoadingPage />,
+  },
+  {
+    path: "order-summary",
+    element: <OrderSummary />,
   },
 ];
