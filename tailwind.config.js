@@ -17,6 +17,7 @@ export default {
         "danger-light": "var(--dml-color-danger-light)",
         "danger-deep": "var(--dml-color-danger-deep)",
         "danger-badge": "var(--dml-color-danger-badge)",
+        "warning-bg": "var(--dml-color-warning)",
         grey: "var(--dml-color-grey)",
         "grey-medium": "var(--dml-color-grey-medium)",
         "grey-btn": "var(--dml-color-grey-btn)",
@@ -38,6 +39,7 @@ export default {
         "yellow-medium": "var(--dml-color-yellow-medium)",
         "yellow-deep": "var(--dml-color-yellow-deep)",
         "green-extra-light": "var(--dml-color-green-extra-light)",
+        "green-badge": "var(--dml-color-green-badge)",
         "green-light": "var(--dml-color-green-light)",
         "green-medium": "var(--dml-color-green-medium)",
         "green-middle": "var(--dml-color-green-middle)",
@@ -69,8 +71,29 @@ export default {
         sm: "576px",
         md: "768px",
         lg: "992px",
-        xl: "1280px",
-        "2xl": "1536px",
+        xl: "1170px",
+        "2xl": "1170px",
+      },
+      backgroundSize: {
+        "home-bg": "33%",
+      },
+      container: {
+        padding: {
+          DEFAULT: "0",
+          sm: "0",
+          lg: "0",
+          xl: "0",
+          "2xl": "0",
+        },
+      },
+      keyframes: {
+        fadeInUp: {
+          "0%": { opacity: 0, transform: "translateY(20px)" },
+          "100%": { opacity: 1, transform: "translateY(0)" },
+        },
+      },
+      animation: {
+        fadeInUp: "fadeInUp 0.4s ease-out",
       },
     },
   },

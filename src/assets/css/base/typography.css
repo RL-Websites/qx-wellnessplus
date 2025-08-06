@@ -1,8 +1,10 @@
 @layer utilities {
-  body {
+  body,
+  p {
     font-size: var(--dml-para-fs-lg);
     line-height: var(--dml-para-lh-lg);
     color: var(--dml-color-grey);
+    font-family: "Poppins", sans-serif;
   }
   /* Heading tag and class */
   h1,
@@ -54,6 +56,14 @@
     line-height: var(--dml-heading-lh-xs);
     font-weight: var(--dml-fw-normal);
     font-family: "Kenyan Coffee", sans-serif;
+  }
+
+  .heading-xxxl {
+    @apply lg:text-[147px] md:text-8xl text-6xl;
+  }
+
+  .heading-text {
+    @apply lg:text-[90px] md:text-6xl text-[40px];
   }
 
   .heading-xxs {

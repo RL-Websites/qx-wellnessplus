@@ -130,7 +130,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="auth">
+    <div className="auth h-full">
       <div className="auth-thumbnail-col">
         <div className="auth-thumbnail-col-inner">
           <Image

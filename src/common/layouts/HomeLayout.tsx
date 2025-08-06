@@ -1,6 +1,6 @@
 import { Button, Image, NavLink } from "@mantine/core";
 import { useAtomValue } from "jotai";
-import { NavLink as RdNavLink } from "react-router-dom";
+import { Link, NavLink as RdNavLink } from "react-router-dom";
 import { IUserData } from "../api/models/interfaces/User.model";
 import { userAtom } from "../states/user.atom";
 
@@ -10,9 +10,9 @@ interface homeLayoutProps {
 const HomeLayout = ({ children }: homeLayoutProps) => {
   const userData = useAtomValue<IUserData | null>(userAtom);
   return (
-    <div className="bg-[url(./public/images/home-bg.png)] bg-cover bg-no-repeat py-[60px]">
+    <div className="site-main-bg  lg:pt-16 pt-10 lg:pb-24 pb-10">
       <div className="container mx-auto">
-        <div className="header flex items-center justify-between">
+        <div className="header flex items-center justify-between pb-12">
           <div className="logo flex items-center gap-2">
             <NavLink
               to={userData?.userable_type == "admin" ? "/admin-client/dashboard" : ""}
@@ -22,8 +22,7 @@ const HomeLayout = ({ children }: homeLayoutProps) => {
                 <Image
                   src="/images/logo.svg"
                   alt="QX-Wellness Logo"
-                  w={148}
-                  h={32}
+                  className="lg:w-[225px] md:w-[200px] w-[150px]"
                 />
               }
             />
@@ -31,13 +30,17 @@ const HomeLayout = ({ children }: homeLayoutProps) => {
           <div className="flex items-center gap-3">
             <Button
               variant="outline"
-              size="sm-2"
+              size="sm-3"
+              color="primary"
+              className="font-semibold lg:text-lg md:text-base text-sm"
+              component={Link}
+              to="/login"
             >
               Login
             </Button>
           </div>
         </div>
-        <div className="h-[calc(100vh_-_100px)] pt-12">{children}</div>
+        <div className="">{children}</div>
       </div>
     </div>
   );
