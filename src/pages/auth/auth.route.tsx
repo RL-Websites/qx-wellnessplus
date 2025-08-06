@@ -7,7 +7,7 @@ import SignUpPage from "./sign-up-page";
 
 export const AuthRoute: RouteObject[] = [
   {
-    path: "login",
+    path: "login-in",
     element: <LoginPage />,
   },
   {
