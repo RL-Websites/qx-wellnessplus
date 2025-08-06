@@ -9,6 +9,7 @@ import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Client as Styletron } from "styletron-engine-monolithic";
+import Acknowledgement from "./Acknowledgement";
 import BasicInfo from "./basic-info/BasicInfo";
 
 const CompleteOrderPage = () => {
@@ -20,14 +21,15 @@ const CompleteOrderPage = () => {
   const [, scrollTo] = useWindowScroll();
   const [isRefill, setIsRefill] = useState(0);
   const [refillType, setRefillType] = useState<string>("");
-
   const [patientDetails, setPatientDetails] = useState<IPublicPartnerPrescriptionDetails>();
+  const [clientSecret, setClientSecret] = useState("");
+  const [hasPeptides, setHasPeptides] = useState(false);
+  const [hasOthers, setHasOthers] = useState(true);
   const [params] = useSearchParams();
   const prescriptionUId = params.get("prescription_u_id");
   // const is_refill = params.get("is_refill");
   const detail_uid = params.get("detail_uid");
   const navigate = useNavigate();
-  const [clientSecret, setClientSecret] = useState("");
 
   const patientDetailsQuery = useQuery({
     queryKey: ["partner-patient-booking-query"],
@@ -130,12 +132,23 @@ const CompleteOrderPage = () => {
 
   return (
     <section>
-      <h1 className="text-center text-foreground text-[90px]/none">FEW QUICK QUESTIONS</h1>
-      <BasicInfo
-        patientDetails={patientDetails}
-        onNext={(data) => handleStepSubmit(data)}
-        isSubmitting={patientBookingMutation?.isPending}
-      />
+      {currentStep == 0 && (
+        <BasicInfo
+          patientDetails={patientDetails}
+          onNext={(data) => handleStepSubmit(data)}
+          isSubmitting={patientBookingMutation?.isPending}
+        />
+      )}
+      {currentStep == 1 && (
+        <Acknowledgement
+          onNext={handleStepSubmit}
+          onBack={handleBack}
+          defaultValues={formData}
+          patientData={patientDetails}
+          hasOthers={hasOthers}
+          hasPeptides={hasPeptides}
+        />
+      )}
     </section>
   );
 };
