@@ -5,6 +5,7 @@ export default {
     extend: {
       fontFamily: {
         kneyan: ["Kenyan Coffee", "sans-serif"],
+        poppins: ["Poppins", "sans-serif"],
       },
       colors: {
         background: "var(--dml-color-background)",

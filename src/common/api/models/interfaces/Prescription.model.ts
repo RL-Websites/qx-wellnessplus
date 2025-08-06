@@ -1,10 +1,5 @@
 import { IClientCore } from "./client.model";
-import { IClinicBasicInfo } from "./Clinic.model";
-import { IDoctor } from "./Doctor.model";
 import { IPartnerMedicineListItem } from "./Medication.model";
-import { IMessage } from "./MeetingInformation";
-import { IServiceItem } from "./Service.model";
-import { IUserData } from "./User.model";
 
 export interface IIntakeFormData {
   id: number;
@@ -147,66 +142,6 @@ export interface IPatient {
 export interface IPrescriptionDetailsPartnerRef {
   account_name: string;
   id: number;
-}
-export interface IServicePrescription {
-  uid: string;
-  order_id: number | null;
-  pharmacy_order_id: number | null;
-  docu_spa_service_id: number | null;
-  clinic_id: number;
-  patient_id: number;
-  doctor_id: number;
-  service_id: number;
-  created_by: number;
-  quantity: number;
-  direction: string;
-  refill: number;
-  days_supply: number;
-  note: string;
-  status: string;
-  is_sent: boolean;
-  created_at: string;
-
-  // Relationships (can be more deeply typed if the related interfaces exist)
-  docuSpaService?: IDocuSpaService;
-  clinic?: IClinicBasicInfo;
-  patient?: {
-    first_name: string;
-    last_name: string;
-    email: string;
-    dob: string;
-    gender: string;
-    name: string;
-    cell_phone: string;
-  };
-  doctor?: IDoctor;
-  service?: IServiceItem;
-  creator?: IUserData;
-}
-
-export interface IDocuSpaService {
-  u_id: string;
-  patient_id: number;
-  clinic_id: number;
-  service_id: number;
-  service_ids: number[]; // Assuming this is an array of service IDs
-  services: string | any[]; // Depending on how services are stored (array or JSON string)
-  doctor_id: number;
-  signature: string;
-  type: string;
-  status: string;
-  note: string;
-  review_on: string | Date | null;
-  schedule_start: string | Date | null;
-  schedule_end: string | Date | null;
-  schedule_json: string | object | null; // If it's stored as JSON
-  expires_at: string | Date | null;
-  decline_note: string | null;
-  created_by: number;
-  decline_at: string | Date | null;
-  updated_by: number | null;
-  approved_note: string | null;
-  approved_at: string | Date | null;
 }
 
 export interface IPrescriptionDetails {
