@@ -4,14 +4,18 @@ import ThumbBg from "./ThumbBg";
 interface IMedicationProps {
   image: string;
   title: string;
-  const: string;
+  cost: string;
   onAddToCart: () => void;
+  onShowDetails: () => void;
 }
 
 const MedicationCard = (medicationProps: IMedicationProps) => {
   return (
     <div className="space-y-6">
-      <div className="space-y-4">
+      <div
+        className="space-y-4"
+        onClick={medicationProps?.onShowDetails}
+      >
         {medicationProps.image && (
           <ThumbBg>
             <img
@@ -24,7 +28,7 @@ const MedicationCard = (medicationProps: IMedicationProps) => {
         {medicationProps?.title && <h4 className="text-2xl font-semibold text-foreground">{medicationProps?.title}</h4>}
         <div className="flex items-center justify-between">
           <span className="text-foreground text-base font-bold">Medication Cost</span>
-          <span className="text-foreground text-base font-bold">{medicationProps?.const}</span>
+          <span className="text-foreground text-base font-bold">{medicationProps?.cost}</span>
         </div>
       </div>
       <Button
