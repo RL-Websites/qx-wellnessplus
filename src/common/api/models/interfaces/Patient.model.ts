@@ -1,5 +1,3 @@
-import { IClinicBasicInfo } from "./Clinic.model";
-import { IDoctor } from "./Doctor.model";
 import { IPrescriptionDetails } from "./Prescription.model";
 
 export interface IManageStatusDTO {
@@ -77,49 +75,6 @@ export interface IPatientInviteDto {
   first_name: string;
   cell_phone: string;
   email: string;
-}
-
-export interface ISpaPatientInProgressDetails {
-  id?: number;
-  patient_id?: number;
-  u_id?: string;
-  clinic_id?: number;
-  doctor_id?: null;
-  service_id?: number;
-  signature?: null;
-  source?: string;
-  status?: string;
-  note?: null;
-  review_date?: null;
-  history_circulatory_respiratory?: null;
-  history_nervous_system?: null;
-  history_digestive?: null;
-  history_urinary_system?: null;
-  history_other?: null;
-  history_skin?: null;
-  schedule_start?: Date;
-  schedule_end?: Date;
-  created_at?: Date;
-  updated_at?: Date;
-  decline_note?: string;
-  decline_at?: Date;
-  approved_note?: string;
-  approved_at?: Date;
-  patient?: IPatientDetails;
-  messages: IMessage[];
-  service?: {
-    id?: number;
-    name?: string;
-  };
-  multiple_services: IMultipleServicesRef[];
-  schedule_json?: {
-    date?: string;
-    end?: string;
-    start?: string;
-  };
-  clinic?: IClinicBasicInfo;
-  doctor?: IDoctor;
-  type?: string;
 }
 
 export interface IMultipleServicesRef {

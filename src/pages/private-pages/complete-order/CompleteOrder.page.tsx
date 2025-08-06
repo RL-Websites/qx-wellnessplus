@@ -1,0 +1,143 @@
+import { IServerErrorResponse } from "@/common/api/models/interfaces/ApiResponse.model";
+import { IPatientBookingPatientInfoDTO, IPublicPartnerPrescriptionDetails } from "@/common/api/models/interfaces/PartnerPatient.model";
+import { ICreatePaymentIntentDTO } from "@/common/api/models/interfaces/Payment.model";
+import orderApiRepository from "@/common/api/repositories/orderRepository";
+import dmlToast from "@/common/configs/toaster.config";
+import { useWindowScroll } from "@mantine/hooks";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { Client as Styletron } from "styletron-engine-monolithic";
+import BasicInfo from "./basic-info/BasicInfo";
+
+const CompleteOrderPage = () => {
+  const engine = new Styletron();
+  const [currentStep, setCurrentStep] = useState(0);
+  const [allowStepSwitching, setAllowStepSwitching] = useState<boolean>(false);
+  const [maxStepReached, setMaxStepReached] = useState(0);
+  const [formData, setFormData] = useState<any>({});
+  const [, scrollTo] = useWindowScroll();
+  const [isRefill, setIsRefill] = useState(0);
+  const [refillType, setRefillType] = useState<string>("");
+
+  const [patientDetails, setPatientDetails] = useState<IPublicPartnerPrescriptionDetails>();
+  const [params] = useSearchParams();
+  const prescriptionUId = params.get("prescription_u_id");
+  // const is_refill = params.get("is_refill");
+  const detail_uid = params.get("detail_uid");
+  const navigate = useNavigate();
+  const [clientSecret, setClientSecret] = useState("");
+
+  const patientDetailsQuery = useQuery({
+    queryKey: ["partner-patient-booking-query"],
+    queryFn: () => orderApiRepository.publicGetPatientDetails({ u_id: prescriptionUId || "", detail_uid: detail_uid || undefined }),
+    enabled: !!prescriptionUId,
+  });
+
+  const createPaymentIntentMutation = useMutation({ mutationFn: (payload: ICreatePaymentIntentDTO) => orderApiRepository.createPaymentIntent(payload) });
+
+  useEffect(() => {
+    if (patientDetailsQuery?.data?.data?.status_code == 200 && patientDetailsQuery?.data?.data?.data) {
+      const tempPatientDetails = patientDetailsQuery?.data?.data?.data;
+      // setIsRefill((prevRefill) => (tempPatientDetails?.is_refill ? true : false));
+      if (tempPatientDetails?.status && tempPatientDetails?.status == "invited") {
+        // do nothing
+        if (tempPatientDetails?.customer?.payment_type == "stripe" && tempPatientDetails.total_bill_amount) {
+          const payload: ICreatePaymentIntentDTO = {
+            amount: tempPatientDetails.total_bill_amount,
+            prescription_id: tempPatientDetails?.id,
+          };
+          createPaymentIntentMutation.mutate(payload, {
+            onSuccess: (res) => {
+              setClientSecret(res?.data?.data?.client_secret || "");
+            },
+            onError: (err) => {
+              const error = err as AxiosError<IServerErrorResponse>;
+              console.log(error?.message);
+            },
+          });
+        }
+      } else if (tempPatientDetails?.status && tempPatientDetails?.status == "intake_pending") {
+        navigate(`../partner-patient-intake?prescription_u_id=${prescriptionUId}`);
+      } else if (tempPatientDetails?.status && tempPatientDetails?.status == "pending") {
+        navigate(`../partner-patient-password-setup?prescription_u_id=${prescriptionUId}`);
+      } else {
+        console.log(tempPatientDetails?.status);
+      }
+      setPatientDetails(patientDetailsQuery?.data?.data?.data);
+    }
+  }, [patientDetailsQuery?.data?.data?.data]);
+
+  const nextStep = () => {
+    const tempNextStep = currentStep + 1;
+    setCurrentStep(tempNextStep);
+    setMaxStepReached(tempNextStep);
+    if (tempNextStep == 1) {
+      setAllowStepSwitching(true);
+    }
+  };
+
+  const prevStep = () => {
+    const tempPrevStep = currentStep > 0 ? currentStep - 1 : 0;
+    setCurrentStep(tempPrevStep);
+
+    scrollTo({ y: 0 });
+  };
+
+  const handleBack = () => {
+    prevStep();
+    scrollTo({ y: 0 });
+  };
+
+  const handleStepSubmit = (data) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      ...data,
+    }));
+    nextStep();
+    scrollTo({ y: 0 });
+  };
+
+  const patientBookingMutation = useMutation({ mutationFn: (payload: IPatientBookingPatientInfoDTO) => orderApiRepository.patientBooking(payload) });
+
+  const onSubmit = async (data) => {
+    const payload: IPatientBookingPatientInfoDTO = isRefill ? { ...data, is_refill: isRefill, refill_type: refillType } : data;
+
+    patientBookingMutation.mutate(payload, {
+      onSuccess: (res) => {
+        // dmlToast.success({ title: "Patient has been invited successfully." });
+        const prescription_uId = res?.data?.data?.u_id;
+        navigate(`../partner-patient-intake?prescription_u_id=${prescription_uId}`);
+        console.log(res);
+      },
+      onError: (err) => {
+        const error = err as AxiosError<IServerErrorResponse>;
+        console.log(error);
+        dmlToast.error({ title: error.message });
+      },
+    });
+    // console.log("Submitting Data:", payload);
+    // navigate(`../partner-patient-intake?prescription_u_id=${prescriptionUId}`);
+  };
+
+  // const handleNext = handleSubmit(onSubmit);
+
+  const onRefillTypeSelect = (refillType) => {
+    setRefillType((prevType) => refillType);
+    nextStep();
+  };
+
+  return (
+    <section>
+      <h1 className="text-center text-foreground text-[90px]/none">FEW QUICK QUESTIONS</h1>
+      <BasicInfo
+        patientDetails={patientDetails}
+        onNext={(data) => handleStepSubmit(data)}
+        isSubmitting={patientBookingMutation?.isPending}
+      />
+    </section>
+  );
+};
+
+export default CompleteOrderPage;

@@ -1,15 +1,8 @@
 import { AxiosInstance } from "axios";
 import $http from "../axios";
 import { IBasePaginationResponse, IBaseResponse } from "../models/interfaces/ApiResponse.model";
-import { ICommonParams, IGetAssignedPartnerParams } from "../models/interfaces/Common.model";
+import { ICommonParams } from "../models/interfaces/Common.model";
 import { IAssignMedToPartner, IMedicineListItem, IPartnerMedicineListItem } from "../models/interfaces/Medication.model";
-import {
-  IAssignedPartnerStatusChangeDTO,
-  IAssignPartnerMedication,
-  ICreatePaymentIntentDTO,
-  IPartnerInviteDto,
-  IUpdatePartnerMedicationsDTO,
-} from "../models/interfaces/Partner.model";
 import { IPatientOrderList, IPublicPartnerRef } from "../models/interfaces/PartnerPatient.model";
 import { patientRequestList } from "../models/interfaces/Prescription.model";
 
@@ -71,18 +64,6 @@ class PartnerRepository {
   assignMedicine(payload: IAssignMedToPartner) {
     return this.$http.post<IBaseResponse<null>>("client/customer/product/attach", payload);
   }
-  getAttachedPartnersToMeds(params: IGetAssignedPartnerParams) {
-    return this.$http.get<IBaseResponse<IAssignPartnerMedication[]>>("client/customer/product/attached", { params: params });
-  }
-
-  changeAttachedPartnerStatus(payload: IAssignedPartnerStatusChangeDTO) {
-    return $http.patch<IBaseResponse<any>>("client/customer/product/status-change", payload);
-  }
-
-  AddInvitePartner(payload: IPartnerInviteDto) {
-    return $http.post<IBaseResponse<any>>("customer/send-invite", payload);
-  }
-
   partnerResendLink(slug: string) {
     const payload = {
       slug,
@@ -99,16 +80,8 @@ class PartnerRepository {
     return this.$http.post<IBaseResponse<any>>("partner/patient/update", payload);
   }
 
-  updatePartnerMedications(payload: IUpdatePartnerMedicationsDTO) {
-    return this.$http.post<IBaseResponse<any>>("client/customer/product/update-customer-medications", payload);
-  }
-
   getPartnerUsers(params: ICommonParams) {
     return this.$http.get<IBasePaginationResponse<null>>("customer/users", { params: params });
-  }
-
-  createPaymentIntent(payload: ICreatePaymentIntentDTO) {
-    return this.$http.post<IBaseResponse<any>>("customer/create-payment-intent", payload);
   }
 }
 

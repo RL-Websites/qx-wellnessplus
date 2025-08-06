@@ -16,8 +16,14 @@
     --input-padding-inline-start: 16px;
     --input-padding-inline-end: 16px;
     &[readonly] {
-      color: var(--dml-color-grey);
+      color: var(--dml-color-foreground);
       border-color: transparent;
+      background: transparent;
+    }
+    &[disabled] {
+      color: var(--dml-color-foreground);
+      opacity: 1;
+      padding-left: 0px;
       background: transparent;
     }
     &-pill {
@@ -93,6 +99,7 @@
       margin-bottom: var(--dml-input-label-mb);
       align-self: end;
       color: var(--dml-color-foreground);
+      @apply font-semibold;
     }
     &-error {
       align-self: end;

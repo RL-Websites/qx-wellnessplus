@@ -1,5 +1,5 @@
+import { IAddress } from "./Address.model";
 import { IClinicList } from "./Clinic.model";
-import { Addressable } from "./Doctor.model";
 import { IClientRef } from "./Patient.model";
 
 export interface IUserData {
@@ -21,7 +21,7 @@ export interface IUserData {
   u_id?: string | undefined;
   profile_image?: any;
   address?: string;
-  addressable?: Addressable;
+  addressable?: IAddress;
   city_id?: number;
   state_id?: number;
   zip_code?: number;

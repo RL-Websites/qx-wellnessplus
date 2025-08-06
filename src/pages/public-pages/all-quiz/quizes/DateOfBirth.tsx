@@ -26,7 +26,7 @@ const DateOfBirth = () => {
   return (
     <div className="lg:pt-16 md:pt-10 pt-4">
       <h2 className="heading-text text-foreground uppercase text-center">Date of Birth</h2>
-      <div className="card-common">
+      <div className="card-common card-common-width">
         <form
           className="w-full"
           onSubmit={handleSubmit(onSubmit)}

@@ -85,17 +85,6 @@ export interface IPrescribedMedicine extends IMedicineListItem {
   refill_end_date?: string;
 }
 
-interface IMedicineUserRef {
-  id: number;
-  u_id: string;
-  userable_type: string;
-  first_name: string;
-  last_name: string;
-  name: string;
-  userable_uid: string;
-  prescriber_clinic: string | null;
-}
-
 export interface IAssignMedToPartner {
   customer_id: string;
   medication_id: string;

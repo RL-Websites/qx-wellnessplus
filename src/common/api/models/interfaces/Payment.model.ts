@@ -147,3 +147,8 @@ interface UserInterface {
   last_name: string;
   profile_image?: string;
 }
+
+export interface ICreatePaymentIntentDTO {
+  amount: string;
+  prescription_id: number;
+}

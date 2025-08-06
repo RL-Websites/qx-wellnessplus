@@ -167,6 +167,8 @@ export interface IPublicPartnerPatientRef {
   city: string;
   state: string;
   zipcode: string;
+  latitude: number;
+  longitude: number;
   driving_license_front: string;
   driving_license_back: string;
   last_intake_submit_date: string;
@@ -227,9 +229,9 @@ export interface IPatientBookingPatientInfoDTO {
   is_refill?: boolean;
   refill_type?: string;
   patient: IPatientInfoDTO;
-  shipping: IShippingBillingRef;
-  billing: IShippingBillingRef;
-  payment: IPatientBookingPaymentRef;
+  shipping?: IShippingBillingRef;
+  billing?: IShippingBillingRef;
+  payment?: IPatientBookingPaymentRef;
 }
 
 export interface IPatientBookingPaymentRef {
@@ -257,6 +259,8 @@ export interface IPatientInfoDTO {
   state: string;
   city: string;
   zip_code: string;
+  latitude: number;
+  longitude: number;
   // weight: string;
   // height: string;
   driving_lic_front?: string;
