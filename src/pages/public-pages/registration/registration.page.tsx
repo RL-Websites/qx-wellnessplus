@@ -67,7 +67,7 @@ const RegistrationPage = () => {
         className="w-full "
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div className="card-auth flex flex-col lg:gap-7 md:gap-5 gap-3">
+        <div className="card-common flex flex-col lg:gap-7 md:gap-5 gap-3">
           <p className="font-semibold lg:text-3xl md:text-xl text-base text-foreground ">Registration Details</p>
           <Input.Wrapper
             label="First Name"

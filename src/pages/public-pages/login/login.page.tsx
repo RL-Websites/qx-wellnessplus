@@ -55,7 +55,7 @@ const Login = () => {
         className="w-full "
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div className="card-auth flex flex-col lg:gap-7 md:gap-5 gap-3">
+        <div className="card-common flex flex-col lg:gap-7 md:gap-5 gap-3">
           <p className="font-semibold lg:text-3xl md:text-xl text-base text-foreground ">Login Details</p>
 
           <Input.Wrapper
@@ -92,7 +92,7 @@ const Login = () => {
             type="submit"
             className="bg-primary text-white rounded-xl lg:w-[206px]"
           >
-            Register Now
+            Login
           </Button>
         </div>
       </form>
