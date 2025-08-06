@@ -35,7 +35,7 @@ const HomePage = () => {
                 c="white"
                 className="md:w-[370px] w-[270px] sm:text-lg text-base capitalize lg:mt-8 md:mt-4 mt-0 rounded-xl md:mx-0 mx-auto"
               >
-                Star Your Journey Now
+                Start Your Journey Now
               </Button>
               <p className="sm:text-lg text-base text-foreground font-medium">
                 Are you an existing customer?{" "}
