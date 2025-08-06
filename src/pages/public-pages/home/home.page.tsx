@@ -7,8 +7,8 @@ import { Link, NavLink as RdNavLink } from "react-router-dom";
 const HomePage = () => {
   const userData = useAtomValue<IUserData | null>(userAtom);
   return (
-    <div className="bg-[url(images/home-bg.png)] site__main bg-cover bg-no-repeat  md:h-screen ">
-      <div className="md:bg-[url(images/home-banner.png)] home__hero-bg bg-none bg-right bg-home-bg bg-no-repeat md:h-screen">
+    <div className="site-main-bg">
+      <div className="site-home-hero bg-none bg-right bg-home-bg bg-no-repeat md:h-screen">
         <div className="container mx-auto">
           <div className="header grid md:grid-cols-2  items-center justify-between ">
             <div className="flex flex-col gap-7 lg:py-20 py-10">
@@ -34,6 +34,8 @@ const HomePage = () => {
                 bg="primary"
                 c="white"
                 className="md:w-[370px] w-[270px] sm:text-lg text-base capitalize lg:mt-8 md:mt-4 mt-0 rounded-xl md:mx-0 mx-auto"
+                component={Link}
+                to="/category"
               >
                 Start Your Journey Now
               </Button>

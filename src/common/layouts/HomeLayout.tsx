@@ -10,7 +10,7 @@ interface homeLayoutProps {
 const HomeLayout = ({ children }: homeLayoutProps) => {
   const userData = useAtomValue<IUserData | null>(userAtom);
   return (
-    <div className="bg-[url(images/home-bg.png)]  bg-repeat min-h-screen bg-cover lg:pt-16 pt-10 lg:pb-24 pb-10">
+    <div className="site-main-bg  lg:pt-16 pt-10 lg:pb-24 pb-10">
       <div className="container mx-auto">
         <div className="header flex items-center justify-between pb-12">
           <div className="logo flex items-center gap-2">

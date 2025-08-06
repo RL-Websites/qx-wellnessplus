@@ -92,7 +92,7 @@ const Login = () => {
             type="submit"
             className="bg-primary text-white rounded-xl lg:w-[206px]"
           >
-            Register Now
+            Login
           </Button>
         </div>
       </form>

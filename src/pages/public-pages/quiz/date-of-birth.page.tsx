@@ -5,7 +5,7 @@ import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 
 const dobSchema = yup.object({
-  dob: yup.date().typeError("Please provide a valid date in MM/DD/YYYY format.").required("Please provide your date of birth"),
+  dob: yup.date().required("Please provide your date of birth"),
 });
 
 type dobSchemaType = yup.InferType<typeof dobSchema>;
@@ -43,8 +43,9 @@ const DateOfBirth = () => {
               >
                 <DateInput
                   {...field}
-                  placeholder="MM/DD/YYYY"
                   clearable
+                  dropdownType="modal"
+                  rightSection={<i className="icon-calender-1 text-2xl"></i>}
                 />
               </Input.Wrapper>
             )}
