@@ -1,13 +1,38 @@
-import MedicationCard from "@/common/components/MedicationCard";
 import { Button } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
+
+import MedicationCard from "@/common/components/MedicationCard";
+import ConfirmProductOrderModal from "./components/ConfirmProductOrderModal";
+import ProductDetailsModal from "./components/ProductDetailsModal";
+
 import { medications } from "../constant/category-constant";
 
 const MedicationsPage = () => {
   const [cartItems, setCartItems] = useState<number>(0);
+  const [selectedMedication, setSelectedMedication] = useState<any>(null);
+  const [pendingAddToCart, setPendingAddToCart] = useState<any>(null); // for modal trigger
 
-  const handleAddToCart = () => {
+  const [confirmMeds, handleConfirmMeds] = useDisclosure(false);
+  const [showDetails, setShowDetailsHandel] = useDisclosure(false);
+
+  const handleAddToCart = (item: any) => {
+    setPendingAddToCart(item);
+    handleConfirmMeds.open();
+  };
+
+  const handleAgree = () => {
     setCartItems((prev) => prev + 1);
+    handleConfirmMeds.close();
+  };
+
+  const handleDisagree = () => {
+    handleConfirmMeds.close();
+  };
+
+  const handelDetailsModal = (item: any) => {
+    setSelectedMedication(item);
+    setShowDetailsHandel.open();
   };
 
   return (
@@ -27,7 +52,8 @@ const MedicationsPage = () => {
             image={item?.image}
             title={item?.title}
             cost={item?.cost}
-            onAddToCart={handleAddToCart}
+            onAddToCart={() => handleAddToCart(item)}
+            onShowDetails={() => handelDetailsModal(item)}
           />
         ))}
       </div>
@@ -54,6 +80,21 @@ const MedicationsPage = () => {
           </div>
         </div>
       )}
+
+      <ProductDetailsModal
+        openModal={showDetails}
+        onModalClose={setShowDetailsHandel.close}
+        medicationDetails={selectedMedication}
+      />
+
+      <ConfirmProductOrderModal
+        openModal={confirmMeds}
+        onModalClose={handleConfirmMeds.close}
+        onModalPressYes={handleDisagree}
+        onModalPressNo={handleAgree}
+        okBtnLoading={false}
+        medicationInfo={pendingAddToCart ? [pendingAddToCart] : []}
+      />
     </div>
   );
 };
