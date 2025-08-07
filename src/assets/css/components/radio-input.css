@@ -15,4 +15,20 @@
       color: var(--dml-color-grey);
     }
   }
+  &-radiobtn {
+    @apply border border-[#8B8B8B] p-7 rounded-2xl relative cursor-pointer;
+    transition: 0.3s;
+
+    &[aria-checked="true"]::after {
+      content: "\e90a";
+      font-family: "icomoon";
+      font-size: 40px;
+      color: var(--dml-color-primary);
+      position: absolute;
+      top: 50%;
+      right: 20px;
+      transform: translateY(-50%);
+      background-color: white;
+    }
+  }
 }
