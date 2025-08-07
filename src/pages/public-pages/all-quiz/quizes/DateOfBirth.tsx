@@ -10,7 +10,7 @@ const dobSchema = yup.object({
 
 type dobSchemaType = yup.InferType<typeof dobSchema>;
 
-const DateOfBirth = () => {
+export default function DateOfBirth() {
   const {
     control,
     handleSubmit,
@@ -63,6 +63,4 @@ const DateOfBirth = () => {
       </div>
     </div>
   );
-};
-
-export default DateOfBirth;
+}
