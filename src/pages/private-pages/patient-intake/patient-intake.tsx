@@ -3,6 +3,8 @@ import { useWindowScroll } from "@mantine/hooks";
 import { useState } from "react";
 import FullBodyPhoto from "./intake-steps/FullbodyPhoto";
 import StepOne from "./intake-steps/step-one";
+import StepThree from "./intake-steps/step-three";
+import StepTwo from "./intake-steps/step-two";
 
 const PatientIntake = () => {
   const [activeStep, setActiveStep] = useState(1);
@@ -49,6 +51,20 @@ const PatientIntake = () => {
       )}
       {activeStep === 2 && (
         <StepOne
+          onNext={handleNext}
+          onBack={handleBack}
+          defaultValues={formData}
+        />
+      )}
+      {activeStep === 3 && (
+        <StepTwo
+          onNext={handleNext}
+          onBack={handleBack}
+          defaultValues={formData}
+        />
+      )}
+      {activeStep === 4 && (
+        <StepThree
           onNext={handleNext}
           onBack={handleBack}
           defaultValues={formData}

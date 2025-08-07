@@ -372,7 +372,7 @@ export const theme = createTheme({
     }),
     Checkbox: Checkbox.extend({
       defaultProps: {
-        color: "foreground",
+        color: "primary",
       },
     }),
     PinInput: PinInput.extend({
