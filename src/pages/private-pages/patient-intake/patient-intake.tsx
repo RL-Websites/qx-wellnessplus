@@ -29,13 +29,16 @@ const PatientIntake = () => {
 
   return (
     <>
-      {activeStep > 1 && (
+      {activeStep > 1 ? (
         <div className="max-w-[520px] mx-auto mb-6">
+          <h2 className="heading-text text-foreground uppercase text-center pb-12">Intake Form</h2>
           <Progress value={progress} />
           <div className="text-center text-base text-foreground font-bold mt-3">
             {activeStep - 1} / {totalStep - 1}
           </div>
         </div>
+      ) : (
+        <h2 className="heading-text text-foreground uppercase text-center">help us better understand</h2>
       )}
 
       {activeStep === 1 && (

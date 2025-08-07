@@ -73,7 +73,6 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
 
   return (
     <>
-      <h2 className="heading-text text-foreground uppercase text-center">help us better understand</h2>
       <form
         id="stepFullBodyForm"
         onSubmit={handleSubmit(onNext)}
