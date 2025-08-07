@@ -11,6 +11,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { Client as Styletron } from "styletron-engine-monolithic";
 import Acknowledgement from "./Acknowledgement";
 import BasicInfo from "./basic-info/BasicInfo";
+import PaymentInfo from "./payment-info/PaymentInfo";
 
 const CompleteOrderPage = () => {
   const engine = new Styletron();
@@ -22,7 +23,7 @@ const CompleteOrderPage = () => {
   const [isRefill, setIsRefill] = useState(0);
   const [refillType, setRefillType] = useState<string>("");
   const [patientDetails, setPatientDetails] = useState<IPublicPartnerPrescriptionDetails>();
-  const [clientSecret, setClientSecret] = useState("");
+  const [clientSecret, setClientSecret] = useState<string>("sk_test_51QoMLOLRJzja7joQkbW8LMzQK7lakqbS1Gg88W2O2l0amhwiPlTZsXgxqtRCRgHhOIG4E3QO8OOtFvOl6pfkJwHS00949JtVuW");
   const [hasPeptides, setHasPeptides] = useState(false);
   const [hasOthers, setHasOthers] = useState(true);
   const [params] = useSearchParams();
@@ -148,6 +149,17 @@ const CompleteOrderPage = () => {
           hasOthers={hasOthers}
           hasPeptides={hasPeptides}
         />
+      )}
+      {currentStep == 2 && clientSecret && (
+        // <StripeWrapper clientSecret={clientSecret}>
+        <PaymentInfo
+          handleBack={handleBack}
+          handleSubmit={(data) => onSubmit(data)}
+          isSubmitting={patientBookingMutation.isPending}
+          formData={formData}
+          patientDetails={patientDetails}
+        />
+        // </StripeWrapper>
       )}
     </section>
   );
