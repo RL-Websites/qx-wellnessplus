@@ -71,7 +71,7 @@ export default function Gender() {
           />
           {errors.gender && <Text className="text-red-500 text-sm mt-5 text-center">{errors.gender.message}</Text>}
 
-          <div className="mt-5 text-center">
+          <div className="mt-10 text-center">
             <Button
               type="submit"
               size="md"
