@@ -1,58 +1,80 @@
 "use client";
 
+import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Radio, Stack, Text } from "@mantine/core";
-import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import * as yup from "yup";
 
-const data = [{ name: "Male" }, { name: "Female" }];
+const genderOptions = ["Male", "Female"];
 
-const Gender = () => {
-  const [value, setValue] = useState("");
+const genderSchema = yup.object({
+  gender: yup.string().required("Please select your gender"),
+});
+
+type FormValues = yup.InferType<typeof genderSchema>;
+
+export default function Gender() {
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<FormValues>({
+    resolver: yupResolver(genderSchema),
+    defaultValues: {
+      gender: "",
+    },
+  });
+
+  const onSubmit = (data: FormValues) => {
+    console.log("Form data:", data);
+  };
 
   return (
-    <div className="lg:pt-16 md:pt-10 pt-4 px-4">
+    <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <h2 className="heading-text text-foreground uppercase text-center">Gender</h2>
-      <h4 className="font-poppins font-semibold text-foreground text-center text-3xl mt-12">May I ask your preferred gender identity?</h4>
-      <div className="card-common-width mx-auto">
-        <form className="w-full mt-6">
-          <Radio.Group
-            value={value}
-            onChange={setValue}
-          >
-            <Stack
-              gap="sm"
-              justify="center"
-              align="center"
-              className="flex-row gap-4"
-            >
-              {data.map((item) => {
-                const isSelected = value === item.name;
+      <h4 className="mt-12 text-center text-3xl font-poppins font-semibold text-foreground">May I ask your preferred gender identity?</h4>
 
-                return (
-                  <Radio.Card
-                    key={item.name}
-                    value={item.name}
-                    radius="md"
-                    className="dml-radiobtn"
-                  >
-                    <div className="flex justify-center items-center gap-2">
+      <div className="card-common-width mx-auto mt-6">
+        <form
+          className="w-full"
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <Controller
+            name="gender"
+            control={control}
+            render={({ field }) => (
+              <Radio.Group {...field}>
+                <Stack
+                  gap="sm"
+                  justify="center"
+                  align="center"
+                  className="flex-row gap-4"
+                >
+                  {genderOptions.map((gender) => (
+                    <Radio.Card
+                      key={gender}
+                      value={gender}
+                      radius="md"
+                      className={`dml-radiobtn ${field.value === gender ? "bg-white" : ""}`}
+                    >
                       <Text
-                        className="text-foreground"
                         fw={500}
+                        className="text-foreground text-center"
                       >
-                        {item.name}
+                        {gender}
                       </Text>
-                      {/* {isSelected && <IconCheck size={16} />} */}
-                    </div>
-                  </Radio.Card>
-                );
-              })}
-            </Stack>
-          </Radio.Group>
+                    </Radio.Card>
+                  ))}
+                </Stack>
+              </Radio.Group>
+            )}
+          />
+          {errors.gender && <Text className="text-red-500 text-sm mt-5 text-center">{errors.gender.message}</Text>}
 
-          <div className="text-center mt-10">
+          <div className="mt-10 text-center">
             <Button
-              size="md"
               type="submit"
+              size="md"
               className="bg-primary text-white rounded-xl lg:w-[206px]"
             >
               Next
@@ -62,6 +84,4 @@ const Gender = () => {
       </div>
     </div>
   );
-};
-
-export default Gender;
+}
