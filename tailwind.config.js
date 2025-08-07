@@ -13,6 +13,7 @@ export default {
         "foreground/80": "rgba(12,12,12,0.8)",
         primary: "var(--dml-color-primary)",
         "primary-light": "var(--dml-color-primary-light)",
+        "primary-secondary": "var(--dml-color-primary-secondary)",
         secondary: "var(--dml-color-secondary)",
         danger: "var(--dml-color-danger)",
         "danger-light": "var(--dml-color-danger-light)",

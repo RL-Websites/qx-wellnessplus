@@ -265,7 +265,7 @@ export const theme = createTheme({
         variant: "filled",
         size: "md",
         radius: "md",
-        color: "secondary",
+        color: "primary",
         classNames: {
           root: "font-medium",
         },
