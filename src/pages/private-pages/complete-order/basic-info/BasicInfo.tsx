@@ -34,8 +34,6 @@ const BasicInfo = ({ patientDetails, onNext, isSubmitting }: BasicInfoPropTypes)
   const [backFile, setBackFile] = useState<string>();
   const [frontBase64, setFrontBase64] = useState<string | null>(null);
   const [backBase64, setBackBase64] = useState<string | null>(null);
-  // const [weight, setWeight] = useState("");
-  // const [height, setHeight] = useState("");
   const [params] = useSearchParams();
   const prescriptionUId = params.get("prescription_u_id");
   const navigate = useNavigate();
@@ -109,10 +107,6 @@ const BasicInfo = ({ patientDetails, onNext, isSubmitting }: BasicInfoPropTypes)
       setValue("dob", [formatDate(tempPatientDetails?.patient?.dob)]);
       setGender(tempPatientDetails?.patient?.gender);
       setValue("gender", tempPatientDetails?.patient?.gender);
-      // setWeight(tempPatientDetails?.patient?.weight);
-      // setValue("weight", tempPatientDetails?.patient?.weight);
-      // setHeight(tempPatientDetails?.patient?.height);
-      // setValue("height", tempPatientDetails?.patient?.height);
       setAddress(tempPatientDetails?.patient?.address1);
       setValue("address", tempPatientDetails?.patient?.address1);
       setValue("state", tempPatientDetails?.patient?.state);
