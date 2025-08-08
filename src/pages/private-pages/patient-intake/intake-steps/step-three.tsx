@@ -5,8 +5,8 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 export const step3Schema = yup.object({
-  history: yup.array().of(yup.string()).min(1, "Please select at least one option.").required(),
-  discribe: yup.string().when("history", {
+  history1: yup.array().of(yup.string()).min(1, "Please select at least one option.").required(),
+  discribe: yup.string().when("history1", {
     is: (val: string[]) => val?.includes("Other"),
     then: (schema) => schema.required("Please describe your condition."),
     otherwise: (schema) => schema.notRequired(),
@@ -30,20 +30,20 @@ const StepThree = ({ onNext, onBack, defaultValues }: IStepThreeProps) => {
     formState: { errors },
   } = useForm<Step3SchemaType>({
     defaultValues: {
-      history: defaultValues?.history || [],
+      history1: defaultValues?.history1 || [],
       discribe: defaultValues?.discribe || "",
     },
     resolver: yupResolver(step3Schema),
   });
 
-  const selectedValues = watch("history");
+  const selectedValues = watch("history1");
   const isOtherSelected = selectedValues.includes("Other");
 
   const options = ["Heart disease or stroke", "Liver or kidney disease", "Cancer", "Thyroid disorders", "Other"];
 
   const toggleValue = (value: string) => {
     const updated = selectedValues.includes(value) ? selectedValues.filter((v) => v !== value) : [...selectedValues, value];
-    setValue("history", updated, { shouldValidate: true });
+    setValue("history1", updated, { shouldValidate: true });
   };
 
   return (
@@ -53,7 +53,7 @@ const StepThree = ({ onNext, onBack, defaultValues }: IStepThreeProps) => {
       className="max-w-xl mx-auto space-y-6"
     >
       <div>
-        <h2 className="text-center text-2xl font-semibold text-foreground">Do you have any history of:</h2>
+        <h2 className="text-center text-2xl font-semibold text-foreground font-poppins">Do you have any history of:</h2>
 
         <Grid
           gutter="md"
@@ -69,7 +69,7 @@ const StepThree = ({ onNext, onBack, defaultValues }: IStepThreeProps) => {
                 <div
                   onClick={() => toggleValue(option)}
                   className={`cursor-pointer border rounded-2xl px-6 py-4 flex justify-between items-center transition-all ${
-                    isChecked ? "border-violet-600 bg-white text-black shadow-sm" : "border-gray-300 bg-white text-black"
+                    isChecked ? "border-primary bg-white text-black shadow-sm" : "border-gray-300 bg-transparent text-black"
                   }`}
                 >
                   <span className="text-base font-medium font-poppins">{option}</span>
@@ -79,7 +79,7 @@ const StepThree = ({ onNext, onBack, defaultValues }: IStepThreeProps) => {
                     size="md"
                     radius="md"
                     classNames={{
-                      input: isChecked ? "bg-violet-600 border-violet-600 text-white" : undefined,
+                      input: isChecked ? "bg-primary border-primary text-white" : "bg-transparent",
                     }}
                   />
                 </div>
@@ -88,7 +88,7 @@ const StepThree = ({ onNext, onBack, defaultValues }: IStepThreeProps) => {
           })}
         </Grid>
 
-        {errors.history && <div className="text-red-500 text-sm mt-2 text-center">{errors.history.message}</div>}
+        {errors.history1 && <div className="text-red-500 text-sm mt-2 text-center">{errors.history1.message}</div>}
 
         {isOtherSelected && (
           <div className="mt-4">

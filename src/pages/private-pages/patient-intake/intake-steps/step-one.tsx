@@ -66,7 +66,7 @@ const StepOne = ({ onNext, onBack, defaultValues }: IStepOneProps) => {
                   labelWrapper: "w-full",
                   label: `
                     block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointer
-                    ${doesDiet === option ? "border-violet-600 bg-white text-black" : "border-gray-300 bg-white text-black"}
+                    ${doesDiet === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
                   `,
                 }}
                 label={

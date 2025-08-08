@@ -5,6 +5,7 @@ import FullBodyPhoto from "./intake-steps/FullbodyPhoto";
 import StepOne from "./intake-steps/step-one";
 import StepThree from "./intake-steps/step-three";
 import StepTwo from "./intake-steps/step-two";
+import ThanksStep from "./intake-steps/thanks-step";
 
 const PatientIntake = () => {
   const [activeStep, setActiveStep] = useState(1);
@@ -31,7 +32,7 @@ const PatientIntake = () => {
 
   return (
     <>
-      {activeStep > 1 ? (
+      {activeStep !== 1 && activeStep !== 5 ? (
         <div className="max-w-[520px] mx-auto mb-6">
           <h2 className="heading-text text-foreground uppercase text-center pb-12">Intake Form</h2>
           <Progress value={progress} />
@@ -39,8 +40,10 @@ const PatientIntake = () => {
             {activeStep - 1} / {totalStep - 1}
           </div>
         </div>
-      ) : (
+      ) : activeStep === 1 ? (
         <h2 className="heading-text text-foreground uppercase text-center">help us better understand</h2>
+      ) : (
+        ""
       )}
 
       {activeStep === 1 && (
@@ -70,6 +73,7 @@ const PatientIntake = () => {
           defaultValues={formData}
         />
       )}
+      {activeStep === 5 && <ThanksStep />}
 
       {/* Continue other steps like this */}
       {/* {activeStep === 2 && <StepOne ... />} */}
