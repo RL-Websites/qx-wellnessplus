@@ -27,7 +27,14 @@ const HomeLayout = ({ children }: homeLayoutProps) => {
               }
             />
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center lg:gap-8 gap-5">
+            <Link
+              to="/order-summary"
+              className="relative "
+            >
+              <i className="icon-orders text-4xl text-foreground leading-10"></i>
+              <span className="bg-primary text-white w-7 h-7 inline-block text-center rounded-full absolute -top-2.5 -right-4">2</span>
+            </Link>
             <Button
               variant="outline"
               size="sm-3"

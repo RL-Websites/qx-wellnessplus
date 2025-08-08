@@ -3,7 +3,7 @@
   p {
     font-size: var(--dml-para-fs-lg);
     line-height: var(--dml-para-lh-lg);
-    color: var(--dml-color-grey);
+    color: var(--dml-color-forground);
     font-family: "Poppins", sans-serif;
   }
   /* Heading tag and class */

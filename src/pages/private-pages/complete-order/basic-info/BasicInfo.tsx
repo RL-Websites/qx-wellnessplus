@@ -34,8 +34,6 @@ const BasicInfo = ({ patientDetails, onNext, isSubmitting }: BasicInfoPropTypes)
   const [backFile, setBackFile] = useState<string>();
   const [frontBase64, setFrontBase64] = useState<string | null>(null);
   const [backBase64, setBackBase64] = useState<string | null>(null);
-  // const [weight, setWeight] = useState("");
-  // const [height, setHeight] = useState("");
   const [params] = useSearchParams();
   const prescriptionUId = params.get("prescription_u_id");
   const navigate = useNavigate();
@@ -109,10 +107,6 @@ const BasicInfo = ({ patientDetails, onNext, isSubmitting }: BasicInfoPropTypes)
       setValue("dob", [formatDate(tempPatientDetails?.patient?.dob)]);
       setGender(tempPatientDetails?.patient?.gender);
       setValue("gender", tempPatientDetails?.patient?.gender);
-      // setWeight(tempPatientDetails?.patient?.weight);
-      // setValue("weight", tempPatientDetails?.patient?.weight);
-      // setHeight(tempPatientDetails?.patient?.height);
-      // setValue("height", tempPatientDetails?.patient?.height);
       setAddress(tempPatientDetails?.patient?.address1);
       setValue("address", tempPatientDetails?.patient?.address1);
       setValue("state", tempPatientDetails?.patient?.state);
@@ -160,7 +154,7 @@ const BasicInfo = ({ patientDetails, onNext, isSubmitting }: BasicInfoPropTypes)
       <h1 className="text-center text-foreground text-[90px]/none">FEW QUICK QUESTIONS</h1>
       <div className="card-common">
         <div className="card-title">
-          <h3 className="font-poppins font-semibold text-3xl">Basic Information</h3>
+          <h3 className="font-poppins font-semibold lg:text-3xl text-2xl">Basic Information</h3>
         </div>
         <form
           className="grid sm:grid-cols-2 gap-y-4 gap-x-6 pt-5"
@@ -405,8 +399,8 @@ const BasicInfo = ({ patientDetails, onNext, isSubmitting }: BasicInfoPropTypes)
                   mih={220}
                   className="flex-col gap-1 text-center pointer-events-none"
                 >
-                  <i className="icon-document-upload text-[52px]" />
-                  <Text className="font-semibold">Drag & drop or click to upload</Text>
+                  <i className="icon-document-upload text-[52px] text-grey" />
+                  <Text className="font-semibold text-grey">Drag & drop or click to upload</Text>
                   <div className="d-inline-flex leading-none text-sm">or</div>
                   <Anchor className="underline">Browse Files</Anchor>
                 </Group>
@@ -454,8 +448,8 @@ const BasicInfo = ({ patientDetails, onNext, isSubmitting }: BasicInfoPropTypes)
                   mih={220}
                   className="flex-col gap-1 text-center pointer-events-none"
                 >
-                  <i className="icon-document-upload text-[52px]" />
-                  <Text className="font-semibold">Drag & drop or click to upload</Text>
+                  <i className="icon-document-upload text-[52px] text-grey" />
+                  <Text className="font-semibold text-grey">Drag & drop or click to upload</Text>
                   <div className="d-inline-flex leading-none text-sm">or</div>
                   <Anchor className="underline">Browse Files</Anchor>
                 </Group>

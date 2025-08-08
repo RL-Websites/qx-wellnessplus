@@ -42,7 +42,7 @@ export const PublicPagesRoute: RouteObject[] = [
     element: <OrderSummary />,
   },
   {
-    path: "quiz",
+    path: "category/quiz",
     element: <Quiz />,
   },
 ];
