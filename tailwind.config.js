@@ -81,11 +81,11 @@ export default {
       },
       container: {
         padding: {
-          DEFAULT: "0",
-          sm: "0",
-          lg: "0",
-          xl: "0",
-          "2xl": "0",
+          DEFAULT: "16px",
+          sm: "16px",
+          lg: "16px",
+          xl: "16px",
+          "2xl": "16px",
         },
       },
       keyframes: {

@@ -44,7 +44,7 @@ const StepTwo = ({ onNext, onBack, defaultValues }: IStepTwoProps) => {
       className="max-w-xl mx-auto space-y-6"
     >
       <div>
-        <h2 className="text-center text-2xl font-semibold text-foreground">Do you have any history of:</h2>
+        <h2 className="text-center text-2xl font-semibold text-foreground font-poppins">Do you have any history of:</h2>
 
         <Grid
           gutter="md"
@@ -60,7 +60,7 @@ const StepTwo = ({ onNext, onBack, defaultValues }: IStepTwoProps) => {
                 <div
                   onClick={() => toggleValue(option)}
                   className={`cursor-pointer border rounded-2xl px-6 py-4 flex justify-between items-center transition-all ${
-                    isChecked ? "border-violet-600 bg-white text-black shadow-sm" : "border-gray-300 bg-white text-black"
+                    isChecked ? "border-primary bg-white text-black shadow-sm" : "border-gray-300 bg-transparent text-black"
                   }`}
                 >
                   <span className="text-base font-medium font-poppins">{option}</span>
@@ -70,7 +70,7 @@ const StepTwo = ({ onNext, onBack, defaultValues }: IStepTwoProps) => {
                     size="md"
                     radius="md"
                     classNames={{
-                      input: isChecked ? "bg-violet-600 border-violet-600 text-white" : undefined,
+                      input: isChecked ? "bg-primary border-primary text-white" : "bg-transparent",
                     }}
                   />
                 </div>
@@ -79,7 +79,7 @@ const StepTwo = ({ onNext, onBack, defaultValues }: IStepTwoProps) => {
           })}
         </Grid>
 
-        {errors.history && <div className="text-red-500 text-sm mt-2 text-center">{errors.history.message}</div>}
+        {errors.history && <div className="text-danger text-sm mt-2 text-center">{errors.history.message}</div>}
       </div>
 
       <div className="flex justify-center gap-6 pt-4">
