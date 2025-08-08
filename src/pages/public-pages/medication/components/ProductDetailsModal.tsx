@@ -36,12 +36,12 @@ function ProductDetailsModal({ openModal, onModalClose, medicationDetails }: IPr
             ></i>
           </div>
           <div className="pt-20 max-w-[500px]">
-            <h2 className="md:text-5xl text-3xl font-bold mb-4 leading-snug text-foreground">{medicationDetails.title}</h2>
-            {medicationDetails.cost && <p className="mb-6 text-gray-600 font-semibold">Cost: {medicationDetails.cost}</p>}
+            <h2 className="md:text-5xl text-3xl !leading-snug font-poppins  font-bold mb-4  text-foreground">{medicationDetails.title}</h2>
+            {medicationDetails.cost && <p className="my-6 text-2xl text-gray-600 font-semibold">Cost: {medicationDetails.cost}</p>}
 
             <p className="md:text-[32px] text-xl font-medium text-foreground pb-4">About the Product:</p>
             <List
-              spacing="sm"
+              spacing="md"
               size="sm"
               icon={
                 <ThemeIcon

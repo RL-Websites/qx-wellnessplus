@@ -34,7 +34,7 @@ function ConfirmProductOrderModal(modalProps: IConfirmationModalProps) {
         </Modal.Header>
 
         <Modal.Body className="px-6 pb-6 pt-2">
-          <h2 className="text-foreground text-2xl font-semibold mb-4">Select Quantity</h2>
+          <h2 className="text-foreground text-2xl font-poppins font-semibold mb-4">Select Quantity</h2>
 
           <Radio.Group
             value={selectedQty.toString()}

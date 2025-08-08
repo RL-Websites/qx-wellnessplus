@@ -153,7 +153,7 @@ const BasicInfo = ({ patientDetails, onNext, isSubmitting }: BasicInfoPropTypes)
     <>
       <div className="card-common">
         <div className="card-title">
-          <h3 className="font-poppins font-semibold text-3xl">Basic Information</h3>
+          <h3 className="font-poppins font-semibold lg:text-3xl text-2xl">Basic Information</h3>
         </div>
         <form
           className="grid sm:grid-cols-2 gap-y-4 gap-x-6 pt-5"
@@ -398,8 +398,8 @@ const BasicInfo = ({ patientDetails, onNext, isSubmitting }: BasicInfoPropTypes)
                   mih={220}
                   className="flex-col gap-1 text-center pointer-events-none"
                 >
-                  <i className="icon-document-upload text-[52px]" />
-                  <Text className="font-semibold">Drag & drop or click to upload</Text>
+                  <i className="icon-document-upload text-[52px] text-grey" />
+                  <Text className="font-semibold text-grey">Drag & drop or click to upload</Text>
                   <div className="d-inline-flex leading-none text-sm">or</div>
                   <Anchor className="underline">Browse Files</Anchor>
                 </Group>
@@ -447,8 +447,8 @@ const BasicInfo = ({ patientDetails, onNext, isSubmitting }: BasicInfoPropTypes)
                   mih={220}
                   className="flex-col gap-1 text-center pointer-events-none"
                 >
-                  <i className="icon-document-upload text-[52px]" />
-                  <Text className="font-semibold">Drag & drop or click to upload</Text>
+                  <i className="icon-document-upload text-[52px] text-grey" />
+                  <Text className="font-semibold text-grey">Drag & drop or click to upload</Text>
                   <div className="d-inline-flex leading-none text-sm">or</div>
                   <Anchor className="underline">Browse Files</Anchor>
                 </Group>

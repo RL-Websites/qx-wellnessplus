@@ -40,7 +40,7 @@ const OrderSummary = () => {
           </div>
         </div>
         <div className="card bg-opacity-60">
-          <h6 className="card-title with-border !border-foreground">Cart Total</h6>
+          <h6 className="card-title with-border text-foreground font-poppins font-semibold md:text-xl text-lg   !border-foreground">Cart Total</h6>
           <div className="h-[calc(100%_-_80px)] overflow-y-auto py-2.5 space-y-6">
             <div className="flex flex-wrap items-center justify-between">
               <span className="text-foreground text-lg inline-block max-w-[226px]">Insulin Syringes - 29G 1CC 1/2" (10 pack) x 2</span>
@@ -51,9 +51,9 @@ const OrderSummary = () => {
               <span className="text-foreground text-lg">$ 300.00</span>
             </div>
           </div>
-          <div className="flex items-center justify-between border-t border-t-foreground">
-            <span className="text-foreground text-lg font-semibold">Total</span>
-            <span className="text-foreground text-lg font-semibold">$ $ 828.00</span>
+          <div className="flex items-center justify-between border-t border-t-foreground pt-2">
+            <span className="text-foreground font-poppins font-semibold md:text-xl text-lg   !border-foreground">Total</span>
+            <span className="text-foreground font-poppins font-semibold md:text-xl text-lg   !border-foreground"> $ 828.00</span>
           </div>
         </div>
       </div>
