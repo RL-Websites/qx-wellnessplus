@@ -8,10 +8,10 @@ const HomePage = () => {
   const userData = useAtomValue<IUserData | null>(userAtom);
   return (
     <div className="site-main-bg">
-      <div className="site-home-hero bg-none bg-right bg-home-bg bg-no-repeat md:h-screen">
+      <div className="site-home-hero ">
         <div className="container mx-auto">
           <div className="header grid md:grid-cols-2  items-center justify-between ">
-            <div className="flex flex-col gap-7 lg:py-20 py-10">
+            <div className="flex flex-col gap-7 lg:py-16 py-10">
               <div className="logo flex items-center gap-2">
                 <NavLink
                   to={userData?.userable_type == "admin" ? "/admin-client/dashboard" : ""}

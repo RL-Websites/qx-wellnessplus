@@ -3,7 +3,7 @@
     @apply bg-[url(/images/home-bg.png)] min-h-screen bg-cover bg-repeat-y;
   }
   &-home-hero {
-    @apply md:bg-[url(/images/home-banner.png)] bg-none bg-no-repeat bg-right;
-    background-size: 36%;
+    @apply md:bg-[url(/images/home-banner.png)] min-h-screen bg-none bg-no-repeat bg-right;
+    background-size: 38%;
   }
 }
