@@ -19,10 +19,6 @@ const HomePage = () => {
   });
 
   useEffect(() => {
-    console.log(slug);
-  }, [slug]);
-
-  useEffect(() => {
     if (customerDetailsQuery?.data?.data?.status_code == 200 && customerDetailsQuery?.data?.data?.data) {
       setCustomerData(customerDetailsQuery?.data?.data?.data);
       setGlobalCustomerData(customerDetailsQuery?.data?.data?.data);
@@ -37,17 +33,17 @@ const HomePage = () => {
             <div className="flex flex-col gap-7 lg:py-16 py-10">
               <div className="logo flex items-center gap-2">
                 <NavLink
-                  to=""
+                  to="/"
                   component={RdNavLink}
                   className={`p-0 bg-transparent hover:bg-transparent h-8 w-auto border-r border-r-grey-low`}
                   label={
                     <div className="flex items-center gap-4">
                       <Image
                         src={customerData?.logo ? `${import.meta.env.VITE_BASE_PATH}/storage/${customerData?.logo}` : ""}
-                        alt="QX-Wellness Logo"
-                        className="lg:w-[225px] md:w-[200px] w-[150px]"
+                        alt={customerData?.name || ""}
+                        className="lg:w-16 md:w-12 w-10"
                       />
-                      <h2 className="text-foreground">{customerData?.name || ""}</h2>
+                      <h2 className="text-foreground md:text-[28px] text-2xl">{customerData?.name || ""}</h2>
                     </div>
                   }
                 />
