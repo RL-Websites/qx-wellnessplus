@@ -1,11 +1,18 @@
-import { IUserData } from "@/common/api/models/interfaces/User.model";
-import { userAtom } from "@/common/states/user.atom";
+import CustomerApiRepository from "@/common/api/repositories/customerRepositoiry";
 import { Button, Image, NavLink } from "@mantine/core";
-import { useAtomValue } from "jotai";
-import { Link, NavLink as RdNavLink } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { Link, NavLink as RdNavLink, useParams } from "react-router-dom";
 
 const HomePage = () => {
-  const userData = useAtomValue<IUserData | null>(userAtom);
+  const customerData = useState<>();
+  const { id: slug } = useParams();
+  const customerDetailsQuery = useQuery({
+    queryKey: ["customerDetails", slug],
+    queryFn: () => CustomerApiRepository.getCustomerDetails(slug),
+    select: (response) => response.data.data as any,
+  });
+
   return (
     <div className="site-main-bg">
       <div className="site-home-hero ">
@@ -25,6 +32,7 @@ const HomePage = () => {
                     />
                   }
                 />
+                <p>{customerData}</p>
               </div>
               <h1 className="heading-xxxl text-foreground uppercase lg:mt-12 md:mt-8 mt-5 md:text-start text-center">Thanks for stopping by</h1>
 
