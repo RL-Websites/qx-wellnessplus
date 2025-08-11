@@ -113,6 +113,7 @@ export interface IPublicPartnerDetailsRef {
   medication_name: string;
   medication_strength: string;
   medication_price: string;
+  qty_ordered: string;
   selling_price: string;
   doctor_name: any;
   doctor_npi: any;

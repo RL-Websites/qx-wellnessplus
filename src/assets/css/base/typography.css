@@ -31,7 +31,6 @@
     font-size: var(--dml-heading-fs-lg);
     line-height: var(--dml-heading-lh-lg);
     font-weight: var(--dml-fw-normal);
-    font-family: "Kenyan Coffee", sans-serif;
   }
   h4,
   .h4,
@@ -39,7 +38,6 @@
     font-size: var(--dml-heading-fs-md);
     line-height: var(--dml-heading-lh-md);
     font-weight: var(--dml-fw-normal);
-    font-family: "Kenyan Coffee", sans-serif;
   }
   h5,
   .h5,
@@ -47,7 +45,6 @@
     font-size: var(--dml-heading-fs-sm);
     line-height: var(--dml-heading-lh-sm);
     font-weight: var(--dml-fw-normal);
-    font-family: "Kenyan Coffee", sans-serif;
   }
   h6,
   .h6,
@@ -55,7 +52,6 @@
     font-size: var(--dml-heading-fs-xs);
     line-height: var(--dml-heading-lh-xs);
     font-weight: var(--dml-fw-normal);
-    font-family: "Kenyan Coffee", sans-serif;
   }
 
   .heading-xxxl {

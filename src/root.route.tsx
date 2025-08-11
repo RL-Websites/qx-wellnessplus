@@ -13,18 +13,19 @@ const PanelNavigator = lazy(() => import("./common/components/NavigateToPanel"))
 const NotFoundPage = lazy(() => import("./common/components/not-found.page"));
 
 export const RootRoute = createBrowserRouter([
+  // {
+  //   path: "",
+  //   element: <PanelNavigator />,
+  // },
   {
     path: "",
-    element: <PanelNavigator />,
+    element: <HomePage />,
   },
   {
     path: "",
     children: AuthRoute,
   },
-  {
-    path: "home",
-    element: <HomePage />,
-  },
+
   {
     path: "",
     element: (

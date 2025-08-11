@@ -151,6 +151,7 @@ const BasicInfo = ({ patientDetails, onNext, isSubmitting }: BasicInfoPropTypes)
 
   return (
     <>
+      <h1 className="text-center text-foreground text-[90px]/none">FEW QUICK QUESTIONS</h1>
       <div className="card-common">
         <div className="card-title">
           <h3 className="font-poppins font-semibold lg:text-3xl text-2xl">Basic Information</h3>
@@ -168,7 +169,7 @@ const BasicInfo = ({ patientDetails, onNext, isSubmitting }: BasicInfoPropTypes)
             <Input
               type="text"
               {...register("first_name")}
-              disabled
+              // disabled
               error={Boolean(errors?.first_name?.message)}
             />
           </Input.Wrapper>
@@ -181,7 +182,7 @@ const BasicInfo = ({ patientDetails, onNext, isSubmitting }: BasicInfoPropTypes)
             <Input
               type="text"
               {...register("last_name")}
-              disabled
+              // disabled
               error={Boolean(errors?.last_name?.message)}
             />
           </Input.Wrapper>
@@ -194,7 +195,7 @@ const BasicInfo = ({ patientDetails, onNext, isSubmitting }: BasicInfoPropTypes)
             <Input
               type="text"
               {...register("email")}
-              disabled
+              // disabled
               error={Boolean(errors?.email?.message)}
             />
           </Input.Wrapper>
