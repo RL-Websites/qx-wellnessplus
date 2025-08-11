@@ -45,7 +45,7 @@ const Age = ({ onNext, onBack, defaultValues }: IAgeProps) => {
       <div className=" card-common-width mx-auto mt-6">
         <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">What is your age?</h2>
         <form
-          id="AgeForm"
+          id="ageForm"
           onSubmit={handleSubmit(onNext)}
           className="max-w-xl mx-auto space-y-6 card-common"
         >
@@ -76,7 +76,7 @@ const Age = ({ onNext, onBack, defaultValues }: IAgeProps) => {
             <Button
               type="submit"
               className="w-[200px]"
-              form="AgeForm"
+              form="ageForm"
             >
               Next
             </Button>

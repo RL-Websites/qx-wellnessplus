@@ -10,7 +10,13 @@ const dobSchema = yup.object({
 
 type dobSchemaType = yup.InferType<typeof dobSchema>;
 
-export default function DateOfBirth() {
+interface IDobProps {
+  onNext: (data: dobSchemaType) => void;
+  onBack: () => void;
+  defaultValues?: dobSchemaType;
+}
+
+export default function DateOfBirth({ onNext, onBack, defaultValues }: IDobProps) {
   const {
     control,
     handleSubmit,
@@ -28,8 +34,9 @@ export default function DateOfBirth() {
       <h2 className="heading-text text-foreground uppercase text-center">Date of Birth</h2>
       <div className="card-common card-common-width">
         <form
+          id="dobForm"
           className="w-full"
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(onNext)}
         >
           <Controller
             name="dob"
@@ -50,11 +57,18 @@ export default function DateOfBirth() {
             )}
           />
 
-          <div className="text-center mt-10">
+          <div className="flex justify-center gap-6 pt-4">
             <Button
-              size="md"
+              variant="outline"
+              className="w-[200px]"
+              onClick={onBack}
+            >
+              Back
+            </Button>
+            <Button
               type="submit"
-              className="bg-primary text-white rounded-xl lg:w-[206px]"
+              className="w-[200px]"
+              form="dobForm"
             >
               Next
             </Button>

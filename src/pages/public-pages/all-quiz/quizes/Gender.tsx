@@ -1,32 +1,42 @@
 "use client";
 
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Radio, Stack, Text } from "@mantine/core";
-import { Controller, useForm } from "react-hook-form";
+import { Button, Group, Radio, Text } from "@mantine/core";
+import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
-const genderOptions = ["Male", "Female"];
-
-const genderSchema = yup.object({
+export const GenderSchema = yup.object({
   gender: yup.string().required("Please select your gender"),
 });
 
-type FormValues = yup.InferType<typeof genderSchema>;
+export type GenderSchemaType = yup.InferType<typeof GenderSchema>;
 
-export default function Gender() {
+interface IGenderProps {
+  onNext: (data: GenderSchemaType) => void;
+  onBack: () => void;
+  defaultValues?: GenderSchemaType;
+}
+
+export default function Gender({ onNext, onBack, defaultValues }: IGenderProps) {
   const {
     handleSubmit,
-    control,
+    setValue,
+    watch,
+    clearErrors,
     formState: { errors },
-  } = useForm<FormValues>({
-    resolver: yupResolver(genderSchema),
+  } = useForm<GenderSchemaType>({
     defaultValues: {
-      gender: "",
+      gender: defaultValues?.gender || "",
     },
+    resolver: yupResolver(GenderSchema),
   });
 
-  const onSubmit = (data: FormValues) => {
-    console.log("Form data:", data);
+  const gender = watch("gender");
+  const options = ["Male", "Female"];
+
+  const handleSelect = (value: string) => {
+    setValue("gender", value, { shouldValidate: true });
+    clearErrors("gender");
   };
 
   return (
@@ -36,46 +46,59 @@ export default function Gender() {
 
       <div className="card-common-width mx-auto mt-6">
         <form
+          id="genderForm"
+          onSubmit={handleSubmit(onNext)}
           className="w-full"
-          onSubmit={handleSubmit(onSubmit)}
         >
-          <Controller
-            name="gender"
-            control={control}
-            render={({ field }) => (
-              <Radio.Group {...field}>
-                <Stack
-                  gap="sm"
-                  justify="center"
-                  align="center"
-                  className="flex-row gap-4"
-                >
-                  {genderOptions.map((gender) => (
-                    <Radio.Card
-                      key={gender}
-                      value={gender}
-                      radius="md"
-                      className={`dml-radiobtn ${field.value === gender ? "bg-white" : ""}`}
-                    >
-                      <Text
-                        fw={500}
-                        className="text-foreground text-center"
-                      >
-                        {gender}
-                      </Text>
-                    </Radio.Card>
-                  ))}
-                </Stack>
-              </Radio.Group>
-            )}
-          />
+          <Radio.Group
+            value={gender}
+            onChange={handleSelect}
+            className="mt-6"
+            error={errors?.gender?.message}
+          >
+            <Group grow>
+              {options.map((option) => (
+                <Radio
+                  key={option}
+                  value={option}
+                  classNames={{
+                    root: "relative w-full",
+                    radio: "hidden",
+                    inner: "hidden",
+                    labelWrapper: "w-full",
+                    label: `
+                              block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointer
+                              ${gender === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
+                            `,
+                  }}
+                  label={
+                    <div className="relative text-center">
+                      <span className="text-foreground font-poppins">{option}</span>
+                      {gender === option && (
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                          <i className="icon-tick text-sm/none"></i>
+                        </span>
+                      )}
+                    </div>
+                  }
+                />
+              ))}
+            </Group>
+          </Radio.Group>
           {errors.gender && <Text className="text-red-500 text-sm mt-5 text-center">{errors.gender.message}</Text>}
 
-          <div className="mt-10 text-center">
+          <div className="flex justify-center gap-6 pt-4">
+            <Button
+              variant="outline"
+              className="w-[200px]"
+              onClick={onBack}
+            >
+              Back
+            </Button>
             <Button
               type="submit"
-              size="md"
-              className="bg-primary text-white rounded-xl lg:w-[206px]"
+              className="w-[200px]"
+              form="genderForm"
             >
               Next
             </Button>

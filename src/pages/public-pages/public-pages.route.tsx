@@ -1,6 +1,6 @@
 import { RouteObject } from "react-router-dom";
-import Quiz from "./all-quiz/quiz.page";
-import HairLoassQuiz from "./all-quiz/quizes/HairLossQuiz";
+import QuizPage from "./all-quiz/quiz.page";
+
 import CategoryPage from "./category/category.page";
 import LoadingPage from "./loading/loading.page";
 import Login from "./login/login.page";
@@ -34,11 +34,7 @@ export const PublicPagesRoute: RouteObject[] = [
     element: <OrderSummary />,
   },
   {
-    path: "category/quiz",
-    element: <Quiz />,
-  },
-  {
-    path: "hair-loss",
-    element: <HairLoassQuiz />,
+    path: "quiz",
+    element: <QuizPage />,
   },
 ];
