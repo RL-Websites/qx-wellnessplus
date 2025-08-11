@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Link, NavLink as RdNavLink, useParams } from "react-router-dom";
 
 const HomePage = () => {
-  const customerData = useState<>();
+  const customerData = useState();
   const { id: slug } = useParams();
   const customerDetailsQuery = useQuery({
     queryKey: ["customerDetails", slug],
@@ -21,7 +21,6 @@ const HomePage = () => {
             <div className="flex flex-col gap-7 lg:py-16 py-10">
               <div className="logo flex items-center gap-2">
                 <NavLink
-                  to={userData?.userable_type == "admin" ? "/admin-client/dashboard" : ""}
                   component={RdNavLink}
                   className={`p-0 bg-transparent hover:bg-transparent h-8 w-auto border-r border-r-grey-low`}
                   label={
@@ -32,7 +31,6 @@ const HomePage = () => {
                     />
                   }
                 />
-                <p>{customerData}</p>
               </div>
               <h1 className="heading-xxxl text-foreground uppercase lg:mt-12 md:mt-8 mt-5 md:text-start text-center">Thanks for stopping by</h1>
 
