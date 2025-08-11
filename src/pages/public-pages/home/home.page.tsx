@@ -1,11 +1,18 @@
-import { IUserData } from "@/common/api/models/interfaces/User.model";
-import { userAtom } from "@/common/states/user.atom";
+import CustomerApiRepository from "@/common/api/repositories/customerRepositoiry";
 import { Button, Image, NavLink } from "@mantine/core";
-import { useAtomValue } from "jotai";
-import { Link, NavLink as RdNavLink } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { Link, NavLink as RdNavLink, useParams } from "react-router-dom";
 
 const HomePage = () => {
-  const userData = useAtomValue<IUserData | null>(userAtom);
+  const customerData = useState();
+  const { id: slug } = useParams();
+  const customerDetailsQuery = useQuery({
+    queryKey: ["customerDetails", slug],
+    queryFn: () => CustomerApiRepository.getCustomerDetails(slug),
+    select: (response) => response.data.data as any,
+  });
+
   return (
     <div className="site-main-bg">
       <div className="site-home-hero ">
@@ -14,7 +21,7 @@ const HomePage = () => {
             <div className="flex flex-col gap-7 lg:py-16 py-10">
               <div className="logo flex items-center gap-2">
                 <NavLink
-                  to={userData?.userable_type == "admin" ? "/admin-client/dashboard" : ""}
+                  to=""
                   component={RdNavLink}
                   className={`p-0 bg-transparent hover:bg-transparent h-8 w-auto border-r border-r-grey-low`}
                   label={
