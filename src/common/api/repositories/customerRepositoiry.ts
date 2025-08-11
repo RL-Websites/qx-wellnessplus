@@ -1,6 +1,7 @@
 import { AxiosInstance } from "axios";
 import $http from "../axios";
 import { IBaseResponse } from "../models/interfaces/ApiResponse.model";
+import { IQXCustomerDetails } from "../models/interfaces/Customer.model";
 
 class CustomerRepository {
   constructor(private $http: AxiosInstance) {}
@@ -83,7 +84,7 @@ class CustomerRepository {
 
   // Cuatomer Details
   getCustomerDetails(slug: string | undefined | null) {
-    return this.$http.get<IBaseResponse<any>>("wellness-plus-qx/customer-details", { params: { slug } });
+    return this.$http.get<IBaseResponse<IQXCustomerDetails>>("wellness-plus-qx/customer-details", { params: { customer_slug: slug } });
   }
 }
 

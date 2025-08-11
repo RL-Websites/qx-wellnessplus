@@ -24,14 +24,14 @@ const NavigateToPanel = () => {
     console.log(userData?.userable_type || "navigateToPanel");
     switch (userData?.userable_type) {
       case "admin":
-        return <Navigate to="/home" />;
+        return <Navigate to="/" />;
 
       default:
         if (loginRedirectCount == 0) {
           console.log("did i came here");
           setLoginRedirectCount((prevCount) => ++prevCount);
           setTimeout(() => {
-            navigate("/home");
+            navigate("/");
           }, 50);
         }
     }
