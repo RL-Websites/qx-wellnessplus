@@ -43,7 +43,7 @@ const HomePage = () => {
                         alt={customerData?.name || ""}
                         className="lg:w-16 md:w-12 w-10"
                       />
-                      <h2 className="text-foreground md:text-[28px] text-2xl">{customerData?.name || ""}</h2>
+                      <h2 className="text-foreground font-impact md:text-[28px] text-2xl">{customerData?.name || ""}</h2>
                     </div>
                   }
                 />
