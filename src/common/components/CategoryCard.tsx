@@ -5,12 +5,14 @@ interface ICardProps {
   image: string;
   title: string;
   link: string;
+  onClick?: () => void;
 }
 
 const CategoryCard = (cardProps: ICardProps) => {
   return (
     <Link
       to={cardProps.link}
+      onClick={cardProps.onClick}
       className="space-y-5 text-center"
     >
       {cardProps?.image ? (

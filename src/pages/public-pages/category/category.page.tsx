@@ -1,12 +1,13 @@
 import { categoryRepository } from "@/common/api/repositories/categoryRepository";
 import CategoryCard from "@/common/components/CategoryCard";
+import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { useQuery } from "@tanstack/react-query";
+import { useSetAtom } from "jotai";
 import { useEffect, useState } from "react";
 
 const CategoryPage = () => {
   const [category, setCategory] = useState<any | null>();
-
-  console.log(category);
+  const setSelectedCategory = useSetAtom(selectedCategoryAtom);
 
   const slug = "alan-lane-68777502f1562";
 
@@ -22,6 +23,10 @@ const CategoryPage = () => {
     }
   }, [categoryListQuery.data?.data?.data]);
 
+  const handleCategoryClick = (categoryName: string) => {
+    setSelectedCategory(categoryName);
+  };
+
   const categoryImages = {
     "Weight Loss": "images/weight-loos.png",
     Testosterone: "images/sexual-health.png",
@@ -32,7 +37,7 @@ const CategoryPage = () => {
 
   return (
     <div className="space-y-12">
-      <h4 className="lg:text-[90px] md:text-6xl sm:text-4xl text-2xl text-center text-foreground uppercase">Choose A Treatment</h4>
+      <h4 className="heading-text text-center text-foreground uppercase">Choose A Treatment</h4>
 
       <div
         className={`${
@@ -42,6 +47,7 @@ const CategoryPage = () => {
         {category?.map((item, index) => (
           <CategoryCard
             key={index}
+            onClick={() => handleCategoryClick(item)}
             image={categoryImages[item]}
             title={item}
             link="quiz"
