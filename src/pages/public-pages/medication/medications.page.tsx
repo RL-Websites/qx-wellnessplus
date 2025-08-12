@@ -13,6 +13,7 @@ import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { cartItemsAtom } from "@/common/states/product.atom";
 import { useQuery } from "@tanstack/react-query";
 import { useAtom, useAtomValue } from "jotai";
+import { NavLink as RdNavLink } from "react-router-dom";
 
 const MedicationsPage = () => {
   const [medicines, setMedicines] = useState<IMedicineListItem[]>();
@@ -55,18 +56,21 @@ const MedicationsPage = () => {
   const handleAddToCart = (item: any) => {
     setPendingAddToCart(item);
 
-    if (item.medicine_type === "Injection") {
+    if (["Single Peptides", "Peptides Blends"].includes(item.medication_category) || item.medication_type === "tergepitiede" || cartItems.length > 0) {
       handleConfirmMeds.open();
     } else {
       setCartItems((prev) => [...prev, item]);
     }
   };
 
-  const handleAgree = () => {
+  const handleAgree = (qty: number) => {
     if (pendingAddToCart) {
-      const exists = cartItems.some((item) => item.id === pendingAddToCart.id);
+      const exists = cartItems.find((item) => item.id === pendingAddToCart.id);
+
       if (!exists) {
-        setCartItems([...cartItems, pendingAddToCart]);
+        setCartItems([...cartItems, { ...pendingAddToCart, qty }]);
+      } else {
+        setCartItems(cartItems.map((item) => (item.id === pendingAddToCart.id ? { ...item, qty: item.qty + qty } : item)));
       }
     }
     handleConfirmMeds.close();
@@ -80,6 +84,8 @@ const MedicationsPage = () => {
     setSelectedMedication(item);
     setShowDetailsHandel.open();
   };
+
+  const totalCartCount = cartItems.reduce((sum, item) => sum + (item.qty || 1), 0);
 
   return (
     <div className="medication-page">
@@ -115,16 +121,24 @@ const MedicationsPage = () => {
             <div className="flex items-center gap-14">
               <div className="relative">
                 <i className="icon-orders text-4xl/none"></i>
-                <span className="text-base text-white rounded-full bg-primary size-5 absolute -top-2.5 -right-3 text-center leading-5">{cartItems.length}</span>
+                <span className="text-base text-white rounded-full bg-primary size-5 absolute -top-2.5 -right-3 text-center leading-5">{totalCartCount}</span>
               </div>
               <span className="text-foreground text-xl font-medium">
-                {cartItems.length} Product{cartItems.length > 1 ? "s" : ""} Have been added to Your cart
+                {totalCartCount > 0 && (
+                  <div>
+                    <span>
+                      {totalCartCount} Product{totalCartCount > 1 ? "s" : ""} Have been added to Your cart
+                    </span>
+                  </div>
+                )}
               </span>
             </div>
             <Button
               size="sm-2"
               color="primary"
               w={263}
+              component={RdNavLink}
+              to={`/order-summary`}
             >
               Proceed to checkout
             </Button>
