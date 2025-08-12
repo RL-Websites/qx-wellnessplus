@@ -6,6 +6,7 @@ export default {
       fontFamily: {
         kneyan: ["Kenyan Coffee", "sans-serif"],
         poppins: ["Poppins", "sans-serif"],
+        impact: ["Impact", "sans-serif"],
       },
       colors: {
         background: "var(--dml-color-background)",

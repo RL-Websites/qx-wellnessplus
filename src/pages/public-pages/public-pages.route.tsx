@@ -1,5 +1,6 @@
 import { RouteObject } from "react-router-dom";
-import Quiz from "./all-quiz/quiz.page";
+import QuizPage from "./all-quiz/quiz.page";
+
 import CategoryPage from "./category/category.page";
 import LoadingPage from "./loading/loading.page";
 import Login from "./login/login.page";
@@ -33,7 +34,7 @@ export const PublicPagesRoute: RouteObject[] = [
     element: <OrderSummary />,
   },
   {
-    path: "category/quiz",
-    element: <Quiz />,
+    path: "quiz",
+    element: <QuizPage />,
   },
 ];
