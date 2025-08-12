@@ -5,6 +5,7 @@ interface IMedicationProps {
   image: string;
   title: string;
   cost: string;
+  disabled: boolean;
   onAddToCart: () => void;
   onShowDetails: () => void;
 }
@@ -28,7 +29,7 @@ const MedicationCard = (medicationProps: IMedicationProps) => {
         {medicationProps?.title && <h4 className="text-2xl font-poppins leading-snug font-semibold text-foreground">{medicationProps?.title}</h4>}
         <div className="flex items-center justify-between">
           <span className="text-foreground text-base font-bold">Medication Cost</span>
-          <span className="text-foreground text-base font-bold">{medicationProps?.cost}</span>
+          <span className="text-foreground text-base font-bold">${medicationProps?.cost}</span>
         </div>
       </div>
       <Button
@@ -36,6 +37,7 @@ const MedicationCard = (medicationProps: IMedicationProps) => {
         size="sm-2"
         color="primary"
         leftSection={<i className="icon-orders text-2xl/none"></i>}
+        disabled={medicationProps.disabled}
         classNames={{
           root: "w-full",
         }}

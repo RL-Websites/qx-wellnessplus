@@ -55,11 +55,11 @@
   }
 
   .heading-xxxl {
-    @apply lg:text-[147px] md:text-8xl text-6xl;
+    @apply lg:text-[147px] md:text-8xl text-6xl font-kneyan;
   }
 
   .heading-text {
-    @apply lg:text-[90px] md:text-6xl text-[40px];
+    @apply lg:text-[90px] md:text-6xl text-[40px] font-kneyan;
   }
 
   .heading-xxs {

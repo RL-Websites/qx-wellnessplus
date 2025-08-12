@@ -1,28 +1,74 @@
 import { Button } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import MedicationCard from "@/common/components/MedicationCard";
 import ConfirmProductOrderModal from "./components/ConfirmProductOrderModal";
 import ProductDetailsModal from "./components/ProductDetailsModal";
 
-import { medications } from "../constant/category-constant";
+import { ICommonParams } from "@/common/api/models/interfaces/Common.model";
+import { IMedicineListItem } from "@/common/api/models/interfaces/Medication.model";
+import { medicineRepository } from "@/common/api/repositories/medicineRepository";
+import { selectedCategoryAtom } from "@/common/states/category.atom";
+import { cartItemsAtom } from "@/common/states/product.atom";
+import { useQuery } from "@tanstack/react-query";
+import { useAtom, useAtomValue } from "jotai";
 
 const MedicationsPage = () => {
-  const [cartItems, setCartItems] = useState<number>(0);
+  const [medicines, setMedicines] = useState<IMedicineListItem[]>();
+  const [cartItems, setCartItems] = useAtom(cartItemsAtom);
   const [selectedMedication, setSelectedMedication] = useState<any>(null);
-  const [pendingAddToCart, setPendingAddToCart] = useState<any>(null); // for modal trigger
-
+  const [pendingAddToCart, setPendingAddToCart] = useState<any>(null);
+  const [pageSize, setPageSize] = useState<number>(2);
   const [confirmMeds, handleConfirmMeds] = useDisclosure(false);
   const [showDetails, setShowDetailsHandel] = useDisclosure(false);
+  const selectedCategory = useAtomValue(selectedCategoryAtom);
+
+  const slug = "alan-lane-68777502f1562";
+
+  const fetchMedicine = () => {
+    const params: ICommonParams = {
+      per_page: pageSize,
+      customer_slug: slug,
+      noPaginate: true,
+      category: selectedCategory,
+    };
+    return medicineRepository.getAllMedicines(params);
+  };
+
+  const medicineQuery = useQuery({
+    queryKey: ["medicineList", selectedCategory],
+    queryFn: fetchMedicine,
+    enabled: !!selectedCategory,
+  });
+
+  useEffect(() => {
+    if (medicineQuery?.data?.status === 200 && medicineQuery?.data?.data?.data) {
+      setMedicines(medicineQuery.data?.data?.data || []);
+    }
+  }, [medicineQuery.data?.data?.data]);
+
+  console.log(medicineQuery);
+
+  console.log(medicines);
 
   const handleAddToCart = (item: any) => {
     setPendingAddToCart(item);
-    handleConfirmMeds.open();
+
+    if (item.medicine_type === "Injection") {
+      handleConfirmMeds.open();
+    } else {
+      setCartItems((prev) => [...prev, item]);
+    }
   };
 
   const handleAgree = () => {
-    setCartItems((prev) => prev + 1);
+    if (pendingAddToCart) {
+      const exists = cartItems.some((item) => item.id === pendingAddToCart.id);
+      if (!exists) {
+        setCartItems([...cartItems, pendingAddToCart]);
+      }
+    }
     handleConfirmMeds.close();
   };
 
@@ -38,7 +84,7 @@ const MedicationsPage = () => {
   return (
     <div className="medication-page">
       <div className="max-w-[776px] mx-auto text-center space-y-5">
-        <h4 className="lg:text-[90px] md:text-6xl sm:text-4xl text-2xl text-center text-foreground uppercase">The best pick for you!</h4>
+        <h4 className="heading-text text-center text-foreground uppercase">The best pick for you!</h4>
         <span className="md:text-2xl font-medium text-foreground inline-block">
           Based on your responses, we've personalized these product suggestions for you. Kindly select the one you prefer.
         </span>
@@ -46,28 +92,33 @@ const MedicationsPage = () => {
       </div>
 
       <div className="grid grid-cols-3 lg:gap-y-12 lg:gap-x-20 md:gap-10 gap-5 pt-12">
-        {medications?.map((item, index) => (
-          <MedicationCard
-            key={index}
-            image={item?.image}
-            title={item?.title}
-            cost={item?.cost}
-            onAddToCart={() => handleAddToCart(item)}
-            onShowDetails={() => handelDetailsModal(item)}
-          />
-        ))}
+        {medicines?.map((item, index) => {
+          const isInCart = cartItems.some((cartItem) => cartItem.id === item.id);
+
+          return (
+            <MedicationCard
+              key={index}
+              image={`${import.meta.env.VITE_BASE_PATH}/storage/${item?.image}`}
+              title={item?.name}
+              cost={item?.price}
+              onAddToCart={() => handleAddToCart(item)}
+              onShowDetails={() => handelDetailsModal(item)}
+              disabled={isInCart} // pass this prop to your MedicationCard
+            />
+          );
+        })}
       </div>
 
-      {cartItems > 0 && (
+      {cartItems.length > 0 && (
         <div className="fixed left-0 bottom-16 w-full animate-fadeInUp">
           <div className="bg-warning-bg px-10 py-4 flex items-center justify-between rounded-2xl mx-5">
             <div className="flex items-center gap-14">
               <div className="relative">
                 <i className="icon-orders text-4xl/none"></i>
-                <span className="text-base text-white rounded-full bg-primary size-5 absolute -top-2.5 -right-3 text-center leading-5">{cartItems}</span>
+                <span className="text-base text-white rounded-full bg-primary size-5 absolute -top-2.5 -right-3 text-center leading-5">{cartItems.length}</span>
               </div>
               <span className="text-foreground text-xl font-medium">
-                {cartItems} Product{cartItems > 1 ? "s" : ""} Have been added to Your cart
+                {cartItems.length} Product{cartItems.length > 1 ? "s" : ""} Have been added to Your cart
               </span>
             </div>
             <Button
