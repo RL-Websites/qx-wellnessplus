@@ -136,6 +136,8 @@ export interface IPublicPartnerDetailsMedicationRef {
   service_fee: string;
   shipping_fee: string;
   is_research_only: number;
+  qty?: number;
+  customer_price?: string;
   image: any;
   direction: any;
   is_active: number;
@@ -226,7 +228,7 @@ export interface IPublicPartnerRef {
 }
 
 export interface IPatientBookingPatientInfoDTO {
-  prescription_u_id: string;
+  prescription_u_id?: string;
   is_refill?: boolean;
   refill_type?: string;
   patient: IPatientInfoDTO;

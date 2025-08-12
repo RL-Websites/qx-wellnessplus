@@ -49,6 +49,7 @@ export interface IMedicineListItem {
   doctor_fee: string;
   service_fee: string;
   shipping_fee: string;
+  customer_price?: string;
   is_research_only: string;
   image: string;
   total_price?: string;

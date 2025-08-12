@@ -22,10 +22,8 @@ const Acknowledgement = ({ onNext, onBack, defaultValues, patientData, hasPeptid
   const [today, setToday] = useState(new Date());
   const sigCanvas = useRef<SignatureCanvas | null>(null);
   const {
-    register,
     handleSubmit,
     setValue,
-    watch,
     clearErrors,
     formState: { errors },
   } = useForm({
@@ -372,7 +370,7 @@ const Acknowledgement = ({ onNext, onBack, defaultValues, patientData, hasPeptid
         <div className="flex gap-3 ms-auto">
           <Button
             w={256}
-            onClick={onNext}
+            onClick={handleSubmit(onNext)}
           >
             Next
           </Button>

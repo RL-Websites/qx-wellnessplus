@@ -1,4 +1,4 @@
-import { IPublicPartnerDetailsRef } from "@/common/api/models/interfaces/PartnerPatient.model";
+import { IMedicineListItem } from "@/common/api/models/interfaces/Medication.model";
 import { Locations } from "@/common/constants/locations";
 import { ILocation } from "@/common/models/location";
 import {} from "@/data/dosespot.json";
@@ -103,8 +103,8 @@ export const trimPrice = (price: string) => {
   return price?.replace(",", "") || "";
 };
 
-export const calculatePrice = (item: IPublicPartnerDetailsRef) => {
-  const fees = Number(item.medication?.doctor_fee) + Number(item.medication?.shipping_fee) + Number(item.medication?.service_fee);
+export const calculatePrice = (item: IMedicineListItem) => {
+  const fees = Number(item.doctor_fee) + Number(item.shipping_fee) + Number(item.service_fee);
 
-  return Number(item.selling_price) * Number(item.qty_ordered) - fees * (Number(item.qty_ordered) - 1);
+  return Number(item.customer_price) * Number(item.qty) - fees * (Number(item.qty) - 1);
 };
