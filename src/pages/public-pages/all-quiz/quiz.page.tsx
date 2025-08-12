@@ -5,9 +5,14 @@ import DateOfBirth from "./quizes/DateOfBirth";
 import Gender from "./quizes/Gender";
 import Age from "./quizes/hair-loss/Age";
 import AlopeciaAreata from "./quizes/hair-loss/AlopeciaAreata";
+import BreastFeeding from "./quizes/hair-loss/BreastFeeding";
 import Chemotherapy from "./quizes/hair-loss/Chemotherapy";
+import HairTreatment from "./quizes/hair-loss/HairTreatment";
 import MedicationTaking from "./quizes/hair-loss/MedicationTaking";
+import Pcos from "./quizes/hair-loss/PCOS";
+import PlanningPregnancy from "./quizes/hair-loss/PlanningPregnancy";
 import ScalpInfections from "./quizes/hair-loss/ScalpInfections";
+import ScalpInfectionsTwo from "./quizes/hair-loss/ScalpInfectionsTwo";
 import ThyroidDisease from "./quizes/hair-loss/ThyroidDisease";
 
 const QuizPage = () => {
@@ -92,8 +97,43 @@ const QuizPage = () => {
           defaultValues={formData}
         />
       )}
+      {activeStep === 9 && (
+        <PlanningPregnancy
+          onNext={handleNext}
+          onBack={handleBack}
+          defaultValues={formData}
+        />
+      )}
+      {activeStep === 10 && (
+        <BreastFeeding
+          onNext={handleNext}
+          onBack={handleBack}
+          defaultValues={formData}
+        />
+      )}
+      {activeStep === 11 && (
+        <Pcos
+          onNext={handleNext}
+          onBack={handleBack}
+          defaultValues={formData}
+        />
+      )}
+      {activeStep === 12 && (
+        <ScalpInfectionsTwo
+          onNext={handleNext}
+          onBack={handleBack}
+          defaultValues={formData}
+        />
+      )}
+      {activeStep === 13 && (
+        <HairTreatment
+          onNext={handleNext}
+          onBack={handleBack}
+          defaultValues={formData}
+        />
+      )}
 
-      {activeStep === 9 && <ThanksStep />}
+      {activeStep === 14 && <ThanksStep />}
     </>
   );
 };
