@@ -4,9 +4,10 @@ interface IProductDetailsModalProps {
   openModal: boolean;
   onModalClose: () => void;
   medicationDetails: {
-    title?: string;
+    name?: string;
     image?: string;
     cost?: string;
+    medication_category?: string;
   } | null;
 }
 
@@ -36,7 +37,7 @@ function ProductDetailsModal({ openModal, onModalClose, medicationDetails }: IPr
             ></i>
           </div>
           <div className="pt-20 max-w-[500px]">
-            <h2 className="md:text-5xl text-3xl !leading-snug font-poppins  font-bold mb-4  text-foreground">{medicationDetails.title}</h2>
+            <h2 className="md:text-5xl text-3xl !leading-snug font-poppins  font-bold mb-4  text-foreground">{medicationDetails.name}</h2>
             {medicationDetails.cost && <p className="my-6 text-2xl text-gray-600 font-semibold">Cost: {medicationDetails.cost}</p>}
 
             <p className="md:text-[32px] text-xl font-medium text-foreground pb-4">About the Product:</p>
@@ -56,7 +57,7 @@ function ProductDetailsModal({ openModal, onModalClose, medicationDetails }: IPr
               <List.Item>Doctors Appointment, Prescription included</List.Item>
               <List.Item>Fast Shipping</List.Item>
               <List.Item>All Supplies Included</List.Item>
-              <List.Item>Unlimited Weight Loss Program Support</List.Item>
+              <List.Item>Unlimited {medicationDetails.medication_category} Support</List.Item>
               <List.Item>Bypass Insurance – No Insurance Needed</List.Item>
               <List.Item>No Hidden Fees</List.Item>
             </List>

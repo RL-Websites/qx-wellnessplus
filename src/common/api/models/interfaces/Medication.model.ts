@@ -56,6 +56,7 @@ export interface IMedicineListItem {
   is_active: number;
   dosage_directions: IDosageDirection[];
   customer_count: number;
+  qty: number;
   pharmacy?: {
     id: number;
     name: string;
