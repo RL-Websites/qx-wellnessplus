@@ -25,6 +25,7 @@ const CategoryPage = () => {
 
   const handleCategoryClick = (categoryName: string) => {
     setSelectedCategory(categoryName);
+    console.log(categoryName);
   };
 
   const categoryImages = {
@@ -50,7 +51,7 @@ const CategoryPage = () => {
             onClick={() => handleCategoryClick(item)}
             image={categoryImages[item]}
             title={item}
-            link="quiz"
+            link="/quiz"
           />
         ))}
       </div>
