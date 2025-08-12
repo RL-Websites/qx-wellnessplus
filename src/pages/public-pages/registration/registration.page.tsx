@@ -68,7 +68,7 @@ const RegistrationPage = () => {
     if (!userData) {
       navigate("/registration");
     }
-  }, []);
+  }, [userData]);
 
   const onSubmit = (data: registrationSchemaType) => {
     const payload = { first_name: data.firstName, last_name: data.lastName, email: data.emailAddress, password: data.password, confirm_password: data.confirmPassword };
