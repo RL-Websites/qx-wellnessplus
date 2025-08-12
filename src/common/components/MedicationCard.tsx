@@ -38,10 +38,8 @@ const MedicationCard = (medicationProps: IMedicationProps) => {
         color="primary"
         leftSection={<i className="icon-orders text-2xl/none"></i>}
         disabled={medicationProps.disabled}
-        classNames={{
-          root: "w-full",
-        }}
         onClick={medicationProps?.onAddToCart}
+        className={medicationProps.disabled ? "bg-grey-low cursor-not-allowed w-full" : "w-full"}
       >
         Add to Cart
       </Button>
