@@ -26,7 +26,7 @@ const MedicationCard = (medicationProps: IMedicationProps) => {
             />
           </ThumbBg>
         )}
-        {medicationProps?.title && <h4 className="text-2xl font-poppins leading-snug font-semibold text-foreground">{medicationProps?.title}</h4>}
+        {medicationProps?.title && <h4 className="text-2xl font-poppins leading-snug font-semibold text-foreground h-16 line-clamp-2">{medicationProps?.title}</h4>}
         <div className="flex items-center justify-between">
           <span className="text-foreground text-base font-bold">Medication Cost</span>
           <span className="text-foreground text-base font-bold">${medicationProps?.cost}</span>

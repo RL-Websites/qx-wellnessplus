@@ -1,10 +1,23 @@
 import { cartItemsAtom } from "@/common/states/product.atom";
-import { useAtomValue } from "jotai";
+import { useAtom } from "jotai";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const OrderSummary = () => {
-  const cartItems = useAtomValue(cartItemsAtom);
+  const [cartItems, setCartItems] = useAtom(cartItemsAtom);
+  const navigate = useNavigate();
 
-  const totalPrice = cartItems.reduce((sum, item) => sum + Number(item.price) * item.qty, 0);
+  const totalPrice = cartItems.reduce((sum, item) => sum + (Number(item.price) || 0) * (item.qty || 1), 0);
+
+  const handleRemoveItem = (id: number) => {
+    setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
+  };
+
+  useEffect(() => {
+    if (cartItems.length === 0) {
+      navigate("/medications");
+    }
+  }, [cartItems, navigate]);
 
   return (
     <div className="lg:pt-16 md:pt-10 pt-4">
@@ -30,7 +43,10 @@ const OrderSummary = () => {
                     <span className="text-lg text-foreground">{item.medicine_type}</span>
                   </div>
                 </div>
-                <i className="icon-delete text-2xl/none text-danger absolute top-0 right-0 cursor-pointer"></i>
+                <i
+                  className="icon-delete text-2xl/none text-danger absolute top-0 right-0 cursor-pointer"
+                  onClick={() => handleRemoveItem(item.id)}
+                ></i>
               </div>
             ))}
           </div>
@@ -46,7 +62,7 @@ const OrderSummary = () => {
                 <span className="text-foreground text-lg inline-block max-w-[226px]">
                   {item.name} x {item.qty}
                 </span>
-                <span className="text-foreground text-lg">$ {(Number(item.price) * item.qty).toFixed(2)}</span>
+                <span className="text-foreground text-lg">$ {((Number(item.price) || 0) * (item.qty || 1)).toFixed(2)}</span>
               </div>
             ))}
           </div>

@@ -34,7 +34,7 @@ const MedicationsPage = () => {
       noPaginate: true,
       category: selectedCategory,
     };
-    return medicineRepository.getAllMedicines(params);
+    return medicineRepository.getAllMedicinesNoPaginate(params);
   };
 
   const medicineQuery = useQuery({
@@ -56,7 +56,7 @@ const MedicationsPage = () => {
   const handleAddToCart = (item: any) => {
     setPendingAddToCart(item);
 
-    if (["Single Peptides", "Peptides Blends"].includes(item.medication_category) || item.medication_type === "tergepitiede" || cartItems.length > 0) {
+    if (item.medication_category === "Single Peptides" || item.medication_category === "Peptides Blends") {
       handleConfirmMeds.open();
     } else {
       setCartItems((prev) => [...prev, item]);
@@ -85,7 +85,7 @@ const MedicationsPage = () => {
     setShowDetailsHandel.open();
   };
 
-  const totalCartCount = cartItems.reduce((sum, item) => sum + (item.qty || 1), 0);
+  const totalCartCount = cartItems.length;
 
   return (
     <div className="medication-page">
