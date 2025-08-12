@@ -11,6 +11,10 @@ class MedicineRepository {
     return $http.get<IBasePaginationResponse<IMedicineListItem[]>>("/wellness-plus-qx/medication-list", { params: params });
   }
 
+  getAllMedicinesNoPaginate(params: ICommonParams) {
+    return $http.get<IBaseResponse<IMedicineListItem[]>>("/wellness-plus-qx/medication-list", { params: params });
+  }
+
   getMedicineDetails(id: string) {
     return $http.get<IBaseResponse<IMedicineListItem>>("/medications/details", { params: { medication_id: id } });
   }
