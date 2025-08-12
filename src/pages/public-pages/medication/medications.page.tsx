@@ -98,7 +98,7 @@ const MedicationsPage = () => {
         <div className="rounded-lg bg-green-badge text-center py-2.5 px-6">Doctor consultation & shipping cost included</div>
       </div>
 
-      <div className="grid grid-cols-3 lg:gap-y-12 lg:gap-x-20 md:gap-10 gap-5 pt-12">
+      <div className="grid grid-cols-3 lg:gap-y-12 lg:gap-x-20 md:gap-10 gap-5 py-12">
         {medicines?.map((item, index) => {
           const isInCart = cartItems.some((cartItem) => cartItem.id === item.id);
 
