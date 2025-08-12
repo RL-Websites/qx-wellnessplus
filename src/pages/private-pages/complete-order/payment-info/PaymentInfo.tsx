@@ -1,18 +1,19 @@
-import { IPatientBookingPatientInfoDTO, IPublicPartnerPrescriptionDetails } from "@/common/api/models/interfaces/PartnerPatient.model";
+import { IPatientBookingPatientInfoDTO } from "@/common/api/models/interfaces/PartnerPatient.model";
 import AddressAutoGoogle from "@/common/components/AddressAutoGoogle";
 import ConfirmationModal from "@/common/components/ConfirmationModal";
+import { cartItemsAtom } from "@/common/states/product.atom";
 import { calculatePrice, getErrorMessage } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Avatar, Button, Checkbox, Input, NumberInput } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { StripePaymentElementOptions } from "@stripe/stripe-js";
+import { useAtom } from "jotai";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { shippingBillingSchema } from "./schemaValidation";
 
 interface PropTypes {
   formData?: any;
-  patientDetails?: IPublicPartnerPrescriptionDetails;
   handleBack: () => void;
   handleSubmit: (data: IPatientBookingPatientInfoDTO) => void;
   isSubmitting: boolean;
@@ -23,7 +24,8 @@ const paymentOptions: StripePaymentElementOptions = {
   fields: { billingDetails: { address: "never" } },
 };
 
-const PaymentInfo = ({ formData, patientDetails, handleBack, handleSubmit, isSubmitting }: PropTypes) => {
+const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropTypes) => {
+  const [cartItems, setCartItems] = useAtom(cartItemsAtom);
   const [isSameAsPatientInfo, setIsSameAsPatientInfo] = useState<boolean>(false);
   const [isSameAsShippingInfo, setIsSameAsShippingInfo] = useState<boolean>(false);
 
@@ -178,9 +180,9 @@ const PaymentInfo = ({ formData, patientDetails, handleBack, handleSubmit, isSub
           <p className="text-fs-lg text-tag-bg-deep">Please review your information carefully before submitting, as it cannot be modified later.</p>
         </div>
         <div className="grid lg:grid-cols-7 gap-6 mt-10">
-          <div className="card lg:col-span-4">
-            <div className="card-title with-border">
-              <h6>Payment details</h6>
+          <div className="card card-bg lg:col-span-4">
+            <div className="card-title">
+              <h3 className="font-poppins font-semibold lg:text-3xl text-2xl">Payment details</h3>
             </div>
             <div className="mt-6">
               {/* <CardElement options={cardOptions} /> */}
@@ -190,18 +192,18 @@ const PaymentInfo = ({ formData, patientDetails, handleBack, handleSubmit, isSub
               /> */}
             </div>
           </div>
-          <div className="card lg:col-span-3">
-            <div className="card-title with-border">
-              <h6>Order Summary</h6>
+          <div className="card  card-bg lg:col-span-3">
+            <div className="card-title">
+              <h3 className="font-poppins font-semibold lg:text-3xl text-2xl">Order Summary</h3>
             </div>
-            {patientDetails?.prescription_details?.map((item) => (
+            {cartItems?.map((item) => (
               <div
                 className="flex gap-6 mt-6"
-                key={item.u_id}
+                key={item.id}
               >
                 <div className="card-thumb w-[129px]">
                   <Avatar
-                    src={item?.medication?.image ? `${import.meta.env.VITE_BASE_PATH}/storage/${item?.medication?.image}` : "/images/product-img-placeholder.jpg"}
+                    src={item?.image ? `${import.meta.env.VITE_BASE_PATH}/storage/${item?.image}` : "/images/product-img-placeholder.jpg"}
                     size={129}
                     radius={10}
                   >
@@ -214,10 +216,10 @@ const PaymentInfo = ({ formData, patientDetails, handleBack, handleSubmit, isSub
                 <div className="space-y-2.5">
                   {/* <h6 className="text-foreground">{`${formData?.medicine_selected?.drug_name} - ${formData?.medicine_selected?.dosage || ""}`}</h6> */}
                   <h6 className="text-foreground">
-                    {item?.medication?.name} {`${item?.medication?.strength}${item?.medication?.unit}`}
+                    {item?.name} {`${item?.strength}${item?.unit}`}
                   </h6>
                   <div className="text-gray">
-                    {item?.medication?.medicine_type} | {item?.medication?.medication_category}
+                    {item?.medicine_type} | {item?.medication_category}
                   </div>
                   {/* TOdo: need to update */}
                   {/* <div className="text-gray">Duration: 1 month</div> */}
@@ -253,9 +255,9 @@ const PaymentInfo = ({ formData, patientDetails, handleBack, handleSubmit, isSub
             </div>
           </div>
         </div>
-        <div className="card mt-10">
-          <div className="card-title flex justify-between items-center with-border">
-            <h6>Shipping Info</h6>
+        <div className="card card-bg mt-10">
+          <div className="card-title flex justify-between items-center">
+            <h3 className="font-poppins font-semibold lg:text-3xl text-2xl">Shipping Info</h3>
             <Checkbox
               checked={isSameAsPatientInfo}
               label="Same as patient info"
@@ -376,9 +378,9 @@ const PaymentInfo = ({ formData, patientDetails, handleBack, handleSubmit, isSub
             />
           </div>
         </div>
-        <div className="card mt-10">
-          <div className="card-title with-border flex justify-between items-center">
-            <h6>Billing Info</h6>
+        <div className="card card-bg mt-10">
+          <div className="card-title flex justify-between items-center">
+            <h3 className="font-poppins font-semibold lg:text-3xl text-2xl">Billing Info</h3>
             <div className="flex items-center gap-4">
               <Checkbox
                 label="Same as shipping info"

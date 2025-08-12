@@ -16,14 +16,12 @@ import PaymentInfo from "./payment-info/PaymentInfo";
 const CompleteOrderPage = () => {
   const engine = new Styletron();
   const [currentStep, setCurrentStep] = useState(0);
-  const [allowStepSwitching, setAllowStepSwitching] = useState<boolean>(false);
-  const [maxStepReached, setMaxStepReached] = useState(0);
   const [formData, setFormData] = useState<any>({});
   const [, scrollTo] = useWindowScroll();
   const [isRefill, setIsRefill] = useState(0);
   const [refillType, setRefillType] = useState<string>("");
   const [patientDetails, setPatientDetails] = useState<IPublicPartnerPrescriptionDetails>();
-  const [clientSecret, setClientSecret] = useState<string>("sk_test_51QoMLOLRJzja7joQkbW8LMzQK7lakqbS1Gg88W2O2l0amhwiPlTZsXgxqtRCRgHhOIG4E3QO8OOtFvOl6pfkJwHS00949JtVuW");
+  const [clientSecret, setClientSecret] = useState<string>("xasda-45456-5454");
   const [hasPeptides, setHasPeptides] = useState(false);
   const [hasOthers, setHasOthers] = useState(true);
   const [params] = useSearchParams();
@@ -75,10 +73,6 @@ const CompleteOrderPage = () => {
   const nextStep = () => {
     const tempNextStep = currentStep + 1;
     setCurrentStep(tempNextStep);
-    setMaxStepReached(tempNextStep);
-    if (tempNextStep == 1) {
-      setAllowStepSwitching(true);
-    }
   };
 
   const prevStep = () => {
