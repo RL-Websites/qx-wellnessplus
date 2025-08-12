@@ -10,6 +10,14 @@ export interface ISignUpRequestPayload {
   u_id: string | null;
 }
 
+export interface IRegistrationRequestPayload {
+  first_name: string;
+  last_name: string;
+  email: string;
+  password?: string;
+  confirm_password?: string;
+}
+
 export interface IForgetPassPayload {
   email: string;
 }

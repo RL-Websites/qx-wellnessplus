@@ -1,4 +1,5 @@
 import { cartItemsAtom } from "@/common/states/product.atom";
+import { Button } from "@mantine/core";
 import { useAtom } from "jotai";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -71,6 +72,21 @@ const OrderSummary = () => {
             <span className="text-foreground font-poppins font-semibold md:text-xl text-lg !border-foreground">$ {totalPrice.toFixed(2)}</span>
           </div>
         </div>
+      </div>
+      <div className="flex justify-between gap-6 pt-4">
+        <Button
+          variant="outline"
+          className="w-[200px]"
+        >
+          Back
+        </Button>
+        <Button
+          type="submit"
+          className="w-[200px]"
+          form="stepTwoForm"
+        >
+          Next
+        </Button>
       </div>
     </div>
   );

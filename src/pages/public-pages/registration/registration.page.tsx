@@ -1,8 +1,17 @@
+import { IServerErrorResponse } from "@/common/api/models/interfaces/ApiResponse.model";
+import { IRegistrationRequestPayload } from "@/common/api/models/interfaces/Auth.model";
+import authApiRepository from "@/common/api/repositories/authRepository";
+import dmlToast from "@/common/configs/toaster.config";
+import useAuthToken from "@/common/hooks/useAuthToken";
+import { userAtom } from "@/common/states/user.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Input, PasswordInput } from "@mantine/core";
-import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import { useAtom } from "jotai";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 
 const registrationSchema = yup.object({
@@ -37,27 +46,46 @@ const registrationSchema = yup.object({
 type registrationSchemaType = yup.InferType<typeof registrationSchema>;
 
 const RegistrationPage = () => {
-  const [isTyping, setIsTyping] = useState(false);
-  const [queryParams, setQueryParams] = useSearchParams();
-  const [doctorDetails, setDoctorDetails] = useState<any>({});
-  const uid = queryParams.get("u_id");
+  const { setAccessToken } = useAuthToken();
+  const [userData, setUserDataAtom] = useAtom(userAtom);
   const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
-    watch,
-    trigger,
     formState: { errors },
   } = useForm<registrationSchemaType>({
     resolver: yupResolver(registrationSchema),
   });
 
-  const passwordValue = watch("password");
+  const RegistrationMutation = useMutation({
+    mutationFn: (payload: IRegistrationRequestPayload) => {
+      return authApiRepository.patientRegistration(payload);
+    },
+  });
+
+  useEffect(() => {
+    if (!userData) {
+      navigate("/registration");
+    }
+  }, []);
 
   const onSubmit = (data: registrationSchemaType) => {
-    const finalData = { ...data, ...{ type: "admin", u_id: uid } };
-    console.log(finalData);
+    const payload = { first_name: data.firstName, last_name: data.lastName, email: data.emailAddress, password: data.password, confirm_password: data.confirmPassword };
+    RegistrationMutation.mutate(payload, {
+      onSuccess: (res) => {
+        setAccessToken(res?.data.access_token);
+        setUserDataAtom(res?.data?.user);
+        navigate("/login");
+      },
+
+      onError: (error) => {
+        const err = error as AxiosError<IServerErrorResponse>;
+        dmlToast.error({
+          title: err?.code == "ERR_NETWORK" ? "We're having trouble connecting to the server. Please try again later" : err?.response?.data?.message,
+        });
+      },
+    });
   };
 
   return (
@@ -142,6 +170,7 @@ const RegistrationPage = () => {
             size="md"
             type="submit"
             className="bg-primary text-white rounded-xl lg:w-[206px]"
+            loading={RegistrationMutation.isPending}
           >
             Register Now
           </Button>
