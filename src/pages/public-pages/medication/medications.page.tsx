@@ -45,7 +45,8 @@ const MedicationsPage = () => {
 
   useEffect(() => {
     if (medicineQuery?.data?.status === 200 && medicineQuery?.data?.data?.data) {
-      setMedicines(medicineQuery.data?.data?.data || []);
+      const medList = medicineQuery.data?.data?.data?.map((item) => ({ ...item, qty: 1 }));
+      setMedicines(medList || []);
     }
   }, [medicineQuery.data?.data?.data]);
 

@@ -8,7 +8,7 @@ import { Avatar, Button, Checkbox, Input, NumberInput } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { StripePaymentElementOptions } from "@stripe/stripe-js";
 import { useAtom } from "jotai";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { shippingBillingSchema } from "./schemaValidation";
 
@@ -36,6 +36,19 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
   const [temptSubmitPayload, setTempSubmitPayload] = useState<any>();
   const [openPaymentConfirmation, handlePaymentConfirmation] = useDisclosure();
   const [capturingPayment, setCapturingPayment] = useState(false);
+  const [totalBillAmount, setTotalBillAmount] = useState<number>(0);
+
+  useEffect(() => {
+    if (cartItems?.length > 0) {
+      let totalBill = 0;
+      cartItems.forEach((item) => {
+        const price = calculatePrice(item);
+        totalBill = totalBill + price;
+      });
+
+      setTotalBillAmount(totalBill);
+    }
+  }, [cartItems]);
 
   const handleCheckboxChange = (checked: boolean) => {
     setIsSameAsPatientInfo(checked);
@@ -95,8 +108,6 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
       shipping: data.shipping,
       billing: data.billing,
       patient: formData?.patient,
-
-      prescription_u_id: patientDetails?.u_id || "",
     };
     setTempSubmitPayload(payload);
     handlePaymentConfirmation.open();
@@ -247,7 +258,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
                 <tbody>
                   <tr>
                     <td className="py-3">Total</td>
-                    <td className="py-3 text-right">${patientDetails?.total_bill_amount}</td>
+                    <td className="py-3 text-right">${totalBillAmount}</td>
                   </tr>
                 </tbody>
               </table>
