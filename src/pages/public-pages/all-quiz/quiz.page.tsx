@@ -5,7 +5,10 @@ import DateOfBirth from "./quizes/DateOfBirth";
 import Gender from "./quizes/Gender";
 import Age from "./quizes/hair-loss/Age";
 import AlopeciaAreata from "./quizes/hair-loss/AlopeciaAreata";
+import Chemotherapy from "./quizes/hair-loss/Chemotherapy";
+import MedicationTaking from "./quizes/hair-loss/MedicationTaking";
 import ScalpInfections from "./quizes/hair-loss/ScalpInfections";
+import ThyroidDisease from "./quizes/hair-loss/ThyroidDisease";
 
 const QuizPage = () => {
   const [activeStep, setActiveStep] = useState(1);
@@ -68,8 +71,29 @@ const QuizPage = () => {
           defaultValues={formData}
         />
       )}
+      {activeStep === 6 && (
+        <MedicationTaking
+          onNext={handleNext}
+          onBack={handleBack}
+          defaultValues={formData}
+        />
+      )}
+      {activeStep === 7 && (
+        <ThyroidDisease
+          onNext={handleNext}
+          onBack={handleBack}
+          defaultValues={formData}
+        />
+      )}
+      {activeStep === 8 && (
+        <Chemotherapy
+          onNext={handleNext}
+          onBack={handleBack}
+          defaultValues={formData}
+        />
+      )}
 
-      {activeStep === 6 && <ThanksStep />}
+      {activeStep === 9 && <ThanksStep />}
     </>
   );
 };
