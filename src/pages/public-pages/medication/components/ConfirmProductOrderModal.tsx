@@ -6,7 +6,7 @@ interface IConfirmationModalProps {
   openModal: boolean;
   onModalClose: (closeReason: boolean) => void;
   onModalPressYes: () => void;
-  onModalPressNo: () => void;
+  onModalPressNo: (qty: number) => void;
   okBtnLoading: boolean;
   medicationInfo?: IPartnerMedicineListItem[];
 }
@@ -57,25 +57,13 @@ function ConfirmProductOrderModal(modalProps: IConfirmationModalProps) {
                   `,
                   }}
                   label={
-                    <div className="flex justify-between items-center">
-                      <span>
+                    <div className="text-center relative">
+                      <span className="text-foreground">
                         {qty} pc{qty === "2" ? "s" : ""}
                       </span>
                       {selectedQty.toString() === qty && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white">
-                          <svg
-                            className="w-4 h-4"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="3"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M5 13l4 4L19 7"
-                            />
-                          </svg>
+                        <span className="absolute top-1/2 right-0 -translate-y-1/2 ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white">
+                          <i className="icon-tick text-base/none"></i>
                         </span>
                       )}
                     </div>
@@ -124,10 +112,9 @@ function ConfirmProductOrderModal(modalProps: IConfirmationModalProps) {
               Do Not Proceed
             </Button>
             <Button
-              className="w-full"
               color="primary"
               size="sm-2"
-              onClick={modalProps.onModalPressNo}
+              onClick={() => modalProps.onModalPressNo(selectedQty)}
               disabled={modalProps.okBtnLoading}
             >
               I Agree
