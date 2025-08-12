@@ -57,11 +57,23 @@ export interface IMedicineListItem {
   is_active: number;
   dosage_directions: IDosageDirection[];
   customer_count: number;
+  customer_medication: ICustomerMedicationRef;
   qty: number;
   pharmacy?: {
     id: number;
     name: string;
   };
+}
+
+export interface ICustomerMedicationRef {
+  id: number;
+  medication_id: number;
+  customer_id: number;
+  price: string;
+  is_active: number;
+  assign_by: null;
+  created_at: Date;
+  updated_at: Date;
 }
 
 export interface IDosageDirection {

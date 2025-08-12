@@ -16,7 +16,7 @@ class OrderRepository {
   }
 
   patientBooking(payload: IPatientBookingPatientInfoDTO) {
-    return this.$http.post<IBaseResponse<any>>("/customer/patient/intake-fillup-step1", payload);
+    return this.$http.post<IBaseResponse<any>>("wellness-plus-qx/patient-data-fill-up", payload);
   }
 
   patientIntakeFormSubmit(payload: IPatientIntakeFormDTO) {
