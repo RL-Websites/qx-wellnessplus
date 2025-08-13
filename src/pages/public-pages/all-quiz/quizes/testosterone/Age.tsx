@@ -64,24 +64,23 @@ const Age = ({ onNext, onBack, defaultValues }: IAgeProps) => {
               />
             </Input.Wrapper>
           </div>
-
-          <div className="flex justify-center gap-6 pt-4">
-            <Button
-              variant="outline"
-              className="w-[200px]"
-              onClick={onBack}
-            >
-              Back
-            </Button>
-            <Button
-              type="submit"
-              className="w-[200px]"
-              form="ageForm"
-            >
-              Next
-            </Button>
-          </div>
         </form>
+      </div>
+      <div className="flex justify-center gap-6 pt-4">
+        <Button
+          variant="outline"
+          className="w-[200px]"
+          onClick={onBack}
+        >
+          Back
+        </Button>
+        <Button
+          type="submit"
+          className="w-[200px]"
+          form="ageForm"
+        >
+          Next
+        </Button>
       </div>
     </div>
   );

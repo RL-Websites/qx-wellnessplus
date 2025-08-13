@@ -12,7 +12,7 @@ export const GenderSchema = yup.object({
 export type GenderSchemaType = yup.InferType<typeof GenderSchema>;
 
 interface IGenderProps {
-  onNext: (data: GenderSchemaType) => void;
+  onNext: (data: GenderSchemaType & { inEligibleUser?: boolean }) => void;
   onBack: () => void;
   defaultValues?: GenderSchemaType;
 }
@@ -39,6 +39,13 @@ export default function Gender({ onNext, onBack, defaultValues }: IGenderProps) 
     clearErrors("gender");
   };
 
+  const handleFormSubmit = (data: GenderSchemaType) => {
+    onNext({
+      ...data,
+      inEligibleUser: data.gender === "Female",
+    });
+  };
+
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <h2 className="heading-text text-foreground uppercase text-center">Gender</h2>
@@ -47,7 +54,7 @@ export default function Gender({ onNext, onBack, defaultValues }: IGenderProps) 
       <div className="card-common-width mx-auto mt-6">
         <form
           id="genderForm"
-          onSubmit={handleSubmit(onNext)}
+          onSubmit={handleSubmit(handleFormSubmit)}
           className="w-full"
         >
           <Radio.Group
@@ -86,24 +93,24 @@ export default function Gender({ onNext, onBack, defaultValues }: IGenderProps) 
             </Group>
           </Radio.Group>
           {errors.gender && <Text className="text-red-500 text-sm mt-5 text-center">{errors.gender.message}</Text>}
-
-          <div className="flex justify-center gap-6 pt-4">
-            <Button
-              variant="outline"
-              className="w-[200px]"
-              onClick={onBack}
-            >
-              Back
-            </Button>
-            <Button
-              type="submit"
-              className="w-[200px]"
-              form="genderForm"
-            >
-              Next
-            </Button>
-          </div>
         </form>
+      </div>
+
+      <div className="flex justify-center gap-6 pt-8">
+        <Button
+          variant="outline"
+          className="w-[200px]"
+          onClick={onBack}
+        >
+          Back
+        </Button>
+        <Button
+          type="submit"
+          className="w-[200px]"
+          form="genderForm"
+        >
+          Next
+        </Button>
       </div>
     </div>
   );
