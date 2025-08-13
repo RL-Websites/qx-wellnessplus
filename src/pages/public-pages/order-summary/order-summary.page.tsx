@@ -4,7 +4,7 @@ import { userAtom } from "@/common/states/user.atom";
 import { Button } from "@mantine/core";
 import { useAtom } from "jotai";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink as RdNavLink, useNavigate } from "react-router-dom";
 
 const OrderSummary = () => {
   const { getAccessToken } = useAuthToken();
@@ -66,7 +66,7 @@ const OrderSummary = () => {
         </div>
         <div className="card bg-opacity-60">
           <h6 className="card-title with-border text-foreground font-poppins font-semibold md:text-xl text-lg !border-foreground">Cart Total</h6>
-          <div className="h-[calc(100%_-_80px)] overflow-y-auto py-2.5 space-y-6">
+          <div className="h-[calc(100%_-_80px)] min-h-[120px] overflow-y-auto py-2.5 space-y-6">
             {cartItems.map((item) => (
               <div
                 key={item.id}
@@ -89,6 +89,8 @@ const OrderSummary = () => {
         <Button
           variant="outline"
           className="w-[200px]"
+          component={RdNavLink}
+          to={`/medications`}
         >
           Back
         </Button>
