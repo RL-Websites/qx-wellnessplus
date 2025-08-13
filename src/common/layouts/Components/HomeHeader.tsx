@@ -3,11 +3,22 @@ import { cartItemsAtom } from "@/common/states/product.atom";
 import { userAtom } from "@/common/states/user.atom";
 import { Button, Image, NavLink } from "@mantine/core";
 import { useAtomValue } from "jotai";
-import { Link, NavLink as RdNavLink } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, NavLink as RdNavLink, useLocation, useNavigate } from "react-router-dom";
 
 const HomeHeader = () => {
   const userData = useAtomValue<IUserData | null>(userAtom);
+  const location = useLocation();
   const cartItems = useAtomValue(cartItemsAtom);
+  const navigate = useNavigate();
+  const [isLoginPage, setIsLoginPage] = useState<boolean>(false);
+  useEffect(() => {
+    if (location.pathname == "/login") {
+      setIsLoginPage(true);
+    } else {
+      setIsLoginPage(false);
+    }
+  }, [location]);
   return (
     <div className="header flex items-center justify-between pb-12">
       <div className="logo flex items-center gap-2">
@@ -34,16 +45,29 @@ const HomeHeader = () => {
             <span className="bg-primary text-white w-7 h-7 inline-block text-center rounded-full absolute -top-2.5 -right-4">{cartItems?.length ?? 0}</span>
           </Link>
         )}
-        <Button
-          variant="outline"
-          size="sm-3"
-          color="primary"
-          className="font-semibold lg:text-lg md:text-base text-sm"
-          component={Link}
-          to="/login"
-        >
-          Login
-        </Button>
+        {isLoginPage ? (
+          <Button
+            variant="outline"
+            size="sm-3"
+            color="primary"
+            className="font-semibold lg:text-lg md:text-base text-sm"
+            component={Link}
+            to="/registration"
+          >
+            Register
+          </Button>
+        ) : (
+          <Button
+            variant="outline"
+            size="sm-3"
+            color="primary"
+            className="font-semibold lg:text-lg md:text-base text-sm"
+            component={Link}
+            to="/login"
+          >
+            Login
+          </Button>
+        )}
       </div>
     </div>
   );
