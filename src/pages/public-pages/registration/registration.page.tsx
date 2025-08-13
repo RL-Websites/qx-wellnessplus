@@ -1,8 +1,18 @@
+import { IServerErrorResponse } from "@/common/api/models/interfaces/ApiResponse.model";
+import { IRegistrationRequestPayload } from "@/common/api/models/interfaces/Auth.model";
+import authApiRepository from "@/common/api/repositories/authRepository";
+import dmlToast from "@/common/configs/toaster.config";
+import useAuthToken from "@/common/hooks/useAuthToken";
+import { cartItemsAtom } from "@/common/states/product.atom";
+import { userAtom } from "@/common/states/user.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Input, PasswordInput } from "@mantine/core";
-import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import { useAtom } from "jotai";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 
 const registrationSchema = yup.object({
@@ -37,27 +47,58 @@ const registrationSchema = yup.object({
 type registrationSchemaType = yup.InferType<typeof registrationSchema>;
 
 const RegistrationPage = () => {
-  const [isTyping, setIsTyping] = useState(false);
-  const [queryParams, setQueryParams] = useSearchParams();
-  const [doctorDetails, setDoctorDetails] = useState<any>({});
-  const uid = queryParams.get("u_id");
+  const { setAccessToken, getAccessToken } = useAuthToken();
+  const [cartItems, setCartItems] = useAtom(cartItemsAtom);
+  const [userData, setUserDataAtom] = useAtom(userAtom);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname == "/registration" && getAccessToken()) {
+      navigate("/order-summary");
+    }
+  }, [location]);
 
   const {
     register,
     handleSubmit,
-    watch,
-    trigger,
     formState: { errors },
   } = useForm<registrationSchemaType>({
     resolver: yupResolver(registrationSchema),
   });
 
-  const passwordValue = watch("password");
+  const RegistrationMutation = useMutation({
+    mutationFn: (payload: IRegistrationRequestPayload) => {
+      return authApiRepository.patientRegistration(payload);
+    },
+  });
+
+  useEffect(() => {
+    if (!userData) {
+      navigate("/registration");
+    }
+  }, [userData]);
 
   const onSubmit = (data: registrationSchemaType) => {
-    const finalData = { ...data, ...{ type: "admin", u_id: uid } };
-    console.log(finalData);
+    const payload = { first_name: data.firstName, last_name: data.lastName, email: data.emailAddress, password: data.password, confirm_password: data.confirmPassword };
+    RegistrationMutation.mutate(payload, {
+      onSuccess: (res) => {
+        setAccessToken(res?.data.access_token);
+        setUserDataAtom(res?.data?.user);
+        if (cartItems?.length > 0) {
+          navigate("/complete-order");
+        } else {
+          navigate("/category");
+        }
+      },
+
+      onError: (error) => {
+        const err = error as AxiosError<IServerErrorResponse>;
+        dmlToast.error({
+          title: err?.code == "ERR_NETWORK" ? "There was a server error. Please try again later" : err?.response?.data?.message,
+        });
+      },
+    });
   };
 
   return (
@@ -67,7 +108,7 @@ const RegistrationPage = () => {
         className="w-full "
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div className="card-common flex flex-col lg:gap-7 md:gap-5 gap-3">
+        <div className="card-common card-common-width flex flex-col lg:gap-7 md:gap-5 gap-3">
           <p className="font-semibold lg:text-3xl md:text-xl text-base text-foreground ">Registration Details</p>
           <Input.Wrapper
             label="First Name"
@@ -142,6 +183,7 @@ const RegistrationPage = () => {
             size="md"
             type="submit"
             className="bg-primary text-white rounded-xl lg:w-[206px]"
+            loading={RegistrationMutation.isPending}
           >
             Register Now
           </Button>

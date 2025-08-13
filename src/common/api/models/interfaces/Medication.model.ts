@@ -49,6 +49,7 @@ export interface IMedicineListItem {
   doctor_fee: string;
   service_fee: string;
   shipping_fee: string;
+  customer_price?: string;
   is_research_only: string;
   image: string;
   total_price?: string;
@@ -56,10 +57,23 @@ export interface IMedicineListItem {
   is_active: number;
   dosage_directions: IDosageDirection[];
   customer_count: number;
+  customer_medication: ICustomerMedicationRef;
+  qty: number;
   pharmacy?: {
     id: number;
     name: string;
   };
+}
+
+export interface ICustomerMedicationRef {
+  id: number;
+  medication_id: number;
+  customer_id: number;
+  price: string;
+  is_active: number;
+  assign_by: null;
+  created_at: Date;
+  updated_at: Date;
 }
 
 export interface IDosageDirection {
@@ -83,17 +97,6 @@ export interface IPrescribedMedicine extends IMedicineListItem {
   refill_interval?: string;
   refill_start_date?: string;
   refill_end_date?: string;
-}
-
-interface IMedicineUserRef {
-  id: number;
-  u_id: string;
-  userable_type: string;
-  first_name: string;
-  last_name: string;
-  name: string;
-  userable_uid: string;
-  prescriber_clinic: string | null;
 }
 
 export interface IAssignMedToPartner {

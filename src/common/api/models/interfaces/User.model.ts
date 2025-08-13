@@ -1,5 +1,5 @@
+import { IAddress } from "./Address.model";
 import { IClinicList } from "./Clinic.model";
-import { Addressable } from "./Doctor.model";
 import { IClientRef } from "./Patient.model";
 
 export interface IUserData {
@@ -21,7 +21,7 @@ export interface IUserData {
   u_id?: string | undefined;
   profile_image?: any;
   address?: string;
-  addressable?: Addressable;
+  addressable?: IAddress;
   city_id?: number;
   state_id?: number;
   zip_code?: number;
@@ -42,8 +42,20 @@ export interface IUserData {
 export interface IUserable {
   dosespot_id: string;
   id: number;
+  first_name: string;
+  last_name: string;
   name: string;
   email: string;
+  cell_phone: string;
+  dob: string;
+  gender: string;
+  address1: string;
+  address2: string;
+  state: string;
+  city: string;
+  zipcode: string;
+  latitude: number;
+  longitude: number;
   type: string;
   slug: string;
   signature?: string;
@@ -51,6 +63,8 @@ export interface IUserable {
   fax: number;
   payment_type: string;
   stripe_connect_id?: string;
+  driving_license_front: string;
+  driving_license_back: string;
 }
 
 export interface IAdminBasicInfoDto {

@@ -6,24 +6,26 @@ import HomeLayout from "./common/layouts/HomeLayout";
 import { AdminAppRoute } from "./pages/admin-app/admin-app.route";
 import { AuthRoute } from "./pages/auth/auth.route";
 
+import { PrivatePagesRoute } from "./pages/private-pages/private-pages.route";
 import HomePage from "./pages/public-pages/home/home.page";
 import { PublicPagesRoute } from "./pages/public-pages/public-pages.route";
 const PanelNavigator = lazy(() => import("./common/components/NavigateToPanel"));
 const NotFoundPage = lazy(() => import("./common/components/not-found.page"));
 
 export const RootRoute = createBrowserRouter([
+  // {
+  //   path: "",
+  //   element: <PanelNavigator />,
+  // },
   {
     path: "",
-    element: <PanelNavigator />,
+    element: <HomePage />,
   },
   {
     path: "",
     children: AuthRoute,
   },
-  {
-    path: "home",
-    element: <HomePage />,
-  },
+
   {
     path: "",
     element: (
@@ -32,6 +34,15 @@ export const RootRoute = createBrowserRouter([
       </HomeLayout>
     ),
     children: PublicPagesRoute,
+  },
+  {
+    path: "",
+    element: (
+      <HomeLayout>
+        <AuthGuard userType={["patient"]} />
+      </HomeLayout>
+    ),
+    children: PrivatePagesRoute,
   },
   {
     path: "",

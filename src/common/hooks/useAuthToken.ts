@@ -1,13 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
 import { useAtom } from "jotai/react";
-import { useNavigate } from "react-router-dom";
 import authApiRepository from "../api/repositories/authRepository";
 import { userAtom } from "../states/user.atom";
 
 export default function useAuthToken() {
   const getAccessToken = () => localStorage.getItem("accessToken");
   const [, setUserData] = useAtom(userAtom);
-  const navigate = useNavigate();
 
   const setAccessToken = (token: string) => {
     localStorage.setItem("accessToken", token);

@@ -7,7 +7,9 @@ export interface ICommonParams {
   status?: string[] | undefined;
   with_schedule?: boolean;
   medication_id?: string;
+  customer_slug?: string;
   noPaginate?: boolean;
+  category?: string;
 }
 
 export interface IGetAssignedPartnerParams extends ICommonParams {

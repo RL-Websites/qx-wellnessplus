@@ -1,3 +1,4 @@
+import { IMedicineListItem } from "@/common/api/models/interfaces/Medication.model";
 import { Locations } from "@/common/constants/locations";
 import { ILocation } from "@/common/models/location";
 import {} from "@/data/dosespot.json";
@@ -100,4 +101,10 @@ export const trimPrice = (price: string) => {
   // debugger;
   console.log(price?.replace(",", ""));
   return price?.replace(",", "") || "";
+};
+
+export const calculatePrice = (item: IMedicineListItem) => {
+  const fees = Number(item.doctor_fee) + Number(item.shipping_fee) + Number(item.service_fee);
+
+  return Number(item.customer_price) * Number(item.qty) - fees * (Number(item.qty) - 1);
 };

@@ -1,13 +1,20 @@
+import { Link } from "react-router-dom";
 import ThumbBg from "./ThumbBg";
 
 interface ICardProps {
   image: string;
   title: string;
+  link: string;
+  onClick?: () => void;
 }
 
 const CategoryCard = (cardProps: ICardProps) => {
   return (
-    <div className="space-y-5 text-center">
+    <Link
+      to={cardProps.link}
+      onClick={cardProps.onClick}
+      className="space-y-5 text-center"
+    >
       {cardProps?.image ? (
         <ThumbBg>
           <img
@@ -19,8 +26,8 @@ const CategoryCard = (cardProps: ICardProps) => {
       ) : (
         ""
       )}
-      <div className="card-title">{cardProps?.title ? <h4>{cardProps?.title}</h4> : ""}</div>
-    </div>
+      <div className="card-title ">{cardProps?.title ? <h4 className="font-poppins font-medium text-3xl">{cardProps?.title}</h4> : ""}</div>
+    </Link>
   );
 };
 

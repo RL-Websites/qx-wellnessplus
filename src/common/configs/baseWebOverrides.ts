@@ -77,7 +77,7 @@ export const BaseWebDatePickerOverrides = {
           style: {
             fontSize: "var(--dml-text-input-fs)",
             height: "var(--dml-input-height)",
-            backgroundColor: "var(--dml-color-grey-btn)",
+            backgroundColor: "var(--dml-color-natural-white)",
             borderRadius: "var(--dml-input-br)",
             boxShadow: "none",
           },

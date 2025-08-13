@@ -3,7 +3,7 @@
   p {
     font-size: var(--dml-para-fs-lg);
     line-height: var(--dml-para-lh-lg);
-    color: var(--dml-color-grey);
+    color: var(--dml-color-forground);
     font-family: "Poppins", sans-serif;
   }
   /* Heading tag and class */
@@ -31,7 +31,6 @@
     font-size: var(--dml-heading-fs-lg);
     line-height: var(--dml-heading-lh-lg);
     font-weight: var(--dml-fw-normal);
-    font-family: "Kenyan Coffee", sans-serif;
   }
   h4,
   .h4,
@@ -39,7 +38,6 @@
     font-size: var(--dml-heading-fs-md);
     line-height: var(--dml-heading-lh-md);
     font-weight: var(--dml-fw-normal);
-    font-family: "Kenyan Coffee", sans-serif;
   }
   h5,
   .h5,
@@ -47,7 +45,6 @@
     font-size: var(--dml-heading-fs-sm);
     line-height: var(--dml-heading-lh-sm);
     font-weight: var(--dml-fw-normal);
-    font-family: "Kenyan Coffee", sans-serif;
   }
   h6,
   .h6,
@@ -55,15 +52,14 @@
     font-size: var(--dml-heading-fs-xs);
     line-height: var(--dml-heading-lh-xs);
     font-weight: var(--dml-fw-normal);
-    font-family: "Kenyan Coffee", sans-serif;
   }
 
   .heading-xxxl {
-    @apply lg:text-[147px] md:text-8xl text-6xl;
+    @apply lg:text-[147px] md:text-8xl text-6xl font-kneyan;
   }
 
   .heading-text {
-    @apply lg:text-[90px] md:text-6xl text-[40px];
+    @apply lg:text-[90px] md:text-6xl text-[40px] font-kneyan;
   }
 
   .heading-xxs {

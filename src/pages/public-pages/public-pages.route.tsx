@@ -1,22 +1,15 @@
-import { Navigate, RouteObject } from "react-router-dom";
+import { RouteObject } from "react-router-dom";
+import QuizPage from "./all-quiz/quiz.page";
+
 import CategoryPage from "./category/category.page";
-import HomePage from "./home/home.page";
+import IneligibleUser from "./ineligible-user/ineligible-user.page";
 import LoadingPage from "./loading/loading.page";
 import Login from "./login/login.page";
 import MedicationsPage from "./medication/medications.page";
 import OrderSummary from "./order-summary/order-summary.page";
-import DateOfBirth from "./quiz/date-of-birth.page";
 import RegistrationPage from "./registration/registration.page";
 
 export const PublicPagesRoute: RouteObject[] = [
-  {
-    path: "",
-    element: <Navigate to="./home" />,
-  },
-  {
-    path: "home",
-    element: <HomePage />,
-  },
   {
     path: "category",
     element: <CategoryPage />,
@@ -42,7 +35,11 @@ export const PublicPagesRoute: RouteObject[] = [
     element: <OrderSummary />,
   },
   {
-    path: "date-of-birth",
-    element: <DateOfBirth />,
+    path: "quiz",
+    element: <QuizPage />,
+  },
+  {
+    path: "ineligible-user",
+    element: <IneligibleUser />,
   },
 ];

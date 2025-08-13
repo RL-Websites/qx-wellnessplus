@@ -5,6 +5,8 @@ export default {
     extend: {
       fontFamily: {
         kneyan: ["Kenyan Coffee", "sans-serif"],
+        poppins: ["Poppins", "sans-serif"],
+        impact: ["Impact", "sans-serif"],
       },
       colors: {
         background: "var(--dml-color-background)",
@@ -12,6 +14,7 @@ export default {
         "foreground/80": "rgba(12,12,12,0.8)",
         primary: "var(--dml-color-primary)",
         "primary-light": "var(--dml-color-primary-light)",
+        "primary-secondary": "var(--dml-color-primary-secondary)",
         secondary: "var(--dml-color-secondary)",
         danger: "var(--dml-color-danger)",
         "danger-light": "var(--dml-color-danger-light)",
@@ -79,11 +82,11 @@ export default {
       },
       container: {
         padding: {
-          DEFAULT: "0",
-          sm: "0",
-          lg: "0",
-          xl: "0",
-          "2xl": "0",
+          DEFAULT: "16px",
+          sm: "16px",
+          lg: "16px",
+          xl: "16px",
+          "2xl": "16px",
         },
       },
       keyframes: {
