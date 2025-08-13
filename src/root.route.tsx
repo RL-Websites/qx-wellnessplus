@@ -39,7 +39,7 @@ export const RootRoute = createBrowserRouter([
     path: "",
     element: (
       <HomeLayout>
-        <Outlet />
+        <AuthGuard userType={["patient"]} />
       </HomeLayout>
     ),
     children: PrivatePagesRoute,

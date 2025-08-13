@@ -1,11 +1,18 @@
+import { IServerErrorResponse } from "@/common/api/models/interfaces/ApiResponse.model";
+import { ILoginRequestPayload } from "@/common/api/models/interfaces/Auth.model";
+import authApiRepository from "@/common/api/repositories/authRepository";
+import dmlToast from "@/common/configs/toaster.config";
 import useAuthToken from "@/common/hooks/useAuthToken";
+import { cartItemsAtom } from "@/common/states/product.atom";
 import { userAtom } from "@/common/states/user.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Input, PasswordInput } from "@mantine/core";
+import { useMutation } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import * as yup from "yup";
 
 const loginSchema = yup.object({
@@ -31,15 +38,17 @@ const Login = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [queryParams, setQueryParams] = useSearchParams();
   const [doctorDetails, setDoctorDetails] = useState<any>({});
-  const { setAuthAccessCode, getAccessToken, setAccessToken } = useAuthToken();
+  const { getAccessToken, setAccessToken } = useAuthToken();
+  const [cartItems] = useAtom(cartItemsAtom);
   const [userData, setUserDataAtom] = useAtom(userAtom);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     if (location.pathname == "/login" && getAccessToken()) {
-      navigate("/category");
+      navigate("/order-summary");
     }
-  }, []);
+  }, [location]);
 
   const {
     register,
@@ -53,9 +62,48 @@ const Login = () => {
 
   const passwordValue = watch("password");
 
+  const LoginMutation = useMutation({
+    mutationFn: (payload: ILoginRequestPayload) => {
+      return authApiRepository.noOtpLogin(payload);
+    },
+  });
+
+  const getAuthQuery = useMutation({
+    mutationFn: () => authApiRepository.authUser(),
+    onSuccess: (res) => {
+      if (res?.status === 200 && res?.data?.data) {
+        setUserDataAtom(res?.data?.data);
+      }
+    },
+  });
+
   const onSubmit = (data: loginSchemaType) => {
-    const finalData = { ...data, ...{ type: "admin", u_id: uid } };
-    console.log(finalData);
+    // const finalData = { ...data, ...{ type: "admin", u_id: uid } };
+    const payload = { email: data.emailAddress, password: data.password };
+    LoginMutation.mutate(payload, {
+      onSuccess: (res) => {
+        // setUserEmail(data.emailAddress);
+        setAccessToken(res?.data.access_token);
+
+        getAuthQuery.mutate(undefined, {
+          onSettled: () => {
+            localStorage.removeItem("otpExpired");
+            if (cartItems?.length > 0) {
+              navigate("/order-summary");
+            } else {
+              navigate("/category");
+            }
+          },
+        });
+      },
+
+      onError: (error) => {
+        const err = error as AxiosError<IServerErrorResponse>;
+        dmlToast.error({
+          title: err.response?.data.message,
+        });
+      },
+    });
   };
 
   return (

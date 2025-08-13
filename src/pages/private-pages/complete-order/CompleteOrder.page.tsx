@@ -6,6 +6,7 @@ import StripeWrapper from "@/common/components/StripeWrapper";
 import dmlToast from "@/common/configs/toaster.config";
 import { customerAtom } from "@/common/states/customer.atom";
 import { cartItemsAtom } from "@/common/states/product.atom";
+import { userAtom } from "@/common/states/user.atom";
 import { calculatePrice } from "@/utils/helper.utils";
 import { useWindowScroll } from "@mantine/hooks";
 import { useMutation } from "@tanstack/react-query";
@@ -21,6 +22,7 @@ import PaymentInfo from "./payment-info/PaymentInfo";
 const CompleteOrderPage = () => {
   const engine = new Styletron();
   const [customerData, setCustomerData] = useAtom(customerAtom);
+  const [userData, setUserData] = useAtom(userAtom);
   const [cartItems, setCartItems] = useAtom(cartItemsAtom);
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<any>({});
@@ -146,7 +148,7 @@ const CompleteOrderPage = () => {
     <section>
       {currentStep == 0 && (
         <BasicInfo
-          patientDetails={patientDetails}
+          userData={userData || undefined}
           onNext={(data) => handleStepSubmit(data)}
           isSubmitting={patientBookingMutation?.isPending}
         />

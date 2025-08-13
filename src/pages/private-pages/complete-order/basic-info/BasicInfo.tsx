@@ -1,4 +1,5 @@
-import { IPatientBookingPatientInfoDTO, IPublicPartnerPrescriptionDetails } from "@/common/api/models/interfaces/PartnerPatient.model";
+import { IPatientBookingPatientInfoDTO } from "@/common/api/models/interfaces/PartnerPatient.model";
+import { IUserData } from "@/common/api/models/interfaces/User.model";
 import AddressAutoGoogle from "@/common/components/AddressAutoGoogle";
 import { BaseWebDatePickerOverrides } from "@/common/configs/baseWebOverrides";
 import dmlToast from "@/common/configs/toaster.config";
@@ -18,12 +19,12 @@ import { Provider as StyletronProvider } from "styletron-react";
 import { BasicInfoFormFieldsType, basicInfoValidationSchema } from "./validationSchema";
 
 interface BasicInfoPropTypes {
-  patientDetails?: IPublicPartnerPrescriptionDetails;
+  userData?: IUserData;
   onNext: (data) => void;
   isSubmitting?: boolean;
 }
 
-const BasicInfo = ({ patientDetails, onNext, isSubmitting }: BasicInfoPropTypes) => {
+const BasicInfo = ({ userData, onNext, isSubmitting }: BasicInfoPropTypes) => {
   const engine = new Styletron();
   const [dob, setDob] = useState<any>(null);
   const [phone, setPhone] = useState<string>();
@@ -88,43 +89,39 @@ const BasicInfo = ({ patientDetails, onNext, isSubmitting }: BasicInfoPropTypes)
   });
 
   useEffect(() => {
-    const tempPatientDetails = patientDetails;
-    if (tempPatientDetails?.status && tempPatientDetails?.status == "invited") {
-      // do nothing
-    } else if (tempPatientDetails?.status && tempPatientDetails?.status == "intake_pending") {
-      navigate(`../partner-patient-intake?prescription_u_id=${prescriptionUId}`);
-    } else if (tempPatientDetails?.status && tempPatientDetails?.status == "pending") {
-      navigate(`../partner-patient-password-setup?prescription_u_id=${prescriptionUId}`);
-    } else {
-      console.log(tempPatientDetails?.status);
-    }
+    const tempPatientDetails = userData;
+
     // setPatientDetails(patientDetailsQuery?.data?.data?.data);
-    setValue("first_name", tempPatientDetails?.patient?.first_name || "", { shouldValidate: true });
-    setValue("last_name", tempPatientDetails?.patient?.last_name || "", { shouldValidate: true });
-    setValue("email", tempPatientDetails?.patient?.email || "", { shouldValidate: true });
-    if (tempPatientDetails?.patient?.dob) {
-      setDob(new Date(tempPatientDetails?.patient?.dob));
-      setValue("dob", [formatDate(tempPatientDetails?.patient?.dob)]);
-      setGender(tempPatientDetails?.patient?.gender);
-      setValue("gender", tempPatientDetails?.patient?.gender);
-      setAddress(tempPatientDetails?.patient?.address1);
-      setValue("address", tempPatientDetails?.patient?.address1);
-      setValue("state", tempPatientDetails?.patient?.state);
-      setValue("city", tempPatientDetails?.patient?.city);
-      setZipCode(tempPatientDetails?.patient?.zipcode);
-      setValue("zip_code", tempPatientDetails?.patient?.zipcode);
-      setValue("latitude", tempPatientDetails?.patient?.latitude);
-      setValue("longitude", tempPatientDetails?.patient?.longitude);
+    setValue("first_name", tempPatientDetails?.userable?.first_name || "", { shouldValidate: true });
+    setValue("last_name", tempPatientDetails?.userable?.last_name || "", { shouldValidate: true });
+    setValue("email", tempPatientDetails?.email || "", { shouldValidate: true });
+    if (tempPatientDetails?.userable?.dob) {
+      setPhone(tempPatientDetails?.userable?.cell_phone);
+
+      setValue("phone", tempPatientDetails?.userable?.cell_phone, { shouldValidate: true });
+      setDob(new Date(tempPatientDetails?.userable?.dob));
+      setValue("dob", [formatDate(tempPatientDetails?.userable?.dob)]);
+      setGender(tempPatientDetails?.userable?.gender);
+      setValue("gender", tempPatientDetails?.userable?.gender);
+      setAddress(tempPatientDetails?.userable?.address1);
+      setValue("address", tempPatientDetails?.userable?.address1);
+      setValue("state", tempPatientDetails?.userable?.state);
+      setValue("city", tempPatientDetails?.userable?.city);
+      setZipCode(tempPatientDetails?.userable?.zipcode);
+      setValue("zip_code", tempPatientDetails?.userable?.zipcode);
+      setValue("latitude", tempPatientDetails?.userable?.latitude);
+      setValue("longitude", tempPatientDetails?.userable?.longitude);
       setFrontFile(
-        tempPatientDetails?.patient?.driving_license_front ? `${import.meta.env.VITE_BASE_PATH}/storage/${tempPatientDetails?.patient?.driving_license_front}` : undefined
+        tempPatientDetails?.userable?.driving_license_front ? `${import.meta.env.VITE_BASE_PATH}/storage/${tempPatientDetails?.userable?.driving_license_front}` : undefined
       );
-      setBackFile(tempPatientDetails?.patient?.driving_license_back ? `${import.meta.env.VITE_BASE_PATH}/storage/${tempPatientDetails?.patient?.driving_license_back}` : undefined);
+      setBackFile(
+        tempPatientDetails?.userable?.driving_license_back ? `${import.meta.env.VITE_BASE_PATH}/storage/${tempPatientDetails?.userable?.driving_license_back}` : undefined
+      );
     }
-  }, [patientDetails]);
+  }, [userData]);
 
   const onSubmit = async (data: BasicInfoFormFieldsType) => {
-    const payload: IPatientBookingPatientInfoDTO = {
-      prescription_u_id: prescriptionUId || "",
+    const payload: Partial<IPatientBookingPatientInfoDTO> = {
       patient: {
         first_name: data?.first_name,
         last_name: data?.last_name,
@@ -169,7 +166,7 @@ const BasicInfo = ({ patientDetails, onNext, isSubmitting }: BasicInfoPropTypes)
             <Input
               type="text"
               {...register("first_name")}
-              // disabled
+              disabled
               error={Boolean(errors?.first_name?.message)}
             />
           </Input.Wrapper>
@@ -182,7 +179,7 @@ const BasicInfo = ({ patientDetails, onNext, isSubmitting }: BasicInfoPropTypes)
             <Input
               type="text"
               {...register("last_name")}
-              // disabled
+              disabled
               error={Boolean(errors?.last_name?.message)}
             />
           </Input.Wrapper>
@@ -195,7 +192,7 @@ const BasicInfo = ({ patientDetails, onNext, isSubmitting }: BasicInfoPropTypes)
             <Input
               type="text"
               {...register("email")}
-              // disabled
+              disabled
               error={Boolean(errors?.email?.message)}
             />
           </Input.Wrapper>
@@ -239,13 +236,13 @@ const BasicInfo = ({ patientDetails, onNext, isSubmitting }: BasicInfoPropTypes)
               className="flex justify-between md:gap-7 gap-3 w-full"
             >
               <Radio
-                value="Male"
+                value="male"
                 label="Male"
                 color="dark"
                 {...register("gender")}
               />
               <Radio
-                value="Female"
+                value="female"
                 label="Female"
                 color="dark"
                 {...register("gender")}

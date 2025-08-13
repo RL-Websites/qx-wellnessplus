@@ -3,6 +3,7 @@ import { IRegistrationRequestPayload } from "@/common/api/models/interfaces/Auth
 import authApiRepository from "@/common/api/repositories/authRepository";
 import dmlToast from "@/common/configs/toaster.config";
 import useAuthToken from "@/common/hooks/useAuthToken";
+import { cartItemsAtom } from "@/common/states/product.atom";
 import { userAtom } from "@/common/states/user.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Input, PasswordInput } from "@mantine/core";
@@ -11,7 +12,7 @@ import { AxiosError } from "axios";
 import { useAtom } from "jotai";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 
 const registrationSchema = yup.object({
@@ -46,9 +47,17 @@ const registrationSchema = yup.object({
 type registrationSchemaType = yup.InferType<typeof registrationSchema>;
 
 const RegistrationPage = () => {
-  const { setAccessToken } = useAuthToken();
+  const { setAccessToken, getAccessToken } = useAuthToken();
+  const [cartItems, setCartItems] = useAtom(cartItemsAtom);
   const [userData, setUserDataAtom] = useAtom(userAtom);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname == "/registration" && getAccessToken()) {
+      navigate("/order-summary");
+    }
+  }, [location]);
 
   const {
     register,
@@ -76,13 +85,17 @@ const RegistrationPage = () => {
       onSuccess: (res) => {
         setAccessToken(res?.data.access_token);
         setUserDataAtom(res?.data?.user);
-        navigate("/login");
+        if (cartItems?.length > 0) {
+          navigate("/complete-order");
+        } else {
+          navigate("/category");
+        }
       },
 
       onError: (error) => {
         const err = error as AxiosError<IServerErrorResponse>;
         dmlToast.error({
-          title: err?.code == "ERR_NETWORK" ? "We're having trouble connecting to the server. Please try again later" : err?.response?.data?.message,
+          title: err?.code == "ERR_NETWORK" ? "There was a server error. Please try again later" : err?.response?.data?.message,
         });
       },
     });
