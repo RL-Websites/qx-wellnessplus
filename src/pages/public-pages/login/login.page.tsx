@@ -149,6 +149,7 @@ const Login = () => {
             size="md"
             type="submit"
             className="bg-primary text-white rounded-xl lg:w-[206px]"
+            loading={LoginMutation.isPending}
           >
             Login
           </Button>
