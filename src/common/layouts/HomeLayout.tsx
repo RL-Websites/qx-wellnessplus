@@ -6,8 +6,8 @@ interface homeLayoutProps {
 const HomeLayout = ({ children }: homeLayoutProps) => {
   return (
     <div className="site-main-bg  lg:pt-16 pt-10 lg:pb-24 pb-10">
-      <HomeHeader />
       <div className="container mx-auto">
+        <HomeHeader />
         <div className="">{children}</div>
       </div>
     </div>
