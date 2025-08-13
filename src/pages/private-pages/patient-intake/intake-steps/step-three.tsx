@@ -19,9 +19,10 @@ interface IStepThreeProps {
   onNext: (data: Step3SchemaType) => void;
   onBack: () => void;
   defaultValues?: Step3SchemaType;
+  isLoading?: boolean;
 }
 
-const StepThree = ({ onNext, onBack, defaultValues }: IStepThreeProps) => {
+const StepThree = ({ onNext, onBack, defaultValues, isLoading = false }: IStepThreeProps) => {
   const {
     handleSubmit,
     setValue,
@@ -120,6 +121,7 @@ const StepThree = ({ onNext, onBack, defaultValues }: IStepThreeProps) => {
           type="submit"
           className="w-[200px]"
           form="stepThreeForm"
+          loading={isLoading}
         >
           Next
         </Button>

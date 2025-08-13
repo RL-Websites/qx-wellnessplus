@@ -29,16 +29,20 @@ const HomeHeader = () => {
           component={RdNavLink}
           className={``}
           classNames={{
-            root: "p-0 h-8",
+            root: "p-0 h-8 bg-transparent",
             label: "flex items-center gap-4",
           }}
           label={
             <>
-              <Image
-                src={customerData?.logo ? `${import.meta.env.VITE_BASE_PATH}/storage/${customerData?.logo}` : ""}
-                alt={customerData?.name || ""}
-                className="lg:w-16 md:w-12 w-10"
-              />
+              {customerData?.logo ? (
+                <Image
+                  src={customerData?.logo ? `${import.meta.env.VITE_BASE_PATH}/storage/${customerData?.logo}` : ""}
+                  alt={customerData?.logo ? customerData?.name : ""}
+                  className="lg:w-16 md:w-12 w-10"
+                />
+              ) : (
+                ""
+              )}
               <span className="text-foreground font-impact md:text-[28px] text-2xl">{customerData?.name}</span>
             </>
           }
@@ -54,7 +58,22 @@ const HomeHeader = () => {
             <span className="bg-primary text-white w-7 h-7 inline-block text-center rounded-full absolute -top-2.5 -right-4">{cartItems?.length ?? 0}</span>
           </Link>
         )}
-        {isLoginPage ? (
+        {userData ? (
+          <Button
+            variant="outline"
+            size="sm-3"
+            color="primary"
+            className="font-semibold lg:text-lg md:text-base text-sm"
+            onClick={() => {
+              setCustomerData(null);
+              sessionStorage.clear();
+              localStorage.clear();
+              window.location.href = "/";
+            }}
+          >
+            Logout
+          </Button>
+        ) : isLoginPage ? (
           <Button
             variant="outline"
             size="sm-3"
