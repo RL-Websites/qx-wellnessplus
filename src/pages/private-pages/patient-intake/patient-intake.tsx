@@ -66,9 +66,10 @@ const PatientIntake = () => {
 
     intakeFormMutation.mutate(payload, {
       onSuccess: (res) => {
-        const prescription_uId = res?.data?.data?.u_id;
+        // const prescription_uId = res?.data?.data?.u_id;
         dmlToast.success({ title: "Intake form submitted successfully" });
-        navigate(`../partner-patient-password-setup?prescription_u_id=${prescription_uId}`);
+        // navigate(`../partner-patient-password-setup?prescription_u_id=${prescription_uId}`);
+        setActiveStep(5);
       },
       onError: (err) => {
         const error = err as AxiosError<IServerErrorResponse>;
