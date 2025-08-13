@@ -1,11 +1,11 @@
 import { selectedCategoryAtom } from "@/common/states/category.atom";
-import ThanksStep from "@/pages/private-pages/patient-intake/intake-steps/thanks-step";
 import { useWindowScroll } from "@mantine/hooks";
 import { useAtomValue } from "jotai"; // ✅ useAtomValue for reading
 import { useState } from "react";
+import MedicationsPage from "../medication/medications.page";
 import DateOfBirth from "./quizes/DateOfBirth";
 import Gender from "./quizes/Gender";
-import Age from "./quizes/hair-growth/Age";
+
 import AlopeciaAreata from "./quizes/hair-growth/AlopeciaAreata";
 import BreastFeeding from "./quizes/hair-growth/BreastFeeding";
 import Chemotherapy from "./quizes/hair-growth/Chemotherapy";
@@ -14,8 +14,12 @@ import MedicationTaking from "./quizes/hair-growth/MedicationTaking";
 import Pcos from "./quizes/hair-growth/Pcos";
 import PlanningPregnancy from "./quizes/hair-growth/PlanningPregnancy";
 import ScalpInfections from "./quizes/hair-growth/ScalpInfections";
+
+import InEligibleUser from "../ineligible-user/ineligible-user.page";
 import ScalpInfectionsTwo from "./quizes/hair-growth/ScalpInfectionsTwo";
 import ThyroidDisease from "./quizes/hair-growth/ThyroidDisease";
+import ScalpInfectionsTestosterone from "./quizes/testosterone/ScalpInfections";
+import Age from "./quizes/weight-loss/Age";
 import CustomerStatus from "./quizes/weight-loss/CustomerStatus";
 
 const QuizPage = () => {
@@ -23,8 +27,9 @@ const QuizPage = () => {
   const [formData, setFormData] = useState<any>({});
   const [totalStep] = useState(20);
   const [, scrollTo] = useWindowScroll();
-
   const selectedCategory = useAtomValue(selectedCategoryAtom);
+  const [eligibleComponent, setEligibleComponent] = useState<React.ReactNode | null>(null);
+  const [customerStatusComponent, setCustomerStatusComponent] = useState<React.ReactNode | null>(null);
 
   const lastStepByCategory: Record<string, number> = {
     "Hair Growth (male)": 8,
@@ -69,13 +74,22 @@ const QuizPage = () => {
           defaultValues={formData}
         />
       )}
-      {activeStep === 2 && (
-        <Gender
-          onNext={handleNext}
-          onBack={handleBack}
-          defaultValues={formData}
-        />
-      )}
+      {eligibleComponent
+        ? eligibleComponent
+        : activeStep === 2 && (
+            <Gender
+              onNext={(data) => {
+                setFormData((prev) => ({ ...prev, ...data }));
+                if (data.inEligibleUser) {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(data);
+                }
+              }}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
 
       {selectedCategory === "Weight Loss" && (
         <>
@@ -86,13 +100,23 @@ const QuizPage = () => {
               defaultValues={formData}
             />
           )}
-          {activeStep === 4 && (
-            <CustomerStatus
-              onNext={handleFinalSubmit}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
+
+          {customerStatusComponent
+            ? customerStatusComponent
+            : activeStep === 4 && (
+                <CustomerStatus
+                  onNext={(data) => {
+                    setFormData((prev) => ({ ...prev, ...data }));
+                    if (data.inEligibleUser) {
+                      setCustomerStatusComponent(<InEligibleUser />);
+                    } else {
+                      handleNext(data);
+                    }
+                  }}
+                  onBack={handleBack}
+                  defaultValues={formData}
+                />
+              )}
         </>
       )}
       {selectedCategory === "Testosterone" && (
@@ -105,7 +129,7 @@ const QuizPage = () => {
             />
           )}
           {activeStep === 4 && (
-            <ScalpInfections
+            <ScalpInfectionsTestosterone
               onNext={handleNext}
               onBack={handleBack}
               defaultValues={formData}
@@ -232,7 +256,7 @@ const QuizPage = () => {
         </>
       )}
 
-      {activeStep > lastStep && <ThanksStep />}
+      {activeStep > lastStep && <MedicationsPage />}
     </>
   );
 };
