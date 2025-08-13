@@ -1,6 +1,9 @@
+import useAuthToken from "@/common/hooks/useAuthToken";
+import { userAtom } from "@/common/states/user.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Input, PasswordInput } from "@mantine/core";
-import { useState } from "react";
+import { useAtom } from "jotai";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import * as yup from "yup";
@@ -28,8 +31,15 @@ const Login = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [queryParams, setQueryParams] = useSearchParams();
   const [doctorDetails, setDoctorDetails] = useState<any>({});
-  const uid = queryParams.get("u_id");
+  const { setAuthAccessCode, getAccessToken, setAccessToken } = useAuthToken();
+  const [userData, setUserDataAtom] = useAtom(userAtom);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (location.pathname == "/login" && getAccessToken()) {
+      navigate("/category");
+    }
+  }, []);
 
   const {
     register,

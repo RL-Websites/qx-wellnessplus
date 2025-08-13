@@ -1,10 +1,14 @@
+import useAuthToken from "@/common/hooks/useAuthToken";
 import { cartItemsAtom } from "@/common/states/product.atom";
+import { userAtom } from "@/common/states/user.atom";
 import { Button } from "@mantine/core";
 import { useAtom } from "jotai";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const OrderSummary = () => {
+  const { getAccessToken } = useAuthToken();
+  const [userData, setUserDataAtom] = useAtom(userAtom);
   const [cartItems, setCartItems] = useAtom(cartItemsAtom);
   const navigate = useNavigate();
 
@@ -19,6 +23,14 @@ const OrderSummary = () => {
       navigate("/medications");
     }
   }, [cartItems, navigate]);
+
+  const handleNext = () => {
+    if (userData && getAccessToken()) {
+      navigate("/complete-order");
+    } else {
+      navigate("/login");
+    }
+  };
 
   return (
     <div className="lg:pt-16 md:pt-10 pt-4">
@@ -84,6 +96,7 @@ const OrderSummary = () => {
           type="submit"
           className="w-[200px]"
           form="stepTwoForm"
+          onClick={handleNext}
         >
           Next
         </Button>

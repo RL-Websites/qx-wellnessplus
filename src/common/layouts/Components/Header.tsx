@@ -5,14 +5,12 @@ import dmlToast from "@/common/configs/toaster.config";
 import useAuthToken from "@/common/hooks/useAuthToken";
 import { incrementNotificationCountAtom, notificationCountAtom, resetNotificationCountAtom } from "@/common/states/sms_notification.atom";
 import { userAtom } from "@/common/states/user.atom";
-import ChangePasswordModal from "@/pages/admin-app/users/components/ChangePasswordModal";
 import { getUserTypeText } from "@/utils/userType.utils";
 import { ActionIcon, Avatar, Divider, Group, Image, Menu, NavLink, Text, Tooltip } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
 import { useMutation } from "@tanstack/react-query";
 import { useAtom, useAtomValue } from "jotai/react";
 import Pusher from "pusher-js";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, NavLink as RdNavLink, useNavigate } from "react-router-dom";
 
 interface HeaderPropsType {
@@ -29,17 +27,24 @@ const Header = ({ onToggle }: HeaderPropsType) => {
   const userData = useAtomValue<IUserData | null>(userAtom);
   const { removeAccessToken, removeCurrentUser, removeAuthAccessCode, removeFcmToken, removeOtpExpired, removeStoredEmail } = useAuthToken();
   const navigate = useNavigate();
-  const [openedNotify, setOpenedNotify] = useDisclosure();
-  const [openChangePassModal, changePassModalHandler] = useDisclosure();
+  // const [openedNotify, setOpenedNotify] = useDisclosure();
+  // const [openChangePassModal, changePassModalHandler] = useDisclosure();
   // const dmlNotification = useNotification();
   const [, incrementNotificationCount] = useAtom(incrementNotificationCountAtom);
   const [, resetNotificationCount] = useAtom(resetNotificationCountAtom);
   const [notificationCount] = useAtom(notificationCountAtom);
+  const [isLoginPage, setIsLoginPage] = useState<boolean>(false);
 
   const handleClick = () => {
     // Reset the notification count
     resetNotificationCount();
   };
+
+  useEffect(() => {
+    if (location.pathname == "/login") {
+      setIsLoginPage(true);
+    }
+  }, []);
 
   useEffect(() => {
     // Initialize Pusher only if the user is 'admin' or 'doctor'
@@ -288,13 +293,13 @@ const Header = ({ onToggle }: HeaderPropsType) => {
               </>
             )}
             <Divider />
-            <Menu.Item
+            {/* <Menu.Item
               onClick={() => changePassModalHandler.open()}
               leftSection={<i className="icon-change_password text-lg/none"></i>}
               className={"text-secondary text-sm py-2.5 px-3"}
             >
               Change Password
-            </Menu.Item>
+            </Menu.Item> */}
             <Divider />
             <Menu.Item
               onClick={logout}
@@ -308,10 +313,10 @@ const Header = ({ onToggle }: HeaderPropsType) => {
             </Menu.Item>
           </Menu.Dropdown>
         </Menu>
-        <ChangePasswordModal
+        {/* <ChangePasswordModal
           openModal={openChangePassModal}
           onModalClose={changePassModalHandler.close}
-        />
+        /> */}
       </Group>
     </Group>
   );
