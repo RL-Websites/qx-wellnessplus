@@ -20,7 +20,7 @@ class OrderRepository {
   }
 
   patientIntakeFormSubmit(payload: IPatientIntakeFormDTO) {
-    return this.$http.post<IBaseResponse<any>>("customer/patient/intake-fillup-step2", payload);
+    return this.$http.post<IBaseResponse<any>>("wellness-plus-qx/patient-data-fill-up-step-2", payload);
   }
 }
 

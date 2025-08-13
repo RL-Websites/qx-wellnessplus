@@ -124,8 +124,7 @@ const CompleteOrderPage = () => {
       onSuccess: (res) => {
         // dmlToast.success({ title: "Patient has been invited successfully." });
         const prescription_uId = res?.data?.data?.u_id;
-        // navigate(`../partner-patient-intake?prescription_u_id=${prescription_uId}`);
-        console.log(res);
+        navigate(`/patient-intake?prescription_u_id=${prescription_uId}`);
       },
       onError: (err) => {
         const error = err as AxiosError<IServerErrorResponse>;

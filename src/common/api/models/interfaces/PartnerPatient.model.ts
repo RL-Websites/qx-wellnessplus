@@ -275,7 +275,6 @@ export interface IPatientInfoDTO {
 
 export interface IPatientIntakeFormDTO {
   prescription_u_id: string;
-  signature: string;
   measurement: IMeasurementObj;
   questionnaires?: (IIntakeFormQuestionItem | undefined)[];
 }
