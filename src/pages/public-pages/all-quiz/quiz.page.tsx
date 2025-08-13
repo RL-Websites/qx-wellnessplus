@@ -1,8 +1,8 @@
 import { selectedCategoryAtom } from "@/common/states/category.atom";
-import ThanksStep from "@/pages/private-pages/patient-intake/intake-steps/thanks-step";
 import { useWindowScroll } from "@mantine/hooks";
 import { useAtomValue } from "jotai"; // ✅ useAtomValue for reading
 import { useState } from "react";
+import MedicationsPage from "../medication/medications.page";
 import DateOfBirth from "./quizes/DateOfBirth";
 import Gender from "./quizes/Gender";
 import Age from "./quizes/hair-growth/Age";
@@ -232,7 +232,7 @@ const QuizPage = () => {
         </>
       )}
 
-      {activeStep > lastStep && <ThanksStep />}
+      {activeStep > lastStep && <MedicationsPage />}
     </>
   );
 };
