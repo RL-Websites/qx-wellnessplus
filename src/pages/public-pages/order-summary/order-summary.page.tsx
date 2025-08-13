@@ -4,7 +4,7 @@ import { userAtom } from "@/common/states/user.atom";
 import { Button } from "@mantine/core";
 import { useAtom } from "jotai";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink as RdNavLink, useNavigate } from "react-router-dom";
 
 const OrderSummary = () => {
   const { getAccessToken } = useAuthToken();
@@ -89,6 +89,8 @@ const OrderSummary = () => {
         <Button
           variant="outline"
           className="w-[200px]"
+          component={RdNavLink}
+          to={`/medications`}
         >
           Back
         </Button>
