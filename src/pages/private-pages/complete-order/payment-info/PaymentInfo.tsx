@@ -1,11 +1,14 @@
 import { IPatientBookingPatientInfoDTO } from "@/common/api/models/interfaces/PartnerPatient.model";
 import AddressAutoGoogle from "@/common/components/AddressAutoGoogle";
 import ConfirmationModal from "@/common/components/ConfirmationModal";
+import dmlToast from "@/common/configs/toaster.config";
+import { customerAtom } from "@/common/states/customer.atom";
 import { cartItemsAtom } from "@/common/states/product.atom";
 import { calculatePrice, getErrorMessage } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Avatar, Button, Checkbox, Input, NumberInput } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { StripePaymentElementOptions } from "@stripe/stripe-js";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
@@ -26,6 +29,7 @@ const paymentOptions: StripePaymentElementOptions = {
 
 const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropTypes) => {
   const [cartItems, setCartItems] = useAtom(cartItemsAtom);
+  const [customerData, setCustomerData] = useAtom(customerAtom);
   const [isSameAsPatientInfo, setIsSameAsPatientInfo] = useState<boolean>(false);
   const [isSameAsShippingInfo, setIsSameAsShippingInfo] = useState<boolean>(false);
 
@@ -100,14 +104,22 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
     console.log(data);
   };
 
-  // const stripe = useStripe();
-  // const elements = useElements();
+  const stripe = useStripe();
+  const elements = useElements();
 
   const submitFormWithPatientCard = (data) => {
+    const medications = cartItems?.map((item) => ({
+      qty_ordered: item.qty,
+      customer_medication_id: item.customer_medication.id, // customerMedication er medication_id
+    }));
     const payload: IPatientBookingPatientInfoDTO = {
+      slug: customerData?.slug || "",
+      cart_total: totalBillAmount || 0,
+      signature: formData.signature,
       shipping: data.shipping,
       billing: data.billing,
       patient: formData?.patient,
+      medications: medications,
     };
     setTempSubmitPayload(payload);
     handlePaymentConfirmation.open();
@@ -115,73 +127,73 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
 
   const handlePayment = async () => {
     setCapturingPayment(true);
-    // if (!stripe || !elements) {
-    //   // Stripe.js hasn't yet loaded.
-    //   // Make sure to disable form submission until Stripe.js has loaded.
-    //   dmlToast.error({ title: "Stripe is not loaded. Please try again later." });
-    //   setCapturingPayment(false);
-    //   handlePaymentConfirmation.close();
-    //   return null;
-    // }
-    // // elements.submit();
-    // const paymentElement = elements.getElement(PaymentElement);
-    // if (!paymentElement) {
-    //   setCapturingPayment(false);
-    //   dmlToast.error({ title: "Stripe payment element not found. Please try again later." });
-    //   handlePaymentConfirmation.close();
-    //   return;
-    // }
+    if (!stripe || !elements) {
+      // Stripe.js hasn't yet loaded.
+      // Make sure to disable form submission until Stripe.js has loaded.
+      dmlToast.error({ title: "Stripe is not loaded. Please try again later." });
+      setCapturingPayment(false);
+      handlePaymentConfirmation.close();
+      return null;
+    }
+    // elements.submit();
+    const paymentElement = elements.getElement(PaymentElement);
+    if (!paymentElement) {
+      setCapturingPayment(false);
+      dmlToast.error({ title: "Stripe payment element not found. Please try again later." });
+      handlePaymentConfirmation.close();
+      return;
+    }
 
-    // const { paymentIntent, error } = await stripe.confirmPayment({
-    //   elements,
-    //   confirmParams: {
-    //     payment_method_data: {
-    //       billing_details: {
-    //         name: patientDetails?.patient.name,
-    //         email: patientDetails?.patient.email,
-    //         phone: patientDetails?.patient.cell_phone,
-    //         address: {
-    //           country: "US",
-    //           postal_code: temptSubmitPayload.billing.zip_code,
-    //           state: temptSubmitPayload.billing.state,
-    //           city: temptSubmitPayload.billing.city,
-    //           line1: temptSubmitPayload.billing.address,
-    //           line2: "",
-    //         },
-    //       },
-    //     },
-    //   },
-    //   redirect: "if_required",
-    // });
+    const { paymentIntent, error } = await stripe.confirmPayment({
+      elements,
+      confirmParams: {
+        payment_method_data: {
+          billing_details: {
+            name: formData?.patient?.first_name + formData?.patient?.first_name,
+            email: formData?.patient.email,
+            phone: formData?.patient.cell_phone,
+            address: {
+              country: "US",
+              postal_code: temptSubmitPayload.billing.zip_code,
+              state: temptSubmitPayload.billing.state,
+              city: temptSubmitPayload.billing.city,
+              line1: temptSubmitPayload.billing.address,
+              line2: "",
+            },
+          },
+        },
+      },
+      redirect: "if_required",
+    });
 
-    // if (error) {
-    //   console.error(error);
-    //   dmlToast.error({ title: error.message || "Payment failed. Please try again." });
-    //   setCapturingPayment(false);
-    //   handlePaymentConfirmation.close();
-    //   return;
-    // }
+    if (error) {
+      console.error(error);
+      dmlToast.error({ title: error.message || "Payment failed. Please try again." });
+      setCapturingPayment(false);
+      handlePaymentConfirmation.close();
+      return;
+    }
 
-    // // const paymentMethodId = paymentMethod.id;
-    // if (paymentIntent) {
-    //   const payload: IPatientBookingPatientInfoDTO = {
-    //     ...temptSubmitPayload,
-    //     payment: {
-    //       amount: paymentIntent.amount,
-    //       client_secret: paymentIntent.client_secret || "",
-    //       payment_method_id: paymentIntent.payment_method || "",
-    //       payment_intent_id: paymentIntent.id,
-    //     },
-    //   };
-    //   // setTempSubmitPayload((prev) => payload);
-    //   handleSubmit(payload);
-    //   setCapturingPayment(false);
-    //   handlePaymentConfirmation.close();
-    // } else {
-    //   dmlToast.error({ title: "Stripe payment intent initializing error. ", message: "Please try again with refreshing the page." });
-    //   setCapturingPayment(false);
-    //   handlePaymentConfirmation.close();
-    // }
+    // const paymentMethodId = paymentMethod.id;
+    if (paymentIntent) {
+      const payload: IPatientBookingPatientInfoDTO = {
+        ...temptSubmitPayload,
+        payment: {
+          amount: paymentIntent.amount,
+          client_secret: paymentIntent.client_secret || "",
+          payment_method_id: paymentIntent.payment_method || "",
+          payment_intent_id: paymentIntent.id,
+        },
+      };
+      // setTempSubmitPayload((prev) => payload);
+      handleSubmit(payload);
+      setCapturingPayment(false);
+      handlePaymentConfirmation.close();
+    } else {
+      dmlToast.error({ title: "Stripe payment intent initializing error. ", message: "Please try again with refreshing the page." });
+      setCapturingPayment(false);
+      handlePaymentConfirmation.close();
+    }
   };
 
   return (
@@ -197,10 +209,10 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
             </div>
             <div className="mt-6">
               {/* <CardElement options={cardOptions} /> */}
-              {/* <PaymentElement
+              <PaymentElement
                 id="payment-element"
                 options={paymentOptions}
-              /> */}
+              />
             </div>
           </div>
           <div className="card  card-bg lg:col-span-3">
@@ -533,7 +545,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
         </Button>
         <Button
           w={256}
-          loading={capturingPayment}
+          loading={isSubmitting}
           onClick={shippingBillingSubmit(submitFormWithPatientCard)}
         >
           Next
@@ -548,7 +560,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
         message="Are you sure you want to proceed for payment?"
         dmlIcon="icon-approve-doctor text-5xl/none"
         okBtnText="Confirm"
-        okBtnLoading={isSubmitting}
+        okBtnLoading={capturingPayment}
       />
     </>
   );

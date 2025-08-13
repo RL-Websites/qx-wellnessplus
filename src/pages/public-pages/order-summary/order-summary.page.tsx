@@ -1,14 +1,30 @@
+import useAuthToken from "@/common/hooks/useAuthToken";
 import { cartItemsAtom } from "@/common/states/product.atom";
+import { userAtom } from "@/common/states/user.atom";
+import { calculatePrice } from "@/utils/helper.utils";
 import { Button } from "@mantine/core";
 import { useAtom } from "jotai";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { NavLink as RdNavLink, useNavigate } from "react-router-dom";
 
 const OrderSummary = () => {
+  const { getAccessToken } = useAuthToken();
+  const [userData] = useAtom(userAtom);
   const [cartItems, setCartItems] = useAtom(cartItemsAtom);
+  const [totalBillAmount, setTotalBillAmount] = useState<number>(0);
   const navigate = useNavigate();
 
-  const totalPrice = cartItems.reduce((sum, item) => sum + (Number(item.price) || 0) * (item.qty || 1), 0);
+  useEffect(() => {
+    if (cartItems?.length > 0) {
+      let totalBill = 0;
+      cartItems.forEach((item) => {
+        const price = calculatePrice(item);
+        totalBill = totalBill + price;
+      });
+
+      setTotalBillAmount(totalBill);
+    }
+  }, [cartItems]);
 
   const handleRemoveItem = (id: number) => {
     setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
@@ -19,6 +35,14 @@ const OrderSummary = () => {
       navigate("/medications");
     }
   }, [cartItems, navigate]);
+
+  const handleNext = () => {
+    if (userData && getAccessToken()) {
+      navigate("/complete-order");
+    } else {
+      navigate("/login");
+    }
+  };
 
   return (
     <div className="lg:pt-16 md:pt-10 pt-4">
@@ -32,7 +56,7 @@ const OrderSummary = () => {
                 className="flex lg:flex-row flex-col gap-5 relative"
               >
                 <img
-                  src={`${import.meta.env.VITE_BASE_PATH}/storage/${item.image}`}
+                  src={item.image ? `${import.meta.env.VITE_BASE_PATH}/storage/${item.image}` : "/placeholder.png"}
                   className="size-32"
                   alt={item.name}
                 />
@@ -54,8 +78,8 @@ const OrderSummary = () => {
         </div>
         <div className="card bg-opacity-60">
           <h6 className="card-title with-border text-foreground font-poppins font-semibold md:text-xl text-lg !border-foreground">Cart Total</h6>
-          <div className="h-[calc(100%_-_80px)] overflow-y-auto py-2.5 space-y-6">
-            {cartItems.map((item) => (
+          <div className="h-[calc(100%_-_80px)] min-h-[120px] overflow-y-auto py-2.5 space-y-6">
+            {cartItems.map((item, idx) => (
               <div
                 key={item.id}
                 className="flex flex-wrap items-center justify-between"
@@ -63,13 +87,13 @@ const OrderSummary = () => {
                 <span className="text-foreground text-lg inline-block max-w-[226px]">
                   {item.name} x {item.qty}
                 </span>
-                <span className="text-foreground text-lg">$ {((Number(item.price) || 0) * (item.qty || 1)).toFixed(2)}</span>
+                <span className="text-foreground text-lg">${calculatePrice(item)}</span>
               </div>
             ))}
           </div>
           <div className="flex items-center justify-between border-t border-t-foreground pt-2">
             <span className="text-foreground font-poppins font-semibold md:text-xl text-lg !border-foreground">Total</span>
-            <span className="text-foreground font-poppins font-semibold md:text-xl text-lg !border-foreground">$ {totalPrice.toFixed(2)}</span>
+            <span className="text-foreground font-poppins font-semibold md:text-xl text-lg !border-foreground">${totalBillAmount}</span>
           </div>
         </div>
       </div>
@@ -77,6 +101,8 @@ const OrderSummary = () => {
         <Button
           variant="outline"
           className="w-[200px]"
+          component={RdNavLink}
+          to={`/medications`}
         >
           Back
         </Button>
@@ -84,6 +110,7 @@ const OrderSummary = () => {
           type="submit"
           className="w-[200px]"
           form="stepTwoForm"
+          onClick={handleNext}
         >
           Next
         </Button>

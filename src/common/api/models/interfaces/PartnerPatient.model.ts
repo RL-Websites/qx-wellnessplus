@@ -228,13 +228,16 @@ export interface IPublicPartnerRef {
 }
 
 export interface IPatientBookingPatientInfoDTO {
-  prescription_u_id?: string;
+  slug: string;
+  cart_total: number;
   is_refill?: boolean;
   refill_type?: string;
   patient: IPatientInfoDTO;
   shipping?: IShippingBillingRef;
   billing?: IShippingBillingRef;
+  signature?: string;
   payment?: IPatientBookingPaymentRef;
+  medications?: any[];
 }
 
 export interface IPatientBookingPaymentRef {
@@ -272,7 +275,6 @@ export interface IPatientInfoDTO {
 
 export interface IPatientIntakeFormDTO {
   prescription_u_id: string;
-  signature: string;
   measurement: IMeasurementObj;
   questionnaires?: (IIntakeFormQuestionItem | undefined)[];
 }

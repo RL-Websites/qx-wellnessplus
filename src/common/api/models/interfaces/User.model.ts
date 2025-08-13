@@ -42,8 +42,20 @@ export interface IUserData {
 export interface IUserable {
   dosespot_id: string;
   id: number;
+  first_name: string;
+  last_name: string;
   name: string;
   email: string;
+  cell_phone: string;
+  dob: string;
+  gender: string;
+  address1: string;
+  address2: string;
+  state: string;
+  city: string;
+  zipcode: string;
+  latitude: number;
+  longitude: number;
   type: string;
   slug: string;
   signature?: string;
@@ -51,6 +63,8 @@ export interface IUserable {
   fax: number;
   payment_type: string;
   stripe_connect_id?: string;
+  driving_license_front: string;
+  driving_license_back: string;
 }
 
 export interface IAdminBasicInfoDto {
