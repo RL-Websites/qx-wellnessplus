@@ -1,13 +1,15 @@
 import { IUserData } from "@/common/api/models/interfaces/User.model";
+import { customerAtom } from "@/common/states/customer.atom";
 import { cartItemsAtom } from "@/common/states/product.atom";
 import { userAtom } from "@/common/states/user.atom";
 import { Button, Image, NavLink } from "@mantine/core";
-import { useAtomValue } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
 import { Link, NavLink as RdNavLink, useLocation, useNavigate } from "react-router-dom";
 
 const HomeHeader = () => {
   const userData = useAtomValue<IUserData | null>(userAtom);
+  const [customerData, setCustomerData] = useAtom(customerAtom);
   const location = useLocation();
   const cartItems = useAtomValue(cartItemsAtom);
   const navigate = useNavigate();
@@ -25,13 +27,20 @@ const HomeHeader = () => {
         <NavLink
           to={userData?.userable_type ? "/category" : "/"}
           component={RdNavLink}
-          className={`p-0 bg-transparent hover:bg-transparent h-8 w-auto border-r border-r-grey-low`}
+          className={``}
+          classNames={{
+            root: "p-0 h-8",
+            label: "flex items-center gap-4",
+          }}
           label={
-            <Image
-              src="/images/logo.svg"
-              alt="QX-Wellness Logo"
-              className="lg:w-[225px] md:w-[200px] w-[150px]"
-            />
+            <>
+              <Image
+                src={customerData?.logo ? `${import.meta.env.VITE_BASE_PATH}/storage/${customerData?.logo}` : ""}
+                alt={customerData?.name || ""}
+                className="lg:w-16 md:w-12 w-10"
+              />
+              <span className="text-foreground font-impact md:text-[28px] text-2xl">{customerData?.name}</span>
+            </>
           }
         />
       </div>
