@@ -34,11 +34,15 @@ const HomeHeader = () => {
           }}
           label={
             <>
-              <Image
-                src={customerData?.logo ? `${import.meta.env.VITE_BASE_PATH}/storage/${customerData?.logo}` : ""}
-                alt={customerData?.name || ""}
-                className="lg:w-16 md:w-12 w-10"
-              />
+              {customerData?.logo ? (
+                <Image
+                  src={customerData?.logo ? `${import.meta.env.VITE_BASE_PATH}/storage/${customerData?.logo}` : ""}
+                  alt={customerData?.logo ? customerData?.name : ""}
+                  className="lg:w-16 md:w-12 w-10"
+                />
+              ) : (
+                ""
+              )}
               <span className="text-foreground font-impact md:text-[28px] text-2xl">{customerData?.name}</span>
             </>
           }
