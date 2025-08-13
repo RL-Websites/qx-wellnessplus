@@ -1,17 +1,28 @@
-import { IQXCustomerDetails } from "@/common/api/models/interfaces/Customer.model";
+import { IUserData } from "@/common/api/models/interfaces/User.model";
 import CustomerApiRepository from "@/common/api/repositories/customerRepositoiry";
 import { customerAtom } from "@/common/states/customer.atom";
+import { userAtom } from "@/common/states/user.atom";
 import { Button, Image, NavLink } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
-import { Link, NavLink as RdNavLink, useSearchParams } from "react-router-dom";
+import { Link, NavLink as RdNavLink, useLocation, useSearchParams } from "react-router-dom";
 
 const HomePage = () => {
-  const [customerData, setCustomerData] = useState<IQXCustomerDetails>();
+  const userData = useAtomValue<IUserData | null>(userAtom);
+  const [customerData, setCustomerData] = useAtom(customerAtom);
   const [globalCustomerData, setGlobalCustomerData] = useAtom(customerAtom);
   const [params] = useSearchParams();
   const slug = params.get("slug");
+  const location = useLocation();
+  const [isLoginPage, setIsLoginPage] = useState<boolean>(false);
+  useEffect(() => {
+    if (location.pathname == "/login") {
+      setIsLoginPage(true);
+    } else {
+      setIsLoginPage(false);
+    }
+  }, [location]);
   const customerDetailsQuery = useQuery({
     queryKey: ["customerDetails", slug],
     queryFn: () => CustomerApiRepository.getCustomerDetails(slug),
@@ -33,18 +44,18 @@ const HomePage = () => {
             <div className="flex flex-col gap-7 lg:py-16 py-10">
               <div className="logo flex items-center gap-2">
                 <NavLink
-                  to="/"
+                  to={userData?.userable_type ? "/category" : "/"}
                   component={RdNavLink}
                   className={`p-0 bg-transparent hover:bg-transparent h-8 w-auto border-r border-r-grey-low`}
                   label={
-                    <div className="flex items-center gap-4">
+                    <>
                       <Image
                         src={customerData?.logo ? `${import.meta.env.VITE_BASE_PATH}/storage/${customerData?.logo}` : ""}
                         alt={customerData?.name || ""}
                         className="lg:w-16 md:w-12 w-10"
                       />
-                      <h2 className="text-foreground font-impact md:text-[28px] text-2xl">{customerData?.name || ""}</h2>
-                    </div>
+                      <span className="text-foreground font-impact md:text-[28px] text-2xl">{customerData?.name}</span>
+                    </>
                   }
                 />
               </div>
