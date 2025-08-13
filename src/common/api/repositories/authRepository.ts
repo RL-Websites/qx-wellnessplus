@@ -7,6 +7,7 @@ import {
   IForgetPassPayload,
   ILoginRequestPayload,
   IOtpVerificationPayload,
+  IRegistrationRequestPayload,
   IResendOtpPayload,
   IResetPasswordPayload,
   ISignUpRequestPayload,
@@ -42,6 +43,10 @@ class AuthApiRepository {
 
   noOtpLogin(payload: ILoginRequestPayload) {
     return this.$http.post<ILoginResponse>("auth/no-otp-sign-in", payload);
+  }
+
+  patientRegistration(payload: IRegistrationRequestPayload) {
+    return this.$http.post<ILoginResponse>("wellness-plus-qx/patient-registration", payload);
   }
 
   signUpRequest(payload: ISignUpRequestPayload) {
