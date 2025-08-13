@@ -1,10 +1,9 @@
 import { ISignUpRequestPayload } from "@/common/api/models/interfaces/Auth.model";
 import authApiRepository from "@/common/api/repositories/authRepository";
-import doctorApiRepository from "@/common/api/repositories/doctorRepository";
 import dmlToast from "@/common/configs/toaster.config";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Group, Image, Input, PasswordInput, Text, Title } from "@mantine/core";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
@@ -31,7 +30,6 @@ type signUPdSchemaType = yup.InferType<typeof signUpSchema>;
 function SignUpPage() {
   const [isTyping, setIsTyping] = useState(false);
   const [queryParams, setQueryParams] = useSearchParams();
-  const [doctorDetails, setDoctorDetails] = useState<any>({});
   const uid = queryParams.get("u_id");
 
   const navigate = useNavigate();
@@ -47,20 +45,6 @@ function SignUpPage() {
   });
 
   const passwordValue = watch("password");
-
-  const doctorDetailsQuery = useQuery({
-    enabled: !!uid,
-    queryKey: ["doctorDetails"],
-    queryFn: () => doctorApiRepository.getDoctorDetails(uid, { page: "sign_up" }),
-  });
-
-  useEffect(() => {
-    if (doctorDetailsQuery.isFetched) {
-      if (doctorDetailsQuery?.data?.status === 200) {
-        setDoctorDetails(doctorDetailsQuery.data?.data?.data);
-      }
-    }
-  }, [doctorDetailsQuery.isFetched, doctorDetailsQuery.data]);
 
   // Use useEffect to trigger validation on each password change
   useEffect(() => {
@@ -120,7 +104,6 @@ function SignUpPage() {
               <Input
                 type="email"
                 readOnly
-                defaultValue={doctorDetails?.email}
               />
             </Input.Wrapper>
             <Input.Wrapper
@@ -130,7 +113,6 @@ function SignUpPage() {
             >
               <Input
                 type="text"
-                defaultValue={doctorDetails?.phone}
                 readOnly
               />
             </Input.Wrapper>

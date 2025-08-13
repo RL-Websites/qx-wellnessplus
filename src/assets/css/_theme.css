@@ -1,6 +1,7 @@
 :root {
-  --dml-color-background: #fbfbfb;
-  --dml-color-foreground: #0c0c0d;
+  --dml-color-background: #F5F5F5;
+  --dml-color-foreground: #333333;
+  --dml-color-green-badge: #CCFFD4;
 
   --dml-color-danger: #FF5A43;
   --dml-color-danger-medium: #e5322c;
@@ -8,6 +9,7 @@
   --dml-color-danger-deep: #bb032a;
   --dml-color-danger-badge: #F13E26;
   --dml-color-danger-light: #fff0ee;
+  --dml-color-warning: #FCFFCCE5;
 
   --dml-color-grey: #7c7c7c;
   --dml-color-grey-medium: #949494;
@@ -19,8 +21,9 @@
   --dml-color-natural-white: #fff;
   --dml-color-disabled: #f1f3f5;
 
-  --dml-color-primary: #175bcc;
+  --dml-color-primary: #6848FF;
   --dml-color-primary-light: #f3f7fc;
+  --dml-color-primary-secondary: #F2EFFF;
 
   --dml-color-secondary: #0c0c0d;
   --dml-color-green: #166c3b;

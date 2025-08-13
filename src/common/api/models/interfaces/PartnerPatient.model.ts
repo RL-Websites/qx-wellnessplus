@@ -113,6 +113,7 @@ export interface IPublicPartnerDetailsRef {
   medication_name: string;
   medication_strength: string;
   medication_price: string;
+  qty_ordered: string;
   selling_price: string;
   doctor_name: any;
   doctor_npi: any;
@@ -135,6 +136,8 @@ export interface IPublicPartnerDetailsMedicationRef {
   service_fee: string;
   shipping_fee: string;
   is_research_only: number;
+  qty?: number;
+  customer_price?: string;
   image: any;
   direction: any;
   is_active: number;
@@ -167,6 +170,8 @@ export interface IPublicPartnerPatientRef {
   city: string;
   state: string;
   zipcode: string;
+  latitude: number;
+  longitude: number;
   driving_license_front: string;
   driving_license_back: string;
   last_intake_submit_date: string;
@@ -223,13 +228,16 @@ export interface IPublicPartnerRef {
 }
 
 export interface IPatientBookingPatientInfoDTO {
-  prescription_u_id: string;
+  slug: string;
+  cart_total: number;
   is_refill?: boolean;
   refill_type?: string;
   patient: IPatientInfoDTO;
-  shipping: IShippingBillingRef;
-  billing: IShippingBillingRef;
-  payment: IPatientBookingPaymentRef;
+  shipping?: IShippingBillingRef;
+  billing?: IShippingBillingRef;
+  signature?: string;
+  payment?: IPatientBookingPaymentRef;
+  medications?: any[];
 }
 
 export interface IPatientBookingPaymentRef {
@@ -257,6 +265,8 @@ export interface IPatientInfoDTO {
   state: string;
   city: string;
   zip_code: string;
+  latitude: number;
+  longitude: number;
   // weight: string;
   // height: string;
   driving_lic_front?: string;
@@ -265,7 +275,6 @@ export interface IPatientInfoDTO {
 
 export interface IPatientIntakeFormDTO {
   prescription_u_id: string;
-  signature: string;
   measurement: IMeasurementObj;
   questionnaires?: (IIntakeFormQuestionItem | undefined)[];
 }

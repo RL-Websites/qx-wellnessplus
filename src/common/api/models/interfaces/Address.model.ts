@@ -32,4 +32,6 @@ export interface IAutoCompleteAddrOutput {
   state: string;
   city: string;
   zip_code?: string;
+  latitude: number;
+  longitude: number;
 }

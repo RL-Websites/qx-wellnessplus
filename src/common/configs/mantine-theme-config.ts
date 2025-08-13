@@ -265,7 +265,7 @@ export const theme = createTheme({
         variant: "filled",
         size: "md",
         radius: "md",
-        color: "secondary",
+        color: "primary",
         classNames: {
           root: "font-medium",
         },
@@ -372,7 +372,7 @@ export const theme = createTheme({
     }),
     Checkbox: Checkbox.extend({
       defaultProps: {
-        color: "foreground",
+        color: "primary",
       },
     }),
     PinInput: PinInput.extend({
