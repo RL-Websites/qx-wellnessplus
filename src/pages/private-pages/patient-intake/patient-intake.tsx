@@ -53,7 +53,7 @@ const PatientIntake = () => {
           ? {
               question: item.label,
               key: item.name,
-              answer: [tempData[item.name]],
+              answer: Array.isArray(tempData[item.name]) ? tempData[item.name] : [tempData[item.name]],
             }
           : null
       )
