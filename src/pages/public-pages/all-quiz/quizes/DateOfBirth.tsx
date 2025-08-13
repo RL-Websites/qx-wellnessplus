@@ -5,7 +5,10 @@ import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 
 const dobSchema = yup.object({
-  dob: yup.date().required("Please provide your date of birth"),
+  dob: yup
+    .date()
+    .required("Please enter your date of birth & age must be at least 18 years old")
+    .max(new Date(new Date().setFullYear(new Date().getFullYear() - 18)), "You must be at least 18 years old"),
 });
 
 type dobSchemaType = yup.InferType<typeof dobSchema>;
@@ -20,17 +23,17 @@ export default function DateOfBirth({ onNext, onBack, defaultValues }: IDobProps
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<dobSchemaType>({
+    defaultValues: {
+      dob: defaultValues?.dob,
+    },
     resolver: yupResolver(dobSchema),
   });
 
-  const onSubmit = (data: dobSchemaType) => {
-    console.log(data);
-  };
-
   return (
-    <div className="lg:pt-16 md:pt-10 pt-4">
+    <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <h2 className="heading-text text-foreground uppercase text-center">Date of Birth</h2>
       <div className="card-common card-common-width">
         <form
@@ -51,29 +54,29 @@ export default function DateOfBirth({ onNext, onBack, defaultValues }: IDobProps
                 <DateInput
                   {...field}
                   clearable
+                  maxDate={new Date(new Date().setFullYear(new Date().getFullYear() - 18))}
                   rightSection={!field.value ? <i className="icon-calender-1 text-2xl"></i> : null}
                 />
               </Input.Wrapper>
             )}
           />
-
-          <div className="flex justify-center gap-6 pt-4">
-            <Button
-              variant="outline"
-              className="w-[200px]"
-              onClick={onBack}
-            >
-              Back
-            </Button>
-            <Button
-              type="submit"
-              className="w-[200px]"
-              form="dobForm"
-            >
-              Next
-            </Button>
-          </div>
         </form>
+      </div>
+      <div className="flex justify-center gap-6 pt-8">
+        <Button
+          variant="outline"
+          className="w-[200px]"
+          onClick={onBack}
+        >
+          Back
+        </Button>
+        <Button
+          type="submit"
+          className="w-[200px]"
+          form="dobForm"
+        >
+          Next
+        </Button>
       </div>
     </div>
   );

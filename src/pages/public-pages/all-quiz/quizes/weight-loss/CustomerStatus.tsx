@@ -11,7 +11,7 @@ export const customerStatusSchema = yup.object({
 export type customerStatusSchemaType = yup.InferType<typeof customerStatusSchema>;
 
 interface ICustomerStatusProps {
-  onNext: (data: customerStatusSchemaType) => void;
+  onNext: (data: customerStatusSchemaType & { inEligibleUser?: boolean }) => void;
   onBack: () => void;
   defaultValues?: customerStatusSchemaType;
 }
@@ -39,69 +39,78 @@ const CustomerStatus = ({ onNext, onBack, defaultValues }: ICustomerStatusProps)
     clearErrors("customerStatus");
   };
 
-  return (
-    <form
-      id="customerStatusForm"
-      onSubmit={handleSubmit(onNext)}
-      className="max-w-xl mx-auto space-y-6"
-    >
-      <div>
-        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Are you new or an existing Wellness Plus customer?</h2>
+  const handleFormSubmit = (data: customerStatusSchemaType) => {
+    onNext({
+      ...data,
+      inEligibleUser: data.customerStatus === "New",
+    });
+  };
 
-        <Radio.Group
-          value={customerStatus}
-          onChange={handleSelect}
-          className="mt-6"
-          error={errors?.customerStatus?.message}
-        >
-          <Group grow>
-            {options.map((option) => (
-              <Radio
-                key={option}
-                value={option}
-                classNames={{
-                  root: "relative w-full",
-                  radio: "hidden",
-                  inner: "hidden",
-                  labelWrapper: "w-full",
-                  label: `
+  return (
+    <div className="px-4 pt-4 md:pt-10 lg:pt-16">
+      <form
+        id="customerStatusForm"
+        onSubmit={handleSubmit(handleFormSubmit)}
+        className="max-w-xl mx-auto space-y-6"
+      >
+        <div>
+          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Are you new or an existing Wellness Plus customer?</h2>
+
+          <Radio.Group
+            value={customerStatus}
+            onChange={handleSelect}
+            className="mt-6"
+            error={errors?.customerStatus?.message}
+          >
+            <Group grow>
+              {options.map((option) => (
+                <Radio
+                  key={option}
+                  value={option}
+                  classNames={{
+                    root: "relative w-full",
+                    radio: "hidden",
+                    inner: "hidden",
+                    labelWrapper: "w-full",
+                    label: `
                     block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointer
                     ${customerStatus === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
                   `,
-                }}
-                label={
-                  <div className="relative text-center">
-                    <span className="text-foreground font-poppins">{option}</span>
-                    {customerStatus === option && (
-                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
-                        <i className="icon-tick text-sm/none"></i>
-                      </span>
-                    )}
-                  </div>
-                }
-              />
-            ))}
-          </Group>
-        </Radio.Group>
-      </div>
+                  }}
+                  label={
+                    <div className="relative text-center">
+                      <span className="text-foreground font-poppins">{option}</span>
+                      {customerStatus === option && (
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                          <i className="icon-tick text-sm/none"></i>
+                        </span>
+                      )}
+                    </div>
+                  }
+                />
+              ))}
+            </Group>
+          </Radio.Group>
+        </div>
 
-      <div className="flex justify-center gap-6 pt-4">
-        <Button
-          variant="outline"
-          className="w-[200px]"
-          onClick={onBack}
-        >
-          Back
-        </Button>
-        <Button
-          type="submit"
-          className="w-[200px]"
-          form="customerStatusForm"
-        >
-          Next
-        </Button>
-      </div>
-    </form>
+        <div className="flex justify-center gap-6 pt-4">
+          <Button
+            variant="outline"
+            className="w-[200px]"
+            onClick={onBack}
+          >
+            Back
+          </Button>
+          <Button
+            type="submit"
+            className="w-[200px]"
+            form="customerStatusForm"
+          >
+            Next
+          </Button>
+        </div>
+      </form>
+    </div>
   );
 };
 
