@@ -158,7 +158,7 @@ const CompleteOrderPage = () => {
           onNext={handleStepSubmit}
           onBack={handleBack}
           defaultValues={formData}
-          patientData={patientDetails}
+          patientData={formData}
           hasOthers={hasOthers}
           hasPeptides={hasPeptides}
         />

@@ -47,6 +47,9 @@ const HomePage = () => {
                   to={userData?.userable_type ? "/category" : "/"}
                   component={RdNavLink}
                   className={`p-0 bg-transparent hover:bg-transparent h-8 w-auto border-r border-r-grey-low`}
+                  classNames={{
+                    label: "flex items-center gap-4",
+                  }}
                   label={
                     <>
                       {customerData?.logo ? (

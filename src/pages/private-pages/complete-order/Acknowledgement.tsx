@@ -1,5 +1,6 @@
 import { IPublicPartnerPrescriptionDetails } from "@/common/api/models/interfaces/PartnerPatient.model";
 import { formatDate } from "@/utils/date.utils";
+import { getFullName } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button } from "@mantine/core";
 import { useRef, useState } from "react";
@@ -357,7 +358,7 @@ const Acknowledgement = ({ onNext, onBack, defaultValues, patientData, hasPeptid
                 </Button>
               </div>
               <p className="text-lg mt-3">
-                Full Name: <span className="text-foreground">{patientData?.patient?.name}</span>
+                Full Name: <span className="text-foreground">{getFullName(patientData?.patient?.first_name, patientData?.patient?.last_name)}</span>
               </p>
               <p className="text-lg">
                 Date: <span className="text-foreground">{formatDate(today)}</span>
