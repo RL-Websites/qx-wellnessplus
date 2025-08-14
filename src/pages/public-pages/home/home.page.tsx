@@ -44,7 +44,7 @@ const HomePage = () => {
             <div className="flex flex-col gap-7 lg:py-16 py-10">
               <div className="logo flex items-center gap-2">
                 <NavLink
-                  to={userData?.userable_type ? "/category" : "/"}
+                  to={userData?.userable_type ? "/" : "/"}
                   component={RdNavLink}
                   className={`p-0 bg-transparent hover:bg-transparent h-8 w-auto border-r border-r-grey-low`}
                   classNames={{
