@@ -34,7 +34,7 @@ const QuizPage = () => {
     "Hair Growth (male)": 7,
     "Hair Growth (female)": 7,
     Testosterone: 4,
-    "Weight Loss": 4,
+    "Weight Loss": 3,
     "Peptides Blends": 5,
   };
 
