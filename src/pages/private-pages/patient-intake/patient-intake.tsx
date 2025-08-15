@@ -39,13 +39,22 @@ const PatientIntake = () => {
   const selectedCategory = useAtomValue(selectedCategoryAtom);
 
   useEffect(() => {
-    if (!selectedCategory) return;
-    const stepsForCategory = categoryStepsMap[selectedCategory] || [1, 2, 3, 4];
-    setVisibleSteps(stepsForCategory);
-    setTotalStep(stepsForCategory.length);
+    // Ensure selectedCategory is always an array
+    const categoriesArray: string[] = Array.isArray(selectedCategory) ? selectedCategory : selectedCategory ? [selectedCategory] : [];
 
-    if (!stepsForCategory.includes(activeStep)) {
-      setActiveStep(stepsForCategory[0]);
+    if (!categoriesArray.length) return;
+
+    // Merge steps from all selected categories
+    const stepsForCategory: number[] = categoriesArray.map((cat) => categoryStepsMap[cat] || []).flat();
+
+    // Remove duplicates and sort
+    const uniqueSteps = Array.from(new Set(stepsForCategory)).sort((a, b) => a - b);
+
+    setVisibleSteps(uniqueSteps);
+    setTotalStep(uniqueSteps.length);
+
+    if (!uniqueSteps.includes(activeStep)) {
+      setActiveStep(uniqueSteps[0]);
     }
   }, [selectedCategory]);
 
