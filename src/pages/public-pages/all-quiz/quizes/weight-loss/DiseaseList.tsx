@@ -45,9 +45,24 @@ const DiseaseList = ({ onNext, onBack, defaultValues }: IDiseaseListProps) => {
     "None of the above",
   ];
 
+  // const toggleValue = (value: string) => {
+  //   const updated = selectedValues.includes(value) ? selectedValues.filter((v) => v !== value) : [...selectedValues, value];
+  //   setValue("diseaseList", updated, { shouldValidate: true });
+  // };
+
   const toggleValue = (value: string) => {
-    const updated = selectedValues.includes(value) ? selectedValues.filter((v) => v !== value) : [...selectedValues, value];
-    setValue("diseaseList", updated, { shouldValidate: true });
+    let updated: (string | undefined)[] = [];
+
+    if (value === "None of the above") {
+      updated = selectedValues?.includes(value) ? [] : [value];
+    } else {
+      updated = selectedValues?.includes(value) ? selectedValues.filter((v) => v !== value) : [...selectedValues.filter((v) => v !== "None of the above"), value];
+    }
+    setValue(
+      "diseaseList",
+      updated.filter((v): v is string => !!v),
+      { shouldValidate: true }
+    );
   };
 
   return (
