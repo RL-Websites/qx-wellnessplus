@@ -1,8 +1,7 @@
 import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { useWindowScroll } from "@mantine/hooks";
 import { useAtomValue } from "jotai"; // ✅ useAtomValue for reading
-import { useState } from "react";
-import MedicationsPage from "../medication/medications.page";
+import { useEffect, useState } from "react";
 import DateOfBirth from "./quizes/DateOfBirth";
 import Gender from "./quizes/Gender";
 
@@ -15,6 +14,7 @@ import Pcos from "./quizes/hair-growth/Pcos";
 import PlanningPregnancy from "./quizes/hair-growth/PlanningPregnancy";
 import ScalpInfections from "./quizes/hair-growth/ScalpInfections";
 
+import { useNavigate } from "react-router-dom";
 import InEligibleUser from "../ineligible-user/ineligible-user.page";
 import ScalpInfectionsTwo from "./quizes/hair-growth/ScalpInfectionsTwo";
 import ThyroidDisease from "./quizes/hair-growth/ThyroidDisease";
@@ -23,6 +23,7 @@ import CustomerStatus from "./quizes/weight-loss/CustomerStatus";
 
 const QuizPage = () => {
   const [activeStep, setActiveStep] = useState(1);
+  const [lastStep, setLastStep] = useState(1);
   const [formData, setFormData] = useState<any>({});
   const [totalStep] = useState(20);
   const [, scrollTo] = useWindowScroll();
@@ -30,23 +31,48 @@ const QuizPage = () => {
   const [eligibleComponent, setEligibleComponent] = useState<React.ReactNode | null>(null);
   const [customerStatusComponent, setCustomerStatusComponent] = useState<React.ReactNode | null>(null);
 
-  const lastStepByCategory: Record<string, number> = {
-    "Hair Growth (male)": 7,
-    "Hair Growth (female)": 7,
-    Testosterone: 4,
-    "Weight Loss": 3,
-    "Peptides Blends": 5,
+  const navigate = useNavigate();
+
+  // const lastStepByCategory: Record<string, number> = {
+  //   "Hair Growth (male)": 7,
+  //   "Hair Growth (female)": 7,
+  //   Testosterone: 4,
+  //   "Weight Loss": 3,
+  //   "Peptides Blends": 5,
+  // };
+
+  const lastStepByCategory = (category: string[]) => {
+    switch (category[0]) {
+      case "Hair Growth":
+        return 7;
+      case "Hair Growth (male)":
+        return 7;
+      case "Hair Growth (female)":
+        return 7;
+      case "Testosterone":
+        return 4;
+      case "Weight Loss":
+        return 3;
+      case "Peptides Blends":
+        return 5;
+      case "Single Peptides":
+        return 5;
+      default:
+        return defaultLastStep;
+    }
   };
 
   const defaultLastStep = 2;
 
-  const lastStep = lastStepByCategory[selectedCategory as string] ?? defaultLastStep;
+  useEffect(() => {
+    const step = lastStepByCategory(selectedCategory || []);
+    setLastStep(step);
+  }, [selectedCategory]);
 
   const handleFinalSubmit = (data: any) => {
     const tempData = { ...formData, ...data };
-    console.log(tempData);
     setFormData(tempData);
-    setActiveStep((prev) => prev + 1);
+    navigate("/medications");
   };
 
   const handleNext = (data: any) => {
@@ -90,7 +116,7 @@ const QuizPage = () => {
             />
           )}
 
-      {selectedCategory === "Weight Loss" && (
+      {selectedCategory?.includes("Weight Loss") && (
         <>
           {customerStatusComponent
             ? customerStatusComponent
@@ -101,7 +127,7 @@ const QuizPage = () => {
                     if (data.inEligibleUser) {
                       setCustomerStatusComponent(<InEligibleUser />);
                     } else {
-                      handleNext(data);
+                      handleFinalSubmit(data);
                     }
                   }}
                   onBack={handleBack}
@@ -110,18 +136,18 @@ const QuizPage = () => {
               )}
         </>
       )}
-      {selectedCategory === "Testosterone" && (
+      {selectedCategory?.includes("Testosterone") && (
         <>
           {activeStep === 3 && (
             <ScalpInfectionsTestosterone
-              onNext={handleNext}
+              onNext={handleFinalSubmit}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
         </>
       )}
-      {selectedCategory === "Hair Growth (male)" && (
+      {selectedCategory?.includes("Hair Growth (Male)") && (
         <>
           {activeStep === 3 && (
             <ScalpInfections
@@ -160,7 +186,7 @@ const QuizPage = () => {
           )}
         </>
       )}
-      {selectedCategory === "Hair Growth (female)" && (
+      {selectedCategory?.includes("Hair Growth (Female)") && (
         <>
           {activeStep === 3 && (
             <PlanningPregnancy
@@ -200,7 +226,7 @@ const QuizPage = () => {
         </>
       )}
 
-      {selectedCategory === "Peptides Blends" && (
+      {selectedCategory?.includes("Peptides Blends") && (
         <>
           {activeStep === 3 && (
             <CustomerStatus
@@ -218,8 +244,6 @@ const QuizPage = () => {
           )}
         </>
       )}
-
-      {activeStep > lastStep && <MedicationsPage />}
     </>
   );
 };
