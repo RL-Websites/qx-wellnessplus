@@ -1,11 +1,15 @@
+import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
+import { getErrorMessage } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Group, Radio } from "@mantine/core";
+import { Button, Radio } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 // Validation schema
 export const step1Schema = yup.object({
-  primaryGoal: yup.string().required("Please select an option."),
+  primaryGoal: yup.string().required("Please select at least one primary goal."),
+  amountOfWeightLoss: yup.string().required("Please select at least one range of weight."),
+  exerciseTimes: yup.string().required("Please select at least one frequency of exercise."),
 });
 
 export type step1SchemaType = yup.InferType<typeof step1Schema>;
@@ -26,49 +30,54 @@ const StepOne = ({ onNext, onBack, defaultValues }: IStepOneProps) => {
   } = useForm<step1SchemaType>({
     defaultValues: {
       primaryGoal: defaultValues?.primaryGoal || "",
+      amountOfWeightLoss: defaultValues?.amountOfWeightLoss || "",
+      exerciseTimes: defaultValues?.exerciseTimes || "",
     },
     resolver: yupResolver(step1Schema),
   });
 
   const primaryGoal = watch("primaryGoal");
+  const amountOfWeightLoss = watch("amountOfWeightLoss");
+  const exerciseTimes = watch("exerciseTimes");
 
-  const options = ["No", "Yes"];
+  const primaryGoalOptions = [
+    "Overall health improvement",
+    "Specific weight loss target",
+    "Increased energy",
+    "Was unable to lose weight and I was unable to follow my dietary and exercise goals",
+  ];
 
-  const handleSelect = (value: string) => {
-    setValue("primaryGoal", value, { shouldValidate: true });
-    clearErrors("primaryGoal");
+  const weightOptions = ["10-20 lbs", "20-30 lbs", "30-40 lbs", "40-50 lbs", "50+ lbs"];
+
+  const exerciseOptions = ["1-2 times per week", "3-4 times per week", "5+ times per week", "Never"];
+
+  const handleSelect = (field: keyof step1SchemaType, value: string) => {
+    setValue(field, value, { shouldValidate: true });
+    clearErrors(field);
   };
 
   return (
     <form
       id="stepOneForm"
       onSubmit={handleSubmit(onNext)}
-      className="max-w-xl mx-auto space-y-6"
+      className="max-w-[800px] mx-auto space-y-6"
     >
-      <div>
-        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">What is your primary goal for weight loss?</h2>
-
+      <div className="space-y-10">
         <Radio.Group
           value={primaryGoal}
-          onChange={handleSelect}
-          className="mt-6"
-          error={errors?.primaryGoal?.message}
+          onChange={(value) => handleSelect("primaryGoal", value)}
+          label="What is your primary goal for weight loss?"
+          error={getErrorMessage(errors?.primaryGoal)}
+          classNames={{
+            label: "!text-3xl pb-2",
+          }}
         >
-          <Group grow>
-            {options.map((option) => (
+          <div className="space-y-5">
+            {primaryGoalOptions.map((option) => (
               <Radio
                 key={option}
                 value={option}
-                classNames={{
-                  root: "relative w-full",
-                  radio: "hidden",
-                  inner: "hidden",
-                  labelWrapper: "w-full",
-                  label: `
-                    block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointer
-                    ${primaryGoal === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
-                  `,
-                }}
+                classNames={getBaseWebRadios(primaryGoal, option)}
                 label={
                   <div className="relative text-center">
                     <span className="text-foreground font-poppins">{option}</span>
@@ -81,7 +90,65 @@ const StepOne = ({ onNext, onBack, defaultValues }: IStepOneProps) => {
                 }
               />
             ))}
-          </Group>
+          </div>
+        </Radio.Group>
+        <Radio.Group
+          value={amountOfWeightLoss}
+          onChange={(value) => handleSelect("amountOfWeightLoss", value)}
+          label="How much weight would you like to lose?"
+          error={getErrorMessage(errors?.amountOfWeightLoss)}
+          classNames={{
+            label: "!text-3xl pb-2",
+          }}
+        >
+          <div className="grid grid-cols-2 gap-5">
+            {weightOptions.map((option) => (
+              <Radio
+                key={option}
+                value={option}
+                classNames={getBaseWebRadios(amountOfWeightLoss, option)}
+                label={
+                  <div className="relative text-center">
+                    <span className="text-foreground font-poppins">{option}</span>
+                    {amountOfWeightLoss === option && (
+                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <i className="icon-tick text-sm/none"></i>
+                      </span>
+                    )}
+                  </div>
+                }
+              />
+            ))}
+          </div>
+        </Radio.Group>
+        <Radio.Group
+          value={exerciseTimes}
+          onChange={(value) => handleSelect("exerciseTimes", value)}
+          label="How often do you exercise?"
+          error={getErrorMessage(errors?.exerciseTimes)}
+          classNames={{
+            label: "!text-3xl pb-2",
+          }}
+        >
+          <div className="grid grid-cols-2 gap-5">
+            {exerciseOptions.map((option) => (
+              <Radio
+                key={option}
+                value={option}
+                classNames={getBaseWebRadios(exerciseTimes, option)}
+                label={
+                  <div className="relative text-center">
+                    <span className="text-foreground font-poppins">{option}</span>
+                    {exerciseTimes === option && (
+                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <i className="icon-tick text-sm/none"></i>
+                      </span>
+                    )}
+                  </div>
+                }
+              />
+            ))}
+          </div>
         </Radio.Group>
       </div>
 
