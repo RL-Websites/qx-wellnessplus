@@ -1,7 +1,9 @@
 "use client";
 
+import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Group, Radio, Text } from "@mantine/core";
+import { useAtom } from "jotai";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -18,6 +20,7 @@ interface IGenderProps {
 }
 
 export default function Gender({ onNext, onBack, defaultValues }: IGenderProps) {
+  const [selectedCategory, setSelectedCategory] = useAtom(selectedCategoryAtom);
   const {
     handleSubmit,
     setValue,
@@ -35,6 +38,14 @@ export default function Gender({ onNext, onBack, defaultValues }: IGenderProps) 
   const options = ["Male", "Female"];
 
   const handleSelect = (value: string) => {
+    if (selectedCategory == "Hair Growth") {
+      if (value == "Male") {
+        setSelectedCategory("Hair Growth (Male)");
+      }
+      if (value == "Female") {
+        setSelectedCategory("Hair Growth (Female)");
+      }
+    }
     setValue("gender", value, { shouldValidate: true });
     clearErrors("gender");
   };

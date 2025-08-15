@@ -6,7 +6,7 @@ import { IMedicineListItem } from "../models/interfaces/Medication.model";
 class CategoryRepository {
   constructor(private $http: AxiosInstance) {}
 
-  getCategoryList(slug: string) {
+  getCategoryList(slug?: string) {
     return $http.get<IBaseResponse<IMedicineListItem>>("/wellness-plus-qx/category", { params: { customer_slug: slug } });
   }
 }
