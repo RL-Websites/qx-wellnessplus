@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 export const step2Schema = yup.object({
-  amountOfWeightLoss: yup.array().min(1, "Please select at least one option.").of(yup.string()).required(),
+  history: yup.array().min(1, "Please select at least one option.").of(yup.string()).required(),
 });
 
 export type Step2SchemaType = yup.InferType<typeof step2Schema>;
@@ -23,18 +23,18 @@ const StepTwo = ({ onNext, onBack, defaultValues }: IStepTwoProps) => {
     formState: { errors },
   } = useForm<Step2SchemaType>({
     defaultValues: {
-      amountOfWeightLoss: defaultValues?.amountOfWeightLoss || [],
+      history: defaultValues?.history || [],
     },
     resolver: yupResolver(step2Schema),
   });
 
-  const selectedValues = watch("amountOfWeightLoss");
+  const selectedValues = watch("history");
 
   const options = ["Heart disease or stroke", "Liver or kidney disease", "Cancer", "Thyroid disorders"];
 
   const toggleValue = (value: string) => {
     const updated = selectedValues.includes(value) ? selectedValues.filter((v) => v !== value) : [...selectedValues, value];
-    setValue("amountOfWeightLoss", updated, { shouldValidate: true });
+    setValue("history", updated, { shouldValidate: true });
   };
 
   return (
@@ -44,7 +44,7 @@ const StepTwo = ({ onNext, onBack, defaultValues }: IStepTwoProps) => {
       className="max-w-xl mx-auto space-y-6"
     >
       <div>
-        <h2 className="text-center text-2xl font-semibold text-foreground font-poppins">How much weight would you like to lose?</h2>
+        <h2 className="text-center text-2xl font-semibold text-foreground font-poppins">Do you have any history of:</h2>
 
         <Grid
           gutter="md"
@@ -79,7 +79,7 @@ const StepTwo = ({ onNext, onBack, defaultValues }: IStepTwoProps) => {
           })}
         </Grid>
 
-        {errors.amountOfWeightLoss && <div className="text-danger text-sm mt-2 text-center">{errors.amountOfWeightLoss.message}</div>}
+        {errors.history && <div className="text-danger text-sm mt-2 text-center">{errors.history.message}</div>}
       </div>
 
       <div className="flex justify-center gap-6 pt-4">
