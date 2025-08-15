@@ -224,9 +224,10 @@ const PatientIntake = () => {
 
       {activeStep === (basicInfo?.patient?.gender === "female" ? (visibleSteps.includes(12) ? 12 : -1) : visibleSteps.includes(11) ? 11 : -1) && (
         <StepEleven
-          onNext={handleNext}
+          onNext={handleFinalSubmit}
           onBack={handleBack}
           defaultValues={formData}
+          isLoading={intakeFormMutation.isPending}
         />
       )}
 
