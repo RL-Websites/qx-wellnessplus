@@ -1,4 +1,4 @@
-export const getBaseWebRadios = (primaryGoal: string, option: string) => ({
+export const getBaseWebRadios = (primaryGoal: string | undefined, option: string) => ({
   root: "relative w-full",
   radio: "hidden",
   inner: "hidden",
