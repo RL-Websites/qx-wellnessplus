@@ -19,7 +19,6 @@ import InEligibleUser from "../ineligible-user/ineligible-user.page";
 import ScalpInfectionsTwo from "./quizes/hair-growth/ScalpInfectionsTwo";
 import ThyroidDisease from "./quizes/hair-growth/ThyroidDisease";
 import ScalpInfectionsTestosterone from "./quizes/testosterone/ScalpInfections";
-import Age from "./quizes/weight-loss/Age";
 import CustomerStatus from "./quizes/weight-loss/CustomerStatus";
 
 const QuizPage = () => {
@@ -32,8 +31,8 @@ const QuizPage = () => {
   const [customerStatusComponent, setCustomerStatusComponent] = useState<React.ReactNode | null>(null);
 
   const lastStepByCategory: Record<string, number> = {
-    "Hair Growth (male)": 8,
-    "Hair Growth (female)": 8,
+    "Hair Growth (male)": 7,
+    "Hair Growth (female)": 7,
     Testosterone: 4,
     "Weight Loss": 4,
     "Peptides Blends": 5,
@@ -93,17 +92,9 @@ const QuizPage = () => {
 
       {selectedCategory === "Weight Loss" && (
         <>
-          {activeStep === 3 && (
-            <Age
-              onNext={handleNext}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-
           {customerStatusComponent
             ? customerStatusComponent
-            : activeStep === 4 && (
+            : activeStep === 3 && (
                 <CustomerStatus
                   onNext={(data) => {
                     setFormData((prev) => ({ ...prev, ...data }));
@@ -122,13 +113,6 @@ const QuizPage = () => {
       {selectedCategory === "Testosterone" && (
         <>
           {activeStep === 3 && (
-            <Age
-              onNext={handleNext}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-          {activeStep === 4 && (
             <ScalpInfectionsTestosterone
               onNext={handleNext}
               onBack={handleBack}
@@ -140,41 +124,34 @@ const QuizPage = () => {
       {selectedCategory === "Hair Growth (male)" && (
         <>
           {activeStep === 3 && (
-            <Age
-              onNext={handleNext}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-          {activeStep === 4 && (
             <ScalpInfections
               onNext={handleNext}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
-          {activeStep === 5 && (
+          {activeStep === 4 && (
             <AlopeciaAreata
               onNext={handleNext}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
-          {activeStep === 6 && (
+          {activeStep === 5 && (
             <MedicationTaking
               onNext={handleNext}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
-          {activeStep === 7 && (
+          {activeStep === 6 && (
             <ThyroidDisease
               onNext={handleNext}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
-          {activeStep === 8 && (
+          {activeStep === 7 && (
             <Chemotherapy
               onNext={handleFinalSubmit}
               onBack={handleBack}
@@ -186,41 +163,34 @@ const QuizPage = () => {
       {selectedCategory === "Hair Growth (female)" && (
         <>
           {activeStep === 3 && (
-            <Age
-              onNext={handleNext}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-          {activeStep === 4 && (
             <PlanningPregnancy
               onNext={handleNext}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
-          {activeStep === 5 && (
+          {activeStep === 4 && (
             <BreastFeeding
               onNext={handleNext}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
-          {activeStep === 6 && (
+          {activeStep === 5 && (
             <Pcos
               onNext={handleNext}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
-          {activeStep === 7 && (
+          {activeStep === 6 && (
             <ScalpInfectionsTwo
               onNext={handleNext}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
-          {activeStep === 8 && (
+          {activeStep === 7 && (
             <HairTreatment
               onNext={handleFinalSubmit}
               onBack={handleBack}
@@ -233,20 +203,13 @@ const QuizPage = () => {
       {selectedCategory === "Peptides Blends" && (
         <>
           {activeStep === 3 && (
-            <Age
-              onNext={handleNext}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-          {activeStep === 4 && (
             <CustomerStatus
               onNext={handleNext}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
-          {activeStep === 5 && (
+          {activeStep === 4 && (
             <Pcos
               onNext={handleFinalSubmit}
               onBack={handleBack}
