@@ -24,7 +24,8 @@ const CategoryPage = () => {
   }, [categoryListQuery.data?.data?.data]);
 
   const handleCategoryClick = (categoryName: string) => {
-    setSelectedCategory(categoryName);
+    const newCategory = [categoryName];
+    setSelectedCategory(newCategory);
     console.log(categoryName);
   };
 

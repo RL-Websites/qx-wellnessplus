@@ -9,7 +9,7 @@ export interface ICommonParams {
   medication_id?: string;
   customer_slug?: string;
   noPaginate?: boolean;
-  category?: string;
+  category?: string[];
 }
 
 export interface IGetAssignedPartnerParams extends ICommonParams {

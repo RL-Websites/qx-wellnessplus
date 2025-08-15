@@ -40,7 +40,7 @@ const MedicationsPage = () => {
   const medicineQuery = useQuery({
     queryKey: ["medicineList", selectedCategory],
     queryFn: fetchMedicine,
-    enabled: !!selectedCategory,
+    enabled: !!selectedCategory && !!selectedCategory.length,
   });
 
   useEffect(() => {

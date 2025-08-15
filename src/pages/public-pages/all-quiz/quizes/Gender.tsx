@@ -39,12 +39,14 @@ export default function Gender({ onNext, onBack, defaultValues }: IGenderProps) 
   const options = ["Male", "Female"];
 
   const handleSelect = (value: string) => {
-    if (selectedCategory == "Hair Growth") {
+    if (selectedCategory?.includes("Hair Growth")) {
       if (value == "Male") {
-        setSelectedCategory("Hair Growth (Male)");
+        const newCat = ["Hair Growth (Male)"];
+        setSelectedCategory(newCat);
       }
       if (value == "Female") {
-        setSelectedCategory("Hair Growth (Female)");
+        const newCat = [..."Hair Growth (Female)"];
+        setSelectedCategory(newCat);
       }
     }
     setValue("gender", value, { shouldValidate: true });
