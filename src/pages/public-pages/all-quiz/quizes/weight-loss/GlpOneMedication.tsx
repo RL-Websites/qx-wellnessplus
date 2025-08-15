@@ -4,63 +4,56 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 // Validation schema
-export const customerStatusSchema = yup.object({
-  customerStatus: yup.string().required("Please select an option."),
+export const glpOneMedicationSchema = yup.object({
+  glpOneMedication: yup.string().required("Please select an option."),
 });
 
-export type customerStatusSchemaType = yup.InferType<typeof customerStatusSchema>;
+export type GlpOneMedicationSchemaType = yup.InferType<typeof glpOneMedicationSchema>;
 
-interface ICustomerStatusProps {
-  onNext: (data: customerStatusSchemaType & { inEligibleUser?: boolean }) => void;
+interface IGlpOneMedicationProps {
+  onNext: (data: GlpOneMedicationSchemaType) => void;
   onBack: () => void;
-  defaultValues?: customerStatusSchemaType;
+  defaultValues?: GlpOneMedicationSchemaType;
 }
 
-const CustomerStatus = ({ onNext, onBack, defaultValues }: ICustomerStatusProps) => {
+const GlpOneMedication = ({ onNext, onBack, defaultValues }: IGlpOneMedicationProps) => {
   const {
     handleSubmit,
     setValue,
     watch,
     clearErrors,
     formState: { errors },
-  } = useForm<customerStatusSchemaType>({
+  } = useForm<GlpOneMedicationSchemaType>({
     defaultValues: {
-      customerStatus: defaultValues?.customerStatus || "",
+      glpOneMedication: defaultValues?.glpOneMedication || "",
     },
-    resolver: yupResolver(customerStatusSchema),
+    resolver: yupResolver(glpOneMedicationSchema),
   });
 
-  const customerStatus = watch("customerStatus");
+  const glpOneMedication = watch("glpOneMedication");
 
-  const options = ["Existing", "New"];
+  const options = ["No", "Yes"];
 
   const handleSelect = (value: string) => {
-    setValue("customerStatus", value, { shouldValidate: true });
-    clearErrors("customerStatus");
+    setValue("glpOneMedication", value, { shouldValidate: true });
+    clearErrors("glpOneMedication");
   };
-
-  // const handleFormSubmit = (data: customerStatusSchemaType) => {
-  //   onNext({
-  //     ...data,
-  //     inEligibleUser: data.customerStatus === "New",
-  //   });
-  // };
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <form
-        id="customerStatusForm"
+        id="glpOneMedicationForm"
         onSubmit={handleSubmit(onNext)}
         className="max-w-xl mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Are you new or an existing Wellness Plus customer?</h2>
+          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Are you currently or have you ever taken GLP-1 medication?</h2>
 
           <Radio.Group
-            value={customerStatus}
+            value={glpOneMedication}
             onChange={handleSelect}
             className="mt-6"
-            error={errors?.customerStatus?.message}
+            error={errors?.glpOneMedication?.message}
           >
             <Group grow>
               {options.map((option) => (
@@ -73,14 +66,14 @@ const CustomerStatus = ({ onNext, onBack, defaultValues }: ICustomerStatusProps)
                     inner: "hidden",
                     labelWrapper: "w-full",
                     label: `
-                    block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointer
-                    ${customerStatus === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
-                  `,
+                      block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointer
+                      ${glpOneMedication === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
+                    `,
                   }}
                   label={
                     <div className="relative text-center">
                       <span className="text-foreground font-poppins">{option}</span>
-                      {customerStatus === option && (
+                      {glpOneMedication === option && (
                         <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
@@ -104,7 +97,7 @@ const CustomerStatus = ({ onNext, onBack, defaultValues }: ICustomerStatusProps)
           <Button
             type="submit"
             className="w-[200px]"
-            form="customerStatusForm"
+            form="glpOneMedicationForm"
           >
             Next
           </Button>
@@ -114,4 +107,4 @@ const CustomerStatus = ({ onNext, onBack, defaultValues }: ICustomerStatusProps)
   );
 };
 
-export default CustomerStatus;
+export default GlpOneMedication;

@@ -3,19 +3,19 @@ import { Button, Input } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
-export const weightLossWeightSchema = yup.object({
-  weightlossweight: yup.string().required("Please add your current weight"),
+export const weightLossHeightSchema = yup.object({
+  weightlossheight: yup.string().required("Please add your current height"),
 });
 
-export type weightLossWeightSchemaType = yup.InferType<typeof weightLossWeightSchema>;
+export type weightLossHeightSchemaType = yup.InferType<typeof weightLossHeightSchema>;
 
-interface IWeightLossWeightProps {
-  onNext: (data: weightLossWeightSchemaType) => void;
+interface IWeightLossHeightProps {
+  onNext: (data: weightLossHeightSchemaType) => void;
   onBack: () => void;
-  defaultValues?: weightLossWeightSchemaType;
+  defaultValues?: weightLossHeightSchemaType;
 }
 
-const WeightLossWeight = ({ onNext, onBack, defaultValues }: IWeightLossWeightProps) => {
+const WeightLossHeight = ({ onNext, onBack, defaultValues }: IWeightLossHeightProps) => {
   const {
     handleSubmit,
     register,
@@ -23,41 +23,41 @@ const WeightLossWeight = ({ onNext, onBack, defaultValues }: IWeightLossWeightPr
     watch,
     clearErrors,
     formState: { errors },
-  } = useForm<weightLossWeightSchemaType>({
+  } = useForm<weightLossHeightSchemaType>({
     defaultValues: {
-      weightlossweight: defaultValues?.weightlossweight || "",
+      weightlossheight: defaultValues?.weightlossheight || "",
     },
-    resolver: yupResolver(weightLossWeightSchema),
+    resolver: yupResolver(weightLossHeightSchema),
   });
 
-  const weightLossWeight = watch("weightlossweight");
+  const weightLossHeight = watch("weightlossheight");
 
   const handleSelect = (value: string) => {
-    setValue("weightlossweight", value, { shouldValidate: true });
-    clearErrors("weightlossweight");
+    setValue("weightlossheight", value, { shouldValidate: true });
+    clearErrors("weightlossheight");
   };
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <div className=" card-common-width mx-auto ">
-        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">What is your current weight?</h2>
+        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">What is your current height?</h2>
         <form
-          id="weightLossWeightForm"
+          id="weightLossHeightForm"
           onSubmit={handleSubmit(onNext)}
           className="max-w-xl mx-auto space-y-6 card-common"
         >
           <div>
             <Input.Wrapper
-              label="Your Weight"
+              label="Your Height"
               required
-              error={errors.weightlossweight?.message ? errors.weightlossweight?.message : false}
+              error={errors.weightlossheight?.message ? errors.weightlossheight?.message : false}
               classNames={{
                 label: "!text-sm md:!text-base lg:!text-lg",
               }}
             >
               <Input
                 type="text"
-                {...register("weightlossweight")}
+                {...register("weightlossheight")}
               />
             </Input.Wrapper>
           </div>
@@ -74,7 +74,7 @@ const WeightLossWeight = ({ onNext, onBack, defaultValues }: IWeightLossWeightPr
         <Button
           type="submit"
           className="w-[200px]"
-          form="weightLossWeightForm"
+          form="weightLossHeightForm"
         >
           Next
         </Button>
@@ -83,4 +83,4 @@ const WeightLossWeight = ({ onNext, onBack, defaultValues }: IWeightLossWeightPr
   );
 };
 
-export default WeightLossWeight;
+export default WeightLossHeight;

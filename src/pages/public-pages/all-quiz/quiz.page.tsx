@@ -3,7 +3,6 @@ import { useWindowScroll } from "@mantine/hooks";
 import { useAtomValue } from "jotai"; // ✅ useAtomValue for reading
 import { useEffect, useState } from "react";
 import DateOfBirth from "./quizes/DateOfBirth";
-import Gender from "./quizes/Gender";
 
 import AlopeciaAreata from "./quizes/hair-growth/AlopeciaAreata";
 import BreastFeeding from "./quizes/hair-growth/BreastFeeding";
@@ -16,10 +15,18 @@ import ScalpInfections from "./quizes/hair-growth/ScalpInfections";
 
 import { useNavigate } from "react-router-dom";
 import InEligibleUser from "../ineligible-user/ineligible-user.page";
+
 import ScalpInfectionsTwo from "./quizes/hair-growth/ScalpInfectionsTwo";
 import ThyroidDisease from "./quizes/hair-growth/ThyroidDisease";
 import ScalpInfectionsTestosterone from "./quizes/testosterone/ScalpInfections";
 import CustomerStatus from "./quizes/weight-loss/CustomerStatus";
+import DiseaseList from "./quizes/weight-loss/DiseaseList";
+import GenderWeightLoss from "./quizes/weight-loss/Gender";
+import GlpOneMedication from "./quizes/weight-loss/GlpOneMedication";
+import WeightLossHeight from "./quizes/weight-loss/Height";
+import InjectionDate from "./quizes/weight-loss/InjectionDate";
+import WeightLossWeight from "./quizes/weight-loss/Weight";
+import WeightLossGoal from "./quizes/weight-loss/WeightLossGoal";
 
 const QuizPage = () => {
   const [activeStep, setActiveStep] = useState(1);
@@ -99,25 +106,16 @@ const QuizPage = () => {
           defaultValues={formData}
         />
       )}
-      {eligibleComponent
-        ? eligibleComponent
-        : activeStep === 2 && (
-            <Gender
-              onNext={(data) => {
-                setFormData((prev) => ({ ...prev, ...data }));
-                if (data.inEligibleUser) {
-                  setEligibleComponent(<InEligibleUser />);
-                } else {
-                  handleNext(data);
-                }
-              }}
+
+      {selectedCategory?.includes("Weight Loss") && (
+        <>
+          {activeStep === 2 && (
+            <GenderWeightLoss
+              onNext={handleNext}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
-
-      {selectedCategory?.includes("Weight Loss") && (
-        <>
           {customerStatusComponent
             ? customerStatusComponent
             : activeStep === 3 && (
@@ -127,15 +125,67 @@ const QuizPage = () => {
                     if (data.inEligibleUser) {
                       setCustomerStatusComponent(<InEligibleUser />);
                     } else {
-                      handleFinalSubmit(data);
+                      handleNext(data);
                     }
                   }}
                   onBack={handleBack}
                   defaultValues={formData}
                 />
               )}
+
+          {activeStep === 4 && (
+            <WeightLossWeight
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+
+          {activeStep === 5 && (
+            <WeightLossHeight
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {/* {activeStep === 6 && (
+            <WeightLossPregnant
+              onNext={handleFinalSubmit}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )} */}
+          {activeStep === 6 && (
+            <GlpOneMedication
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {activeStep === 7 && (
+            <InjectionDate
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {activeStep === 8 && (
+            <WeightLossGoal
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {activeStep === 9 && (
+            <DiseaseList
+              onNext={handleFinalSubmit}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
         </>
       )}
+
       {selectedCategory?.includes("Testosterone") && (
         <>
           {activeStep === 3 && (
