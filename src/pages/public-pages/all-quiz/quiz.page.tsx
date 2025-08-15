@@ -19,12 +19,14 @@ import InEligibleUser from "../ineligible-user/ineligible-user.page";
 import ScalpInfectionsTwo from "./quizes/hair-growth/ScalpInfectionsTwo";
 import ThyroidDisease from "./quizes/hair-growth/ThyroidDisease";
 import ScalpInfectionsTestosterone from "./quizes/testosterone/ScalpInfections";
+import BMI from "./quizes/weight-loss/Bmi";
 import CustomerStatus from "./quizes/weight-loss/CustomerStatus";
 import DiseaseList from "./quizes/weight-loss/DiseaseList";
 import GenderWeightLoss from "./quizes/weight-loss/Gender";
 import GlpOneMedication from "./quizes/weight-loss/GlpOneMedication";
 import WeightLossHeight from "./quizes/weight-loss/Height";
 import InjectionDate from "./quizes/weight-loss/InjectionDate";
+import MultipleMedicine from "./quizes/weight-loss/MultipleMedicine";
 import WeightLossWeight from "./quizes/weight-loss/Weight";
 import WeightLossGoal from "./quizes/weight-loss/WeightLossGoal";
 
@@ -148,6 +150,13 @@ const QuizPage = () => {
               defaultValues={formData}
             />
           )}
+          {activeStep === 6 && (
+            <BMI
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
           {/* {activeStep === 6 && (
             <WeightLossPregnant
               onNext={handleFinalSubmit}
@@ -155,28 +164,35 @@ const QuizPage = () => {
               defaultValues={formData}
             />
           )} */}
-          {activeStep === 6 && (
+          {activeStep === 7 && (
             <GlpOneMedication
               onNext={handleNext}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
-          {activeStep === 7 && (
+          {activeStep === 8 && (
             <InjectionDate
               onNext={handleNext}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
-          {activeStep === 8 && (
+          {activeStep === 9 && (
             <WeightLossGoal
               onNext={handleNext}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
-          {activeStep === 9 && (
+          {activeStep === 10 && (
+            <MultipleMedicine
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {activeStep === 11 && (
             <DiseaseList
               onNext={handleFinalSubmit}
               onBack={handleBack}
