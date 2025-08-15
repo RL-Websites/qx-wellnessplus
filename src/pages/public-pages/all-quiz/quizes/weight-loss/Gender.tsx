@@ -63,7 +63,6 @@ export default function GenderWeightLoss({ onNext, onBack, defaultValues }: IGen
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <h2 className="heading-text text-foreground uppercase text-center">Gender</h2>
-      <h4 className="mt-12 text-center text-3xl font-poppins font-semibold text-foreground">Biological sex</h4>
 
       <div className="card-common-width mx-auto mt-6">
         <form

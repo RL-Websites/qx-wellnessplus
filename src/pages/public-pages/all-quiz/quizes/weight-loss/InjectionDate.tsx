@@ -6,7 +6,6 @@ import { BaseProvider, LightTheme } from "baseui";
 import { Datepicker as UberDatePicker } from "baseui/datepicker";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
 import { Client as Styletron } from "styletron-engine-monolithic";
 import { Provider as StyletronProvider } from "styletron-react";
 import * as yup from "yup";
@@ -87,8 +86,7 @@ export default function InjectionDate({ onNext, onBack, defaultValues }: IInject
         <Button
           variant="outline"
           className="w-[200px]"
-          component={Link}
-          to="/category"
+          onClick={onBack}
         >
           Back
         </Button>

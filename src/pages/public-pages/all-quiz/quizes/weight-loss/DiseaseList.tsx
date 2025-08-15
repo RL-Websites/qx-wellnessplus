@@ -58,6 +58,8 @@ const DiseaseList = ({ onNext, onBack, defaultValues }: IDiseaseListProps) => {
     } else {
       updated = selectedValues?.includes(value) ? selectedValues.filter((v) => v !== value) : [...selectedValues.filter((v) => v !== "None of the above"), value];
     }
+
+    // Ensure only string values are set
     setValue(
       "diseaseList",
       updated.filter((v): v is string => !!v),
