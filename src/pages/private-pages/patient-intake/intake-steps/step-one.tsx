@@ -62,7 +62,7 @@ const StepOne = ({ onNext, onBack, defaultValues }: IStepOneProps) => {
       onSubmit={handleSubmit(onNext)}
       className="max-w-[800px] mx-auto space-y-6"
     >
-      <div className="space-y-5">
+      <div className="space-y-10">
         <Radio.Group
           value={primaryGoal}
           onChange={(value) => handleSelect("primaryGoal", value)}
