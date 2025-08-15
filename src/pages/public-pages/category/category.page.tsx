@@ -24,9 +24,13 @@ const CategoryPage = () => {
   }, [categoryListQuery.data?.data?.data]);
 
   const handleCategoryClick = (categoryName: string) => {
-    const newCategory = [categoryName];
-    setSelectedCategory(newCategory);
-    console.log(categoryName);
+    if (categoryName.includes("Peptides")) {
+      const newCategory = ["Single Peptides", "Peptides Blends"];
+      setSelectedCategory(newCategory);
+    } else {
+      const newCategory = [categoryName];
+      setSelectedCategory(newCategory);
+    }
   };
 
   const categoryImages = {
