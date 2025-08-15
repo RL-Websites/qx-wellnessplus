@@ -1,5 +1,6 @@
 "use client";
 
+import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
 import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Group, Radio, Text } from "@mantine/core";
@@ -79,16 +80,7 @@ export default function Gender({ onNext, onBack, defaultValues }: IGenderProps) 
                 <Radio
                   key={option}
                   value={option}
-                  classNames={{
-                    root: "relative w-full",
-                    radio: "hidden",
-                    inner: "hidden",
-                    labelWrapper: "w-full",
-                    label: `
-                              block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointer
-                              ${gender === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
-                            `,
-                  }}
+                  classNames={getBaseWebRadios(gender, option)}
                   label={
                     <div className="relative text-center">
                       <span className="text-foreground font-poppins">{option}</span>
