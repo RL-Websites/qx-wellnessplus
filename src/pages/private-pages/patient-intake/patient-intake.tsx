@@ -39,7 +39,7 @@ const categoryStepsMap: Record<string, number[]> = {
 const PatientIntake = () => {
   const [activeStep, setActiveStep] = useState(1);
   const [formData, setFormData] = useState<any>({});
-  const [totalStep, setTotalStep] = useState(6);
+  const [totalStep, setTotalStep] = useState(13);
   const [visibleSteps, setVisibleSteps] = useState<number[]>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12]);
   const [, scrollTo] = useWindowScroll();
   const [params] = useSearchParams();
@@ -174,7 +174,7 @@ const PatientIntake = () => {
         />
       )}
 
-      {activeStep === (basicInfo?.patient?.gender === "female" ? (visibleSteps.includes(6) ? 6 : -1) : visibleSteps.includes(5) ? 5 : -1) && (
+      {activeStep === (basicInfo?.patient?.gender === "female" ? (visibleSteps.includes(6) ? 6 : -1) : visibleSteps.includes(0) ? 0 : 0) && (
         <StepFive
           onNext={handleNext}
           onBack={handleBack}
