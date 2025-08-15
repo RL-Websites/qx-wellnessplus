@@ -1,5 +1,7 @@
+import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
+import { getErrorMessage } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button } from "@mantine/core";
+import { Button, Radio } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -16,13 +18,14 @@ export const step11Schema = yup.object({
 });
 
 export type step11SchemaType = yup.InferType<typeof step11Schema>;
-interface Step11Props {
-  onNext: (data: any) => void;
+
+interface StepElevenProps {
+  onNext: (data: step11SchemaType) => void;
   onBack: () => void;
   defaultValues?: step11SchemaType;
 }
 
-const StepEleven = ({ onNext, onBack, defaultValues }: Step11Props) => {
+const StepEleven = ({ onNext, onBack, defaultValues }: StepElevenProps) => {
   const {
     register,
     handleSubmit,
@@ -30,7 +33,7 @@ const StepEleven = ({ onNext, onBack, defaultValues }: Step11Props) => {
     watch,
     clearErrors,
     formState: { errors },
-  } = useForm({
+  } = useForm<step11SchemaType>({
     defaultValues: {
       gallbladder: defaultValues?.gallbladder || "",
       removedGallbladder: defaultValues?.removedGallbladder || "",
@@ -43,125 +46,138 @@ const StepEleven = ({ onNext, onBack, defaultValues }: Step11Props) => {
   const removedGallbladder = watch("removedGallbladder");
   const whenGallbladderRemoved = watch("whenGallbladderRemoved");
 
+  const showRemovedGallbladder = gallbladder === "Yes";
+  const showWhenRemoved = removedGallbladder === "Yes";
+
+  const yesNoOptions = ["Yes", "No"];
+  const removedTimeOptions = ["Within the last 2 months", "More than 2 months ago"];
+
+  const handleSelect = (field: keyof step11SchemaType, value: string) => {
+    setValue(field, value, { shouldValidate: true });
+    clearErrors(field);
+    if (field === "gallbladder") {
+      setValue("removedGallbladder", "");
+      setValue("whenGallbladderRemoved", "");
+    }
+    if (field === "removedGallbladder") {
+      setValue("whenGallbladderRemoved", "");
+    }
+  };
+
   return (
-    <>
-      <form
-        id="step11Form"
-        onSubmit={handleSubmit(onNext)}
-        className="card divide-y pt-10 space-y-10 min-h-[200px]"
+    <form
+      id="step11Form"
+      onSubmit={handleSubmit(onNext)}
+      className="max-w-[800px] mx-auto space-y-10 pt-10"
+    >
+      {/* Gallbladder history */}
+      <Radio.Group
+        value={gallbladder}
+        label="Do you have a personal history of gallbladder disease?"
+        error={getErrorMessage(errors?.gallbladder)}
+        classNames={{ label: "!text-3xl pb-2" }}
       >
-        {/* Gallbladder Question */}
-        <div>
-          <p className="text-base font-medium mb-4">Do you have a personal history of gallbladder disease?</p>
-          <div className="flex flex-col space-y-4">
-            {["Yes", "No"].map((option) => (
-              <label
+        <div className="grid grid-cols-2 gap-5">
+          {yesNoOptions.map((option) => (
+            <Radio
+              key={option}
+              value={option}
+              classNames={getBaseWebRadios(gallbladder, option)}
+              label={
+                <div className="relative text-center">
+                  <span className="text-foreground font-poppins">{option}</span>
+                  {gallbladder === option && (
+                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                      <i className="icon-tick text-sm/none"></i>
+                    </span>
+                  )}
+                </div>
+              }
+              onChange={() => handleSelect("gallbladder", option)}
+            />
+          ))}
+        </div>
+      </Radio.Group>
+
+      {/* Gallbladder removed */}
+      {showRemovedGallbladder && (
+        <Radio.Group
+          value={removedGallbladder}
+          label="Did you have your gallbladder removed?"
+          error={getErrorMessage(errors?.removedGallbladder)}
+          classNames={{ label: "!text-2xl pb-2" }}
+        >
+          <div className="grid grid-cols-2 gap-5">
+            {yesNoOptions.map((option) => (
+              <Radio
                 key={option}
-                className={`block w-full px-6 py-4 rounded-2xl border text-center cursor-pointer
-                  ${gallbladder === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
-                `}
-              >
-                <input
-                  type="radio"
-                  value={option}
-                  {...register("gallbladder")}
-                  className="hidden"
-                  onChange={() => {
-                    setValue("gallbladder", option);
-                    setValue("removedGallbladder", "");
-                    setValue("whenGallbladderRemoved", "");
-                    clearErrors("gallbladder");
-                  }}
-                />
-                {option}
-              </label>
+                value={option}
+                classNames={getBaseWebRadios(removedGallbladder, option)}
+                label={
+                  <div className="relative text-center">
+                    <span className="text-foreground font-poppins">{option}</span>
+                    {removedGallbladder === option && (
+                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <i className="icon-tick text-sm/none"></i>
+                      </span>
+                    )}
+                  </div>
+                }
+                onChange={() => handleSelect("removedGallbladder", option)}
+              />
             ))}
           </div>
-          {errors?.gallbladder?.message && <p className="text-sm text-danger mt-2">{errors.gallbladder.message}</p>}
-        </div>
+        </Radio.Group>
+      )}
 
-        {/* Removed Gallbladder Question */}
-        {gallbladder === "Yes" && (
-          <div>
-            <p className="text-base font-medium mt-6 mb-4">Did you have your gallbladder removed?</p>
-            <div className="flex flex-col space-y-4">
-              {["Yes", "No"].map((option) => (
-                <label
-                  key={option}
-                  className={`block w-full px-6 py-4 rounded-2xl border text-center cursor-pointer
-                    ${removedGallbladder === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
-                  `}
-                >
-                  <input
-                    type="radio"
-                    value={option}
-                    {...register("removedGallbladder")}
-                    className="hidden"
-                    onChange={() => {
-                      setValue("removedGallbladder", option);
-                      setValue("whenGallbladderRemoved", "");
-                      clearErrors("removedGallbladder");
-                    }}
-                  />
-                  {option}
-                </label>
-              ))}
-            </div>
-            {errors?.removedGallbladder?.message && <p className="text-sm text-danger mt-2">{errors.removedGallbladder.message}</p>}
+      {/* When removed */}
+      {showWhenRemoved && (
+        <Radio.Group
+          value={whenGallbladderRemoved}
+          label="When did you have your gallbladder removed?"
+          error={getErrorMessage(errors?.whenGallbladderRemoved)}
+          classNames={{ label: "!text-2xl pb-2" }}
+        >
+          <div className="grid grid-cols-2 gap-5">
+            {removedTimeOptions.map((option) => (
+              <Radio
+                key={option}
+                value={option}
+                classNames={getBaseWebRadios(whenGallbladderRemoved, option)}
+                label={
+                  <div className="relative text-center">
+                    <span className="text-foreground font-poppins">{option}</span>
+                    {whenGallbladderRemoved === option && (
+                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <i className="icon-tick text-sm/none"></i>
+                      </span>
+                    )}
+                  </div>
+                }
+                onChange={() => handleSelect("whenGallbladderRemoved", option)}
+              />
+            ))}
           </div>
-        )}
+        </Radio.Group>
+      )}
 
-        {/* When Removed Question */}
-        {removedGallbladder === "Yes" && (
-          <div>
-            <p className="text-base font-medium mt-6 mb-4">When did you have your gallbladder removed?</p>
-            <div className="flex flex-col space-y-4">
-              {["Within the last 2 months", "More than 2 months ago"].map((option) => (
-                <label
-                  key={option}
-                  className={`block w-full px-6 py-4 rounded-2xl border text-center cursor-pointer
-                    ${whenGallbladderRemoved === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
-                  `}
-                >
-                  <input
-                    type="radio"
-                    value={option}
-                    {...register("whenGallbladderRemoved")}
-                    className="hidden"
-                    onChange={() => {
-                      setValue("whenGallbladderRemoved", option);
-                      clearErrors("whenGallbladderRemoved");
-                    }}
-                  />
-                  {option}
-                </label>
-              ))}
-            </div>
-            {errors?.whenGallbladderRemoved?.message && <p className="text-sm text-danger mt-2">{errors.whenGallbladderRemoved.message}</p>}
-          </div>
-        )}
-      </form>
-
-      <div className="flex justify-between mt-6">
-        <div className="flex gap-6 sm:ms-auto sm:mx-0 mx-auto">
-          <Button
-            px={0}
-            variant="outline"
-            onClick={onBack}
-            className="sm:w-[256px] w-[120px]"
-          >
-            Back
-          </Button>
-          <Button
-            type="submit"
-            className="sm:w-[256px] w-[120px]"
-            form="step11Form"
-          >
-            Next
-          </Button>
-        </div>
+      <div className="flex justify-center gap-6 pt-4">
+        <Button
+          variant="outline"
+          className="w-[200px]"
+          onClick={onBack}
+        >
+          Back
+        </Button>
+        <Button
+          type="submit"
+          className="w-[200px]"
+          form="step11Form"
+        >
+          Next
+        </Button>
       </div>
-    </>
+    </form>
   );
 };
 
