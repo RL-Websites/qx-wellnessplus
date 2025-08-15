@@ -5,7 +5,7 @@ import * as yup from "yup";
 
 // Validation schema
 export const step1Schema = yup.object({
-  doesDiet: yup.string().required("Please select an option."),
+  primaryGoal: yup.string().required("Please select an option."),
 });
 
 export type step1SchemaType = yup.InferType<typeof step1Schema>;
@@ -25,18 +25,18 @@ const StepOne = ({ onNext, onBack, defaultValues }: IStepOneProps) => {
     formState: { errors },
   } = useForm<step1SchemaType>({
     defaultValues: {
-      doesDiet: defaultValues?.doesDiet || "",
+      primaryGoal: defaultValues?.primaryGoal || "",
     },
     resolver: yupResolver(step1Schema),
   });
 
-  const doesDiet = watch("doesDiet");
+  const primaryGoal = watch("primaryGoal");
 
   const options = ["No", "Yes"];
 
   const handleSelect = (value: string) => {
-    setValue("doesDiet", value, { shouldValidate: true });
-    clearErrors("doesDiet");
+    setValue("primaryGoal", value, { shouldValidate: true });
+    clearErrors("primaryGoal");
   };
 
   return (
@@ -46,13 +46,13 @@ const StepOne = ({ onNext, onBack, defaultValues }: IStepOneProps) => {
       className="max-w-xl mx-auto space-y-6"
     >
       <div>
-        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">1. Do you have a personal or family history of thyroid cancer?</h2>
+        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">What is your primary goal for weight loss?</h2>
 
         <Radio.Group
-          value={doesDiet}
+          value={primaryGoal}
           onChange={handleSelect}
           className="mt-6"
-          error={errors?.doesDiet?.message}
+          error={errors?.primaryGoal?.message}
         >
           <Group grow>
             {options.map((option) => (
@@ -66,13 +66,13 @@ const StepOne = ({ onNext, onBack, defaultValues }: IStepOneProps) => {
                   labelWrapper: "w-full",
                   label: `
                     block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointer
-                    ${doesDiet === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
+                    ${primaryGoal === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
                   `,
                 }}
                 label={
                   <div className="relative text-center">
                     <span className="text-foreground font-poppins">{option}</span>
-                    {doesDiet === option && (
+                    {primaryGoal === option && (
                       <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
                         <i className="icon-tick text-sm/none"></i>
                       </span>

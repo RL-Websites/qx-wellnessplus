@@ -5,8 +5,8 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 export const step3Schema = yup.object({
-  history1: yup.array().of(yup.string()).min(1, "Please select at least one option.").required(),
-  discribe: yup.string().when("history1", {
+  exerciseTimes: yup.array().of(yup.string()).min(1, "Please select at least one option.").required(),
+  describe: yup.string().when("exerciseTimes", {
     is: (val: string[]) => val?.includes("Other"),
     then: (schema) => schema.required("Please describe your condition."),
     otherwise: (schema) => schema.notRequired(),
@@ -31,20 +31,20 @@ const StepThree = ({ onNext, onBack, defaultValues, isLoading = false }: IStepTh
     formState: { errors },
   } = useForm<Step3SchemaType>({
     defaultValues: {
-      history1: defaultValues?.history1 || [],
-      discribe: defaultValues?.discribe || "",
+      exerciseTimes: defaultValues?.exerciseTimes || [],
+      describe: defaultValues?.describe || "",
     },
     resolver: yupResolver(step3Schema),
   });
 
-  const selectedValues = watch("history1");
+  const selectedValues = watch("exerciseTimes");
   const isOtherSelected = selectedValues.includes("Other");
 
   const options = ["Heart disease or stroke", "Liver or kidney disease", "Cancer", "Thyroid disorders", "Other"];
 
   const toggleValue = (value: string) => {
     const updated = selectedValues.includes(value) ? selectedValues.filter((v) => v !== value) : [...selectedValues, value];
-    setValue("history1", updated, { shouldValidate: true });
+    setValue("exerciseTimes", updated, { shouldValidate: true });
   };
 
   return (
@@ -54,7 +54,7 @@ const StepThree = ({ onNext, onBack, defaultValues, isLoading = false }: IStepTh
       className="max-w-xl mx-auto space-y-6"
     >
       <div>
-        <h2 className="text-center text-2xl font-semibold text-foreground font-poppins">Do you have any history of:</h2>
+        <h2 className="text-center text-2xl font-semibold text-foreground font-poppins">How often do you exercise?</h2>
 
         <Grid
           gutter="md"
@@ -89,7 +89,7 @@ const StepThree = ({ onNext, onBack, defaultValues, isLoading = false }: IStepTh
           })}
         </Grid>
 
-        {errors.history1 && <div className="text-red-500 text-sm mt-2 text-center">{errors.history1.message}</div>}
+        {errors.exerciseTimes && <div className="text-red-500 text-sm mt-2 text-center">{errors.exerciseTimes.message}</div>}
 
         {isOtherSelected && (
           <div className="mt-4">
@@ -97,12 +97,12 @@ const StepThree = ({ onNext, onBack, defaultValues, isLoading = false }: IStepTh
               label="Discribe"
               withAsterisk
               className="sm:col-span-1 col-span-2"
-              error={errors?.discribe?.message}
+              error={errors?.describe?.message}
             >
               <Input
                 type="text"
-                {...register("discribe")}
-                error={Boolean(errors?.discribe?.message)}
+                {...register("describe")}
+                error={Boolean(errors?.describe?.message)}
               />
             </Input.Wrapper>
           </div>
