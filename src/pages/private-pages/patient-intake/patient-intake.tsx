@@ -3,25 +3,34 @@ import { IPatientIntakeFormDTO } from "@/common/api/models/interfaces/PartnerPat
 import orderApiRepository from "@/common/api/repositories/orderRepository";
 import dmlToast from "@/common/configs/toaster.config";
 import { selectedCategoryAtom } from "@/common/states/category.atom";
+import { basicInfoAtom } from "@/common/states/customerBasic.atom";
 import { Progress } from "@mantine/core";
 import { useWindowScroll } from "@mantine/hooks";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { useAtomValue } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import FullBodyPhoto from "./intake-steps/FullbodyPhoto";
 import { questions } from "./intake-steps/questions";
+import StepEight from "./intake-steps/step-eight";
+import StepFive from "./intake-steps/step-five";
+import StepFour from "./intake-steps/step-four";
+import StepNine from "./intake-steps/step-nine";
 import StepOne from "./intake-steps/step-one";
+import StepSeven from "./intake-steps/step-seven";
+import StepSix from "./intake-steps/step-six";
+import StepTen from "./intake-steps/step-ten";
 import StepThree from "./intake-steps/step-three";
 import StepTwo from "./intake-steps/step-two";
+import StepEleven from "./intake-steps/step.eleven";
 import ThanksStep from "./intake-steps/thanks-step";
 
 // Map of category => steps to show
 const categoryStepsMap: Record<string, number[]> = {
   "Single Peptides": [1, 2, 4],
   "Peptides Blends": [1, 2, 4],
-  "Weight Loss": [1, 2, 3, 4],
+  "Weight Loss": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
   Testosterone: [1, 2, 3, 4],
   "Hair Growth": [1, 3, 4],
   Others: [1, 2, 3],
@@ -30,22 +39,29 @@ const categoryStepsMap: Record<string, number[]> = {
 const PatientIntake = () => {
   const [activeStep, setActiveStep] = useState(1);
   const [formData, setFormData] = useState<any>({});
-  const [totalStep, setTotalStep] = useState(4);
-  const [visibleSteps, setVisibleSteps] = useState<number[]>([1, 2, 3, 4]);
+  const [totalStep, setTotalStep] = useState(6);
+  const [visibleSteps, setVisibleSteps] = useState<number[]>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12]);
   const [, scrollTo] = useWindowScroll();
   const [params] = useSearchParams();
   const navigate = useNavigate();
   const prescriptionUId = params.get("prescription_u_id");
   const selectedCategory = useAtomValue(selectedCategoryAtom);
+  const [basicInfo] = useAtom(basicInfoAtom);
 
   useEffect(() => {
-    if (!selectedCategory) return;
-    const stepsForCategory = categoryStepsMap[selectedCategory] || [1, 2, 3, 4];
-    setVisibleSteps(stepsForCategory);
-    setTotalStep(stepsForCategory.length);
+    const categoriesArray: string[] = Array.isArray(selectedCategory) ? selectedCategory : selectedCategory ? [selectedCategory] : [];
 
-    if (!stepsForCategory.includes(activeStep)) {
-      setActiveStep(stepsForCategory[0]);
+    if (!categoriesArray.length) return;
+
+    const stepsForCategory: number[] = categoriesArray.map((cat) => categoryStepsMap[cat] || []).flat();
+
+    const uniqueSteps = Array.from(new Set(stepsForCategory)).sort((a, b) => a - b);
+
+    setVisibleSteps(uniqueSteps);
+    setTotalStep(uniqueSteps.length);
+
+    if (!uniqueSteps.includes(activeStep)) {
+      setActiveStep(uniqueSteps[0]);
     }
   }, [selectedCategory]);
 
@@ -97,7 +113,7 @@ const PatientIntake = () => {
     intakeFormMutation.mutate(payload, {
       onSuccess: () => {
         dmlToast.success({ title: "Intake form submitted successfully" });
-        setActiveStep(5); // Thanks step
+        setActiveStep(13); // Thanks step
       },
       onError: (err) => {
         const error = err as AxiosError<IServerErrorResponse>;
@@ -111,7 +127,7 @@ const PatientIntake = () => {
 
   return (
     <>
-      {activeStep !== visibleSteps[0] && activeStep !== 5 ? (
+      {activeStep !== visibleSteps[0] && activeStep !== 13 ? (
         <div className="max-w-[520px] mx-auto mb-6">
           <h2 className="heading-text text-foreground uppercase text-center pb-12">Intake Form</h2>
           <Progress value={progress} />
@@ -145,13 +161,76 @@ const PatientIntake = () => {
       )}
       {activeStep === 4 && visibleSteps.includes(4) && (
         <StepThree
-          onNext={handleFinalSubmit}
+          onNext={handleNext}
           onBack={handleBack}
           defaultValues={formData}
-          isLoading={intakeFormMutation.isPending}
         />
       )}
-      {activeStep === 5 && <ThanksStep />}
+      {activeStep === 5 && visibleSteps.includes(5) && (
+        <StepFour
+          onNext={handleNext}
+          onBack={handleBack}
+          defaultValues={formData}
+        />
+      )}
+
+      {activeStep === (basicInfo?.patient?.gender === "female" ? (visibleSteps.includes(6) ? 6 : -1) : visibleSteps.includes(5) ? 5 : -1) && (
+        <StepFive
+          onNext={handleNext}
+          onBack={handleBack}
+          defaultValues={formData}
+        />
+      )}
+
+      {activeStep === (basicInfo?.patient?.gender === "female" ? (visibleSteps.includes(7) ? 7 : -1) : visibleSteps.includes(6) ? 6 : -1) && (
+        <StepSix
+          onNext={handleNext}
+          onBack={handleBack}
+          defaultValues={formData}
+        />
+      )}
+
+      {activeStep === (basicInfo?.patient?.gender === "female" ? (visibleSteps.includes(8) ? 8 : -1) : visibleSteps.includes(7) ? 7 : -1) && (
+        <StepSeven
+          onNext={handleNext}
+          onBack={handleBack}
+          defaultValues={formData}
+        />
+      )}
+
+      {activeStep === (basicInfo?.patient?.gender === "female" ? (visibleSteps.includes(9) ? 9 : -1) : visibleSteps.includes(8) ? 8 : -1) && (
+        <StepEight
+          onNext={handleNext}
+          onBack={handleBack}
+          defaultValues={formData}
+        />
+      )}
+
+      {activeStep === (basicInfo?.patient?.gender === "female" ? (visibleSteps.includes(10) ? 10 : -1) : visibleSteps.includes(9) ? 9 : -1) && (
+        <StepNine
+          onNext={handleNext}
+          onBack={handleBack}
+          defaultValues={formData}
+        />
+      )}
+
+      {activeStep === (basicInfo?.patient?.gender === "female" ? (visibleSteps.includes(11) ? 11 : -1) : visibleSteps.includes(10) ? 10 : -1) && (
+        <StepTen
+          onNext={handleNext}
+          onBack={handleBack}
+          defaultValues={formData}
+        />
+      )}
+
+      {activeStep === (basicInfo?.patient?.gender === "female" ? (visibleSteps.includes(12) ? 12 : -1) : visibleSteps.includes(11) ? 11 : -1) && (
+        <StepEleven
+          onNext={handleNext}
+          onBack={handleBack}
+          defaultValues={formData}
+        />
+      )}
+
+      {activeStep > Math.max(...visibleSteps) && <ThanksStep />}
     </>
   );
 };

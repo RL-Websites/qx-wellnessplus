@@ -5,6 +5,7 @@ import orderApiRepository from "@/common/api/repositories/orderRepository";
 import StripeWrapper from "@/common/components/StripeWrapper";
 import dmlToast from "@/common/configs/toaster.config";
 import { customerAtom } from "@/common/states/customer.atom";
+import { basicInfoAtom } from "@/common/states/customerBasic.atom";
 import { cartItemsAtom } from "@/common/states/product.atom";
 import { userAtom } from "@/common/states/user.atom";
 import { calculatePrice } from "@/utils/helper.utils";
@@ -34,6 +35,7 @@ const CompleteOrderPage = () => {
   const [hasPeptides, setHasPeptides] = useState(false);
   const [hasOthers, setHasOthers] = useState(true);
   const [params] = useSearchParams();
+  const [basicInfo, setBasicInfo] = useAtom(basicInfoAtom);
   // const prescriptionUId = params.get("prescription_u_id");
   // const is_refill = params.get("is_refill");
   const detail_uid = params.get("detail_uid");
@@ -149,7 +151,11 @@ const CompleteOrderPage = () => {
       {currentStep == 0 && (
         <BasicInfo
           userData={userData || undefined}
-          onNext={(data) => handleStepSubmit(data)}
+          onNext={(data) => {
+            setFormData((prev) => ({ ...prev, ...data }));
+            setBasicInfo(data);
+            nextStep();
+          }}
           isSubmitting={patientBookingMutation?.isPending}
         />
       )}
