@@ -22,25 +22,26 @@ import StepSeven from "./intake-steps/step-seven";
 import StepSix from "./intake-steps/step-six";
 import StepTen from "./intake-steps/step-ten";
 import StepThree from "./intake-steps/step-three";
+import StepTwelve from "./intake-steps/step-twelve";
 import StepTwo from "./intake-steps/step-two";
 import StepEleven from "./intake-steps/step.eleven";
 import ThanksStep from "./intake-steps/thanks-step";
 
 // Map of category => steps to show
 const categoryStepsMap: Record<string, number[]> = {
-  "Single Peptides": [1, 2, 4],
-  "Peptides Blends": [1, 2, 4],
-  "Weight Loss": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-  Testosterone: [1, 2, 3, 4],
-  "Hair Growth": [1, 3, 4],
-  Others: [1, 2, 3],
+  "Single Peptides": [1, 2, 4, 12],
+  "Peptides Blends": [1, 2, 3, 12],
+  "Weight Loss": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+  Testosterone: [1, 2, 3, 12],
+  "Hair Growth": [1, 3, 12],
+  Others: [1, 2, 12],
 };
 
 const PatientIntake = () => {
   const [activeStep, setActiveStep] = useState(1);
   const [formData, setFormData] = useState<any>({});
-  const [totalStep, setTotalStep] = useState(13);
-  const [visibleSteps, setVisibleSteps] = useState<number[]>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12]);
+  const [totalStep, setTotalStep] = useState(14);
+  const [visibleSteps, setVisibleSteps] = useState<number[]>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14]);
   const [, scrollTo] = useWindowScroll();
   const [params] = useSearchParams();
   const navigate = useNavigate();
@@ -113,7 +114,7 @@ const PatientIntake = () => {
     intakeFormMutation.mutate(payload, {
       onSuccess: () => {
         dmlToast.success({ title: "Intake form submitted successfully" });
-        setActiveStep(13); // Thanks step
+        setActiveStep(14); // Thanks step
       },
       onError: (err) => {
         const error = err as AxiosError<IServerErrorResponse>;
@@ -127,7 +128,7 @@ const PatientIntake = () => {
 
   return (
     <>
-      {activeStep !== visibleSteps[0] && activeStep !== 13 ? (
+      {activeStep !== visibleSteps[0] && activeStep !== 14 ? (
         <div className="max-w-[520px] mx-auto mb-6">
           <h2 className="heading-text text-foreground uppercase text-center pb-12">Intake Form</h2>
           <Progress value={progress} />
@@ -224,6 +225,14 @@ const PatientIntake = () => {
 
       {activeStep === (basicInfo?.patient?.gender === "female" ? (visibleSteps.includes(12) ? 12 : -1) : visibleSteps.includes(11) ? 11 : -1) && (
         <StepEleven
+          onNext={handleNext}
+          onBack={handleBack}
+          defaultValues={formData}
+        />
+      )}
+
+      {activeStep === (basicInfo?.patient?.gender === "female" ? (visibleSteps.includes(13) ? 13 : -1) : visibleSteps.includes(12) ? 12 : -1) && (
+        <StepTwelve
           onNext={handleFinalSubmit}
           onBack={handleBack}
           defaultValues={formData}
