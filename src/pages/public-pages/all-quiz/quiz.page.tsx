@@ -19,7 +19,8 @@ import InEligibleUser from "../ineligible-user/ineligible-user.page";
 import GenderHairGrowth from "./quizes/hair-growth/Gender";
 import ScalpInfectionsTwo from "./quizes/hair-growth/ScalpInfectionsTwo";
 import ThyroidDisease from "./quizes/hair-growth/ThyroidDisease";
-import ScalpInfectionsTestosterone from "./quizes/testosterone/ScalpInfections";
+import CardiovascularDisease from "./quizes/testosterone/CardiovascularDisease";
+import Priapism from "./quizes/testosterone/Priapism";
 import WeightLossBreastFeeding from "./quizes/weight-loss/BreastFeeding";
 import CustomerStatus from "./quizes/weight-loss/CustomerStatus";
 import DiseaseList from "./quizes/weight-loss/DiseaseList";
@@ -306,6 +307,7 @@ const QuizPage = () => {
             <DiseaseList
               onNext={(data) => {
                 const { eligible, ...rest } = data;
+                console.log(eligible);
                 setFormData((prev) => ({ ...prev, ...rest }));
                 if (eligible) {
                   handleFinalSubmit(rest);
@@ -322,9 +324,34 @@ const QuizPage = () => {
 
       {selectedCategory?.includes("Testosterone") && (
         <>
+          {activeStep === 2 && (
+            <CardiovascularDisease
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+                setFormData((prev) => ({ ...prev, ...rest }));
+
+                if (eligible) {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(rest);
+                }
+              }}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
           {activeStep === 3 && (
-            <ScalpInfectionsTestosterone
-              onNext={handleFinalSubmit}
+            <Priapism
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+                setFormData((prev) => ({ ...prev, ...rest }));
+
+                if (eligible) {
+                  handleFinalSubmit;
+                } else {
+                  setEligibleComponent(<InEligibleUser />);
+                }
+              }}
               onBack={handleBack}
               defaultValues={formData}
             />
