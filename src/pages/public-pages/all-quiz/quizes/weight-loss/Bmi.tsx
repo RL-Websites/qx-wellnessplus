@@ -4,19 +4,19 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 // Validation schema
-export const ageWeightLossSchema = yup.object({
-  ageWeightLoss: yup.string().required("Please add your age for weight loss"),
+export const bmiSchema = yup.object({
+  bmi: yup.number().typeError("BMI must be a number").required("Please add your current BMI").min(25, "BMI must be at least 25 to proceed"),
 });
 
-export type ageWeightLossSchemaType = yup.InferType<typeof ageWeightLossSchema>;
+export type bmiSchemaType = yup.InferType<typeof bmiSchema>;
 
-interface IAgeWeightLossProps {
-  onNext: (data: ageWeightLossSchemaType) => void;
+interface IBMIProps {
+  onNext: (data: bmiSchemaType) => void;
   onBack: () => void;
-  defaultValues?: ageWeightLossSchemaType;
+  defaultValues?: bmiSchemaType;
 }
 
-const AgeWeightLoss = ({ onNext, onBack, defaultValues }: IAgeWeightLossProps) => {
+const BMI = ({ onNext, onBack, defaultValues }: IBMIProps) => {
   const {
     handleSubmit,
     register,
@@ -24,41 +24,43 @@ const AgeWeightLoss = ({ onNext, onBack, defaultValues }: IAgeWeightLossProps) =
     watch,
     clearErrors,
     formState: { errors },
-  } = useForm<ageWeightLossSchemaType>({
+  } = useForm<bmiSchemaType>({
     defaultValues: {
-      ageWeightLoss: defaultValues?.ageWeightLoss || "",
+      bmi: defaultValues?.bmi || "",
     },
-    resolver: yupResolver(ageWeightLossSchema),
+    resolver: yupResolver(bmiSchema),
   });
 
-  const ageWeightLoss = watch("ageWeightLoss");
+  const bmi = watch("bmi");
 
   const handleSelect = (value: string) => {
-    setValue("ageWeightLoss", value, { shouldValidate: true });
-    clearErrors("ageWeightLoss");
+    setValue("bmi", value, { shouldValidate: true });
+    clearErrors("bmi");
   };
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
-      <div className=" card-common-width mx-auto ">
-        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">What is your age for weight loss?</h2>
+      <div className="card-common-width mx-auto">
+        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">What is your current BMI?</h2>
         <form
-          id="ageWeightLossForm"
+          id="bmiForm"
           onSubmit={handleSubmit(onNext)}
           className="max-w-xl mx-auto space-y-6 card-common"
         >
           <div>
             <Input.Wrapper
-              label="Your Age for Weight Loss"
+              label="Your BMI"
               required
-              error={errors.ageWeightLoss?.message ? errors.ageWeightLoss?.message : false}
+              error={errors.bmi?.message ? errors.bmi?.message : false}
               classNames={{
                 label: "!text-sm md:!text-base lg:!text-lg",
               }}
             >
               <Input
-                type="text"
-                {...register("ageWeightLoss")}
+                type="number"
+                step="0.1"
+                min={0}
+                {...register("bmi")}
               />
             </Input.Wrapper>
           </div>
@@ -75,7 +77,7 @@ const AgeWeightLoss = ({ onNext, onBack, defaultValues }: IAgeWeightLossProps) =
         <Button
           type="submit"
           className="w-[200px]"
-          form="ageWeightLossForm"
+          form="bmiForm"
         >
           Next
         </Button>
@@ -84,4 +86,4 @@ const AgeWeightLoss = ({ onNext, onBack, defaultValues }: IAgeWeightLossProps) =
   );
 };
 
-export default AgeWeightLoss;
+export default BMI;
