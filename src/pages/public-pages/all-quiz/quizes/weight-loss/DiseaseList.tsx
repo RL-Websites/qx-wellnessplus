@@ -1,16 +1,17 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Checkbox, Grid } from "@mantine/core";
+import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 export const diseaseListSchema = yup.object({
-  diseaseList: yup.array().min(1, "Please select at least one option.").of(yup.string()).required(),
+  diseaseList: yup.array().of(yup.string()).min(1, "Please select at least one option.").required(),
 });
 
 export type DiseaseListSchemaType = yup.InferType<typeof diseaseListSchema>;
 
 interface IDiseaseListProps {
-  onNext: (data: DiseaseListSchemaType) => void;
+  onNext: (data: DiseaseListSchemaType & { eligible?: boolean }) => void;
   onBack: () => void;
   defaultValues?: DiseaseListSchemaType;
 }
@@ -30,20 +31,23 @@ const DiseaseList = ({ onNext, onBack, defaultValues }: IDiseaseListProps) => {
 
   const selectedValues = watch("diseaseList");
 
-  const options = [
-    "Medullary Thyroid Carcinoma (MTC)",
-    "Multiple Endocrine Neoplasia Type 2 (MEN2)",
-    "Pancreatitis",
-    "Kidney disease (moderate/severe)",
-    "Liver disease (moderate/severe)",
-    "Severe GI disorders (e.g., gastroparesis)",
-    "Diabetic retinopathy",
-    "Type 1 Diabetes",
-    "Active cancer (undergoing treatment)",
-    "History of eating disorders",
-    "History of substance abuse or addiction",
-    "None of the above",
-  ];
+  const options = useMemo(
+    () => [
+      "Medullary Thyroid Carcinoma (MTC)",
+      "Multiple Endocrine Neoplasia Type 2 (MEN2)",
+      "Pancreatitis",
+      "Kidney disease (moderate/severe)",
+      "Liver disease (moderate/severe)",
+      "Severe GI disorders (e.g., gastroparesis)",
+      "Diabetic retinopathy",
+      "Type 1 Diabetes",
+      "Active cancer (undergoing treatment)",
+      "History of eating disorders",
+      "History of substance abuse or addiction",
+      "None of the above",
+    ],
+    []
+  );
 
   // const toggleValue = (value: string) => {
   //   const updated = selectedValues.includes(value) ? selectedValues.filter((v) => v !== value) : [...selectedValues, value];
@@ -54,24 +58,29 @@ const DiseaseList = ({ onNext, onBack, defaultValues }: IDiseaseListProps) => {
     let updated: (string | undefined)[] = [];
 
     if (value === "None of the above") {
-      updated = selectedValues?.includes(value) ? [] : [value];
+      updated = selectedValues.includes(value) ? [] : [value];
     } else {
-      updated = selectedValues?.includes(value) ? selectedValues.filter((v) => v !== value) : [...selectedValues.filter((v) => v !== "None of the above"), value];
+      const filtered = selectedValues.filter((v) => v !== "None of the above");
+      updated = selectedValues.includes(value) ? filtered.filter((v) => v !== value) : [...filtered, value];
     }
 
-    // Ensure only string values are set
     setValue(
       "diseaseList",
-      updated.filter((v): v is string => !!v),
+      updated.filter((v): v is string => typeof v === "string"), // ✅ FIXED HERE
       { shouldValidate: true }
     );
+  };
+
+  const onSubmit = (data: DiseaseListSchemaType) => {
+    const isEligible = data.diseaseList.length === 1 && data.diseaseList[0] === "None of the above";
+    onNext({ ...data, eligible: isEligible });
   };
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <form
         id="diseaseListForm"
-        onSubmit={handleSubmit(onNext)}
+        onSubmit={handleSubmit(onSubmit)}
         className="max-w-xl mx-auto space-y-6"
       >
         <div>

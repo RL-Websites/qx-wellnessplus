@@ -1,18 +1,19 @@
+import { calculateBMI } from "@/utils/bmi.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Input } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 export const weightLossHeightSchema = yup.object({
-  weightlossheight: yup.string().required("Please add your current height"),
+  weightlossheight: yup.string().required("Please add your current height").matches(/^\d+$/, "Height must be a number"),
 });
 
 export type weightLossHeightSchemaType = yup.InferType<typeof weightLossHeightSchema>;
 
 interface IWeightLossHeightProps {
-  onNext: (data: weightLossHeightSchemaType) => void;
+  onNext: (data: weightLossHeightSchemaType & { eligible?: boolean }) => void;
   onBack: () => void;
-  defaultValues?: weightLossHeightSchemaType;
+  defaultValues?: weightLossHeightSchemaType & { weightlossweight?: string };
 }
 
 const WeightLossHeight = ({ onNext, onBack, defaultValues }: IWeightLossHeightProps) => {
@@ -37,13 +38,33 @@ const WeightLossHeight = ({ onNext, onBack, defaultValues }: IWeightLossHeightPr
     clearErrors("weightlossheight");
   };
 
+  const height = watch("weightlossheight");
+
+  const handleNext = (data: weightLossHeightSchemaType) => {
+    const weight = Number(defaultValues?.weightlossweight);
+    const height = Number(data.weightlossheight);
+
+    if (isNaN(weight) || isNaN(height)) {
+      alert("Height and weight must be valid numbers.");
+      return;
+    }
+
+    const bmi = calculateBMI(weight, height);
+
+    if (bmi >= 25) {
+      onNext({ ...data, eligible: true });
+    } else {
+      onNext({ ...data, eligible: false });
+    }
+  };
+
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <div className=" card-common-width mx-auto ">
         <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">What is your current height?</h2>
         <form
           id="weightLossHeightForm"
-          onSubmit={handleSubmit(onNext)}
+          onSubmit={handleSubmit(handleNext)}
           className="max-w-xl mx-auto space-y-6 card-common"
         >
           <div>

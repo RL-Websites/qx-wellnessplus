@@ -47,7 +47,7 @@ const MultipleMedicine = ({ onNext, onBack, defaultValues }: IMultipleMedicinePr
         className="max-w-xl mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Select the medicine or condition you are currently managing</h2>
+          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Are you interested in Semaglutide or Tirzepatide?</h2>
 
           <Radio.Group
             value={selectedMedicine}

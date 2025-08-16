@@ -19,7 +19,6 @@ import InEligibleUser from "../ineligible-user/ineligible-user.page";
 import ScalpInfectionsTwo from "./quizes/hair-growth/ScalpInfectionsTwo";
 import ThyroidDisease from "./quizes/hair-growth/ThyroidDisease";
 import ScalpInfectionsTestosterone from "./quizes/testosterone/ScalpInfections";
-import BMI from "./quizes/weight-loss/Bmi";
 import CustomerStatus from "./quizes/weight-loss/CustomerStatus";
 import DiseaseList from "./quizes/weight-loss/DiseaseList";
 import GenderWeightLoss from "./quizes/weight-loss/Gender";
@@ -41,14 +40,6 @@ const QuizPage = () => {
   const [customerStatusComponent, setCustomerStatusComponent] = useState<React.ReactNode | null>(null);
 
   const navigate = useNavigate();
-
-  // const lastStepByCategory: Record<string, number> = {
-  //   "Hair Growth (male)": 7,
-  //   "Hair Growth (female)": 7,
-  //   Testosterone: 4,
-  //   "Weight Loss": 3,
-  //   "Peptides Blends": 5,
-  // };
 
   const lastStepByCategory = (category: string[]) => {
     switch (category[0]) {
@@ -99,6 +90,10 @@ const QuizPage = () => {
     scrollTo({ y: 0 });
   };
 
+  if (eligibleComponent) {
+    return <>{eligibleComponent}</>;
+  }
+
   return (
     <>
       {activeStep === 1 && (
@@ -118,22 +113,20 @@ const QuizPage = () => {
               defaultValues={formData}
             />
           )}
-          {customerStatusComponent
-            ? customerStatusComponent
-            : activeStep === 3 && (
-                <CustomerStatus
-                  onNext={(data) => {
-                    setFormData((prev) => ({ ...prev, ...data }));
-                    if (data.inEligibleUser) {
-                      setCustomerStatusComponent(<InEligibleUser />);
-                    } else {
-                      handleNext(data);
-                    }
-                  }}
-                  onBack={handleBack}
-                  defaultValues={formData}
-                />
-              )}
+          {activeStep === 3 && (
+            <CustomerStatus
+              onNext={(data) => {
+                setFormData((prev) => ({ ...prev, ...data }));
+                if (data.inEligibleUser) {
+                  setCustomerStatusComponent(<InEligibleUser />);
+                } else {
+                  handleNext(data);
+                }
+              }}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
 
           {activeStep === 4 && (
             <WeightLossWeight
@@ -145,56 +138,59 @@ const QuizPage = () => {
 
           {activeStep === 5 && (
             <WeightLossHeight
-              onNext={handleNext}
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+                setFormData((prev) => ({ ...prev, ...rest }));
+                if (eligible) {
+                  handleNext(rest);
+                } else {
+                  setEligibleComponent(<InEligibleUser />);
+                }
+              }}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
           {activeStep === 6 && (
-            <BMI
-              onNext={handleNext}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-          {/* {activeStep === 6 && (
-            <WeightLossPregnant
-              onNext={handleFinalSubmit}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )} */}
-          {activeStep === 7 && (
             <GlpOneMedication
               onNext={handleNext}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
-          {activeStep === 8 && (
+          {activeStep === 7 && (
             <InjectionDate
               onNext={handleNext}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
-          {activeStep === 9 && (
+          {activeStep === 8 && (
             <WeightLossGoal
               onNext={handleNext}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
-          {activeStep === 10 && (
+          {activeStep === 9 && (
             <MultipleMedicine
               onNext={handleNext}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
-          {activeStep === 11 && (
+
+          {activeStep === 10 && (
             <DiseaseList
-              onNext={handleFinalSubmit}
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+                setFormData((prev) => ({ ...prev, ...rest }));
+                if (eligible) {
+                  handleFinalSubmit(rest);
+                } else {
+                  setEligibleComponent(<InEligibleUser />); // ✅ FIX: again, just set
+                }
+              }}
               onBack={handleBack}
               defaultValues={formData}
             />
