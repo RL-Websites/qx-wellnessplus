@@ -14,34 +14,61 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import FullBodyPhoto from "./intake-steps/FullbodyPhoto";
 import { questions } from "./intake-steps/questions";
 import StepEight from "./intake-steps/step-eight";
+import StepFifteen from "./intake-steps/step-filteen";
 import StepFive from "./intake-steps/step-five";
 import StepFour from "./intake-steps/step-four";
+import StepFourteen from "./intake-steps/step-fourteen";
 import StepNine from "./intake-steps/step-nine";
 import StepOne from "./intake-steps/step-one";
 import StepSeven from "./intake-steps/step-seven";
+import StepSeventeen from "./intake-steps/step-seventeen";
 import StepSix from "./intake-steps/step-six";
+import StepSixteen from "./intake-steps/step-sixteen";
 import StepTen from "./intake-steps/step-ten";
+import StepThirteen from "./intake-steps/step-thirteen";
 import StepThree from "./intake-steps/step-three";
 import StepTwelve from "./intake-steps/step-twelve";
 import StepTwo from "./intake-steps/step-two";
 import StepEleven from "./intake-steps/step.eleven";
 import ThanksStep from "./intake-steps/thanks-step";
 
-// Map of category => steps to show
-const categoryStepsMap: Record<string, number[]> = {
-  "Single Peptides": [1, 2, 4, 13],
-  "Peptides Blends": [1, 2, 3, 13],
-  "Weight Loss": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-  Testosterone: [1, 2, 3, 13],
-  "Hair Growth": [1, 3, 13],
-  Others: [1, 2, 13],
+interface CategoryConfig {
+  steps: number[];
+  finalStep: number;
+}
+
+const categoryStepsMap: Record<string, CategoryConfig> = {
+  "Single Peptides": {
+    steps: [1, 10],
+    finalStep: 10,
+  },
+  "Peptides Blends": {
+    steps: [1, 10],
+    finalStep: 10,
+  },
+  "Weight Loss": {
+    steps: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+    finalStep: -1,
+  },
+  Testosterone: {
+    steps: [1, 2, 3, 13],
+    finalStep: 13,
+  },
+  "Hair Growth": {
+    steps: [1, 3, 13],
+    finalStep: 13,
+  },
+  Others: {
+    steps: [1, 2, 13],
+    finalStep: 13,
+  },
 };
 
 const PatientIntake = () => {
   const [activeStep, setActiveStep] = useState(1);
   const [formData, setFormData] = useState<any>({});
-  const [totalStep, setTotalStep] = useState(14);
-  const [visibleSteps, setVisibleSteps] = useState<number[]>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14]);
+  const [visibleSteps, setVisibleSteps] = useState<number[]>([]);
+  const [finalStep, setFinalStep] = useState<number>(18);
   const [, scrollTo] = useWindowScroll();
   const [params] = useSearchParams();
   const navigate = useNavigate();
@@ -49,24 +76,38 @@ const PatientIntake = () => {
   const selectedCategory = useAtomValue(selectedCategoryAtom);
   const [basicInfo] = useAtom(basicInfoAtom);
 
+  const isFinalStep = (step: number) => step === finalStep;
+
   useEffect(() => {
     const categoriesArray: string[] = Array.isArray(selectedCategory) ? selectedCategory : selectedCategory ? [selectedCategory] : [];
 
     if (!categoriesArray.length) return;
+    const allSteps = categoriesArray.map((cat) => categoryStepsMap[cat]?.steps || []).flat();
+    const uniqueSteps = Array.from(new Set(allSteps)).sort((a, b) => a - b);
 
-    const stepsForCategory: number[] = categoriesArray.map((cat) => categoryStepsMap[cat] || []).flat();
+    let calculatedFinalStep = 17; // default for male
+    if (basicInfo?.patient?.gender === "female") {
+      calculatedFinalStep = 18;
+    }
 
-    const uniqueSteps = Array.from(new Set(stepsForCategory)).sort((a, b) => a - b);
+    const peptideCategories = ["Single Peptides", "Peptides Blends"];
+    if (categoriesArray.some((cat) => peptideCategories.includes(cat))) {
+      calculatedFinalStep = 10;
+    } else if (categoriesArray.includes("Weight Loss")) {
+      // Keep the gender-specific final step (17 or 18)
+    } else if (categoriesArray[0] && categoryStepsMap[categoriesArray[0]]) {
+      calculatedFinalStep = categoryStepsMap[categoriesArray[0]].finalStep;
+    }
 
     setVisibleSteps(uniqueSteps);
-    setTotalStep(uniqueSteps.length);
+    setFinalStep(calculatedFinalStep);
 
     if (!uniqueSteps.includes(activeStep)) {
       setActiveStep(uniqueSteps[0]);
     }
-  }, [selectedCategory]);
+  }, [selectedCategory, basicInfo?.patient?.gender]);
 
-  const progress = (visibleSteps.indexOf(activeStep) / (visibleSteps.length - 1)) * 100;
+  const progress = visibleSteps.length > 1 ? (visibleSteps.indexOf(activeStep) / (visibleSteps.length - 1)) * 100 : 100;
 
   const handleNext = (data: any) => {
     setFormData((prev) => ({ ...prev, ...data }));
@@ -114,7 +155,7 @@ const PatientIntake = () => {
     intakeFormMutation.mutate(payload, {
       onSuccess: () => {
         dmlToast.success({ title: "Intake form submitted successfully" });
-        setActiveStep(14); // Thanks step
+        setActiveStep(19); // Thanks step
       },
       onError: (err) => {
         const error = err as AxiosError<IServerErrorResponse>;
@@ -126,121 +167,61 @@ const PatientIntake = () => {
     });
   };
 
+  const shouldSubmit = (step: number) => {
+    if (selectedCategory?.includes("Weight Loss")) {
+      return (basicInfo?.patient?.gender === "female" && step === 18) || (basicInfo?.patient?.gender !== "female" && step === 17);
+    }
+    return step === finalStep;
+  };
+
+  const renderStep = (stepNumber: number, Component: React.ComponentType<any>) => {
+    if (!visibleSteps.includes(stepNumber)) return null;
+
+    return (
+      <Component
+        onNext={shouldSubmit(stepNumber) ? handleFinalSubmit : handleNext}
+        onBack={handleBack}
+        defaultValues={formData}
+        isLoading={shouldSubmit(stepNumber) && intakeFormMutation.isPending}
+      />
+    );
+  };
+
   return (
     <>
-      {activeStep !== visibleSteps[0] && activeStep !== 14 ? (
+      {activeStep !== visibleSteps[0] && activeStep !== 19 ? (
         <div className="max-w-[520px] mx-auto mb-6">
           <h2 className="heading-text text-foreground uppercase text-center pb-12">Intake Form</h2>
           <Progress value={progress} />
           <div className="text-center text-base text-foreground font-bold mt-3">
-            {visibleSteps.indexOf(activeStep)} / {visibleSteps.length - 1}
+            {visibleSteps.indexOf(activeStep) + 1} / {visibleSteps.length}
           </div>
         </div>
       ) : activeStep === visibleSteps[0] ? (
         <h2 className="heading-text text-foreground uppercase text-center">help us better understand</h2>
       ) : null}
 
-      {activeStep === 1 && visibleSteps.includes(1) && (
-        <FullBodyPhoto
-          onNext={handleNext}
-          defaultValues={formData}
-        />
-      )}
-      {activeStep === 2 && visibleSteps.includes(2) && (
-        <StepOne
-          onNext={handleNext}
-          onBack={handleBack}
-          defaultValues={formData}
-        />
-      )}
-      {activeStep === 3 && visibleSteps.includes(3) && (
-        <StepTwo
-          onNext={handleNext}
-          onBack={handleBack}
-          defaultValues={formData}
-        />
-      )}
-      {activeStep === 4 && visibleSteps.includes(4) && (
-        <StepThree
-          onNext={handleNext}
-          onBack={handleBack}
-          defaultValues={formData}
-        />
-      )}
-      {activeStep === 5 && visibleSteps.includes(5) && (
-        <StepFour
-          onNext={handleNext}
-          onBack={handleBack}
-          defaultValues={formData}
-        />
-      )}
+      {/* Render all steps */}
+      {activeStep === 1 && renderStep(1, FullBodyPhoto)}
+      {activeStep === 2 && renderStep(2, StepOne)}
+      {activeStep === 3 && renderStep(3, StepTwo)}
+      {activeStep === 4 && renderStep(4, StepThree)}
+      {activeStep === 5 && renderStep(5, StepFour)}
+      {activeStep === 6 && renderStep(6, StepFive)}
+      {activeStep === 7 && renderStep(7, StepSix)}
+      {activeStep === 8 && renderStep(8, StepSeven)}
+      {activeStep === 9 && renderStep(9, StepEight)}
+      {activeStep === 10 && renderStep(10, StepNine)}
+      {activeStep === 11 && renderStep(11, StepTen)}
+      {activeStep === 12 && renderStep(12, StepEleven)}
+      {activeStep === 13 && renderStep(13, StepTwelve)}
+      {activeStep === 14 && renderStep(14, StepThirteen)}
+      {activeStep === 15 && renderStep(15, StepFourteen)}
+      {activeStep === 16 && renderStep(16, StepFifteen)}
+      {activeStep === 17 && renderStep(17, StepSixteen)}
+      {activeStep === 18 && renderStep(18, StepSeventeen)}
 
-      {activeStep === (basicInfo?.patient?.gender === "female" ? (visibleSteps.includes(6) ? 6 : -1) : visibleSteps.includes(0) ? 0 : 0) && (
-        <StepFive
-          onNext={handleNext}
-          onBack={handleBack}
-          defaultValues={formData}
-        />
-      )}
-
-      {activeStep === (basicInfo?.patient?.gender === "female" ? (visibleSteps.includes(7) ? 7 : -1) : visibleSteps.includes(6) ? 6 : -1) && (
-        <StepSix
-          onNext={handleNext}
-          onBack={handleBack}
-          defaultValues={formData}
-        />
-      )}
-
-      {activeStep === (basicInfo?.patient?.gender === "female" ? (visibleSteps.includes(8) ? 8 : -1) : visibleSteps.includes(7) ? 7 : -1) && (
-        <StepSeven
-          onNext={handleNext}
-          onBack={handleBack}
-          defaultValues={formData}
-        />
-      )}
-
-      {activeStep === (basicInfo?.patient?.gender === "female" ? (visibleSteps.includes(9) ? 9 : -1) : visibleSteps.includes(8) ? 8 : -1) && (
-        <StepEight
-          onNext={handleNext}
-          onBack={handleBack}
-          defaultValues={formData}
-        />
-      )}
-
-      {activeStep === (basicInfo?.patient?.gender === "female" ? (visibleSteps.includes(10) ? 10 : -1) : visibleSteps.includes(9) ? 9 : -1) && (
-        <StepNine
-          onNext={handleNext}
-          onBack={handleBack}
-          defaultValues={formData}
-        />
-      )}
-
-      {activeStep === (basicInfo?.patient?.gender === "female" ? (visibleSteps.includes(11) ? 11 : -1) : visibleSteps.includes(10) ? 10 : -1) && (
-        <StepTen
-          onNext={handleNext}
-          onBack={handleBack}
-          defaultValues={formData}
-        />
-      )}
-
-      {activeStep === (basicInfo?.patient?.gender === "female" ? (visibleSteps.includes(12) ? 12 : -1) : visibleSteps.includes(11) ? 11 : -1) && (
-        <StepEleven
-          onNext={handleNext}
-          onBack={handleBack}
-          defaultValues={formData}
-        />
-      )}
-
-      {activeStep === (basicInfo?.patient?.gender === "female" ? (visibleSteps.includes(13) ? 13 : -1) : visibleSteps.includes(12) ? 12 : -1) && (
-        <StepTwelve
-          onNext={handleFinalSubmit}
-          onBack={handleBack}
-          defaultValues={formData}
-          isLoading={intakeFormMutation.isPending}
-        />
-      )}
-
-      {activeStep > Math.max(...visibleSteps) && <ThanksStep />}
+      {activeStep === 19 && <ThanksStep />}
     </>
   );
 };
