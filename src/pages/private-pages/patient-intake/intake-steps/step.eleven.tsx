@@ -23,9 +23,10 @@ interface StepElevenProps {
   onNext: (data: step11SchemaType) => void;
   onBack: () => void;
   defaultValues?: step11SchemaType;
+  isLoading: boolean;
 }
 
-const StepEleven = ({ onNext, onBack, defaultValues }: StepElevenProps) => {
+const StepEleven = ({ onNext, onBack, defaultValues, isLoading = false }: StepElevenProps) => {
   const {
     register,
     handleSubmit,
@@ -173,6 +174,7 @@ const StepEleven = ({ onNext, onBack, defaultValues }: StepElevenProps) => {
           type="submit"
           className="w-[200px]"
           form="step11Form"
+          loading={isLoading}
         >
           Next
         </Button>
