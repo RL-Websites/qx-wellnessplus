@@ -16,6 +16,7 @@ import ScalpInfections from "./quizes/hair-growth/ScalpInfections";
 import { useNavigate } from "react-router-dom";
 import InEligibleUser from "../ineligible-user/ineligible-user.page";
 
+import GenderHairGrowth from "./quizes/Gender";
 import ScalpInfectionsTwo from "./quizes/hair-growth/ScalpInfectionsTwo";
 import ThyroidDisease from "./quizes/hair-growth/ThyroidDisease";
 import ScalpInfectionsTestosterone from "./quizes/testosterone/ScalpInfections";
@@ -42,33 +43,33 @@ const QuizPage = () => {
 
   const navigate = useNavigate();
 
-  const lastStepByCategory = (category: string[]) => {
-    switch (category[0]) {
-      case "Hair Growth":
-        return 7;
-      case "Hair Growth (male)":
-        return 7;
-      case "Hair Growth (female)":
-        return 7;
-      case "Testosterone":
-        return 4;
-      case "Weight Loss":
-        return 3;
-      case "Peptides Blends":
-        return 5;
-      case "Single Peptides":
-        return 5;
-      default:
-        return defaultLastStep;
-    }
-  };
+  // const lastStepByCategory = (category: string[]) => {
+  //   switch (category[0]) {
+  //     case "Hair Growth":
+  //       return 7;
+  //     case "Hair Growth (male)":
+  //       return 7;
+  //     case "Hair Growth (female)":
+  //       return 7;
+  //     case "Testosterone":
+  //       return 4;
+  //     case "Weight Loss":
+  //       return 3;
+  //     case "Peptides Blends":
+  //       return 5;
+  //     case "Single Peptides":
+  //       return 5;
+  //     default:
+  //       return defaultLastStep;
+  //   }
+  // };
 
-  const defaultLastStep = 2;
+  // const defaultLastStep = 2;
 
-  useEffect(() => {
-    const step = lastStepByCategory(selectedCategory || []);
-    setLastStep(step);
-  }, [selectedCategory]);
+  // useEffect(() => {
+  //   const step = lastStepByCategory(selectedCategory || []);
+  //   setLastStep(step);
+  // }, [selectedCategory]);
 
   const handleFinalSubmit = (data: any) => {
     const tempData = { ...formData, ...data };
@@ -91,10 +92,6 @@ const QuizPage = () => {
     scrollTo({ y: 0 });
   };
 
-  if (eligibleComponent) {
-    navigate("/ineligible-user");
-  }
-
   const [genderOffset, setGenderOffset] = useState(0);
 
   useEffect(() => {
@@ -105,6 +102,12 @@ const QuizPage = () => {
     }
   }, [formData.genderWeightLoss]);
 
+  useEffect(() => {
+    if (eligibleComponent) {
+      navigate("/ineligible-user");
+    }
+  }, [eligibleComponent, navigate]);
+
   return (
     <>
       {activeStep === 1 && (
@@ -113,6 +116,17 @@ const QuizPage = () => {
           onBack={handleBack}
           defaultValues={formData}
         />
+      )}
+      {selectedCategory?.includes("Hair Growth") && (
+        <>
+          {activeStep === 2 && (
+            <GenderHairGrowth
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+        </>
       )}
 
       {selectedCategory?.includes("Weight Loss") && (
