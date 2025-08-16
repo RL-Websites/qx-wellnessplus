@@ -48,7 +48,7 @@ const WeightLossWeight = ({ onNext, onBack, defaultValues }: IWeightLossWeightPr
         >
           <div>
             <Input.Wrapper
-              label="Your Weight"
+              label="Your Weight (kg)"
               required
               error={errors.weightlossweight?.message ? errors.weightlossweight?.message : false}
               classNames={{

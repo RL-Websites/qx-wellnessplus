@@ -19,6 +19,7 @@ import InEligibleUser from "../ineligible-user/ineligible-user.page";
 import ScalpInfectionsTwo from "./quizes/hair-growth/ScalpInfectionsTwo";
 import ThyroidDisease from "./quizes/hair-growth/ThyroidDisease";
 import ScalpInfectionsTestosterone from "./quizes/testosterone/ScalpInfections";
+import WeightLossBreastFeeding from "./quizes/weight-loss/BreastFeeding";
 import CustomerStatus from "./quizes/weight-loss/CustomerStatus";
 import DiseaseList from "./quizes/weight-loss/DiseaseList";
 import GenderWeightLoss from "./quizes/weight-loss/Gender";
@@ -91,7 +92,7 @@ const QuizPage = () => {
   };
 
   if (eligibleComponent) {
-    return <>{eligibleComponent}</>;
+    navigate("/ineligible-user");
   }
 
   const [genderOffset, setGenderOffset] = useState(0);
@@ -170,7 +171,7 @@ const QuizPage = () => {
             />
           )}
           {formData.genderWeightLoss === "Female" && activeStep === 7 && (
-            <BreastFeeding
+            <WeightLossBreastFeeding
               onNext={handleNext}
               onBack={handleBack}
               defaultValues={formData}

@@ -64,7 +64,7 @@ export default function GenderWeightLoss({ onNext, onBack, defaultValues }: IGen
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <h2 className="heading-text text-foreground uppercase text-center">Gender</h2>
 
-      <div className="card-common-width mx-auto mt-6">
+      <div className="card-common-width mx-auto mt-10">
         <form
           id="genderWeightLossForm"
           onSubmit={handleSubmit(handleFormSubmit)}
@@ -74,7 +74,6 @@ export default function GenderWeightLoss({ onNext, onBack, defaultValues }: IGen
             value={genderWeightLoss}
             onChange={handleSelect}
             className="mt-6"
-            error={errors?.genderWeightLoss?.message}
           >
             <Group grow>
               {options.map((option) => (

@@ -3,30 +3,31 @@ import { Button, Group, Radio } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
-export const breastFeedingSchema = yup.object({
+// Validation schema
+export const weightLossBreastFeedingSchema = yup.object({
   breastFeeding: yup.string().required("Please select an option."),
 });
 
-export type breastFeedingSchemaType = yup.InferType<typeof breastFeedingSchema>;
+export type WeightLossBreastFeedingSchemaType = yup.InferType<typeof weightLossBreastFeedingSchema>;
 
-interface IBreastFeedingProps {
-  onNext: (data: breastFeedingSchemaType) => void;
+interface IWeightLossBreastFeedingProps {
+  onNext: (data: WeightLossBreastFeedingSchemaType) => void;
   onBack: () => void;
-  defaultValues?: breastFeedingSchemaType;
+  defaultValues?: WeightLossBreastFeedingSchemaType;
 }
 
-const BreastFeeding = ({ onNext, onBack, defaultValues }: IBreastFeedingProps) => {
+const WeightLossBreastFeeding = ({ onNext, onBack, defaultValues }: IWeightLossBreastFeedingProps) => {
   const {
     handleSubmit,
     setValue,
     watch,
     clearErrors,
     formState: { errors },
-  } = useForm<breastFeedingSchemaType>({
+  } = useForm<WeightLossBreastFeedingSchemaType>({
     defaultValues: {
       breastFeeding: defaultValues?.breastFeeding || "",
     },
-    resolver: yupResolver(breastFeedingSchema),
+    resolver: yupResolver(weightLossBreastFeedingSchema),
   });
 
   const breastFeeding = watch("breastFeeding");
@@ -41,7 +42,7 @@ const BreastFeeding = ({ onNext, onBack, defaultValues }: IBreastFeedingProps) =
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <form
-        id="breastFeedingForm"
+        id="weightLossBreastFeedingForm"
         onSubmit={handleSubmit(onNext)}
         className="max-w-xl mx-auto space-y-6"
       >
@@ -96,7 +97,7 @@ const BreastFeeding = ({ onNext, onBack, defaultValues }: IBreastFeedingProps) =
           <Button
             type="submit"
             className="w-[200px]"
-            form="breastFeedingForm"
+            form="weightLossBreastFeedingForm"
           >
             Next
           </Button>
@@ -106,4 +107,4 @@ const BreastFeeding = ({ onNext, onBack, defaultValues }: IBreastFeedingProps) =
   );
 };
 
-export default BreastFeeding;
+export default WeightLossBreastFeeding;

@@ -69,7 +69,7 @@ const WeightLossHeight = ({ onNext, onBack, defaultValues }: IWeightLossHeightPr
         >
           <div>
             <Input.Wrapper
-              label="Your Height"
+              label="Your Height (cm)"
               required
               error={errors.weightlossheight?.message ? errors.weightlossheight?.message : false}
               classNames={{

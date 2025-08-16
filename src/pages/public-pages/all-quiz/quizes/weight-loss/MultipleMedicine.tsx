@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Group, Radio } from "@mantine/core";
+import { Button, Group, Radio, Text } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -53,7 +53,6 @@ const MultipleMedicine = ({ onNext, onBack, defaultValues }: IMultipleMedicinePr
             value={selectedMedicine}
             onChange={handleSelect}
             className="mt-6"
-            error={errors?.selectedMedicine?.message}
           >
             <Group grow>
               {options.map((option) => (
@@ -84,6 +83,7 @@ const MultipleMedicine = ({ onNext, onBack, defaultValues }: IMultipleMedicinePr
               ))}
             </Group>
           </Radio.Group>
+          {errors.selectedMedicine && <Text className="text-red-500 text-sm mt-5 text-center">{errors.selectedMedicine.message}</Text>}
         </div>
 
         <div className="flex justify-center gap-6 pt-4">

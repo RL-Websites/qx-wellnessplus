@@ -1,11 +1,11 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Group, Radio } from "@mantine/core";
+import { Button, Group, Radio, Text } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 // Validation schema
 export const customerStatusSchema = yup.object({
-  customerStatus: yup.string().required("Please select an option."),
+  customerStatus: yup.string().required("Please select a customer."),
 });
 
 export type customerStatusSchemaType = yup.InferType<typeof customerStatusSchema>;
@@ -60,7 +60,6 @@ const CustomerStatus = ({ onNext, onBack, defaultValues }: ICustomerStatusProps)
             value={customerStatus}
             onChange={handleSelect}
             className="mt-6"
-            error={errors?.customerStatus?.message}
           >
             <Group grow>
               {options.map((option) => (
@@ -91,6 +90,7 @@ const CustomerStatus = ({ onNext, onBack, defaultValues }: ICustomerStatusProps)
               ))}
             </Group>
           </Radio.Group>
+          {errors.customerStatus && <Text className="text-red-500 text-sm mt-5 text-center">{errors.customerStatus.message}</Text>}
         </div>
 
         <div className="flex justify-center gap-6 pt-4">
