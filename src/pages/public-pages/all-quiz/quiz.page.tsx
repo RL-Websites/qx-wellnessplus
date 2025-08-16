@@ -26,6 +26,7 @@ import GlpOneMedication from "./quizes/weight-loss/GlpOneMedication";
 import WeightLossHeight from "./quizes/weight-loss/Height";
 import InjectionDate from "./quizes/weight-loss/InjectionDate";
 import MultipleMedicine from "./quizes/weight-loss/MultipleMedicine";
+import WeightLossPregnant from "./quizes/weight-loss/Pregnant";
 import WeightLossWeight from "./quizes/weight-loss/Weight";
 import WeightLossGoal from "./quizes/weight-loss/WeightLossGoal";
 
@@ -37,7 +38,6 @@ const QuizPage = () => {
   const [, scrollTo] = useWindowScroll();
   const selectedCategory = useAtomValue(selectedCategoryAtom);
   const [eligibleComponent, setEligibleComponent] = useState<React.ReactNode | null>(null);
-  const [customerStatusComponent, setCustomerStatusComponent] = useState<React.ReactNode | null>(null);
 
   const navigate = useNavigate();
 
@@ -94,6 +94,16 @@ const QuizPage = () => {
     return <>{eligibleComponent}</>;
   }
 
+  const [genderOffset, setGenderOffset] = useState(0);
+
+  useEffect(() => {
+    if (formData.genderWeightLoss === "Female") {
+      setGenderOffset(2);
+    } else {
+      setGenderOffset(0);
+    }
+  }, [formData.genderWeightLoss]);
+
   return (
     <>
       {activeStep === 1 && (
@@ -118,7 +128,7 @@ const QuizPage = () => {
               onNext={(data) => {
                 setFormData((prev) => ({ ...prev, ...data }));
                 if (data.inEligibleUser) {
-                  setCustomerStatusComponent(<InEligibleUser />);
+                  setEligibleComponent(<InEligibleUser />);
                 } else {
                   handleNext(data);
                 }
@@ -151,28 +161,47 @@ const QuizPage = () => {
               defaultValues={formData}
             />
           )}
-          {activeStep === 6 && (
+
+          {formData.genderWeightLoss === "Female" && activeStep === 6 && (
+            <WeightLossPregnant
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {formData.genderWeightLoss === "Female" && activeStep === 7 && (
+            <BreastFeeding
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+
+          {activeStep === 6 + genderOffset && (
             <GlpOneMedication
               onNext={handleNext}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
-          {activeStep === 7 && (
+
+          {activeStep === 7 + genderOffset && (
             <InjectionDate
               onNext={handleNext}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
-          {activeStep === 8 && (
+
+          {activeStep === 8 + genderOffset && (
             <WeightLossGoal
               onNext={handleNext}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
-          {activeStep === 9 && (
+
+          {activeStep === 9 + genderOffset && (
             <MultipleMedicine
               onNext={handleNext}
               onBack={handleBack}
@@ -180,7 +209,7 @@ const QuizPage = () => {
             />
           )}
 
-          {activeStep === 10 && (
+          {activeStep === 10 + genderOffset && (
             <DiseaseList
               onNext={(data) => {
                 const { eligible, ...rest } = data;
@@ -188,7 +217,7 @@ const QuizPage = () => {
                 if (eligible) {
                   handleFinalSubmit(rest);
                 } else {
-                  setEligibleComponent(<InEligibleUser />); // ✅ FIX: again, just set
+                  setEligibleComponent(<InEligibleUser />);
                 }
               }}
               onBack={handleBack}
