@@ -29,12 +29,12 @@ import ThanksStep from "./intake-steps/thanks-step";
 
 // Map of category => steps to show
 const categoryStepsMap: Record<string, number[]> = {
-  "Single Peptides": [1, 2, 4, 12],
-  "Peptides Blends": [1, 2, 3, 12],
+  "Single Peptides": [1, 2, 4, 13],
+  "Peptides Blends": [1, 2, 3, 13],
   "Weight Loss": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-  Testosterone: [1, 2, 3, 12],
-  "Hair Growth": [1, 3, 12],
-  Others: [1, 2, 12],
+  Testosterone: [1, 2, 3, 13],
+  "Hair Growth": [1, 3, 13],
+  Others: [1, 2, 13],
 };
 
 const PatientIntake = () => {
