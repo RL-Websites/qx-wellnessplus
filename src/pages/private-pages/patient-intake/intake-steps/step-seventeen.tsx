@@ -1,0 +1,225 @@
+import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
+import { getErrorMessage } from "@/utils/helper.utils";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Button, Input, Radio } from "@mantine/core";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+
+export const step17Schema = yup.object({
+  peptidePrimaryGoal: yup.string().required("Please mention your primary goal."),
+  peptideTherapyUsed: yup.string().required("Please select at least one value."),
+  hormoneSensitiveCancers: yup.string().required("Please select at least one value."),
+  endocrineAutoimmune: yup.string().required("Please select at least one value."),
+  hormoneTherapySupple: yup.string().required("Please select at least one value."),
+  physicActLevel: yup.string().required("Please mention your physical activity level."),
+});
+
+export type Step17SchemaType = yup.InferType<typeof step17Schema>;
+
+interface StepSeventeenProps {
+  onNext: (data: Step17SchemaType) => void;
+  onBack: () => void;
+  defaultValues?: Step17SchemaType;
+  isLoading?: boolean;
+}
+
+const StepSeventeen = ({ onNext, onBack, defaultValues, isLoading = false }: StepSeventeenProps) => {
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+    clearErrors,
+  } = useForm<Step17SchemaType>({
+    defaultValues: {
+      peptidePrimaryGoal: defaultValues?.peptidePrimaryGoal || "",
+      peptideTherapyUsed: defaultValues?.peptideTherapyUsed || "",
+      hormoneSensitiveCancers: defaultValues?.hormoneSensitiveCancers || "",
+      endocrineAutoimmune: defaultValues?.endocrineAutoimmune || "",
+      hormoneTherapySupple: defaultValues?.hormoneTherapySupple || "",
+      physicActLevel: defaultValues?.physicActLevel || "",
+    },
+    resolver: yupResolver(step17Schema),
+  });
+
+  const peptideTherapyUsed = watch("peptideTherapyUsed");
+  const hormoneSensitiveCancers = watch("hormoneSensitiveCancers");
+  const endocrineAutoimmune = watch("endocrineAutoimmune");
+  const hormoneTherapySupple = watch("hormoneTherapySupple");
+
+  const handleSelect = (field: keyof Step17SchemaType, value: string) => {
+    setValue(field, value, { shouldValidate: true });
+    clearErrors(field);
+  };
+
+  return (
+    <form
+      id="step17Form"
+      onSubmit={handleSubmit(onNext)}
+      className="max-w-[800px] mx-auto space-y-10 pt-10"
+    >
+      <div>
+        <label className="block text-2xl font-poppins font-semibold mb-2">
+          What is your primary goal with peptide therapy?
+          <span className="text-danger">*</span>
+        </label>
+        <Input
+          type="text"
+          {...register("peptidePrimaryGoal")}
+          error={Boolean(errors.peptidePrimaryGoal)}
+        />
+        {errors.peptidePrimaryGoal && <p className="text-danger text-sm mt-1">{getErrorMessage(errors.peptidePrimaryGoal)}</p>}
+      </div>
+
+      {/* Peptide therapy used */}
+      <Radio.Group
+        value={peptideTherapyUsed}
+        onChange={(val) => handleSelect("peptideTherapyUsed", val)}
+        label="Have you used peptide therapies before?"
+        error={getErrorMessage(errors?.peptideTherapyUsed)}
+        classNames={{ label: "!text-2xl pb-2" }}
+      >
+        <div className="grid grid-cols-2 gap-5">
+          {["Yes", "No"].map((option) => (
+            <Radio
+              key={option}
+              value={option}
+              classNames={getBaseWebRadios(peptideTherapyUsed, option)}
+              label={
+                <div className="relative text-center">
+                  <span className="text-foreground font-poppins">{option}</span>
+                  {peptideTherapyUsed === option && (
+                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                      <i className="icon-tick text-sm/none"></i>
+                    </span>
+                  )}
+                </div>
+              }
+            />
+          ))}
+        </div>
+      </Radio.Group>
+
+      {/* Hormone-sensitive cancers */}
+      <Radio.Group
+        value={hormoneSensitiveCancers}
+        onChange={(val) => handleSelect("hormoneSensitiveCancers", val)}
+        label="Do you have any history of hormone-sensitive cancers (e.g. breast, prostate)?"
+        error={getErrorMessage(errors?.hormoneSensitiveCancers)}
+        classNames={{ label: "!text-2xl pb-2" }}
+      >
+        <div className="grid grid-cols-2 gap-5">
+          {["Yes", "No"].map((option) => (
+            <Radio
+              key={option}
+              value={option}
+              classNames={getBaseWebRadios(hormoneSensitiveCancers, option)}
+              label={
+                <div className="relative text-center">
+                  <span className="text-foreground font-poppins">{option}</span>
+                  {hormoneSensitiveCancers === option && (
+                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                      <i className="icon-tick text-sm/none"></i>
+                    </span>
+                  )}
+                </div>
+              }
+            />
+          ))}
+        </div>
+      </Radio.Group>
+
+      {/* Endocrine / autoimmune */}
+      <Radio.Group
+        value={endocrineAutoimmune}
+        onChange={(val) => handleSelect("endocrineAutoimmune", val)}
+        label="Do you have any known endocrine or autoimmune disorders?"
+        error={getErrorMessage(errors?.endocrineAutoimmune)}
+        classNames={{ label: "!text-2xl pb-2" }}
+      >
+        <div className="grid grid-cols-2 gap-5">
+          {["Yes", "No"].map((option) => (
+            <Radio
+              key={option}
+              value={option}
+              classNames={getBaseWebRadios(endocrineAutoimmune, option)}
+              label={
+                <div className="relative text-center">
+                  <span className="text-foreground font-poppins">{option}</span>
+                  {endocrineAutoimmune === option && (
+                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                      <i className="icon-tick text-sm/none"></i>
+                    </span>
+                  )}
+                </div>
+              }
+            />
+          ))}
+        </div>
+      </Radio.Group>
+
+      {/* Hormone therapy / supplements */}
+      <Radio.Group
+        value={hormoneTherapySupple}
+        onChange={(val) => handleSelect("hormoneTherapySupple", val)}
+        label="Are you currently taking hormone therapy, supplements, or other performance enhancers?"
+        error={getErrorMessage(errors?.hormoneTherapySupple)}
+        classNames={{ label: "!text-2xl pb-2" }}
+      >
+        <div className="grid grid-cols-2 gap-5">
+          {["Yes", "No"].map((option) => (
+            <Radio
+              key={option}
+              value={option}
+              classNames={getBaseWebRadios(hormoneTherapySupple, option)}
+              label={
+                <div className="relative text-center">
+                  <span className="text-foreground font-poppins">{option}</span>
+                  {hormoneTherapySupple === option && (
+                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                      <i className="icon-tick text-sm/none"></i>
+                    </span>
+                  )}
+                </div>
+              }
+            />
+          ))}
+        </div>
+      </Radio.Group>
+
+      <div>
+        <label className="block text-2xl font-poppins font-semibold mb-2">
+          What is your typical physical activity level?
+          <span className="text-danger">*</span>
+        </label>
+        <Input
+          type="text"
+          {...register("physicActLevel")}
+          error={Boolean(errors.physicActLevel)}
+        />
+        {errors.physicActLevel && <p className="text-danger text-sm mt-1">{getErrorMessage(errors.physicActLevel)}</p>}
+      </div>
+
+      <div className="flex justify-center gap-6 pt-6">
+        <Button
+          variant="outline"
+          className="w-[200px]"
+          onClick={onBack}
+        >
+          Back
+        </Button>
+        <Button
+          type="submit"
+          className="w-[200px]"
+          form="step17Form"
+          loading={isLoading}
+        >
+          Next
+        </Button>
+      </div>
+    </form>
+  );
+};
+
+export default StepSeventeen;
