@@ -23,10 +23,9 @@ interface StepTwelveProps {
   onNext: (data: step12SchemaType) => void;
   onBack: () => void;
   defaultValues?: step12SchemaType;
-  isLoading: boolean;
 }
 
-const StepTwelve = ({ onNext, onBack, defaultValues, isLoading = false }: StepTwelveProps) => {
+const StepTwelve = ({ onNext, onBack, defaultValues }: StepTwelveProps) => {
   const {
     handleSubmit,
     setValue,
@@ -60,7 +59,6 @@ const StepTwelve = ({ onNext, onBack, defaultValues, isLoading = false }: StepTw
       onSubmit={handleSubmit(onNext)}
       className="max-w-[800px] mx-auto space-y-10 pt-10"
     >
-      {/* Pancreatitis */}
       <Radio.Group
         value={pancreatitis}
         onChange={(value) => {
@@ -95,7 +93,6 @@ const StepTwelve = ({ onNext, onBack, defaultValues, isLoading = false }: StepTw
         </div>
       </Radio.Group>
 
-      {/* Gallstones */}
       {showGallstones && (
         <Radio.Group
           value={gallstones}
@@ -172,7 +169,6 @@ const StepTwelve = ({ onNext, onBack, defaultValues, isLoading = false }: StepTw
           type="submit"
           className="w-[200px]"
           form="step12Form"
-          loading={isLoading}
         >
           Next
         </Button>

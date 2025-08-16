@@ -79,7 +79,7 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
         className="card-common pt-12 space-y-10"
       >
         <div className="card-title with-border">
-          <h6 className="text-foreground">Progress Tracking</h6>
+          <h6 className="text-[30px] font-semibold text-foreground font-poppins">Progress Tracking</h6>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <NumberInput
