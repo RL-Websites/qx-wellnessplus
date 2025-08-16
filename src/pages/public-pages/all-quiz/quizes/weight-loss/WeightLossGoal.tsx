@@ -3,20 +3,19 @@ import { Button, Input } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
-// Validation schema
-export const ageWeightLossSchema = yup.object({
-  ageWeightLoss: yup.string().required("Please add your age for weight loss"),
+export const weightLossGoalSchema = yup.object({
+  weightlossgoal: yup.string().required("Please add your weight loss goal"),
 });
 
-export type ageWeightLossSchemaType = yup.InferType<typeof ageWeightLossSchema>;
+export type weightLossGoalSchemaType = yup.InferType<typeof weightLossGoalSchema>;
 
-interface IAgeWeightLossProps {
-  onNext: (data: ageWeightLossSchemaType) => void;
+interface IWeightLossGoalProps {
+  onNext: (data: weightLossGoalSchemaType) => void;
   onBack: () => void;
-  defaultValues?: ageWeightLossSchemaType;
+  defaultValues?: weightLossGoalSchemaType;
 }
 
-const AgeWeightLoss = ({ onNext, onBack, defaultValues }: IAgeWeightLossProps) => {
+const WeightLossGoal = ({ onNext, onBack, defaultValues }: IWeightLossGoalProps) => {
   const {
     handleSubmit,
     register,
@@ -24,41 +23,41 @@ const AgeWeightLoss = ({ onNext, onBack, defaultValues }: IAgeWeightLossProps) =
     watch,
     clearErrors,
     formState: { errors },
-  } = useForm<ageWeightLossSchemaType>({
+  } = useForm<weightLossGoalSchemaType>({
     defaultValues: {
-      ageWeightLoss: defaultValues?.ageWeightLoss || "",
+      weightlossgoal: defaultValues?.weightlossgoal || "",
     },
-    resolver: yupResolver(ageWeightLossSchema),
+    resolver: yupResolver(weightLossGoalSchema),
   });
 
-  const ageWeightLoss = watch("ageWeightLoss");
+  const weightLossGoal = watch("weightlossgoal");
 
   const handleSelect = (value: string) => {
-    setValue("ageWeightLoss", value, { shouldValidate: true });
-    clearErrors("ageWeightLoss");
+    setValue("weightlossgoal", value, { shouldValidate: true });
+    clearErrors("weightlossgoal");
   };
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
-      <div className=" card-common-width mx-auto ">
-        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">What is your age for weight loss?</h2>
+      <div className="card-common-width mx-auto">
+        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">What is your weight loss goal?</h2>
         <form
-          id="ageWeightLossForm"
+          id="weightLossGoalForm"
           onSubmit={handleSubmit(onNext)}
           className="max-w-xl mx-auto space-y-6 card-common"
         >
           <div>
             <Input.Wrapper
-              label="Your Age for Weight Loss"
+              label="Weight Loss Goal"
               required
-              error={errors.ageWeightLoss?.message ? errors.ageWeightLoss?.message : false}
+              error={errors.weightlossgoal?.message ? errors.weightlossgoal?.message : false}
               classNames={{
                 label: "!text-sm md:!text-base lg:!text-lg",
               }}
             >
               <Input
                 type="text"
-                {...register("ageWeightLoss")}
+                {...register("weightlossgoal")}
               />
             </Input.Wrapper>
           </div>
@@ -75,7 +74,7 @@ const AgeWeightLoss = ({ onNext, onBack, defaultValues }: IAgeWeightLossProps) =
         <Button
           type="submit"
           className="w-[200px]"
-          form="ageWeightLossForm"
+          form="weightLossGoalForm"
         >
           Next
         </Button>
@@ -84,4 +83,4 @@ const AgeWeightLoss = ({ onNext, onBack, defaultValues }: IAgeWeightLossProps) =
   );
 };
 
-export default AgeWeightLoss;
+export default WeightLossGoal;

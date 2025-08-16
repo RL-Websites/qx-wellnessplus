@@ -1,65 +1,59 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Group, Radio, Text } from "@mantine/core";
+import { Button, Group, Radio } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 // Validation schema
-export const customerStatusSchema = yup.object({
-  customerStatus: yup.string().required("Please select a customer."),
+export const weightLossPregnantSchema = yup.object({
+  weightLossPregnant: yup.string().required("Please select an option."),
 });
 
-export type customerStatusSchemaType = yup.InferType<typeof customerStatusSchema>;
+export type weightLossPregnantSchemaType = yup.InferType<typeof weightLossPregnantSchema>;
 
-interface ICustomerStatusProps {
-  onNext: (data: customerStatusSchemaType & { inEligibleUser?: boolean }) => void;
+interface IWeightLossPregnantProps {
+  onNext: (data: weightLossPregnantSchemaType) => void;
   onBack: () => void;
-  defaultValues?: customerStatusSchemaType;
+  defaultValues?: weightLossPregnantSchemaType;
 }
 
-const CustomerStatus = ({ onNext, onBack, defaultValues }: ICustomerStatusProps) => {
+const WeightLossPregnant = ({ onNext, onBack, defaultValues }: IWeightLossPregnantProps) => {
   const {
     handleSubmit,
     setValue,
     watch,
     clearErrors,
     formState: { errors },
-  } = useForm<customerStatusSchemaType>({
+  } = useForm<weightLossPregnantSchemaType>({
     defaultValues: {
-      customerStatus: defaultValues?.customerStatus || "",
+      weightLossPregnant: defaultValues?.weightLossPregnant || "",
     },
-    resolver: yupResolver(customerStatusSchema),
+    resolver: yupResolver(weightLossPregnantSchema),
   });
 
-  const customerStatus = watch("customerStatus");
+  const weightLossPregnant = watch("weightLossPregnant");
 
-  const options = ["Existing", "New"];
+  const options = ["No", "Yes"];
 
   const handleSelect = (value: string) => {
-    setValue("customerStatus", value, { shouldValidate: true });
-    clearErrors("customerStatus");
+    setValue("weightLossPregnant", value, { shouldValidate: true });
+    clearErrors("weightLossPregnant");
   };
-
-  // const handleFormSubmit = (data: customerStatusSchemaType) => {
-  //   onNext({
-  //     ...data,
-  //     inEligibleUser: data.customerStatus === "New",
-  //   });
-  // };
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <form
-        id="customerStatusForm"
+        id="weightLossPregnantForm"
         onSubmit={handleSubmit(onNext)}
         className="max-w-xl mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Are you new or an existing Wellness Plus customer?</h2>
+          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Are you currently pregnant or trying to get pregnant?</h2>
 
           <Radio.Group
-            value={customerStatus}
+            value={weightLossPregnant}
             onChange={handleSelect}
             className="mt-6"
+            error={errors?.weightLossPregnant?.message}
           >
             <Group grow>
               {options.map((option) => (
@@ -72,14 +66,14 @@ const CustomerStatus = ({ onNext, onBack, defaultValues }: ICustomerStatusProps)
                     inner: "hidden",
                     labelWrapper: "w-full",
                     label: `
-                    block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointer
-                    ${customerStatus === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
-                  `,
+                      block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointer
+                      ${weightLossPregnant === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
+                    `,
                   }}
                   label={
                     <div className="relative text-center">
                       <span className="text-foreground font-poppins">{option}</span>
-                      {customerStatus === option && (
+                      {weightLossPregnant === option && (
                         <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
@@ -90,7 +84,6 @@ const CustomerStatus = ({ onNext, onBack, defaultValues }: ICustomerStatusProps)
               ))}
             </Group>
           </Radio.Group>
-          {errors.customerStatus && <Text className="text-red-500 text-sm mt-5 text-center">{errors.customerStatus.message}</Text>}
         </div>
 
         <div className="flex justify-center gap-6 pt-4">
@@ -104,7 +97,7 @@ const CustomerStatus = ({ onNext, onBack, defaultValues }: ICustomerStatusProps)
           <Button
             type="submit"
             className="w-[200px]"
-            form="customerStatusForm"
+            form="weightLossPregnantForm"
           >
             Next
           </Button>
@@ -114,4 +107,4 @@ const CustomerStatus = ({ onNext, onBack, defaultValues }: ICustomerStatusProps)
   );
 };
 
-export default CustomerStatus;
+export default WeightLossPregnant;

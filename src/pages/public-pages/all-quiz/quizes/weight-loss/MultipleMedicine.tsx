@@ -4,60 +4,53 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 // Validation schema
-export const customerStatusSchema = yup.object({
-  customerStatus: yup.string().required("Please select a customer."),
+export const multipleMedicineSchema = yup.object({
+  selectedMedicine: yup.string().required("Please select an option."),
 });
 
-export type customerStatusSchemaType = yup.InferType<typeof customerStatusSchema>;
+export type multipleMedicineSchemaType = yup.InferType<typeof multipleMedicineSchema>;
 
-interface ICustomerStatusProps {
-  onNext: (data: customerStatusSchemaType & { inEligibleUser?: boolean }) => void;
+interface IMultipleMedicineProps {
+  onNext: (data: multipleMedicineSchemaType) => void;
   onBack: () => void;
-  defaultValues?: customerStatusSchemaType;
+  defaultValues?: multipleMedicineSchemaType;
 }
 
-const CustomerStatus = ({ onNext, onBack, defaultValues }: ICustomerStatusProps) => {
+const MultipleMedicine = ({ onNext, onBack, defaultValues }: IMultipleMedicineProps) => {
   const {
     handleSubmit,
     setValue,
     watch,
     clearErrors,
     formState: { errors },
-  } = useForm<customerStatusSchemaType>({
+  } = useForm<multipleMedicineSchemaType>({
     defaultValues: {
-      customerStatus: defaultValues?.customerStatus || "",
+      selectedMedicine: defaultValues?.selectedMedicine || "",
     },
-    resolver: yupResolver(customerStatusSchema),
+    resolver: yupResolver(multipleMedicineSchema),
   });
 
-  const customerStatus = watch("customerStatus");
+  const selectedMedicine = watch("selectedMedicine");
 
-  const options = ["Existing", "New"];
+  const options = ["Semaglutide", "Tirzepatide"];
 
   const handleSelect = (value: string) => {
-    setValue("customerStatus", value, { shouldValidate: true });
-    clearErrors("customerStatus");
+    setValue("selectedMedicine", value, { shouldValidate: true });
+    clearErrors("selectedMedicine");
   };
-
-  // const handleFormSubmit = (data: customerStatusSchemaType) => {
-  //   onNext({
-  //     ...data,
-  //     inEligibleUser: data.customerStatus === "New",
-  //   });
-  // };
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <form
-        id="customerStatusForm"
+        id="multipleMedicineForm"
         onSubmit={handleSubmit(onNext)}
         className="max-w-xl mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Are you new or an existing Wellness Plus customer?</h2>
+          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Are you interested in Semaglutide or Tirzepatide?</h2>
 
           <Radio.Group
-            value={customerStatus}
+            value={selectedMedicine}
             onChange={handleSelect}
             className="mt-6"
           >
@@ -72,14 +65,14 @@ const CustomerStatus = ({ onNext, onBack, defaultValues }: ICustomerStatusProps)
                     inner: "hidden",
                     labelWrapper: "w-full",
                     label: `
-                    block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointer
-                    ${customerStatus === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
-                  `,
+                      block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointer
+                      ${selectedMedicine === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
+                    `,
                   }}
                   label={
                     <div className="relative text-center">
                       <span className="text-foreground font-poppins">{option}</span>
-                      {customerStatus === option && (
+                      {selectedMedicine === option && (
                         <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
@@ -90,7 +83,7 @@ const CustomerStatus = ({ onNext, onBack, defaultValues }: ICustomerStatusProps)
               ))}
             </Group>
           </Radio.Group>
-          {errors.customerStatus && <Text className="text-red-500 text-sm mt-5 text-center">{errors.customerStatus.message}</Text>}
+          {errors.selectedMedicine && <Text className="text-red-500 text-sm mt-5 text-center">{errors.selectedMedicine.message}</Text>}
         </div>
 
         <div className="flex justify-center gap-6 pt-4">
@@ -104,7 +97,7 @@ const CustomerStatus = ({ onNext, onBack, defaultValues }: ICustomerStatusProps)
           <Button
             type="submit"
             className="w-[200px]"
-            form="customerStatusForm"
+            form="multipleMedicineForm"
           >
             Next
           </Button>
@@ -114,4 +107,4 @@ const CustomerStatus = ({ onNext, onBack, defaultValues }: ICustomerStatusProps)
   );
 };
 
-export default CustomerStatus;
+export default MultipleMedicine;
