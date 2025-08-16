@@ -5,156 +5,155 @@ import { Button, Radio } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
-export const step11Schema = yup.object({
-  gallbladder: yup.string().required("Please select at least one value."),
-  removedGallbladder: yup.string().when("gallbladder", {
+export const step12Schema = yup.object({
+  pancreatitis: yup.string().required("Please select at least one value."),
+  gallstones: yup.string().when("pancreatitis", {
     is: "Yes",
     then: (schema) => schema.required("Please select at least one value."),
   }),
-  whenGallbladderRemoved: yup.string().when("removedGallbladder", {
+  removedGallbladderGallstones: yup.string().when("gallstones", {
     is: "Yes",
     then: (schema) => schema.required("Please select at least one value."),
   }),
 });
 
-export type step11SchemaType = yup.InferType<typeof step11Schema>;
+export type step12SchemaType = yup.InferType<typeof step12Schema>;
 
-interface StepElevenProps {
-  onNext: (data: step11SchemaType) => void;
+interface StepTwelveProps {
+  onNext: (data: step12SchemaType) => void;
   onBack: () => void;
-  defaultValues?: step11SchemaType;
+  defaultValues?: step12SchemaType;
+  isLoading: boolean;
 }
 
-const StepEleven = ({ onNext, onBack, defaultValues }: StepElevenProps) => {
+const StepTwelve = ({ onNext, onBack, defaultValues, isLoading = false }: StepTwelveProps) => {
   const {
-    register,
     handleSubmit,
     setValue,
     watch,
     clearErrors,
     formState: { errors },
-  } = useForm<step11SchemaType>({
+  } = useForm<step12SchemaType>({
     defaultValues: {
-      gallbladder: defaultValues?.gallbladder || "",
-      removedGallbladder: defaultValues?.removedGallbladder || "",
-      whenGallbladderRemoved: defaultValues?.whenGallbladderRemoved || "",
+      pancreatitis: defaultValues?.pancreatitis || "",
+      gallstones: defaultValues?.gallstones || "",
+      removedGallbladderGallstones: defaultValues?.removedGallbladderGallstones || "",
     },
-    resolver: yupResolver(step11Schema),
+    resolver: yupResolver(step12Schema),
   });
 
-  const gallbladder = watch("gallbladder");
-  const removedGallbladder = watch("removedGallbladder");
-  const whenGallbladderRemoved = watch("whenGallbladderRemoved");
+  const pancreatitis = watch("pancreatitis");
+  const gallstones = watch("gallstones");
+  const removedGallbladderGallstones = watch("removedGallbladderGallstones");
 
-  const showRemovedGallbladder = gallbladder === "Yes";
-  const showWhenRemoved = removedGallbladder === "Yes";
+  const showGallstones = pancreatitis === "Yes";
+  const showRemovedGallbladder = gallstones === "Yes";
 
-  const yesNoOptions = ["Yes", "No"];
-  const removedTimeOptions = ["Within the last 2 months", "More than 2 months ago"];
-
-  const handleSelect = (field: keyof step11SchemaType, value: string) => {
+  const handleSelect = (field: keyof step12SchemaType, value: string) => {
     setValue(field, value, { shouldValidate: true });
     clearErrors(field);
-    if (field === "gallbladder") {
-      setValue("removedGallbladder", "");
-      setValue("whenGallbladderRemoved", "");
-    }
-    if (field === "removedGallbladder") {
-      setValue("whenGallbladderRemoved", "");
-    }
   };
 
   return (
     <form
-      id="step11Form"
+      id="step12Form"
       onSubmit={handleSubmit(onNext)}
       className="max-w-[800px] mx-auto space-y-10 pt-10"
     >
-      {/* Gallbladder history */}
+      {/* Pancreatitis */}
       <Radio.Group
-        value={gallbladder}
-        label="Do you have a personal history of gallbladder disease?"
-        error={getErrorMessage(errors?.gallbladder)}
+        value={pancreatitis}
+        onChange={(value) => {
+          handleSelect("pancreatitis", value);
+          setValue("gallstones", "");
+          setValue("removedGallbladderGallstones", "");
+          clearErrors("gallstones");
+          clearErrors("removedGallbladderGallstones");
+        }}
+        label="Do you have a personal history of acute or chronic pancreatitis?"
+        error={getErrorMessage(errors?.pancreatitis)}
         classNames={{ label: "!text-3xl pb-2" }}
       >
         <div className="grid grid-cols-2 gap-5">
-          {yesNoOptions.map((option) => (
+          {["Yes", "No"].map((option) => (
             <Radio
               key={option}
               value={option}
-              classNames={getBaseWebRadios(gallbladder, option)}
+              classNames={getBaseWebRadios(pancreatitis, option)}
               label={
                 <div className="relative text-center">
                   <span className="text-foreground font-poppins">{option}</span>
-                  {gallbladder === option && (
+                  {pancreatitis === option && (
                     <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
                       <i className="icon-tick text-sm/none"></i>
                     </span>
                   )}
                 </div>
               }
-              onChange={() => handleSelect("gallbladder", option)}
             />
           ))}
         </div>
       </Radio.Group>
 
-      {/* Gallbladder removed */}
-      {showRemovedGallbladder && (
+      {/* Gallstones */}
+      {showGallstones && (
         <Radio.Group
-          value={removedGallbladder}
-          label="Did you have your gallbladder removed?"
-          error={getErrorMessage(errors?.removedGallbladder)}
-          classNames={{ label: "!text-2xl pb-2" }}
+          value={gallstones}
+          onChange={(value) => {
+            handleSelect("gallstones", value);
+            setValue("removedGallbladderGallstones", "");
+            clearErrors("removedGallbladderGallstones");
+          }}
+          label="Did you have your gallbladder removed due to pancreatitis from gallstones?"
+          error={getErrorMessage(errors?.gallstones)}
+          classNames={{ label: "!text-3xl pt-10 pb-2" }}
         >
           <div className="grid grid-cols-2 gap-5">
-            {yesNoOptions.map((option) => (
+            {["Yes", "No"].map((option) => (
               <Radio
                 key={option}
                 value={option}
-                classNames={getBaseWebRadios(removedGallbladder, option)}
+                classNames={getBaseWebRadios(gallstones, option)}
                 label={
                   <div className="relative text-center">
                     <span className="text-foreground font-poppins">{option}</span>
-                    {removedGallbladder === option && (
+                    {gallstones === option && (
                       <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
                         <i className="icon-tick text-sm/none"></i>
                       </span>
                     )}
                   </div>
                 }
-                onChange={() => handleSelect("removedGallbladder", option)}
               />
             ))}
           </div>
         </Radio.Group>
       )}
 
-      {/* When removed */}
-      {showWhenRemoved && (
+      {showRemovedGallbladder && (
         <Radio.Group
-          value={whenGallbladderRemoved}
+          value={removedGallbladderGallstones}
+          onChange={(value) => handleSelect("removedGallbladderGallstones", value)}
           label="When did you have your gallbladder removed?"
-          error={getErrorMessage(errors?.whenGallbladderRemoved)}
-          classNames={{ label: "!text-2xl pb-2" }}
+          error={getErrorMessage(errors?.removedGallbladderGallstones)}
+          classNames={{ label: "!text-3xl pt-10 pb-2" }}
         >
-          <div className="grid grid-cols-2 gap-5">
-            {removedTimeOptions.map((option) => (
+          <div className="grid grid-cols-1 gap-5">
+            {["Within the last 2 months", "More than 2 months ago"].map((option) => (
               <Radio
                 key={option}
                 value={option}
-                classNames={getBaseWebRadios(whenGallbladderRemoved, option)}
+                classNames={getBaseWebRadios(removedGallbladderGallstones, option)}
                 label={
                   <div className="relative text-center">
                     <span className="text-foreground font-poppins">{option}</span>
-                    {whenGallbladderRemoved === option && (
+                    {removedGallbladderGallstones === option && (
                       <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
                         <i className="icon-tick text-sm/none"></i>
                       </span>
                     )}
                   </div>
                 }
-                onChange={() => handleSelect("whenGallbladderRemoved", option)}
               />
             ))}
           </div>
@@ -172,7 +171,8 @@ const StepEleven = ({ onNext, onBack, defaultValues }: StepElevenProps) => {
         <Button
           type="submit"
           className="w-[200px]"
-          form="step11Form"
+          form="step12Form"
+          loading={isLoading}
         >
           Next
         </Button>
@@ -181,4 +181,4 @@ const StepEleven = ({ onNext, onBack, defaultValues }: StepElevenProps) => {
   );
 };
 
-export default StepEleven;
+export default StepTwelve;
