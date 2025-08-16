@@ -43,33 +43,33 @@ const QuizPage = () => {
 
   const navigate = useNavigate();
 
-  // const lastStepByCategory = (category: string[]) => {
-  //   switch (category[0]) {
-  //     case "Hair Growth":
-  //       return 7;
-  //     case "Hair Growth (male)":
-  //       return 7;
-  //     case "Hair Growth (female)":
-  //       return 7;
-  //     case "Testosterone":
-  //       return 4;
-  //     case "Weight Loss":
-  //       return 3;
-  //     case "Peptides Blends":
-  //       return 5;
-  //     case "Single Peptides":
-  //       return 5;
-  //     default:
-  //       return defaultLastStep;
-  //   }
-  // };
+  const lastStepByCategory = (category: string[]) => {
+    switch (category[0]) {
+      case "Hair Growth":
+        return 7;
+      case "Hair Growth (male)":
+        return 7;
+      case "Hair Growth (female)":
+        return 7;
+      case "Testosterone":
+        return 4;
+      case "Weight Loss":
+        return 3;
+      case "Peptides Blends":
+        return 5;
+      case "Single Peptides":
+        return 5;
+      default:
+        return defaultLastStep;
+    }
+  };
 
-  // const defaultLastStep = 2;
+  const defaultLastStep = 2;
 
-  // useEffect(() => {
-  //   const step = lastStepByCategory(selectedCategory || []);
-  //   setLastStep(step);
-  // }, [selectedCategory]);
+  useEffect(() => {
+    const step = lastStepByCategory(selectedCategory || []);
+    setLastStep(step);
+  }, [selectedCategory]);
 
   const handleFinalSubmit = (data: any) => {
     const tempData = { ...formData, ...data };
@@ -125,6 +125,84 @@ const QuizPage = () => {
               onBack={handleBack}
               defaultValues={formData}
             />
+          )}
+          {selectedCategory?.includes("Hair Growth (Male)") && (
+            <>
+              {activeStep === 3 && (
+                <ScalpInfections
+                  onNext={handleNext}
+                  onBack={handleBack}
+                  defaultValues={formData}
+                />
+              )}
+              {activeStep === 4 && (
+                <AlopeciaAreata
+                  onNext={handleNext}
+                  onBack={handleBack}
+                  defaultValues={formData}
+                />
+              )}
+              {activeStep === 5 && (
+                <MedicationTaking
+                  onNext={handleNext}
+                  onBack={handleBack}
+                  defaultValues={formData}
+                />
+              )}
+              {activeStep === 6 && (
+                <ThyroidDisease
+                  onNext={handleNext}
+                  onBack={handleBack}
+                  defaultValues={formData}
+                />
+              )}
+              {activeStep === 7 && (
+                <Chemotherapy
+                  onNext={handleFinalSubmit}
+                  onBack={handleBack}
+                  defaultValues={formData}
+                />
+              )}
+            </>
+          )}
+          {selectedCategory?.includes("Hair Growth (Female)") && (
+            <>
+              {activeStep === 3 && (
+                <PlanningPregnancy
+                  onNext={handleNext}
+                  onBack={handleBack}
+                  defaultValues={formData}
+                />
+              )}
+              {activeStep === 4 && (
+                <BreastFeeding
+                  onNext={handleNext}
+                  onBack={handleBack}
+                  defaultValues={formData}
+                />
+              )}
+              {activeStep === 5 && (
+                <Pcos
+                  onNext={handleNext}
+                  onBack={handleBack}
+                  defaultValues={formData}
+                />
+              )}
+              {activeStep === 6 && (
+                <ScalpInfectionsTwo
+                  onNext={handleNext}
+                  onBack={handleBack}
+                  defaultValues={formData}
+                />
+              )}
+              {activeStep === 7 && (
+                <HairTreatment
+                  onNext={handleFinalSubmit}
+                  onBack={handleBack}
+                  defaultValues={formData}
+                />
+              )}
+            </>
           )}
         </>
       )}
@@ -246,84 +324,6 @@ const QuizPage = () => {
         <>
           {activeStep === 3 && (
             <ScalpInfectionsTestosterone
-              onNext={handleFinalSubmit}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-        </>
-      )}
-      {selectedCategory?.includes("Hair Growth (Male)") && (
-        <>
-          {activeStep === 3 && (
-            <ScalpInfections
-              onNext={handleNext}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-          {activeStep === 4 && (
-            <AlopeciaAreata
-              onNext={handleNext}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-          {activeStep === 5 && (
-            <MedicationTaking
-              onNext={handleNext}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-          {activeStep === 6 && (
-            <ThyroidDisease
-              onNext={handleNext}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-          {activeStep === 7 && (
-            <Chemotherapy
-              onNext={handleFinalSubmit}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-        </>
-      )}
-      {selectedCategory?.includes("Hair Growth (Female)") && (
-        <>
-          {activeStep === 3 && (
-            <PlanningPregnancy
-              onNext={handleNext}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-          {activeStep === 4 && (
-            <BreastFeeding
-              onNext={handleNext}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-          {activeStep === 5 && (
-            <Pcos
-              onNext={handleNext}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-          {activeStep === 6 && (
-            <ScalpInfectionsTwo
-              onNext={handleNext}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-          {activeStep === 7 && (
-            <HairTreatment
               onNext={handleFinalSubmit}
               onBack={handleBack}
               defaultValues={formData}
