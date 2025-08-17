@@ -4,30 +4,30 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 // Validation schema
-export const breastFeedingSchema = yup.object({
+export const hairGrowthBreastFeedingSchema = yup.object({
   breastFeeding: yup.string().required("Please select an option."),
 });
 
-export type breastFeedingSchemaType = yup.InferType<typeof breastFeedingSchema>;
+export type HairGrowthBreastFeedingSchemaType = yup.InferType<typeof hairGrowthBreastFeedingSchema>;
 
-interface IBreastFeedingProps {
-  onNext: (data: breastFeedingSchemaType) => void;
+interface IHairGrowthBreastFeedingProps {
+  onNext: (data: HairGrowthBreastFeedingSchemaType) => void;
   onBack: () => void;
-  defaultValues?: breastFeedingSchemaType;
+  defaultValues?: HairGrowthBreastFeedingSchemaType;
 }
 
-const BreastFeeding = ({ onNext, onBack, defaultValues }: IBreastFeedingProps) => {
+const HairGrowthBreastFeeding = ({ onNext, onBack, defaultValues }: IHairGrowthBreastFeedingProps) => {
   const {
     handleSubmit,
     setValue,
     watch,
     clearErrors,
     formState: { errors },
-  } = useForm<breastFeedingSchemaType>({
+  } = useForm<HairGrowthBreastFeedingSchemaType>({
     defaultValues: {
       breastFeeding: defaultValues?.breastFeeding || "",
     },
-    resolver: yupResolver(breastFeedingSchema),
+    resolver: yupResolver(hairGrowthBreastFeedingSchema),
   });
 
   const breastFeeding = watch("breastFeeding");
@@ -41,7 +41,7 @@ const BreastFeeding = ({ onNext, onBack, defaultValues }: IBreastFeedingProps) =
 
   return (
     <form
-      id="breastFeedingForm"
+      id="hairGrowthBreastFeedingForm"
       onSubmit={handleSubmit(onNext)}
       className="max-w-xl mx-auto space-y-6"
     >
@@ -96,7 +96,7 @@ const BreastFeeding = ({ onNext, onBack, defaultValues }: IBreastFeedingProps) =
         <Button
           type="submit"
           className="w-[200px]"
-          form="breastFeedingForm"
+          form="hairGrowthBreastFeedingForm"
         >
           Next
         </Button>
@@ -105,4 +105,4 @@ const BreastFeeding = ({ onNext, onBack, defaultValues }: IBreastFeedingProps) =
   );
 };
 
-export default BreastFeeding;
+export default HairGrowthBreastFeeding;

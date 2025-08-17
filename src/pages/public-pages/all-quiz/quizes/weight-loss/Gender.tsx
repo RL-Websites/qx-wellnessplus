@@ -8,20 +8,19 @@ import { useAtom } from "jotai";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
-// Validation Schema
-export const GenderHairGrowthSchema = yup.object({
-  genderHairGrowth: yup.string().required("Please select your gender for hair growth"),
+export const GenderWeightLossSchema = yup.object({
+  genderWeightLoss: yup.string().required("Please select your gender for weight loss"),
 });
 
-export type GenderHairGrowthSchemaType = yup.InferType<typeof GenderHairGrowthSchema>;
+export type GenderWeightLossSchemaType = yup.InferType<typeof GenderWeightLossSchema>;
 
-interface IGenderHairGrowthProps {
-  onNext: (data: GenderHairGrowthSchemaType) => void;
+interface IGenderWeightLossProps {
+  onNext: (data: GenderWeightLossSchemaType & { inEligibleUser?: boolean }) => void;
   onBack: () => void;
-  defaultValues?: GenderHairGrowthSchemaType;
+  defaultValues?: GenderWeightLossSchemaType;
 }
 
-export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGenderHairGrowthProps) {
+export default function GenderWeightLoss({ onNext, onBack, defaultValues }: IGenderWeightLossProps) {
   const [selectedCategory, setSelectedCategory] = useAtom(selectedCategoryAtom);
   const {
     handleSubmit,
@@ -29,39 +28,37 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGen
     watch,
     clearErrors,
     formState: { errors },
-  } = useForm<GenderHairGrowthSchemaType>({
+  } = useForm<GenderWeightLossSchemaType>({
     defaultValues: {
-      genderHairGrowth: defaultValues?.genderHairGrowth || "",
+      genderWeightLoss: defaultValues?.genderWeightLoss || "",
     },
-    resolver: yupResolver(GenderHairGrowthSchema),
+    resolver: yupResolver(GenderWeightLossSchema),
   });
 
-  const genderHairGrowth = watch("genderHairGrowth");
+  const genderWeightLoss = watch("genderWeightLoss");
   const options = ["Male", "Female"];
 
   const handleSelect = (value: string) => {
-    if (value === "Male") {
-      setSelectedCategory(["Hair Growth (Male)"]);
-    } else if (value === "Female") {
-      setSelectedCategory(["Hair Growth (Female)"]);
+    if (selectedCategory?.includes("Hair Growth")) {
+      if (value === "Male") {
+        const newCat = ["Hair Growth (Male)"];
+        setSelectedCategory(newCat);
+      }
+      if (value === "Female") {
+        const newCat = ["Hair Growth (Female)"];
+        setSelectedCategory(newCat);
+      }
     }
-
-    setValue("genderHairGrowth", value, { shouldValidate: true });
-    clearErrors("genderHairGrowth");
+    setValue("genderWeightLoss", value, { shouldValidate: true });
+    clearErrors("genderWeightLoss");
   };
 
-  // const handleSelect = (value: string) => {
-  //   if (selectedCategory?.includes("Hair Growth")) {
-  //     if (value === "Male") {
-  //       setSelectedCategory(["Hair Growth (Male)"]);
-  //     } else if (value === "Female") {
-  //       setSelectedCategory(["Hair Growth (Female)"]);
-  //     }
-  //   }
-
-  //   setValue("genderHairGrowth", value, { shouldValidate: true });
-  //   clearErrors("genderHairGrowth");
-  // };
+  const handleFormSubmit = (data: GenderWeightLossSchemaType) => {
+    onNext({
+      ...data,
+      inEligibleUser: data.genderWeightLoss === "Female",
+    });
+  };
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
@@ -69,12 +66,12 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGen
 
       <div className="card-common-width mx-auto mt-10">
         <form
-          id="genderHairGrowthForm"
-          onSubmit={handleSubmit(onNext)}
+          id="genderWeightLossForm"
+          onSubmit={handleSubmit(handleFormSubmit)}
           className="w-full"
         >
           <Radio.Group
-            value={genderHairGrowth}
+            value={genderWeightLoss}
             onChange={handleSelect}
             className="mt-6"
           >
@@ -83,11 +80,11 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGen
                 <Radio
                   key={option}
                   value={option}
-                  classNames={getBaseWebRadios(genderHairGrowth, option)}
+                  classNames={getBaseWebRadios(genderWeightLoss, option)}
                   label={
                     <div className="relative text-center">
                       <span className="text-foreground font-poppins">{option}</span>
-                      {genderHairGrowth === option && (
+                      {genderWeightLoss === option && (
                         <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
@@ -98,7 +95,7 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGen
               ))}
             </Group>
           </Radio.Group>
-          {errors.genderHairGrowth && <Text className="text-red-500 text-sm mt-5 text-center">{errors.genderHairGrowth.message}</Text>}
+          {errors.genderWeightLoss && <Text className="text-red-500 text-sm mt-5 text-center">{errors.genderWeightLoss.message}</Text>}
         </form>
       </div>
 
@@ -113,7 +110,7 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGen
         <Button
           type="submit"
           className="w-[200px]"
-          form="genderHairGrowthForm"
+          form="genderWeightLossForm"
         >
           Next
         </Button>

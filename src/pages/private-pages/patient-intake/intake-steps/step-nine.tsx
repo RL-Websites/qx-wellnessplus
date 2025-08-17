@@ -18,9 +18,10 @@ interface StepNineProps {
   onNext: (data: step9SchemaType) => void;
   onBack: () => void;
   defaultValues?: step9SchemaType;
+  isLoading?: boolean;
 }
 
-const StepNine = ({ onNext, onBack, defaultValues }: StepNineProps) => {
+const StepNine = ({ onNext, onBack, defaultValues, isLoading = false }: StepNineProps) => {
   const {
     handleSubmit,
     setValue,
@@ -123,6 +124,7 @@ const StepNine = ({ onNext, onBack, defaultValues }: StepNineProps) => {
           type="submit"
           className="w-[200px]"
           form="step9Form"
+          loading={isLoading}
         >
           Next
         </Button>
