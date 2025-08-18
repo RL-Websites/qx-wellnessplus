@@ -70,7 +70,7 @@ export default {
         "login-bg": "url('/images/login-bg.png')",
       },
       screens: {
-        "max-xs": "350px",
+        "max-xs": "100%",
         sm: "576px",
         md: "768px",
         lg: "992px",
