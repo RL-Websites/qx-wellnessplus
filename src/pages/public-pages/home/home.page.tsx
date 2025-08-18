@@ -40,8 +40,8 @@ const HomePage = () => {
     <div className="site-main-bg">
       <div className="site-home-hero ">
         <div className="container mx-auto">
-          <div className="header grid md:grid-cols-2  items-center justify-between ">
-            <div className="flex flex-col gap-7 lg:py-16 py-10">
+          <div className="header grid md:grid-cols-2 grid-cols-1  items-center justify-between ">
+            <div className="flex flex-col w-full gap-7 lg:py-16 py-10">
               <div className="logo flex items-center gap-2">
                 <NavLink
                   to={userData?.userable_type ? "/" : "/"}
@@ -79,7 +79,7 @@ const HomePage = () => {
               >
                 Start Your Journey Now
               </Button>
-              <p className="sm:text-lg text-base text-foreground font-medium">
+              <p className="sm:text-lg text-base text-foreground font-medium md:text-start text-center">
                 Are you an existing customer?{" "}
                 <Link
                   className="text-primary font-semibold underline"
