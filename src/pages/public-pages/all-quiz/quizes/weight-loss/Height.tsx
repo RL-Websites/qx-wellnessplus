@@ -43,8 +43,7 @@ const WeightLossHeight = ({ onNext, onBack, defaultValues }: IWeightLossHeightPr
       return;
     }
 
-    const totalHeightInInches = feet * 12 + inch;
-    const bmi = calculateBMI(weight, totalHeightInInches);
+    const bmi = calculateBMI(weight, feet, inch);
 
     onNext({ ...data, eligible: bmi >= 25 });
   };
