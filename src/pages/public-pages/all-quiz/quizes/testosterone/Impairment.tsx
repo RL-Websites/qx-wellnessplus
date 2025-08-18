@@ -1,18 +1,13 @@
-"use client";
-
-import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
-import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Group, Radio, Text } from "@mantine/core";
-import { useAtom } from "jotai";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
-export const ImpairmentSchema = yup.object({
-  genderWeightLoss: yup.string().required("Please select your gender for impairment support"),
+export const impairmentSchema = yup.object({
+  impairment: yup.string().required("Please select an option."),
 });
 
-export type ImpairmentSchemaType = yup.InferType<typeof ImpairmentSchema>;
+export type ImpairmentSchemaType = yup.InferType<typeof impairmentSchema>;
 
 interface IImpairmentProps {
   onNext: (data: ImpairmentSchemaType & { eligible?: boolean }) => void;
@@ -20,9 +15,7 @@ interface IImpairmentProps {
   defaultValues?: ImpairmentSchemaType;
 }
 
-export default function Impairment({ onNext, onBack, defaultValues }: IImpairmentProps) {
-  const [selectedCategory, setSelectedCategory] = useAtom(selectedCategoryAtom);
-
+const Impairment = ({ onNext, onBack, defaultValues }: IImpairmentProps) => {
   const {
     handleSubmit,
     setValue,
@@ -31,41 +24,35 @@ export default function Impairment({ onNext, onBack, defaultValues }: IImpairmen
     formState: { errors },
   } = useForm<ImpairmentSchemaType>({
     defaultValues: {
-      genderWeightLoss: defaultValues?.genderWeightLoss || "",
+      impairment: defaultValues?.impairment || "",
     },
-    resolver: yupResolver(ImpairmentSchema),
+    resolver: yupResolver(impairmentSchema),
   });
 
-  const genderWeightLoss = watch("genderWeightLoss");
-  const options = ["Male", "Female"];
+  const impairment = watch("impairment");
+  const options = ["No", "Yes"];
 
   const handleSelect = (value: string) => {
-    if (selectedCategory?.includes("Hair Growth")) {
-      setSelectedCategory([`Hair Growth (${value})`]);
-    }
-    setValue("genderWeightLoss", value, { shouldValidate: true });
-    clearErrors("genderWeightLoss");
+    setValue("impairment", value, { shouldValidate: true });
+    clearErrors("impairment");
   };
 
-  const handleFormSubmit = (data: ImpairmentSchemaType) => {
-    onNext({
-      ...data,
-      eligible: data.genderWeightLoss === "Female",
-    });
+  const onSubmit = (data: ImpairmentSchemaType) => {
+    onNext({ ...data, eligible: data.impairment === "Yes" });
   };
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
-      <h2 className="heading-text text-foreground uppercase text-center">Gender</h2>
+      <form
+        id="impairmentForm"
+        onSubmit={handleSubmit(onSubmit)}
+        className="max-w-xl mx-auto space-y-6"
+      >
+        <div>
+          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Do you have severe liver or renal impairment?</h2>
 
-      <div className="card-common-width mx-auto mt-10">
-        <form
-          id="impairmentForm"
-          onSubmit={handleSubmit(handleFormSubmit)}
-          className="w-full"
-        >
           <Radio.Group
-            value={genderWeightLoss}
+            value={impairment}
             onChange={handleSelect}
             className="mt-6"
           >
@@ -74,11 +61,20 @@ export default function Impairment({ onNext, onBack, defaultValues }: IImpairmen
                 <Radio
                   key={option}
                   value={option}
-                  classNames={getBaseWebRadios(genderWeightLoss, option)}
+                  classNames={{
+                    root: "relative w-full",
+                    radio: "hidden",
+                    inner: "hidden",
+                    labelWrapper: "w-full",
+                    label: `
+                      block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointer
+                      ${impairment === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
+                    `,
+                  }}
                   label={
                     <div className="relative text-center">
                       <span className="text-foreground font-poppins">{option}</span>
-                      {genderWeightLoss === option && (
+                      {impairment === option && (
                         <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
@@ -89,26 +85,29 @@ export default function Impairment({ onNext, onBack, defaultValues }: IImpairmen
               ))}
             </Group>
           </Radio.Group>
-          {errors.genderWeightLoss && <Text className="text-red-500 text-sm mt-5 text-center">{errors.genderWeightLoss.message}</Text>}
-        </form>
-      </div>
 
-      <div className="flex justify-center gap-6 pt-8">
-        <Button
-          variant="outline"
-          className="w-[200px]"
-          onClick={onBack}
-        >
-          Back
-        </Button>
-        <Button
-          type="submit"
-          className="w-[200px]"
-          form="impairmentForm"
-        >
-          Next
-        </Button>
-      </div>
+          {errors.impairment && <Text className="text-red-500 text-sm mt-5 text-center">{errors.impairment.message}</Text>}
+        </div>
+
+        <div className="flex justify-center gap-6 pt-4">
+          <Button
+            variant="outline"
+            className="w-[200px]"
+            onClick={onBack}
+          >
+            Back
+          </Button>
+          <Button
+            type="submit"
+            className="w-[200px]"
+            form="impairmentForm"
+          >
+            Next
+          </Button>
+        </div>
+      </form>
     </div>
   );
-}
+};
+
+export default Impairment;

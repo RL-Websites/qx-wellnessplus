@@ -3,7 +3,6 @@ import { Button, Group, Radio, Text } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
-// Validation schema
 export const priapismSchema = yup.object({
   priapism: yup.string().required("Please select an option."),
 });
@@ -51,7 +50,7 @@ const Priapism = ({ onNext, onBack, defaultValues }: IPriapismProps) => {
         className="max-w-xl mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Do you have a history of priapism (prolonged erections)?</h2>
+          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Have you ever experienced priapism lasting &gt; 4 hours?</h2>
 
           <Radio.Group
             value={priapism}
