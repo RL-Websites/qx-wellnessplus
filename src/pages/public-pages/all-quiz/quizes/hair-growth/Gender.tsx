@@ -98,7 +98,7 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGen
               ))}
             </Group>
           </Radio.Group>
-          {errors.genderHairGrowth && <Text className="text-red-500 text-sm mt-5 text-center">{errors.genderHairGrowth.message}</Text>}
+          {errors.genderHairGrowth && <Text className="text-red-500 text-sm mt-5 text-center">Please select your gender.</Text>}
         </form>
       </div>
 
