@@ -10,6 +10,7 @@ import { ICommonParams } from "@/common/api/models/interfaces/Common.model";
 import { IMedicineListItem } from "@/common/api/models/interfaces/Medication.model";
 import { medicineRepository } from "@/common/api/repositories/medicineRepository";
 import { selectedCategoryAtom } from "@/common/states/category.atom";
+import { customerAtom } from "@/common/states/customer.atom";
 import { cartItemsAtom } from "@/common/states/product.atom";
 import { useQuery } from "@tanstack/react-query";
 import { useAtom, useAtomValue } from "jotai";
@@ -25,12 +26,12 @@ const MedicationsPage = () => {
   const [showDetails, setShowDetailsHandel] = useDisclosure(false);
   const selectedCategory = useAtomValue(selectedCategoryAtom);
 
-  const slug = "alan-lane-68777502f1562";
+  const [customerData, setCustomerData] = useAtom(customerAtom);
 
   const fetchMedicine = () => {
     const params: ICommonParams = {
       per_page: pageSize,
-      customer_slug: slug,
+      customer_slug: customerData?.slug,
       noPaginate: true,
       category: selectedCategory,
     };

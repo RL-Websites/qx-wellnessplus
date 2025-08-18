@@ -8,19 +8,20 @@ import { useAtom } from "jotai";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
-export const GenderSchema = yup.object({
-  gender: yup.string().required("Please select your gender"),
+// Validation Schema
+export const GenderHairGrowthSchema = yup.object({
+  genderHairGrowth: yup.string().required("Please select your gender for hair growth"),
 });
 
-export type GenderSchemaType = yup.InferType<typeof GenderSchema>;
+export type GenderHairGrowthSchemaType = yup.InferType<typeof GenderHairGrowthSchema>;
 
-interface IGenderProps {
-  onNext: (data: GenderSchemaType & { inEligibleUser?: boolean }) => void;
+interface IGenderHairGrowthProps {
+  onNext: (data: GenderHairGrowthSchemaType) => void;
   onBack: () => void;
-  defaultValues?: GenderSchemaType;
+  defaultValues?: GenderHairGrowthSchemaType;
 }
 
-export default function Gender({ onNext, onBack, defaultValues }: IGenderProps) {
+export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGenderHairGrowthProps) {
   const [selectedCategory, setSelectedCategory] = useAtom(selectedCategoryAtom);
   const {
     handleSubmit,
@@ -28,65 +29,65 @@ export default function Gender({ onNext, onBack, defaultValues }: IGenderProps) 
     watch,
     clearErrors,
     formState: { errors },
-  } = useForm<GenderSchemaType>({
+  } = useForm<GenderHairGrowthSchemaType>({
     defaultValues: {
-      gender: defaultValues?.gender || "",
+      genderHairGrowth: defaultValues?.genderHairGrowth || "",
     },
-    resolver: yupResolver(GenderSchema),
+    resolver: yupResolver(GenderHairGrowthSchema),
   });
 
-  const gender = watch("gender");
+  const genderHairGrowth = watch("genderHairGrowth");
   const options = ["Male", "Female"];
 
   const handleSelect = (value: string) => {
-    if (selectedCategory?.includes("Hair Growth")) {
-      if (value == "Male") {
-        const newCat = ["Hair Growth (Male)"];
-        setSelectedCategory(newCat);
-      }
-      if (value == "Female") {
-        const newCat = [..."Hair Growth (Female)"];
-        setSelectedCategory(newCat);
-      }
+    if (value === "Male") {
+      setSelectedCategory(["Hair Growth (Male)"]);
+    } else if (value === "Female") {
+      setSelectedCategory(["Hair Growth (Female)"]);
     }
-    setValue("gender", value, { shouldValidate: true });
-    clearErrors("gender");
+
+    setValue("genderHairGrowth", value, { shouldValidate: true });
+    clearErrors("genderHairGrowth");
   };
 
-  const handleFormSubmit = (data: GenderSchemaType) => {
-    onNext({
-      ...data,
-      inEligibleUser: data.gender === "Female",
-    });
-  };
+  // const handleSelect = (value: string) => {
+  //   if (selectedCategory?.includes("Hair Growth")) {
+  //     if (value === "Male") {
+  //       setSelectedCategory(["Hair Growth (Male)"]);
+  //     } else if (value === "Female") {
+  //       setSelectedCategory(["Hair Growth (Female)"]);
+  //     }
+  //   }
+
+  //   setValue("genderHairGrowth", value, { shouldValidate: true });
+  //   clearErrors("genderHairGrowth");
+  // };
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <h2 className="heading-text text-foreground uppercase text-center">Gender</h2>
-      <h4 className="mt-12 text-center text-3xl font-poppins font-semibold text-foreground">May I ask your preferred gender identity?</h4>
 
-      <div className="card-common-width mx-auto mt-6">
+      <div className="card-common-width mx-auto mt-10">
         <form
-          id="genderForm"
-          onSubmit={handleSubmit(handleFormSubmit)}
+          id="genderHairGrowthForm"
+          onSubmit={handleSubmit(onNext)}
           className="w-full"
         >
           <Radio.Group
-            value={gender}
+            value={genderHairGrowth}
             onChange={handleSelect}
             className="mt-6"
-            error={errors?.gender?.message}
           >
             <Group grow>
               {options.map((option) => (
                 <Radio
                   key={option}
                   value={option}
-                  classNames={getBaseWebRadios(gender, option)}
+                  classNames={getBaseWebRadios(genderHairGrowth, option)}
                   label={
                     <div className="relative text-center">
                       <span className="text-foreground font-poppins">{option}</span>
-                      {gender === option && (
+                      {genderHairGrowth === option && (
                         <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
@@ -97,7 +98,7 @@ export default function Gender({ onNext, onBack, defaultValues }: IGenderProps) 
               ))}
             </Group>
           </Radio.Group>
-          {errors.gender && <Text className="text-red-500 text-sm mt-5 text-center">{errors.gender.message}</Text>}
+          {errors.genderHairGrowth && <Text className="text-red-500 text-sm mt-5 text-center">{errors.genderHairGrowth.message}</Text>}
         </form>
       </div>
 
@@ -112,7 +113,7 @@ export default function Gender({ onNext, onBack, defaultValues }: IGenderProps) 
         <Button
           type="submit"
           className="w-[200px]"
-          form="genderForm"
+          form="genderHairGrowthForm"
         >
           Next
         </Button>
