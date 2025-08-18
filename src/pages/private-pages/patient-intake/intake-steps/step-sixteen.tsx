@@ -252,7 +252,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 <div className="relative text-center w-full">
                   <span className="text-foreground font-poppins">{option}</span>
                   {takenGlpMedication === option && (
-                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
                       <i className="icon-tick text-sm/none"></i>
                     </span>
                   )}
@@ -323,7 +323,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     <div className="relative text-center w-full">
                       <span className="text-foreground font-poppins">{option}</span>
                       {currentWeightLossMedication === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -354,7 +354,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         <div className="relative text-center w-full">
                           <span className="text-foreground font-poppins">{option}</span>
                           {sema_lastWeightLossMedicationDoase === option && (
-                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
                               <i className="icon-tick text-sm/none"></i>
                             </span>
                           )}
@@ -399,7 +399,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         <div className="relative text-center w-full">
                           <span className="text-foreground font-poppins">{option}</span>
                           {sema_hasPdfForPreviousRx === option && (
-                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
                               <i className="icon-tick text-sm/none"></i>
                             </span>
                           )}
@@ -467,7 +467,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         <div className="relative text-center w-full">
                           <span className="text-foreground font-poppins">{option}</span>
                           {tirz_lastWeightLossMedicationDoase === option && (
-                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
                               <i className="icon-tick text-sm/none"></i>
                             </span>
                           )}
@@ -512,7 +512,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         <div className="relative text-center w-full">
                           <span className="text-foreground font-poppins">{option}</span>
                           {tirz_hasPdfForPreviousRx === option && (
-                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
                               <i className="icon-tick text-sm/none"></i>
                             </span>
                           )}
@@ -578,7 +578,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     <div className="relative text-center w-full">
                       <span className="text-foreground font-poppins">{option}</span>
                       {watch("howLongTakeGlpMedication") === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -607,7 +607,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     <div className="relative text-center w-full">
                       <span className="text-foreground font-poppins">{option}</span>
                       {watch("howLongTakeGlpCurrentDosage") === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -636,7 +636,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     <div className="relative text-center w-full">
                       <span className="text-foreground font-poppins">{option}</span>
                       {wouldYouLikeContinueGlpCurrentDosage === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -666,7 +666,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                       <div className="relative text-center w-full">
                         <span className="text-foreground font-poppins">{option}</span>
                         {watch("stayCurrent_howLongTakeGlpCurrentDosage") === option && (
-                          <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                          <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
                             <i className="icon-tick text-sm/none"></i>
                           </span>
                         )}
@@ -702,7 +702,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                       <div className="relative text-center w-full">
                         <span className="text-foreground font-poppins">{option}</span>
                         {watch("moveUp_wouldLikeToMoveUp") === option && (
-                          <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                          <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
                             <i className="icon-tick text-sm/none"></i>
                           </span>
                         )}
@@ -732,7 +732,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     <div className="relative text-center w-full">
                       <span className="text-foreground font-poppins">{option}</span>
                       {haveTakenMedicationAsPrescribed === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -857,7 +857,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     <div className="relative text-center w-full">
                       <span className="text-foreground font-poppins">{option}</span>
                       {watch("glpDrugEffectManageWeight") === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -891,7 +891,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     <div className="relative text-center w-full">
                       <span className="text-foreground font-poppins">{option}</span>
                       {watch("glpHowLongTaken") === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -959,7 +959,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     <div className="relative text-center w-full">
                       <span className="text-foreground font-poppins">{option}</span>
                       {takenPrevGlpMedication === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -990,7 +990,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         <div className="relative text-center w-full">
                           <span className="text-foreground font-poppins">{option}</span>
                           {takenPrevSema_lastDosage === option && (
-                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
                               <i className="icon-tick text-sm/none"></i>
                             </span>
                           )}
@@ -1035,7 +1035,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         <div className="relative text-center w-full">
                           <span className="text-foreground font-poppins">{option}</span>
                           {takenPrevSema_hasPdfForPreviousRx === option && (
-                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
                               <i className="icon-tick text-sm/none"></i>
                             </span>
                           )}
@@ -1103,7 +1103,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         <div className="relative text-center w-full">
                           <span className="text-foreground font-poppins">{option}</span>
                           {takenPrevTirz_lastWeightLossMedicationDoase === option && (
-                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
                               <i className="icon-tick text-sm/none"></i>
                             </span>
                           )}
@@ -1148,7 +1148,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         <div className="relative text-center w-full">
                           <span className="text-foreground font-poppins">{option}</span>
                           {takenPrevTirz_hasPdfForPreviousRx === option && (
-                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
                               <i className="icon-tick text-sm/none"></i>
                             </span>
                           )}
@@ -1256,7 +1256,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     <div className="relative text-center w-full">
                       <span className="text-foreground font-poppins">{option}</span>
                       {watch("takenPrevGlp_howEffective") === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}

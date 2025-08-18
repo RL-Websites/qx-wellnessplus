@@ -3,7 +3,7 @@
 import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
 import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Group, Radio, Text } from "@mantine/core";
+import { Button, Radio, Text } from "@mantine/core";
 import { useAtom } from "jotai";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -75,7 +75,7 @@ export default function GenderWeightLoss({ onNext, onBack, defaultValues }: IGen
             onChange={handleSelect}
             className="mt-6"
           >
-            <Group grow>
+            <div className="grid grid-cols-2 w-full gap-5">
               {options.map((option) => (
                 <Radio
                   key={option}
@@ -85,7 +85,7 @@ export default function GenderWeightLoss({ onNext, onBack, defaultValues }: IGen
                     <div className="relative text-center">
                       <span className="text-foreground font-poppins">{option}</span>
                       {genderWeightLoss === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -93,7 +93,7 @@ export default function GenderWeightLoss({ onNext, onBack, defaultValues }: IGen
                   }
                 />
               ))}
-            </Group>
+            </div>
           </Radio.Group>
           {errors.genderWeightLoss && <Text className="text-red-500 text-sm mt-5 text-center">Please select your gender.</Text>}
         </form>
