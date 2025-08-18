@@ -69,7 +69,9 @@ const StepOne = ({ onNext, onBack, defaultValues }: IStepOneProps) => {
           label="What is your primary goal for weight loss?"
           error={getErrorMessage(errors?.primaryGoal)}
           classNames={{
-            label: "!text-3xl pb-2",
+            root: "sm:!grid !block w-full",
+            error: "sm:!text-end !text-start w-full",
+            label: "sm:!text-3xl pb-2",
           }}
         >
           <div className="space-y-5">
@@ -82,7 +84,7 @@ const StepOne = ({ onNext, onBack, defaultValues }: IStepOneProps) => {
                   <div className="relative text-center">
                     <span className="text-foreground font-poppins">{option}</span>
                     {primaryGoal === option && (
-                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
+                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 sm:right-3 -right-2 -translate-y-1/2">
                         <i className="icon-tick text-sm/none"></i>
                       </span>
                     )}
@@ -98,7 +100,9 @@ const StepOne = ({ onNext, onBack, defaultValues }: IStepOneProps) => {
           label="How much weight would you like to lose?"
           error={getErrorMessage(errors?.amountOfWeightLoss)}
           classNames={{
-            label: "!text-3xl pb-2",
+            root: "sm:!grid !block w-full",
+            error: "sm:!text-end !text-start w-full",
+            label: "sm:!text-3xl pb-2",
           }}
         >
           <div className="grid grid-cols-2 gap-5">
@@ -111,7 +115,7 @@ const StepOne = ({ onNext, onBack, defaultValues }: IStepOneProps) => {
                   <div className="relative text-center">
                     <span className="text-foreground font-poppins">{option}</span>
                     {amountOfWeightLoss === option && (
-                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
+                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 sm:right-3 -right-2 -translate-y-1/2">
                         <i className="icon-tick text-sm/none"></i>
                       </span>
                     )}
@@ -127,10 +131,12 @@ const StepOne = ({ onNext, onBack, defaultValues }: IStepOneProps) => {
           label="How often do you exercise?"
           error={getErrorMessage(errors?.exerciseTimes)}
           classNames={{
-            label: "!text-3xl pb-2",
+            root: "sm:!grid !block w-full",
+            error: "sm:!text-end !text-start w-full",
+            label: "sm:!text-3xl pb-2",
           }}
         >
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid sm:grid-cols-2 gap-5">
             {exerciseOptions.map((option) => (
               <Radio
                 key={option}
@@ -140,7 +146,7 @@ const StepOne = ({ onNext, onBack, defaultValues }: IStepOneProps) => {
                   <div className="relative text-center">
                     <span className="text-foreground font-poppins">{option}</span>
                     {exerciseTimes === option && (
-                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
+                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 sm:right-3 -right-2 -translate-y-1/2">
                         <i className="icon-tick text-sm/none"></i>
                       </span>
                     )}

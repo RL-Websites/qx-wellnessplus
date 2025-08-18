@@ -89,7 +89,7 @@ const PrescriptionMedications = ({ onNext, onBack, defaultValues }: Prescription
                       <div className="relative">
                         <span className="text-foreground font-poppins">{label}</span>
                         {medicationType === value && (
-                          <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
+                          <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                             <i className="icon-tick text-sm/none"></i>
                           </span>
                         )}

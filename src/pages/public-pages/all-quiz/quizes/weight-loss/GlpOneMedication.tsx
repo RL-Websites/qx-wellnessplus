@@ -63,7 +63,11 @@ const GlpOneMedication = ({ onNext, onBack, defaultValues }: GlpOneMedicationPro
           }}
           label="Are you currently or have you ever taken
 GLP-1 medication?"
-          classNames={{ label: "!text-3xl pb-2" }}
+          classNames={{
+            root: "sm:!grid !block",
+            error: "sm:!text-end !text-start w-full",
+            label: "sm:!text-3xl pb-2",
+          }}
         >
           <div className="grid md:grid-cols-2 gap-5 w-full">
             {takesGlpOptions.map((option) => (
@@ -75,7 +79,7 @@ GLP-1 medication?"
                   <div className="relative text-center">
                     <span className="text-foreground font-poppins">{option}</span>
                     {takesGlpOneMedication === option && (
-                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
+                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                         <i className="icon-tick text-sm/none"></i>
                       </span>
                     )}
@@ -105,7 +109,7 @@ GLP-1 medication?"
                     <div className="relative text-center">
                       <span className="text-foreground font-poppins">{option}</span>
                       {glpOneMedicationDetails === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}

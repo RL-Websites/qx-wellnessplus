@@ -107,7 +107,9 @@ const PatientIntake = () => {
     }
   }, [selectedCategory, basicInfo?.patient?.gender]);
 
-  const progress = visibleSteps.length > 1 ? (visibleSteps.indexOf(activeStep) / (visibleSteps.length - 1)) * 100 : 100;
+  const progressSteps = visibleSteps.filter((step) => step !== 1);
+
+  const progress = progressSteps.length > 1 ? (progressSteps.indexOf(activeStep) / (progressSteps.length - 1)) * 100 : activeStep === 1 ? 0 : 100;
 
   const handleNext = (data: any) => {
     setFormData((prev) => ({ ...prev, ...data }));
@@ -191,10 +193,10 @@ const PatientIntake = () => {
     <>
       {activeStep !== visibleSteps[0] && activeStep !== 19 ? (
         <div className="max-w-[520px] mx-auto mb-6">
-          <h2 className="heading-text text-foreground uppercase text-center pb-12">Intake Form</h2>
+          <h2 className="heading-text pb-12 text-center">Intake Form</h2>
           <Progress value={progress} />
           <div className="text-center text-base text-foreground font-bold mt-3">
-            {visibleSteps.indexOf(activeStep) + 1} / {visibleSteps.length}
+            {progressSteps.indexOf(activeStep) + 1} / {progressSteps.length}
           </div>
         </div>
       ) : activeStep === visibleSteps[0] ? (
