@@ -1,86 +1,122 @@
+import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
+import { getErrorMessage } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Checkbox, Grid } from "@mantine/core";
+import { Button, Radio } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 export const step2Schema = yup.object({
-  history: yup.array().min(1, "Please select at least one option.").of(yup.string()).required(),
+  doesDiet: yup.string().required("Please select at least one value."),
+  agreeGlpExercise: yup.string().when("doesDiet", {
+    is: "No",
+    then: (schema) => schema.required("Please select at least one value."),
+    otherwise: (schema) => schema.nullable(),
+  }),
 });
 
-export type Step2SchemaType = yup.InferType<typeof step2Schema>;
+export type step2SchemaType = yup.InferType<typeof step2Schema>;
 
-interface IStepTwoProps {
-  onNext: (data: Step2SchemaType) => void;
+interface StepTwoProps {
+  onNext: (data: step2SchemaType) => void;
   onBack: () => void;
-  defaultValues?: Step2SchemaType;
+  defaultValues?: step2SchemaType;
 }
 
-const StepTwo = ({ onNext, onBack, defaultValues }: IStepTwoProps) => {
+const StepTwo = ({ onNext, onBack, defaultValues }: StepTwoProps) => {
   const {
     handleSubmit,
     setValue,
     watch,
+    clearErrors,
     formState: { errors },
-  } = useForm<Step2SchemaType>({
+  } = useForm<step2SchemaType>({
     defaultValues: {
-      history: defaultValues?.history || [],
+      doesDiet: defaultValues?.doesDiet || "",
+      agreeGlpExercise: defaultValues?.agreeGlpExercise || "",
     },
     resolver: yupResolver(step2Schema),
   });
 
-  const selectedValues = watch("history");
+  const doesDiet = watch("doesDiet");
+  const agreeGlpExercise = watch("agreeGlpExercise");
+  const showAgreeGlpExercise = doesDiet === "No";
 
-  const options = ["Heart disease or stroke", "Liver or kidney disease", "Cancer", "Thyroid disorders"];
+  const doesDietOptions = ["Yes", "No"];
+  const agreeOptions = ["Yes", "No"];
 
-  const toggleValue = (value: string) => {
-    const updated = selectedValues.includes(value) ? selectedValues.filter((v) => v !== value) : [...selectedValues, value];
-    setValue("history", updated, { shouldValidate: true });
+  const handleSelect = (field: keyof step2SchemaType, value: string) => {
+    setValue(field, value, { shouldValidate: true });
+    clearErrors(field);
   };
 
   return (
     <form
       id="stepTwoForm"
       onSubmit={handleSubmit(onNext)}
-      className="max-w-xl mx-auto space-y-6"
+      className="max-w-[800px] mx-auto space-y-10 pt-10"
     >
-      <div>
-        <h2 className="text-center text-2xl font-semibold text-foreground font-poppins">Do you have any history of:</h2>
-
-        <Grid
-          gutter="md"
-          className="mt-6"
-        >
-          {options.map((option) => {
-            const isChecked = selectedValues.includes(option);
-            return (
-              <Grid.Col
-                span={6}
-                key={option}
-              >
-                <div
-                  onClick={() => toggleValue(option)}
-                  className={`cursor-pointer border rounded-2xl px-6 py-4 flex justify-between items-center transition-all ${
-                    isChecked ? "border-primary bg-white text-black shadow-sm" : "border-gray-300 bg-transparent text-black"
-                  }`}
-                >
-                  <span className="text-base font-medium font-poppins">{option}</span>
-                  <Checkbox
-                    checked={isChecked}
-                    readOnly
-                    size="md"
-                    radius="md"
-                    classNames={{
-                      input: isChecked ? "bg-primary border-primary text-white" : "bg-transparent",
-                    }}
-                  />
+      <Radio.Group
+        value={doesDiet}
+        onChange={(value) => {
+          handleSelect("doesDiet", value);
+          if (value === "Yes") {
+            clearErrors("agreeGlpExercise");
+          }
+        }}
+        label="Are you willing to follow a weight loss dietary plan/reduce calories and exercise?"
+        error={getErrorMessage(errors?.doesDiet)}
+        classNames={{ label: "!text-3xl pb-2" }}
+      >
+        <div className="grid grid-cols-2 gap-5">
+          {doesDietOptions.map((option) => (
+            <Radio
+              key={option}
+              value={option}
+              classNames={getBaseWebRadios(doesDiet, option)}
+              label={
+                <div className="relative text-center">
+                  <span className="text-foreground font-poppins">{option}</span>
+                  {doesDiet === option && (
+                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                      <i className="icon-tick text-sm/none"></i>
+                    </span>
+                  )}
                 </div>
-              </Grid.Col>
-            );
-          })}
-        </Grid>
+              }
+            />
+          ))}
+        </div>
+      </Radio.Group>
 
-        {errors.history && <div className="text-danger text-sm mt-2 text-center">{errors.history.message}</div>}
-      </div>
+      {showAgreeGlpExercise && (
+        <Radio.Group
+          value={agreeGlpExercise}
+          onChange={(value) => handleSelect("agreeGlpExercise", value)}
+          label="I acknowledge that GLP medications are most effective when used in conjunction with exercise."
+          error={getErrorMessage(errors?.agreeGlpExercise)}
+          classNames={{ label: "!text-3xl pt-10 pb-2" }}
+        >
+          <div className="grid grid-cols-2 gap-5">
+            {agreeOptions.map((option) => (
+              <Radio
+                key={option}
+                value={option}
+                classNames={getBaseWebRadios(agreeGlpExercise, option)}
+                label={
+                  <div className="relative text-center">
+                    <span className="text-foreground font-poppins">{option}</span>
+                    {agreeGlpExercise === option && (
+                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <i className="icon-tick text-sm/none"></i>
+                      </span>
+                    )}
+                  </div>
+                }
+              />
+            ))}
+          </div>
+        </Radio.Group>
+      )}
 
       <div className="flex justify-center gap-6 pt-4">
         <Button

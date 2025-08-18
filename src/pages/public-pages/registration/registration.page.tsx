@@ -4,7 +4,7 @@ import authApiRepository from "@/common/api/repositories/authRepository";
 import dmlToast from "@/common/configs/toaster.config";
 import useAuthToken from "@/common/hooks/useAuthToken";
 import { cartItemsAtom } from "@/common/states/product.atom";
-import { userAtom } from "@/common/states/user.atom";
+import { user_id, userAtom } from "@/common/states/user.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Input, PasswordInput } from "@mantine/core";
 import { useMutation } from "@tanstack/react-query";
@@ -50,6 +50,7 @@ const RegistrationPage = () => {
   const { setAccessToken, getAccessToken } = useAuthToken();
   const [cartItems, setCartItems] = useAtom(cartItemsAtom);
   const [userData, setUserDataAtom] = useAtom(userAtom);
+  const [userId, setUserId] = useAtom(user_id);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -85,6 +86,7 @@ const RegistrationPage = () => {
       onSuccess: (res) => {
         setAccessToken(res?.data.access_token);
         setUserDataAtom(res?.data?.user);
+        setUserId(res?.data?.user_id);
         if (cartItems?.length > 0) {
           navigate("/complete-order");
         } else {

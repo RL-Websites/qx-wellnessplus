@@ -42,6 +42,7 @@
     "axios": "^1.7.2",
     "baseui": "0.0.0-next-18f01efe0",
     "chroma-js": "^2.4.2",
+    "compressorjs": "^1.2.1",
     "crypto-js": "^4.2.0",
     "dayjs": "^1.11.11",
     "firebase": "^10.13.1",

@@ -4,19 +4,19 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 // Validation schema
-export const ageSchema = yup.object({
-  age: yup.string().required("Please add your age"),
+export const ageWeightLossSchema = yup.object({
+  ageWeightLoss: yup.string().required("Please add your age for weight loss"),
 });
 
-export type ageSchemaType = yup.InferType<typeof ageSchema>;
+export type ageWeightLossSchemaType = yup.InferType<typeof ageWeightLossSchema>;
 
-interface IAgeProps {
-  onNext: (data: ageSchemaType) => void;
+interface IAgeWeightLossProps {
+  onNext: (data: ageWeightLossSchemaType) => void;
   onBack: () => void;
-  defaultValues?: ageSchemaType;
+  defaultValues?: ageWeightLossSchemaType;
 }
 
-const Age = ({ onNext, onBack, defaultValues }: IAgeProps) => {
+const AgeWeightLoss = ({ onNext, onBack, defaultValues }: IAgeWeightLossProps) => {
   const {
     handleSubmit,
     register,
@@ -24,43 +24,41 @@ const Age = ({ onNext, onBack, defaultValues }: IAgeProps) => {
     watch,
     clearErrors,
     formState: { errors },
-  } = useForm<ageSchemaType>({
+  } = useForm<ageWeightLossSchemaType>({
     defaultValues: {
-      age: defaultValues?.age || "",
+      ageWeightLoss: defaultValues?.ageWeightLoss || "",
     },
-    resolver: yupResolver(ageSchema),
+    resolver: yupResolver(ageWeightLossSchema),
   });
 
-  const age = watch("age");
-
-  const options = ["No", "Yes"];
+  const ageWeightLoss = watch("ageWeightLoss");
 
   const handleSelect = (value: string) => {
-    setValue("age", value, { shouldValidate: true });
-    clearErrors("age");
+    setValue("ageWeightLoss", value, { shouldValidate: true });
+    clearErrors("ageWeightLoss");
   };
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <div className=" card-common-width mx-auto ">
-        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">What is your age?</h2>
+        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">What is your age for weight loss?</h2>
         <form
-          id="ageForm"
+          id="ageWeightLossForm"
           onSubmit={handleSubmit(onNext)}
           className="max-w-xl mx-auto space-y-6 card-common"
         >
           <div>
             <Input.Wrapper
-              label="Your Age"
+              label="Your Age for Weight Loss"
               required
-              error={errors.age?.message ? errors.age?.message : false}
+              error={errors.ageWeightLoss?.message ? errors.ageWeightLoss?.message : false}
               classNames={{
                 label: "!text-sm md:!text-base lg:!text-lg",
               }}
             >
               <Input
                 type="text"
-                {...register("age")}
+                {...register("ageWeightLoss")}
               />
             </Input.Wrapper>
           </div>
@@ -77,7 +75,7 @@ const Age = ({ onNext, onBack, defaultValues }: IAgeProps) => {
         <Button
           type="submit"
           className="w-[200px]"
-          form="ageForm"
+          form="ageWeightLossForm"
         >
           Next
         </Button>
@@ -86,4 +84,4 @@ const Age = ({ onNext, onBack, defaultValues }: IAgeProps) => {
   );
 };
 
-export default Age;
+export default AgeWeightLoss;

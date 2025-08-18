@@ -20,6 +20,7 @@ interface ILoginResponse {
   user: any;
   token_type?: string;
   expires_in?: any;
+  user_id: string;
 }
 
 interface ILoginCheckResponse {

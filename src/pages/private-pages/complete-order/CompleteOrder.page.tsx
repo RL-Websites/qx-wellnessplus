@@ -4,7 +4,9 @@ import { ICreatePaymentIntentDTO } from "@/common/api/models/interfaces/Payment.
 import orderApiRepository from "@/common/api/repositories/orderRepository";
 import StripeWrapper from "@/common/components/StripeWrapper";
 import dmlToast from "@/common/configs/toaster.config";
+import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { customerAtom } from "@/common/states/customer.atom";
+import { basicInfoAtom } from "@/common/states/customerBasic.atom";
 import { cartItemsAtom } from "@/common/states/product.atom";
 import { userAtom } from "@/common/states/user.atom";
 import { calculatePrice } from "@/utils/helper.utils";
@@ -34,6 +36,8 @@ const CompleteOrderPage = () => {
   const [hasPeptides, setHasPeptides] = useState(false);
   const [hasOthers, setHasOthers] = useState(true);
   const [params] = useSearchParams();
+  const [basicInfo, setBasicInfo] = useAtom(basicInfoAtom);
+  const [selectedCategory] = useAtom(selectedCategoryAtom);
   // const prescriptionUId = params.get("prescription_u_id");
   // const is_refill = params.get("is_refill");
   const detail_uid = params.get("detail_uid");
@@ -44,6 +48,21 @@ const CompleteOrderPage = () => {
   //   queryFn: () => orderApiRepository.publicGetPatientDetails({ u_id: prescriptionUId || "", detail_uid: detail_uid || undefined }),
   //   enabled: !!prescriptionUId,
   // });
+
+  useEffect(() => {
+    if (
+      selectedCategory &&
+      selectedCategory.includes("Weight Loss") &&
+      selectedCategory.includes("Testosterone") &&
+      selectedCategory.includes("Hair Growth (Male)") &&
+      selectedCategory.includes("Hair Growth (Female)")
+    ) {
+      setHasOthers(true);
+    }
+    if (selectedCategory && (selectedCategory?.includes("Peptides Blends") || selectedCategory?.includes("Single Blends"))) {
+      setHasPeptides(true);
+    }
+  }, [selectedCategory]);
 
   const createPaymentIntentMutation = useMutation({ mutationFn: (payload: ICreatePaymentIntentDTO) => orderApiRepository.createPaymentIntent(payload) });
 
@@ -149,7 +168,11 @@ const CompleteOrderPage = () => {
       {currentStep == 0 && (
         <BasicInfo
           userData={userData || undefined}
-          onNext={(data) => handleStepSubmit(data)}
+          onNext={(data) => {
+            setFormData((prev) => ({ ...prev, ...data }));
+            setBasicInfo(data);
+            nextStep();
+          }}
           isSubmitting={patientBookingMutation?.isPending}
         />
       )}
@@ -158,7 +181,7 @@ const CompleteOrderPage = () => {
           onNext={handleStepSubmit}
           onBack={handleBack}
           defaultValues={formData}
-          patientData={patientDetails}
+          patientData={formData}
           hasOthers={hasOthers}
           hasPeptides={hasPeptides}
         />
