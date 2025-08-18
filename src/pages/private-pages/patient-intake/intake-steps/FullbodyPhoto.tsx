@@ -1,3 +1,4 @@
+import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
 import { getErrorMessage } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ActionIcon, Button, Image, NumberInput, Text } from "@mantine/core";
@@ -84,6 +85,7 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <NumberInput
             className="md:col-span-1 col-span-2"
+            classNames={InputErrorMessage}
             label="Height (inches)"
             value={height}
             {...register("measurement.height")}
@@ -106,6 +108,10 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
           />
           <NumberInput
             className="md:col-span-1 col-span-2"
+            classNames={{
+              root: "sm:!grid !block w-full",
+              error: "sm:!text-end !text-start w-full",
+            }}
             label="Weight (lbs)"
             value={weight}
             {...register("measurement.weight")}
@@ -127,8 +133,7 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
             withAsterisk
           />
         </div>
-
-        <div className="grid md:grid-cols-2 gap-6 py-5">
+        <div className="grid md:grid-cols-2 gap-6 xl:py-5 md:py-8">
           <div className="border-2 border-dashed border-primary bg-primary-secondary p-4 rounded-md text-sm pb-20 text-foreground">
             <h6 className="heading-xxs pb-4">Full Body Photo Guideline</h6>
             <p className="text-fs-md text-foreground pb-5">
@@ -154,9 +159,8 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
               <li>It will not be shared or used for any other purpose</li>
             </ul>
           </div>
-
-          <div className="-mt-10 pb-9">
-            <p className="text-fs-lg text-foreground !font-medium pb-2">Upload Your Full Body Photo for Progress Tracking</p>
+          <div className="xl:pb-9 md:pb-16 xl:-mt-9 md:-mt-16">
+            <p className="text-fs-lg text-foreground !font-medium pb-2 ">Upload Your Full Body Photo for Progress Tracking</p>
             <Dropzone
               onDrop={handleFileUpload}
               onReject={(rejectedFiles) => {
@@ -168,7 +172,7 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
               maxSize={5 * 1024 ** 2}
               multiple={false}
               classNames={{
-                root: "relative w-full h-full border-dashed border border-gray-300 bg-gray-50 cursor-pointer rounded-lg",
+                root: "relative w-full md:h-full h-[500px] border-dashed border border-gray-300 bg-gray-50 cursor-pointer rounded-lg",
                 inner: "absolute !inset-0 !size-full",
               }}
             >
