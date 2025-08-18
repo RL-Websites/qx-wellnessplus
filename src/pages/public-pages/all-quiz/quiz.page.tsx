@@ -16,14 +16,40 @@ import ScalpInfections from "./quizes/hair-growth/ScalpInfections";
 import { useNavigate } from "react-router-dom";
 import InEligibleUser from "../ineligible-user/ineligible-user.page";
 
+import BodyMetrics from "./quizes/common/BodyMetrics";
+import GenderSelection from "./quizes/common/GenderSelection";
+import PregnancyStatus from "./quizes/common/PregnancyStatus";
 import GenderHairGrowth from "./quizes/Gender";
 import ScalpInfectionsTwo from "./quizes/hair-growth/ScalpInfectionsTwo";
 import ThyroidDisease from "./quizes/hair-growth/ThyroidDisease";
+import AlcoholConsumption from "./quizes/peptides-blends/AlcoholConsumption";
+import Cholesterol from "./quizes/peptides-blends/Cholesterol";
+import EndocrineAutoimmuneDisorders from "./quizes/peptides-blends/EndocrineAutoimmuneDisorders";
+import ExerciseFrequency from "./quizes/peptides-blends/ExerciseFrequency";
+import GallbladderHistory from "./quizes/peptides-blends/GallbladderHistory";
+import HealthHistory from "./quizes/peptides-blends/HealthHistory";
+import HormoneSensitiveCancer from "./quizes/peptides-blends/HormoneSensitiveCancer";
+import HormoneTherapy from "./quizes/peptides-blends/HormoneTherapy";
+import HypertensionMedication from "./quizes/peptides-blends/HypertensionMedication";
+import LastDosage from "./quizes/peptides-blends/LastDosage";
+import LifestyleCommitment from "./quizes/peptides-blends/LifestyleCommitment";
+import MedicalConditions from "./quizes/peptides-blends/MedicalConditions";
+import MedicationAllergies from "./quizes/peptides-blends/MedicationAllergies";
+import PeptidesTakenBefore from "./quizes/peptides-blends/PeptidesTakenBefore";
+import PeptideTherapyDuration from "./quizes/peptides-blends/PeptideTherapyDuration";
+import PeptideTherapyEffectiveness from "./quizes/peptides-blends/PeptideTherapyEffectiveness";
+import PhysicalActivityLevel from "./quizes/peptides-blends/PhysicalActivityLevel";
+import PrescriptionMedications from "./quizes/peptides-blends/PrescriptionMedications";
+import PrimaryGoalForPeptidesTherapy from "./quizes/peptides-blends/PrimaryGoalForPeptidesTherapy";
+import RecreationalDrugs from "./quizes/peptides-blends/RecreationalDrugs";
+import SideEffects from "./quizes/peptides-blends/SideEffects";
+import SleepApnea from "./quizes/peptides-blends/SleepApnea";
+import ThyroidCancerHistory from "./quizes/peptides-blends/ThyroidCancerHistory";
+import UsedPeptidesBefore from "./quizes/peptides-blends/UsedPeptidesBefore";
 import ScalpInfectionsTestosterone from "./quizes/testosterone/ScalpInfections";
 import WeightLossBreastFeeding from "./quizes/weight-loss/BreastFeeding";
 import CustomerStatus from "./quizes/weight-loss/CustomerStatus";
 import DiseaseList from "./quizes/weight-loss/DiseaseList";
-import GenderWeightLoss from "./quizes/weight-loss/Gender";
 import GlpOneMedication from "./quizes/weight-loss/GlpOneMedication";
 import WeightLossHeight from "./quizes/weight-loss/Height";
 import InjectionDate from "./quizes/weight-loss/InjectionDate";
@@ -36,7 +62,7 @@ const QuizPage = () => {
   const [activeStep, setActiveStep] = useState(1);
   const [lastStep, setLastStep] = useState(1);
   const [formData, setFormData] = useState<any>({});
-  const [totalStep] = useState(20);
+  const [totalStep, setTotalStep] = useState(20);
   const [, scrollTo] = useWindowScroll();
   const selectedCategory = useAtomValue(selectedCategoryAtom);
   const [eligibleComponent, setEligibleComponent] = useState<React.ReactNode | null>(null);
@@ -103,6 +129,12 @@ const QuizPage = () => {
   }, [formData.genderWeightLoss]);
 
   useEffect(() => {
+    if (selectedCategory && (selectedCategory?.includes("Peptides Blends") || selectedCategory?.includes("Single Blends"))) {
+      setTotalStep(30);
+    }
+  }, [selectedCategory]);
+
+  useEffect(() => {
     if (eligibleComponent) {
       navigate("/ineligible-user");
     }
@@ -131,13 +163,6 @@ const QuizPage = () => {
 
       {selectedCategory?.includes("Weight Loss") && (
         <>
-          {activeStep === 2 && (
-            <GenderWeightLoss
-              onNext={handleNext}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
           {activeStep === 3 && (
             <CustomerStatus
               onNext={(data) => {
@@ -332,9 +357,255 @@ const QuizPage = () => {
         </>
       )}
 
-      {selectedCategory?.includes("Peptides Blends") && (
+      {(selectedCategory?.includes("Peptides Blends") || selectedCategory?.includes("Single Blends")) && (
         <>
+          {activeStep === 2 && (
+            <GenderSelection
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+
           {activeStep === 3 && (
+            <CustomerStatus
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+
+          {activeStep === 4 && (
+            <PrimaryGoalForPeptidesTherapy
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {activeStep === 5 && (
+            <ExerciseFrequency
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {activeStep === 6 && (
+            <LifestyleCommitment
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+
+          {activeStep === 7 && (
+            <PhysicalActivityLevel
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+
+          {activeStep === 8 && (
+            <UsedPeptidesBefore
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+
+          {activeStep === 9 && (
+            <RecreationalDrugs
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+
+          {activeStep === 10 && (
+            <AlcoholConsumption
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+
+          {activeStep === 11 && (
+            <HormoneSensitiveCancer
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+
+          {activeStep === 12 && (
+            <EndocrineAutoimmuneDisorders
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+
+          {activeStep === 13 && (
+            <HealthHistory
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+
+          {activeStep === 14 && (
+            <MedicalConditions
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+
+          {activeStep === 15 && (
+            <Cholesterol
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+
+          {activeStep === 16 && (
+            <HypertensionMedication
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+
+          {activeStep === 17 && (
+            <ThyroidDisease
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+
+          {activeStep === 18 && (
+            <ThyroidCancerHistory
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+
+          {activeStep === 19 && (
+            <GallbladderHistory
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+
+          {activeStep === 20 && (
+            <>
+              {formData?.gender === "Male" && (
+                <PregnancyStatus
+                  onNext={handleNext}
+                  onBack={handleBack}
+                  defaultValues={formData}
+                />
+                // <MultipleEndocrineNeoplasia
+                //   onNext={handleNext}
+                //   onBack={handleBack}
+                //   defaultValues={formData}
+                // />
+              )}
+              {formData?.gender === "Female" && (
+                <PlanningPregnancy
+                  onNext={handleNext}
+                  onBack={handleBack}
+                  defaultValues={formData}
+                />
+              )}
+            </>
+          )}
+
+          {activeStep === 21 && (
+            <SleepApnea
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+
+          {activeStep === 22 && (
+            <HormoneTherapy
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+
+          {activeStep === 23 && (
+            <PrescriptionMedications
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+
+          {activeStep === 24 && (
+            <MedicationAllergies
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+
+          {activeStep === 25 && (
+            <PeptidesTakenBefore
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+
+          {activeStep === 26 && (
+            <LastDosage
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+
+          {activeStep === 27 && (
+            <PeptideTherapyDuration
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+
+          {activeStep === 28 && (
+            <SideEffects
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+
+          {activeStep === 29 && (
+            <PeptideTherapyEffectiveness
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+
+          {activeStep === 30 && (
+            <BodyMetrics
+              onNext={handleFinalSubmit}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+
+          {/* {activeStep === 3 && (
             <CustomerStatus
               onNext={handleNext}
               onBack={handleBack}
@@ -347,7 +618,7 @@ const QuizPage = () => {
               onBack={handleBack}
               defaultValues={formData}
             />
-          )}
+          )} */}
         </>
       )}
     </>
