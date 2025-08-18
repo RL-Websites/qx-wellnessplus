@@ -1,3 +1,4 @@
+import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Input } from "@mantine/core";
 import { useForm } from "react-hook-form";
@@ -48,12 +49,10 @@ const WeightLossWeight = ({ onNext, onBack, defaultValues }: IWeightLossWeightPr
         >
           <div>
             <Input.Wrapper
-              label="Your Weight (kg)"
+              label="Your Weight (lbs)"
               required
               error={errors.weightlossweight?.message ? errors.weightlossweight?.message : false}
-              classNames={{
-                label: "!text-sm md:!text-base lg:!text-lg",
-              }}
+              classNames={InputErrorMessage}
             >
               <Input
                 type="text"
@@ -63,7 +62,7 @@ const WeightLossWeight = ({ onNext, onBack, defaultValues }: IWeightLossWeightPr
           </div>
         </form>
       </div>
-      <div className="flex justify-center gap-6 pt-8">
+      <div className="flex justify-center md:gap-6 gap-3 md:pt-8 pt-5">
         <Button
           variant="outline"
           className="w-[200px]"

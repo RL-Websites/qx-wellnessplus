@@ -115,7 +115,11 @@ const StepOne = ({ onNext, onBack, defaultValues }: IStepOneProps) => {
                   <div className="relative text-center">
                     <span className="text-foreground font-poppins">{option}</span>
                     {amountOfWeightLoss === option && (
+<<<<<<< HEAD
                       <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 sm:right-3 -right-2 -translate-y-1/2">
+=======
+                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
+>>>>>>> 30fafab15aab1eb268b6cdbf860111af475b51e6
                         <i className="icon-tick text-sm/none"></i>
                       </span>
                     )}
@@ -146,7 +150,11 @@ const StepOne = ({ onNext, onBack, defaultValues }: IStepOneProps) => {
                   <div className="relative text-center">
                     <span className="text-foreground font-poppins">{option}</span>
                     {exerciseTimes === option && (
+<<<<<<< HEAD
                       <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 sm:right-3 -right-2 -translate-y-1/2">
+=======
+                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
+>>>>>>> 30fafab15aab1eb268b6cdbf860111af475b51e6
                         <i className="icon-tick text-sm/none"></i>
                       </span>
                     )}

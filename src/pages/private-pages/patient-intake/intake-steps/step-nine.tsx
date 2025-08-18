@@ -104,7 +104,7 @@ const StepNine = ({ onNext, onBack, defaultValues, isLoading = false }: StepNine
                   <div className="relative text-center">
                     <span className="text-foreground font-poppins">{option}</span>
                     {q.value === option && (
-                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
                         <i className="icon-tick text-sm/none"></i>
                       </span>
                     )}

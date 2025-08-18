@@ -88,7 +88,7 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGen
                     <div className="relative text-center">
                       <span className="text-foreground font-poppins">{option}</span>
                       {genderHairGrowth === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -98,11 +98,11 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGen
               ))}
             </Group>
           </Radio.Group>
-          {errors.genderHairGrowth && <Text className="text-red-500 text-sm mt-5 text-center">{errors.genderHairGrowth.message}</Text>}
+          {errors.genderHairGrowth && <Text className="text-red-500 text-sm mt-5 text-center">Please select your gender.</Text>}
         </form>
       </div>
 
-      <div className="flex justify-center gap-6 pt-8">
+      <div className="flex justify-center md:gap-6 gap-3 md:pt-8 pt-5">
         <Button
           variant="outline"
           className="w-[200px]"

@@ -1,7 +1,6 @@
 /* 
   Input Styles
 */
-
 .dml {
   &-control {
     /* @apply py-4; */
@@ -189,6 +188,16 @@
     }
     &:after {
       display: none;
+    }
+  }
+}
+
+@media only screen and (max-width: 640px) {
+  .dml {
+    &-InputWrapper {
+      &-root {
+        @apply !justify-self-start;
+      }
     }
   }
 }

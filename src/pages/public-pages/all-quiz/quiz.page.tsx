@@ -54,6 +54,7 @@ import Priapism from "./quizes/testosterone/Priapism";
 import WeightLossBreastFeeding from "./quizes/weight-loss/BreastFeeding";
 import CustomerStatus from "./quizes/weight-loss/CustomerStatus";
 import DiseaseList from "./quizes/weight-loss/DiseaseList";
+import GenderWeightLoss from "./quizes/weight-loss/Gender";
 import GlpOneMedication from "./quizes/weight-loss/GlpOneMedication";
 import WeightLossHeight from "./quizes/weight-loss/Height";
 import InjectionDate from "./quizes/weight-loss/InjectionDate";
@@ -177,6 +178,13 @@ const QuizPage = () => {
 
       {selectedCategory?.includes("Weight Loss") && (
         <>
+          {activeStep === 2 && (
+            <GenderWeightLoss
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
           {activeStep === 3 && (
             <CustomerStatus
               onNext={(data) => {
@@ -318,17 +326,17 @@ const QuizPage = () => {
           )}
           {activeStep === 4 && (
             <Priapism
-              onBack={handleBack}
               onNext={(data) => {
                 const { eligible, ...rest } = data;
                 setFormData((prev) => ({ ...prev, ...rest }));
 
                 if (eligible) {
-                  handleNext(rest);
-                } else {
                   setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(rest);
                 }
               }}
+              onBack={handleBack}
               defaultValues={formData}
             />
           )}
@@ -339,9 +347,9 @@ const QuizPage = () => {
                 setFormData((prev) => ({ ...prev, ...rest }));
 
                 if (eligible) {
-                  handleNext(rest);
-                } else {
                   setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(rest);
                 }
               }}
               onBack={handleBack}
@@ -350,16 +358,7 @@ const QuizPage = () => {
           )}
           {activeStep === 6 && (
             <Impairment
-              onNext={(data) => {
-                const { eligible, ...rest } = data;
-                setFormData((prev) => ({ ...prev, ...rest }));
-
-                if (eligible) {
-                  handleFinalSubmit;
-                } else {
-                  setEligibleComponent(<InEligibleUser />);
-                }
-              }}
+              onNext={handleFinalSubmit}
               onBack={handleBack}
               defaultValues={formData}
             />

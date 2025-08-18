@@ -1,19 +1,13 @@
-"use client";
-
-import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
-// Ensure spelling here is correct
-import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Group, Radio, Text } from "@mantine/core";
-import { useAtom } from "jotai";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
-export const NitroglycerinSchema = yup.object({
-  genderWeightLoss: yup.string().required("Please select your gender for nitroglycerin support"),
+export const nitroglycerinSchema = yup.object({
+  nitroglycerin: yup.string().required("Please select an option."),
 });
 
-export type NitroglycerinSchemaType = yup.InferType<typeof NitroglycerinSchema>;
+export type NitroglycerinSchemaType = yup.InferType<typeof nitroglycerinSchema>;
 
 interface INitroglycerinProps {
   onNext: (data: NitroglycerinSchemaType & { eligible?: boolean }) => void;
@@ -21,8 +15,7 @@ interface INitroglycerinProps {
   defaultValues?: NitroglycerinSchemaType;
 }
 
-export default function Nitroglycerin({ onNext, onBack, defaultValues }: INitroglycerinProps) {
-  const [selectedCategory, setSelectedCategory] = useAtom(selectedCategoryAtom);
+const Nitroglycerin = ({ onNext, onBack, defaultValues }: INitroglycerinProps) => {
   const {
     handleSubmit,
     setValue,
@@ -31,41 +24,36 @@ export default function Nitroglycerin({ onNext, onBack, defaultValues }: INitrog
     formState: { errors },
   } = useForm<NitroglycerinSchemaType>({
     defaultValues: {
-      genderWeightLoss: defaultValues?.genderWeightLoss || "",
+      nitroglycerin: defaultValues?.nitroglycerin || "",
     },
-    resolver: yupResolver(NitroglycerinSchema),
+    resolver: yupResolver(nitroglycerinSchema),
   });
 
-  const genderWeightLoss = watch("genderWeightLoss");
-  const options = ["Male", "Female"];
+  const nitroglycerin = watch("nitroglycerin");
+
+  const options = ["No", "Yes"];
 
   const handleSelect = (value: string) => {
-    if (selectedCategory?.includes("Hair Growth")) {
-      setSelectedCategory([`Hair Growth (${value})`]);
-    }
-    setValue("genderWeightLoss", value, { shouldValidate: true });
-    clearErrors("genderWeightLoss");
+    setValue("nitroglycerin", value, { shouldValidate: true });
+    clearErrors("nitroglycerin");
   };
 
-  const handleFormSubmit = (data: NitroglycerinSchemaType) => {
-    onNext({
-      ...data,
-      eligible: data.genderWeightLoss === "Female",
-    });
+  const onSubmit = (data: NitroglycerinSchemaType) => {
+    onNext({ ...data, eligible: data.nitroglycerin === "Yes" });
   };
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
-      <h2 className="heading-text text-foreground uppercase text-center">Gender</h2>
+      <form
+        id="nitroglycerinForm"
+        onSubmit={handleSubmit(onSubmit)}
+        className="max-w-xl mx-auto space-y-6"
+      >
+        <div>
+          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Are you currently taking nitrates or nitroglycerin? </h2>
 
-      <div className="card-common-width mx-auto mt-10">
-        <form
-          id="nitroglycerinForm"
-          onSubmit={handleSubmit(handleFormSubmit)}
-          className="w-full"
-        >
           <Radio.Group
-            value={genderWeightLoss}
+            value={nitroglycerin}
             onChange={handleSelect}
             className="mt-6"
           >
@@ -74,12 +62,21 @@ export default function Nitroglycerin({ onNext, onBack, defaultValues }: INitrog
                 <Radio
                   key={option}
                   value={option}
-                  classNames={getBaseWebRadios(genderWeightLoss, option)}
+                  classNames={{
+                    root: "relative w-full",
+                    radio: "hidden",
+                    inner: "hidden",
+                    labelWrapper: "w-full",
+                    label: `
+                      block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointer
+                      ${nitroglycerin === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
+                    `,
+                  }}
                   label={
                     <div className="relative text-center">
                       <span className="text-foreground font-poppins">{option}</span>
-                      {genderWeightLoss === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                      {nitroglycerin === option && (
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -89,26 +86,29 @@ export default function Nitroglycerin({ onNext, onBack, defaultValues }: INitrog
               ))}
             </Group>
           </Radio.Group>
-          {errors.genderWeightLoss && <Text className="text-red-500 text-sm mt-5 text-center">{errors.genderWeightLoss.message}</Text>}
-        </form>
-      </div>
 
-      <div className="flex justify-center gap-6 pt-8">
-        <Button
-          variant="outline"
-          className="w-[200px]"
-          onClick={onBack}
-        >
-          Back
-        </Button>
-        <Button
-          type="submit"
-          className="w-[200px]"
-          form="nitroglycerinForm"
-        >
-          Next
-        </Button>
-      </div>
+          {errors.nitroglycerin && <Text className="text-red-500 text-sm mt-5 text-center">{errors.nitroglycerin.message}</Text>}
+        </div>
+
+        <div className="flex justify-center gap-6 pt-4">
+          <Button
+            variant="outline"
+            className="w-[200px]"
+            onClick={onBack}
+          >
+            Back
+          </Button>
+          <Button
+            type="submit"
+            className="w-[200px]"
+            form="nitroglycerinForm"
+          >
+            Next
+          </Button>
+        </div>
+      </form>
     </div>
   );
-}
+};
+
+export default Nitroglycerin;

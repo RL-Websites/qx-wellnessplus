@@ -36,8 +36,7 @@ const CategoryPage = () => {
   const categoryImages = {
     "Weight Loss": "images/weight-loos.png",
     Testosterone: "images/sexual-health.png",
-    "Hair Growth (male)": "images/hair-loos.png",
-    "Hair Growth (female)": "images/hair-loos.png",
+    "Hair Growth": "images/hair-loos.png",
     "Peptides Blends": "images/weight-loos.png",
     "Single Peptides": "images/weight-loos.png",
   };
@@ -65,9 +64,7 @@ const CategoryPage = () => {
       <h4 className="heading-text text-center text-foreground uppercase">Choose A Treatment</h4>
 
       <div
-        className={`${
-          (category?.length ?? 0) < 3 ? `flex flex-wrap justify-center` : "grid lg:grid-cols-3 sm:grid-cols-2"
-        } lg:gap-y-12 md:gap-y-10 gap-y-5 lg:gap-x-20 md:gap-x-10 gap-x-5`}
+        className={`${(category?.length ?? 0) < 3 ? `flex flex-wrap justify-center` : "grid lg:grid-cols-3 sm:grid-cols-2"} lg:gap-y-12 gap-y-10  lg:gap-x-20 md:gap-x-10 gap-x-5`}
       >
         {/* {category?.map((item, index) => (
           <CategoryCard
@@ -83,7 +80,7 @@ const CategoryPage = () => {
           <CategoryCard
             key={index}
             onClick={() => handleCategoryClick(item)}
-            image={item === "Hair Growth" ? "images/injection-2.png" : item === "Peptides" ? "images/injection-3.png" : categoryImages[item]}
+            image={item === "Peptides" ? "images/injection-3.png" : categoryImages[item]}
             title={item}
             link="/quiz"
           />
