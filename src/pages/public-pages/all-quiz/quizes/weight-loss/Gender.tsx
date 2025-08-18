@@ -64,7 +64,7 @@ export default function GenderWeightLoss({ onNext, onBack, defaultValues }: IGen
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <h2 className="heading-text text-foreground uppercase text-center">Gender</h2>
 
-      <div className="card-common-width mx-auto mt-10">
+      <div className="card-common-width-lg mx-auto mt-10">
         <form
           id="genderWeightLossForm"
           onSubmit={handleSubmit(handleFormSubmit)}
@@ -73,9 +73,9 @@ export default function GenderWeightLoss({ onNext, onBack, defaultValues }: IGen
           <Radio.Group
             value={genderWeightLoss}
             onChange={handleSelect}
-            className="mt-6"
+            className="mt-6 w-full"
           >
-            <div className="grid grid-cols-2 w-full gap-5">
+            <div className="grid md:grid-cols-2 w-full gap-5">
               {options.map((option) => (
                 <Radio
                   key={option}

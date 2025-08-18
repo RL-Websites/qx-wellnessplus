@@ -1,4 +1,5 @@
 import { BaseWebDatePickerOverrides } from "@/common/configs/baseWebOverrides";
+import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
 import { getErrorMessage } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Input } from "@mantine/core";
@@ -52,7 +53,7 @@ export default function InjectionDate({ onNext, onBack, defaultValues }: IInject
             label="Injection Date"
             error={getErrorMessage(errors.injection_date)}
             withAsterisk
-            className="sm:col-span-1 col-span-2"
+            classNames={InputErrorMessage}
           >
             <div className={`${errors?.injection_date ? "baseWeb-error" : ""} dml-Input-wrapper dml-Input-Calendar relative`}>
               <StyletronProvider value={engine}>
@@ -82,7 +83,7 @@ export default function InjectionDate({ onNext, onBack, defaultValues }: IInject
           </Input.Wrapper>
         </form>
       </div>
-      <div className="flex justify-center gap-6 pt-8 relative z-0">
+      <div className="flex justify-center md:gap-6 gap-3 md:pt-8 pt-5 relative z-0">
         <Button
           variant="outline"
           className="w-[200px]"

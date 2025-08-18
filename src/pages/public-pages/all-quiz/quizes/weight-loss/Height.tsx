@@ -74,7 +74,10 @@ const WeightLossHeight = ({ onNext, onBack, defaultValues }: IWeightLossHeightPr
               error={errors.weightlossheight?.message ? errors.weightlossheight?.message : false}
               classNames={{
                 label: "!text-sm md:!text-base lg:!text-lg",
+                root: "sm:!grid !block",
+                error: "sm:!text-end !text-start w-full",
               }}
+              className="w-full"
             >
               <Input
                 type="text"
@@ -84,7 +87,7 @@ const WeightLossHeight = ({ onNext, onBack, defaultValues }: IWeightLossHeightPr
           </div>
         </form>
       </div>
-      <div className="flex justify-center gap-6 pt-8">
+      <div className="flex justify-center md:gap-6 gap-3 md:pt-8 pt-5">
         <Button
           variant="outline"
           className="w-[200px]"
