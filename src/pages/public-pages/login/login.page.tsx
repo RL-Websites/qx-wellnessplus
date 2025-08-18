@@ -16,14 +16,10 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import * as yup from "yup";
 
 const loginSchema = yup.object({
-  emailAddress: yup
-    .string()
-    .required(({ label }) => `${label} is required.`)
-    .label("Email")
-    .email(),
+  emailAddress: yup.string().required(`Please provide your email address.`).label("Email").email(),
   password: yup
     .string()
-    .required("You need to add a password")
+    .required("Please provide your password")
     .min(8, "Password must have at least 8 characters")
     .matches(/^(?=.*\d).*$/, "Password must contain at least one numerical value")
     .matches(/^((?=.*[a-z]){1}).*$/, "Password must contain at least one lower case alphabetical character")
