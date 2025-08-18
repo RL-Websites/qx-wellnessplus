@@ -32,7 +32,7 @@ export default function DateOfBirth({ onNext, onBack, defaultValues }: IDobProps
   const engine = new Styletron();
   const [dob, setDob] = useState<any>(defaultValues?.date_of_birth ?? null);
   const selectedCategory = useAtomValue(selectedCategoryAtom);
-  console.log(selectedCategory);
+  // console.log(selectedCategory);
 
   const maxDate = new Date();
 

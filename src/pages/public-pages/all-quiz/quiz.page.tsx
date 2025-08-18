@@ -67,6 +67,8 @@ const QuizPage = () => {
   const [, scrollTo] = useWindowScroll();
   const selectedCategory = useAtomValue(selectedCategoryAtom);
   const [eligibleComponent, setEligibleComponent] = useState<React.ReactNode | null>(null);
+  const [isHairGrowthMale, setHairGrowthMale] = useState(false);
+  const [isHairGrowthFemale, setHairGrowthFemale] = useState(false);
 
   const navigate = useNavigate();
 
@@ -133,6 +135,12 @@ const QuizPage = () => {
     if (selectedCategory && (selectedCategory?.includes("Peptides Blends") || selectedCategory?.includes("Single Blends"))) {
       setTotalStep(30);
     }
+    if (selectedCategory && selectedCategory.includes("Hair Growth (Male)")) {
+      setHairGrowthMale(true);
+    }
+    if (selectedCategory && selectedCategory.includes("Hair Growth (Male)")) {
+      setHairGrowthMale(true);
+    }
   }, [selectedCategory]);
 
   useEffect(() => {
@@ -150,7 +158,7 @@ const QuizPage = () => {
           defaultValues={formData}
         />
       )}
-      {selectedCategory?.includes("Hair Growth") && (
+      {(selectedCategory?.includes("Hair Growth") || selectedCategory?.includes("Hair Growth (Male)") || selectedCategory?.includes("Hair Growth (Female)")) && (
         <>
           {activeStep === 2 && (
             <GenderHairGrowth
@@ -367,6 +375,7 @@ const QuizPage = () => {
           )}
           {activeStep === 3 && (
             <Priapism
+              onBack={handleBack}
               onNext={(data) => {
                 const { eligible, ...rest } = data;
                 setFormData((prev) => ({ ...prev, ...rest }));
@@ -377,6 +386,82 @@ const QuizPage = () => {
                   setEligibleComponent(<InEligibleUser />);
                 }
               }}
+            />
+          )}
+        </>
+      )}
+      {isHairGrowthMale && (
+        <>
+          {activeStep === 3 && (
+            <ScalpInfections
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {activeStep === 4 && (
+            <AlopeciaAreata
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {activeStep === 5 && (
+            <MedicationTaking
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {activeStep === 6 && (
+            <ThyroidDisease
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {activeStep === 7 && (
+            <Chemotherapy
+              onNext={handleFinalSubmit}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+        </>
+      )}
+      {isHairGrowthFemale && (
+        <>
+          {activeStep === 3 && (
+            <PlanningPregnancy
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {activeStep === 4 && (
+            <BreastFeeding
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {activeStep === 5 && (
+            <Pcos
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {activeStep === 6 && (
+            <ScalpInfectionsTwo
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {activeStep === 7 && (
+            <HairTreatment
+              onNext={handleFinalSubmit}
               onBack={handleBack}
               defaultValues={formData}
             />
