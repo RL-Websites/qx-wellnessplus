@@ -193,7 +193,7 @@ const PatientIntake = () => {
     <>
       {activeStep !== visibleSteps[0] && activeStep !== 19 ? (
         <div className="max-w-[520px] mx-auto mb-6">
-          <h2 className="heading-text pb-12">Intake Form</h2>
+          <h2 className="heading-text pb-12 text-center">Intake Form</h2>
           <Progress value={progress} />
           <div className="text-center text-base text-foreground font-bold mt-3">
             {progressSteps.indexOf(activeStep) + 1} / {progressSteps.length}

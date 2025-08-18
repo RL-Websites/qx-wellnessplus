@@ -1,5 +1,6 @@
 import EditableDocumentTag from "@/common/components/EditableDocumentTag";
 import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
+import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
 import dmlToast from "@/common/configs/toaster.config";
 import { compressFileToBase64 } from "@/utils/fileUpload";
 import { getErrorMessage } from "@/utils/helper.utils";
@@ -241,7 +242,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
         label="Have you taken a GLP-1 medication?"
         error={getErrorMessage(errors?.takenGlpMedication)}
         classNames={{
-          root: "sm:!grid !block",
+          root: "sm:!grid !block w-full",
           error: "sm:!text-end !text-start w-full",
           label: "sm:!text-3xl pb-2",
         }}
@@ -256,7 +257,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 <div className="relative text-center w-full">
                   <span className="text-foreground font-poppins">{option}</span>
                   {takenGlpMedication === option && (
-                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
+                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                       <i className="icon-tick text-sm/none"></i>
                     </span>
                   )}
@@ -275,6 +276,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
             <Input.Wrapper
               label="What was your height when you started the GLP-1 medication? (In inches)"
               error={getErrorMessage(errors?.heightWhenStartGlp)}
+              classNames={InputErrorMessage}
             >
               <Input
                 {...register("heightWhenStartGlp")}
@@ -285,6 +287,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
             <Input.Wrapper
               label="What was your weight when you started the GLP-1 medication? (In pounds)"
               error={getErrorMessage(errors?.weightWhenStartGlp)}
+              classNames={InputErrorMessage}
             >
               <Input
                 {...register("weightWhenStartGlp")}
@@ -331,7 +334,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     <div className="relative text-center w-full">
                       <span className="text-foreground font-poppins">{option}</span>
                       {currentWeightLossMedication === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -366,7 +369,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         <div className="relative text-center w-full">
                           <span className="text-foreground font-poppins">{option}</span>
                           {sema_lastWeightLossMedicationDoase === option && (
-                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
+                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                               <i className="icon-tick text-sm/none"></i>
                             </span>
                           )}
@@ -381,6 +384,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 <Input.Wrapper
                   label="Specify dosage"
                   error={getErrorMessage(errors?.sema_lastWeightLossMedicationDoaseOther)}
+                  classNames={InputErrorMessage}
                 >
                   <Input
                     {...register("sema_lastWeightLossMedicationDoaseOther")}
@@ -405,7 +409,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                   label: "sm:!text-3xl pb-2",
                 }}
               >
-                <div className="grid grid-cols-2 gap-5">
+                <div className="grid sm:grid-cols-2 gap-5">
                   {["Yes", "No"].map((option) => (
                     <Radio
                       key={option}
@@ -415,7 +419,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         <div className="relative text-center w-full">
                           <span className="text-foreground font-poppins">{option}</span>
                           {sema_hasPdfForPreviousRx === option && (
-                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
+                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                               <i className="icon-tick text-sm/none"></i>
                             </span>
                           )}
@@ -428,7 +432,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
 
               {sema_hasPdfForPreviousRx === "Yes" && (
                 <div className="space-y-4">
-                  <Text className="text-foreground font-poppins !text-3xl">Please upload your script or a picture of your current vial.</Text>
+                  <Text className="text-foreground font-semibold font-poppins sm:!text-3xl text-xl">Please upload your script or a picture of your current vial.</Text>
                   {!sema_previousRxDocument ? (
                     <Dropzone
                       onDrop={(files) => handleUpFileForPrevRXOfSema(files)}
@@ -487,7 +491,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         <div className="relative text-center w-full">
                           <span className="text-foreground font-poppins">{option}</span>
                           {tirz_lastWeightLossMedicationDoase === option && (
-                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
+                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                               <i className="icon-tick text-sm/none"></i>
                             </span>
                           )}
@@ -526,7 +530,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                   label: "sm:!text-3xl pb-2",
                 }}
               >
-                <div className="grid grid-cols-2 gap-5">
+                <div className="grid sm:grid-cols-2 gap-5">
                   {["Yes", "No"].map((option) => (
                     <Radio
                       key={option}
@@ -536,7 +540,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         <div className="relative text-center w-full">
                           <span className="text-foreground font-poppins">{option}</span>
                           {tirz_hasPdfForPreviousRx === option && (
-                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
+                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                               <i className="icon-tick text-sm/none"></i>
                             </span>
                           )}
@@ -549,7 +553,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
 
               {tirz_hasPdfForPreviousRx === "Yes" && (
                 <div className="space-y-4">
-                  <Text className="text-foreground font-poppins !text-3xl">Please upload your script or a picture of your current vial.</Text>
+                  <Text className="text-foreground font-semibold font-poppins sm:!text-3xl text-xl">Please upload your script or a picture of your current vial.</Text>
                   {!tirz_previousRxDocument ? (
                     <Dropzone
                       onDrop={(files) => handleUpFileForPrevRXOfTirz(files)}
@@ -606,7 +610,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     <div className="relative text-center w-full">
                       <span className="text-foreground font-poppins">{option}</span>
                       {watch("howLongTakeGlpMedication") === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -639,7 +643,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     <div className="relative text-center w-full">
                       <span className="text-foreground font-poppins">{option}</span>
                       {watch("howLongTakeGlpCurrentDosage") === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -672,7 +676,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     <div className="relative text-center w-full">
                       <span className="text-foreground font-poppins">{option}</span>
                       {wouldYouLikeContinueGlpCurrentDosage === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -706,7 +710,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                       <div className="relative text-center w-full">
                         <span className="text-foreground font-poppins">{option}</span>
                         {watch("stayCurrent_howLongTakeGlpCurrentDosage") === option && (
-                          <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
+                          <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                             <i className="icon-tick text-sm/none"></i>
                           </span>
                         )}
@@ -746,7 +750,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                       <div className="relative text-center w-full">
                         <span className="text-foreground font-poppins">{option}</span>
                         {watch("moveUp_wouldLikeToMoveUp") === option && (
-                          <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
+                          <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                             <i className="icon-tick text-sm/none"></i>
                           </span>
                         )}
@@ -770,7 +774,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
               label: "sm:!text-3xl pb-2",
             }}
           >
-            <div className="grid grid-cols-2 gap-5">
+            <div className="grid sm:grid-cols-2 gap-5">
               {["Yes", "No"].map((option) => (
                 <Radio
                   key={option}
@@ -780,7 +784,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     <div className="relative text-center w-full">
                       <span className="text-foreground font-poppins">{option}</span>
                       {haveTakenMedicationAsPrescribed === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -806,7 +810,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
 
           {/* Side effects */}
           <div className="space-y-4">
-            <Text className="text-foreground font-poppins !text-3xl">Have you experienced any of the following side effects?</Text>
+            <Text className="text-foreground font-semibold font-poppins sm:!text-3xl text-xl">Have you experienced any of the following side effects?</Text>
             <Grid
               gutter="md"
               className="mt-4"
@@ -815,7 +819,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 const isChecked = glpSideEffect ? glpSideEffect.split(", ").includes(option) : false;
                 return (
                   <Grid.Col
-                    span={6}
+                    span={{ sm: 6 }}
                     key={option}
                   >
                     <div
@@ -825,7 +829,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         setValue("glpSideEffect", updatedValues.join(", "), { shouldValidate: true });
                       }}
                       className={`cursor-pointer border rounded-2xl px-6 py-4 flex justify-between items-center transition-all ${
-                        isChecked ? "border-primary bg-white text-black shadow-sm" : "border-gray-300 bg-transparent text-black"
+                        isChecked ? "border-primary bg-white text-black shadow-sm" : "border-foreground bg-transparent text-black"
                       }`}
                     >
                       <span className="text-base font-medium font-poppins">{option}</span>
@@ -835,7 +839,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         size="md"
                         radius="md"
                         classNames={{
-                          input: isChecked ? "bg-primary border-primary text-white" : "bg-transparent",
+                          input: isChecked ? "bg-primary border-primary text-white" : "bg-transparent border-foreground",
                         }}
                       />
                     </div>
@@ -847,7 +851,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
           </div>
 
           <div className="space-y-4">
-            <Text className="text-foreground font-poppins !text-3xl">Did you experience any of the following side effects?</Text>
+            <Text className="text-foreground font-semibold font-poppins sm:!text-3xl text-xl">Did you experience any of the following side effects?</Text>
             <Grid
               gutter="md"
               className="mt-4"
@@ -856,7 +860,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 const isChecked = takenPrevGlp_sideEffect ? takenPrevGlp_sideEffect.split(", ").includes(option) : false;
                 return (
                   <Grid.Col
-                    span={6}
+                    span={{ sm: 6 }}
                     key={option}
                   >
                     <div
@@ -866,7 +870,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         setValue("takenPrevGlp_sideEffect", updatedValues.join(", "), { shouldValidate: true });
                       }}
                       className={`cursor-pointer border rounded-2xl px-6 py-4 flex justify-between items-center transition-all ${
-                        isChecked ? "border-primary bg-white text-black shadow-sm" : "border-gray-300 bg-transparent text-black"
+                        isChecked ? "border-primary bg-white text-black shadow-sm" : "border-foreground bg-transparent text-black"
                       }`}
                     >
                       <span className="text-base font-medium font-poppins">{option}</span>
@@ -876,7 +880,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         size="md"
                         radius="md"
                         classNames={{
-                          input: isChecked ? "bg-primary border-primary text-white" : "bg-transparent",
+                          input: isChecked ? "bg-primary border-primary text-white" : "bg-transparent border-foreground",
                         }}
                       />
                     </div>
@@ -909,7 +913,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     <div className="relative text-center w-full">
                       <span className="text-foreground font-poppins">{option}</span>
                       {watch("glpDrugEffectManageWeight") === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -947,7 +951,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     <div className="relative text-center w-full">
                       <span className="text-foreground font-poppins">{option}</span>
                       {watch("glpHowLongTaken") === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -963,6 +967,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
             <Input.Wrapper
               label="What was your height when you started the GLP-1 medication? (In inches)"
               error={getErrorMessage(errors?.glpStartingHeight)}
+              classNames={getErrorMessage}
             >
               <Input
                 {...register("glpStartingHeight")}
@@ -973,6 +978,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
             <Input.Wrapper
               label="What was your weight when you started the GLP-1 medication? (In Pounds)"
               error={getErrorMessage(errors?.glpStartingWeight)}
+              classNames={getErrorMessage}
             >
               <Input
                 {...register("glpStartingWeight")}
@@ -1019,7 +1025,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     <div className="relative text-center w-full">
                       <span className="text-foreground font-poppins">{option}</span>
                       {takenPrevGlpMedication === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -1054,7 +1060,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         <div className="relative text-center w-full">
                           <span className="text-foreground font-poppins">{option}</span>
                           {takenPrevSema_lastDosage === option && (
-                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
+                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                               <i className="icon-tick text-sm/none"></i>
                             </span>
                           )}
@@ -1069,6 +1075,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 <Input.Wrapper
                   label="Specify dosage"
                   error={getErrorMessage(errors?.takenPrevSema_lastDosageOther)}
+                  classNames={getErrorMessage}
                 >
                   <Input
                     {...register("takenPrevSema_lastDosageOther")}
@@ -1093,7 +1100,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                   label: "sm:!text-3xl pb-2",
                 }}
               >
-                <div className="grid grid-cols-2 gap-5">
+                <div className="grid sm:grid-cols-2 gap-5">
                   {["Yes", "No"].map((option) => (
                     <Radio
                       key={option}
@@ -1103,7 +1110,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         <div className="relative text-center w-full">
                           <span className="text-foreground font-poppins">{option}</span>
                           {takenPrevSema_hasPdfForPreviousRx === option && (
-                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
+                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                               <i className="icon-tick text-sm/none"></i>
                             </span>
                           )}
@@ -1116,7 +1123,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
 
               {takenPrevSema_hasPdfForPreviousRx === "Yes" && (
                 <div className="space-y-4">
-                  <Text className="text-foreground font-poppins !text-3xl">Please upload your script or a picture of your current vial.</Text>
+                  <Text className="text-foreground font-semibold font-poppins sm:!text-3xl text-xl">Please upload your script or a picture of your current vial.</Text>
                   {!takenPrevSema_previousRxDocument ? (
                     <Dropzone
                       onDrop={(files) => handleUpFileForPrevRXOfPrevSema(files)}
@@ -1175,7 +1182,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         <div className="relative text-center w-full">
                           <span className="text-foreground font-poppins">{option}</span>
                           {takenPrevTirz_lastWeightLossMedicationDoase === option && (
-                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
+                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                               <i className="icon-tick text-sm/none"></i>
                             </span>
                           )}
@@ -1214,7 +1221,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                   label: "sm:!text-3xl pb-2",
                 }}
               >
-                <div className="grid grid-cols-2 gap-5">
+                <div className="grid sm:grid-cols-2 gap-5">
                   {["Yes", "No"].map((option) => (
                     <Radio
                       key={option}
@@ -1224,7 +1231,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         <div className="relative text-center w-full">
                           <span className="text-foreground font-poppins">{option}</span>
                           {takenPrevTirz_hasPdfForPreviousRx === option && (
-                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
+                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                               <i className="icon-tick text-sm/none"></i>
                             </span>
                           )}
@@ -1237,7 +1244,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
 
               {takenPrevTirz_hasPdfForPreviousRx === "Yes" && (
                 <div className="space-y-4">
-                  <Text className="text-foreground font-poppins !text-3xl">Please upload your script or a picture of your current vial.</Text>
+                  <Text className="text-foreground font-semibold font-poppins sm:!text-3xl text-xl">Please upload your script or a picture of your current vial.</Text>
                   {!takenPrevTirz_previousRxDocument ? (
                     <Dropzone
                       onDrop={(files) => handleUpFileForPrevRXOfPrevTirz(files)}
@@ -1274,7 +1281,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
 
           {/* Previous side effects */}
           <div className="space-y-4">
-            <Text className="text-foreground font-poppins !text-3xl">Did you experience any of the following side effects?</Text>
+            <Text className="text-foreground font-semibold font-poppins sm:!text-3xl text-xl">Did you experience any of the following side effects?</Text>
             <Grid
               gutter="md"
               className="mt-4"
@@ -1336,7 +1343,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     <div className="relative text-center w-full">
                       <span className="text-foreground font-poppins">{option}</span>
                       {watch("takenPrevGlp_howEffective") === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}

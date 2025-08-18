@@ -69,7 +69,7 @@ const StepOne = ({ onNext, onBack, defaultValues }: IStepOneProps) => {
           label="What is your primary goal for weight loss?"
           error={getErrorMessage(errors?.primaryGoal)}
           classNames={{
-            root: "sm:!grid !block",
+            root: "sm:!grid !block w-full",
             error: "sm:!text-end !text-start w-full",
             label: "sm:!text-3xl pb-2",
           }}
@@ -100,7 +100,7 @@ const StepOne = ({ onNext, onBack, defaultValues }: IStepOneProps) => {
           label="How much weight would you like to lose?"
           error={getErrorMessage(errors?.amountOfWeightLoss)}
           classNames={{
-            root: "sm:!grid !block",
+            root: "sm:!grid !block w-full",
             error: "sm:!text-end !text-start w-full",
             label: "sm:!text-3xl pb-2",
           }}
@@ -131,7 +131,7 @@ const StepOne = ({ onNext, onBack, defaultValues }: IStepOneProps) => {
           label="How often do you exercise?"
           error={getErrorMessage(errors?.exerciseTimes)}
           classNames={{
-            root: "sm:!grid !block",
+            root: "sm:!grid !block w-full",
             error: "sm:!text-end !text-start w-full",
             label: "sm:!text-3xl pb-2",
           }}

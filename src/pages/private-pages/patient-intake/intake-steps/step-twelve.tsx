@@ -71,12 +71,12 @@ const StepTwelve = ({ onNext, onBack, defaultValues }: StepTwelveProps) => {
         label="Do you have a personal history of acute or chronic pancreatitis?"
         error={getErrorMessage(errors?.pancreatitis)}
         classNames={{
-          root: "sm:!grid !block",
+          root: "sm:!grid !block w-full",
           error: "sm:!text-end !text-start w-full",
           label: "sm:!text-3xl pb-2",
         }}
       >
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid sm:grid-cols-2 gap-5">
           {["Yes", "No"].map((option) => (
             <Radio
               key={option}
@@ -86,7 +86,7 @@ const StepTwelve = ({ onNext, onBack, defaultValues }: StepTwelveProps) => {
                 <div className="relative text-center">
                   <span className="text-foreground font-poppins">{option}</span>
                   {pancreatitis === option && (
-                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
+                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                       <i className="icon-tick text-sm/none"></i>
                     </span>
                   )}
@@ -107,9 +107,13 @@ const StepTwelve = ({ onNext, onBack, defaultValues }: StepTwelveProps) => {
           }}
           label="Did you have your gallbladder removed due to pancreatitis from gallstones?"
           error={getErrorMessage(errors?.gallstones)}
-          classNames={{ label: "!text-3xl pt-10 pb-2" }}
+          classNames={{
+            root: "sm:!grid !block w-full",
+            error: "sm:!text-end !text-start w-full",
+            label: "sm:!text-3xl pb-2",
+          }}
         >
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid sm:grid-cols-2 gap-5">
             {["Yes", "No"].map((option) => (
               <Radio
                 key={option}
@@ -119,7 +123,7 @@ const StepTwelve = ({ onNext, onBack, defaultValues }: StepTwelveProps) => {
                   <div className="relative text-center">
                     <span className="text-foreground font-poppins">{option}</span>
                     {gallstones === option && (
-                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
+                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                         <i className="icon-tick text-sm/none"></i>
                       </span>
                     )}
@@ -137,7 +141,11 @@ const StepTwelve = ({ onNext, onBack, defaultValues }: StepTwelveProps) => {
           onChange={(value) => handleSelect("removedGallbladderGallstones", value)}
           label="When did you have your gallbladder removed?"
           error={getErrorMessage(errors?.removedGallbladderGallstones)}
-          classNames={{ label: "!text-3xl pt-10 pb-2" }}
+          classNames={{
+            root: "sm:!grid !block w-full",
+            error: "sm:!text-end !text-start w-full",
+            label: "sm:!text-3xl pb-2",
+          }}
         >
           <div className="grid grid-cols-1 gap-5">
             {["Within the last 2 months", "More than 2 months ago"].map((option) => (
@@ -149,7 +157,7 @@ const StepTwelve = ({ onNext, onBack, defaultValues }: StepTwelveProps) => {
                   <div className="relative text-center">
                     <span className="text-foreground font-poppins">{option}</span>
                     {removedGallbladderGallstones === option && (
-                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
+                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                         <i className="icon-tick text-sm/none"></i>
                       </span>
                     )}

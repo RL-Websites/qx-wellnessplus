@@ -74,7 +74,7 @@ const StepSix = ({ onNext, onBack, defaultValues }: StepSixProps) => {
         label="Do you use recreational drugs?"
         error={getErrorMessage(errors?.takesDrug)}
         classNames={{
-          root: "sm:!grid !block",
+          root: "sm:!grid !block w-full",
           error: "sm:!text-end !text-start w-full",
           label: "sm:!text-3xl pb-2",
         }}
@@ -89,7 +89,7 @@ const StepSix = ({ onNext, onBack, defaultValues }: StepSixProps) => {
                 <div className="relative text-center">
                   <span className="text-foreground font-poppins">{option}</span>
                   {takesDrug === option && (
-                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
+                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                       <i className="icon-tick text-sm/none"></i>
                     </span>
                   )}
@@ -106,9 +106,13 @@ const StepSix = ({ onNext, onBack, defaultValues }: StepSixProps) => {
           value={whatDrugs}
           label="What drugs do you use?"
           error={getErrorMessage(errors?.whatDrugs)}
-          classNames={{ label: "!text-2xl pb-2" }}
+          classNames={{
+            root: "sm:!grid !block w-full",
+            error: "sm:!text-end !text-start w-full",
+            label: "sm:!text-3xl pb-2",
+          }}
         >
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid sm:grid-cols-2 gap-5">
             {drugOptions.map((option) => (
               <Radio
                 key={option}
@@ -118,7 +122,7 @@ const StepSix = ({ onNext, onBack, defaultValues }: StepSixProps) => {
                   <div className="relative text-center">
                     <span className="text-foreground font-poppins">{option}</span>
                     {whatDrugs === option && (
-                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
+                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                         <i className="icon-tick text-sm/none"></i>
                       </span>
                     )}
@@ -137,6 +141,11 @@ const StepSix = ({ onNext, onBack, defaultValues }: StepSixProps) => {
           withAsterisk
           error={getErrorMessage(errors.whatDrugsOther)}
           className="pt-4"
+          classNames={{
+            root: "sm:!grid !block w-full",
+            error: "sm:!text-end !text-start w-full",
+            label: "sm:!text-3xl pb-2",
+          }}
         >
           <Input
             type="text"

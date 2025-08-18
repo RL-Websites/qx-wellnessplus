@@ -75,12 +75,12 @@ const StepFourteen = ({ onNext, onBack, defaultValues }: StepFourteenProps) => {
         label="Are you pre-diabetic or diabetic?"
         error={getErrorMessage(errors?.diabeticStatus)}
         classNames={{
-          root: "sm:!grid !block",
+          root: "sm:!grid !block w-full",
           error: "sm:!text-end !text-start w-full",
           label: "sm:!text-3xl pb-2",
         }}
       >
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid sm:grid-cols-2 gap-5">
           {["Yes", "No"].map((option) => (
             <Radio
               key={option}
@@ -90,7 +90,7 @@ const StepFourteen = ({ onNext, onBack, defaultValues }: StepFourteenProps) => {
                 <div className="relative text-center">
                   <span className="text-foreground font-poppins">{option}</span>
                   {diabeticStatus === option && (
-                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
+                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                       <i className="icon-tick text-sm/none"></i>
                     </span>
                   )}
@@ -104,7 +104,7 @@ const StepFourteen = ({ onNext, onBack, defaultValues }: StepFourteenProps) => {
       {/* Conditional: Drug options styled like StepTwo */}
       {showFollowUps && (
         <div>
-          <h3 className="text-2xl font-semibold text-foreground font-poppins text-center">Are you currently taking any of the following medications? (Select all that apply)</h3>
+          <h3 className="sm:text-2xl text-lg font-semibold text-foreground font-poppins">Are you currently taking any of the following medications? (Select all that apply)</h3>
           <Grid
             gutter="md"
             className="mt-6"
@@ -113,13 +113,13 @@ const StepFourteen = ({ onNext, onBack, defaultValues }: StepFourteenProps) => {
               const isChecked = selectedDrugs.includes(option);
               return (
                 <Grid.Col
-                  span={6}
+                  span={{ sm: 6 }}
                   key={option}
                 >
                   <div
                     onClick={() => toggleDrug(option)}
                     className={`cursor-pointer border rounded-2xl px-6 py-4 flex justify-between items-center transition-all ${
-                      isChecked ? "border-primary bg-white text-black shadow-sm" : "border-gray-300 bg-transparent text-black"
+                      isChecked ? "border-primary bg-white text-black shadow-sm" : "border-grey-medium bg-transparent text-black"
                     }`}
                   >
                     <span className="text-base font-medium font-poppins">{option}</span>
@@ -129,7 +129,7 @@ const StepFourteen = ({ onNext, onBack, defaultValues }: StepFourteenProps) => {
                       size="md"
                       radius="md"
                       classNames={{
-                        input: isChecked ? "bg-primary border-primary text-white" : "bg-transparent",
+                        input: isChecked ? "bg-primary border-primary text-white" : "bg-transparent border-foreground",
                       }}
                     />
                   </div>
@@ -148,9 +148,13 @@ const StepFourteen = ({ onNext, onBack, defaultValues }: StepFourteenProps) => {
           onChange={(val) => setValue("takeDiabeticHemoglobin", val, { shouldValidate: true })}
           label="What is your hemoglobin A1C?"
           error={getErrorMessage(errors?.takeDiabeticHemoglobin)}
-          classNames={{ label: "!text-2xl pb-2" }}
+          classNames={{
+            root: "sm:!grid !block w-full",
+            error: "sm:!text-end !text-start w-full",
+            label: "sm:!text-3xl pb-2",
+          }}
         >
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid sm:grid-cols-2 gap-5">
             {["Below 5.7% (Normal)", "5.7-6.4% (Prediabetes)", "Above 6.5% (Diabetes)", "Unknown"].map((option) => (
               <Radio
                 key={option}
@@ -160,7 +164,7 @@ const StepFourteen = ({ onNext, onBack, defaultValues }: StepFourteenProps) => {
                   <div className="relative text-center">
                     <span className="text-foreground font-poppins">{option}</span>
                     {hemoglobinValue === option && (
-                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 right-0  -translate-y-1/2">
+                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                         <i className="icon-tick text-sm/none"></i>
                       </span>
                     )}

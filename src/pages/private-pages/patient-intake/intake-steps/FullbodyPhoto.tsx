@@ -1,3 +1,4 @@
+import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
 import { getErrorMessage } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ActionIcon, Button, Image, NumberInput, Text } from "@mantine/core";
@@ -84,10 +85,7 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <NumberInput
             className="md:col-span-1 col-span-2"
-            classNames={{
-              root: "sm:!grid !block",
-              error: "sm:!text-end !text-start w-full",
-            }}
+            classNames={InputErrorMessage}
             label="Height (inches)"
             value={height}
             {...register("measurement.height")}
@@ -111,7 +109,7 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
           <NumberInput
             className="md:col-span-1 col-span-2"
             classNames={{
-              root: "sm:!grid !block",
+              root: "sm:!grid !block w-full",
               error: "sm:!text-end !text-start w-full",
             }}
             label="Weight (lbs)"
