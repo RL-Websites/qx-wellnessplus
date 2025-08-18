@@ -73,6 +73,7 @@ const QuizPage = () => {
   const [eligibleComponent, setEligibleComponent] = useState<React.ReactNode | null>(null);
   const [isHairGrowthMale, setHairGrowthMale] = useState(false);
   const [isHairGrowthFemale, setHairGrowthFemale] = useState(false);
+  const [skipInjectionDate, setSkipInjectionDate] = useState(false);
 
   const navigate = useNavigate();
 
@@ -118,10 +119,22 @@ const QuizPage = () => {
     scrollTo({ y: 0 });
   };
 
+  // const handleBack = () => {
+  //   if (activeStep > 1) {
+  //     setActiveStep((prev) => prev - 1);
+  //   }
+  //   scrollTo({ y: 0 });
+  // };
+
   const handleBack = () => {
     if (activeStep > 1) {
-      setActiveStep((prev) => prev - 1);
+      if (skipInjectionDate && activeStep === 8 + genderOffset) {
+        setActiveStep((prev) => prev - 2);
+      } else {
+        setActiveStep((prev) => prev - 1);
+      }
     }
+
     scrollTo({ y: 0 });
   };
 
@@ -141,11 +154,9 @@ const QuizPage = () => {
     }
     if (selectedCategory && selectedCategory.includes("Hair Growth (Male)")) {
       setHairGrowthMale(true);
-      setHairGrowthFemale(false);
     }
-    if (selectedCategory && selectedCategory.includes("Hair Growth (Female)")) {
-      setHairGrowthFemale(true);
-      setHairGrowthMale(false);
+    if (selectedCategory && selectedCategory.includes("Hair Growth (Male)")) {
+      setHairGrowthMale(true);
     }
   }, [selectedCategory]);
 
@@ -241,13 +252,21 @@ const QuizPage = () => {
 
           {activeStep === 6 + genderOffset && (
             <GlpOneMedication
-              onNext={handleNext}
+              onNext={(data) => {
+                handleNext(data);
+                if (data.takesGlpOneMedication === "No") {
+                  setSkipInjectionDate(true);
+                  setActiveStep((prev) => prev + 1);
+                } else {
+                  setSkipInjectionDate(false);
+                }
+              }}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
 
-          {activeStep === 7 + genderOffset && (
+          {!skipInjectionDate && activeStep === 7 + genderOffset && (
             <InjectionDate
               onNext={handleNext}
               onBack={handleBack}
