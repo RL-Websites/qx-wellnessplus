@@ -88,7 +88,11 @@ const StepNine = ({ onNext, onBack, defaultValues, isLoading = false }: StepNine
           onChange={(val) => handleSelect(q.name as keyof step9SchemaType, val)}
           label={q.label}
           error={getErrorMessage(errors[q.name as keyof step9SchemaType])}
-          classNames={{ label: "!text-3xl pb-2" }}
+          classNames={{
+            root: "sm:!grid !block",
+            error: "sm:!text-end !text-start w-full",
+            label: "sm:!text-3xl pb-2",
+          }}
         >
           <div className="grid grid-cols-2 gap-5">
             {q.options.map((option) => (

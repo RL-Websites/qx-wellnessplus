@@ -74,7 +74,11 @@ const StepFourteen = ({ onNext, onBack, defaultValues }: StepFourteenProps) => {
         }}
         label="Are you pre-diabetic or diabetic?"
         error={getErrorMessage(errors?.diabeticStatus)}
-        classNames={{ label: "!text-3xl pb-2" }}
+        classNames={{
+          root: "sm:!grid !block",
+          error: "sm:!text-end !text-start w-full",
+          label: "sm:!text-3xl pb-2",
+        }}
       >
         <div className="grid grid-cols-2 gap-5">
           {["Yes", "No"].map((option) => (

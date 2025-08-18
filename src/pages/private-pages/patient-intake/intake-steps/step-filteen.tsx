@@ -52,7 +52,11 @@ const StepFifteen = ({ onNext, onBack, defaultValues }: StepFifteenProps) => {
         onChange={(val) => handleSelect("cpapWithDiagonSedSleep", val)}
         label="Are you on CPAP with diagnosed Sleep Apnea?"
         error={getErrorMessage(errors?.cpapWithDiagonSedSleep)}
-        classNames={{ label: "!text-3xl pb-2" }}
+        classNames={{
+          root: "sm:!grid !block",
+          error: "sm:!text-end !text-start w-full",
+          label: "sm:!text-3xl pb-2",
+        }}
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {["Yes", "No", "I am not using a CPAP, but I have been diagnosed with Sleep Apnea"].map((option) => (
@@ -80,7 +84,11 @@ const StepFifteen = ({ onNext, onBack, defaultValues }: StepFifteenProps) => {
         onChange={(val) => handleSelect("haveBariantricSurgery", val)}
         label="Have you had bariatric surgery within the last 12 months?"
         error={getErrorMessage(errors?.haveBariantricSurgery)}
-        classNames={{ label: "!text-3xl pb-2" }}
+        classNames={{
+          root: "sm:!grid !block",
+          error: "sm:!text-end !text-start w-full",
+          label: "sm:!text-3xl pb-2",
+        }}
       >
         <div className="grid grid-cols-2 gap-5">
           {["Yes", "No"].map((option) => (

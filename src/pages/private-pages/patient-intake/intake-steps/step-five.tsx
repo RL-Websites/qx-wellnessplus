@@ -50,7 +50,11 @@ const StepFive = ({ onNext, onBack, defaultValues }: StepFiveProps) => {
         value={isPregnant}
         label="Are you currently?"
         error={getErrorMessage(errors?.isPregnant)}
-        classNames={{ label: "!text-3xl pb-2" }}
+        classNames={{
+          root: "sm:!grid !block",
+          error: "sm:!text-end !text-start w-full",
+          label: "sm:!text-3xl pb-2",
+        }}
       >
         <div className="grid grid-cols-2 gap-5">
           {options.map((option) => (

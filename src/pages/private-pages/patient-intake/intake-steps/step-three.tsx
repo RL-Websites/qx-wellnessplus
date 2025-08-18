@@ -68,7 +68,11 @@ const StepThree = ({ onNext, onBack, defaultValues }: StepThreeProps) => {
         }}
         label="Have you had any previous weight loss attempts or programs?"
         error={getErrorMessage(errors?.hadPrevWeightLoss)}
-        classNames={{ label: "!text-3xl pb-2" }}
+        classNames={{
+          root: "sm:!grid !block",
+          error: "sm:!text-end !text-start w-full",
+          label: "sm:!text-3xl pb-2",
+        }}
       >
         <div className="grid grid-cols-2 gap-5">
           {hadPrevOptions.map((option) => (

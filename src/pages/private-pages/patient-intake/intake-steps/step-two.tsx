@@ -65,7 +65,11 @@ const StepTwo = ({ onNext, onBack, defaultValues }: StepTwoProps) => {
         }}
         label="Are you willing to follow a weight loss dietary plan/reduce calories and exercise?"
         error={getErrorMessage(errors?.doesDiet)}
-        classNames={{ label: "!text-3xl pb-2" }}
+        classNames={{
+          root: "sm:!grid !block",
+          error: "sm:!text-end !text-start w-full",
+          label: "sm:!text-3xl pb-2",
+        }}
       >
         <div className="grid grid-cols-2 gap-5">
           {doesDietOptions.map((option) => (

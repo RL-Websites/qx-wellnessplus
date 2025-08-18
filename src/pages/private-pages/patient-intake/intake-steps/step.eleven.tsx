@@ -75,7 +75,11 @@ const StepEleven = ({ onNext, onBack, defaultValues }: StepElevenProps) => {
         value={gallbladder}
         label="Do you have a personal history of gallbladder disease?"
         error={getErrorMessage(errors?.gallbladder)}
-        classNames={{ label: "!text-3xl pb-2" }}
+        classNames={{
+          root: "sm:!grid !block",
+          error: "sm:!text-end !text-start w-full",
+          label: "sm:!text-3xl pb-2",
+        }}
       >
         <div className="grid grid-cols-2 gap-5">
           {yesNoOptions.map((option) => (

@@ -97,7 +97,11 @@ const StepFour = ({ onNext, onBack, defaultValues }: StepFourProps) => {
         }}
         label="Have you been diagnosed with any eating disorders or have a history of disordered eating?"
         error={getErrorMessage(errors?.anyEatingDisorder)}
-        classNames={{ label: "!text-3xl pb-2" }}
+        classNames={{
+          root: "sm:!grid !block",
+          error: "sm:!text-end !text-start w-full",
+          label: "sm:!text-3xl pb-2",
+        }}
       >
         <div className="grid grid-cols-1 gap-5">
           {anyEatingOptions.map((option) => (

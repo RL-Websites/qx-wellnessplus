@@ -70,7 +70,11 @@ const StepTwelve = ({ onNext, onBack, defaultValues }: StepTwelveProps) => {
         }}
         label="Do you have a personal history of acute or chronic pancreatitis?"
         error={getErrorMessage(errors?.pancreatitis)}
-        classNames={{ label: "!text-3xl pb-2" }}
+        classNames={{
+          root: "sm:!grid !block",
+          error: "sm:!text-end !text-start w-full",
+          label: "sm:!text-3xl pb-2",
+        }}
       >
         <div className="grid grid-cols-2 gap-5">
           {["Yes", "No"].map((option) => (

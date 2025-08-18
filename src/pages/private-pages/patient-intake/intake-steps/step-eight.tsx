@@ -65,7 +65,11 @@ const StepEight = ({ onNext, onBack, defaultValues }: Step8Props) => {
       value={value}
       label={label}
       error={errorMsg}
-      classNames={{ label: "!text-3xl pb-2" }}
+      classNames={{
+        root: "sm:!grid !block",
+        error: "sm:!text-end !text-start w-full",
+        label: "sm:!text-3xl pb-2",
+      }}
     >
       <div className="grid grid-cols-2 gap-5">
         {options.map((option) => (

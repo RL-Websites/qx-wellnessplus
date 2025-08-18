@@ -187,7 +187,11 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
         value={thyroidCancer}
         onChange={(val) => handleSelect("thyroidCancer", val)}
         error={getErrorMessage(errors.thyroidCancer)}
-        classNames={{ label: "!text-3xl pb-2" }}
+        classNames={{
+          root: "sm:!grid !block",
+          error: "sm:!text-end !text-start w-full",
+          label: "sm:!text-3xl pb-2",
+        }}
       >
         <div className="grid grid-cols-2 gap-5">
           {radioOptions.map((option) => (
