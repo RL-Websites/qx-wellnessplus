@@ -45,14 +45,14 @@ function ProductDetailsModal({ openModal, onModalClose, medicationDetails }: IPr
         blur={4}
       />
       <Modal.Content className="!right-0 sm:!-right-10 !top-0 !h-full !w-full sm:!w-[840px] transition-all">
-        <Modal.Body className="!p-8 h-full overflow-y-auto relative">
+        <Modal.Body className="lg:!p-8 md:!p-5 !p-4 h-full overflow-y-auto relative">
           <div className="flex items-center justify-end gap-3">
             <i
               className="icon-cross1 text-2xl/none cursor-pointer text-primary"
               onClick={onModalClose}
             ></i>
           </div>
-          <div className="pt-20">
+          <div className="lg:pt-20 md:pt-10 pt-5">
             <h2 className="md:text-5xl text-3xl !leading-snug font-poppins  font-bold mb-4  text-foreground">{medicationDetails.name}</h2>
             {medicationDetails.cost && <p className="my-6 text-2xl text-gray-600 font-semibold">Cost: {medicationDetails.cost}</p>}
 
