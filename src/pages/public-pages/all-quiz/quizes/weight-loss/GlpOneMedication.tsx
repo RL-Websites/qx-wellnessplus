@@ -65,7 +65,7 @@ const GlpOneMedication = ({ onNext, onBack, defaultValues }: GlpOneMedicationPro
 GLP-1 medication?"
           classNames={{ label: "!text-3xl pb-2" }}
         >
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid md:grid-cols-2 gap-5 w-full">
             {takesGlpOptions.map((option) => (
               <Radio
                 key={option}
