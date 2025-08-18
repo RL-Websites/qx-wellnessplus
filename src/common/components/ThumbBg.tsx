@@ -3,7 +3,7 @@ interface ThumbBgProps {
 }
 
 const ThumbBg = ({ children }: ThumbBgProps) => {
-  return <div className="bg-[url(./public/images/thumb-bg.png)] bg-no-repeat px-8 pt-8 bg-cover rounded-[20px] flex justify-center">{children}</div>;
+  return <div className="bg-[url(images/thumb-bg.png)] bg-no-repeat px-8 pt-8 bg-cover rounded-[20px] flex justify-center">{children}</div>;
 };
 
 export default ThumbBg;
