@@ -93,7 +93,7 @@ export default function GenderTestosterone({ onNext, onBack, defaultValues }: IG
               ))}
             </Group>
           </Radio.Group>
-          {errors.genderWeightLoss && <Text className="text-red-500 text-sm mt-5 text-center">{errors.genderWeightLoss.message}</Text>}
+          {errors.genderWeightLoss && <Text className="text-red-500 text-sm mt-5 text-center">Please select your gender.</Text>}
         </form>
       </div>
 

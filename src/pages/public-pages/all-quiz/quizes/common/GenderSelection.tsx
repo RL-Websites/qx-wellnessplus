@@ -79,7 +79,7 @@ const GenderSelection = ({ onNext, onBack, defaultValues }: GenderSelectionProps
           </Grid>
         </Radio.Group>
 
-        {errors.gender && <div className="text-danger text-sm mt-2 text-center">{errors.gender.message}</div>}
+        {errors.gender && <div className="text-danger text-sm mt-2 text-center">Please select your gender.</div>}
 
         <div className="flex justify-center gap-6 pt-6">
           <Button
