@@ -141,9 +141,11 @@ const QuizPage = () => {
     }
     if (selectedCategory && selectedCategory.includes("Hair Growth (Male)")) {
       setHairGrowthMale(true);
+      setHairGrowthFemale(false);
     }
-    if (selectedCategory && selectedCategory.includes("Hair Growth (Male)")) {
-      setHairGrowthMale(true);
+    if (selectedCategory && selectedCategory.includes("Hair Growth (Female)")) {
+      setHairGrowthFemale(true);
+      setHairGrowthMale(false);
     }
   }, [selectedCategory]);
 

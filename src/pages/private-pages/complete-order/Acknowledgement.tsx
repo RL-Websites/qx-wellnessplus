@@ -2,8 +2,8 @@ import { IPublicPartnerPrescriptionDetails } from "@/common/api/models/interface
 import { formatDate } from "@/utils/date.utils";
 import { getFullName } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button } from "@mantine/core";
-import { useRef, useState } from "react";
+import { Button, Text } from "@mantine/core";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import SignatureCanvas from "react-signature-canvas";
 import * as yup from "yup";
@@ -22,15 +22,16 @@ const stepLastSchema = yup.object({
 const Acknowledgement = ({ onNext, onBack, defaultValues, patientData, hasPeptides, hasOthers }: PropTypes) => {
   const [today, setToday] = useState(new Date());
   const sigCanvas = useRef<SignatureCanvas | null>(null);
+  const [signatureImage, setSignatureImage] = useState("");
   const {
     handleSubmit,
     setValue,
     clearErrors,
+    getValues,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(stepLastSchema),
     defaultValues: {
-      // agreeTerms: defaultValues?.agreeTerms || undefined,
       signature: defaultValues?.signature,
     },
   });
@@ -38,18 +39,23 @@ const Acknowledgement = ({ onNext, onBack, defaultValues, patientData, hasPeptid
   const clearSignature = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     sigCanvas.current?.clear();
-    // setSignature("");
+    setSignatureImage("");
     setValue("signature", "");
-    // setValue("signature", "");
-    // setError("signature", { message: "Signature is required" });
   };
 
   const saveSignature = () => {
     const base64Data = sigCanvas.current.toDataURL("image/png");
     setValue("signature", base64Data, { shouldValidate: true });
-    // setSignature(base64Data);
+    setSignatureImage(base64Data);
     clearErrors("signature");
   };
+
+  useEffect(() => {
+    if (defaultValues?.signature) {
+      setSignatureImage(defaultValues?.signature);
+      setValue("signature", defaultValues?.signature, { shouldValidate: true });
+    }
+  }, [defaultValues]);
   return (
     <>
       <h1 className="text-center text-foreground text-[90px]/none uppercase">Acknowledgement</h1>
@@ -338,9 +344,31 @@ const Acknowledgement = ({ onNext, onBack, defaultValues, patientData, hasPeptid
 
             <div className="mt-3">
               <h6 className="text-lg !font-medium text-foreground">Digital Signature</h6>
-              <div className="lg:w-1/2 border-2 border-dashed border-gray-300 rounded-lg p-2 relative mt-3">
+              {getValues("signature") && signatureImage ? (
+                <div className="lg:w-1/2 border-2 border-dashed border-gray-300 rounded-lg p-2 relative mt-3">
+                  <div className="p-5 bg-grey-low inline-flex">
+                    <img
+                      src={signatureImage}
+                      alt="signature"
+                    />
+                  </div>
+                  <Button
+                    onClick={clearSignature}
+                    variant="transparent"
+                    className="absolute bottom-2 right-2 text-blue-600 text-sm underline"
+                  >
+                    Change Signature
+                  </Button>
+                </div>
+              ) : (
+                <></>
+              )}
+
+              <div className={`lg:w-1/2 border-2 border-dashed border-gray-300 rounded-lg p-2 relative mt-3 ${getValues("signature") && signatureImage ? "hidden" : ""}`}>
                 <SignatureCanvas
-                  ref={sigCanvas}
+                  ref={(ref) => {
+                    if (ref) sigCanvas.current = ref;
+                  }}
                   penColor="#175BCC"
                   maxWidth={1.5}
                   onEnd={() => saveSignature()}
@@ -357,6 +385,16 @@ const Acknowledgement = ({ onNext, onBack, defaultValues, patientData, hasPeptid
                   Clear Signature
                 </Button>
               </div>
+              {errors?.signature?.message && (
+                <Text
+                  c="red"
+                  size="sm"
+                  className="mt-2"
+                >
+                  {errors?.signature?.message?.toString() || ""}
+                </Text>
+              )}
+
               <p className="text-lg mt-3">
                 Full Name: <span className="text-foreground">{getFullName(patientData?.patient?.first_name, patientData?.patient?.last_name)}</span>
               </p>
@@ -369,6 +407,14 @@ const Acknowledgement = ({ onNext, onBack, defaultValues, patientData, hasPeptid
       </div>
       <div className="flex justify-between mt-6">
         <div className="flex gap-3 ms-auto">
+          <Button
+            w={256}
+            color="grey.4"
+            c="foreground"
+            onClick={onBack}
+          >
+            Back
+          </Button>
           <Button
             w={256}
             onClick={handleSubmit(onNext)}
