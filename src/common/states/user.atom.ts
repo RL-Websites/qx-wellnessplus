@@ -5,4 +5,6 @@ export const userAtom = atom<IUserData | null>(null);
 
 export const asyncUserAtom = atom(async (get) => get(userAtom));
 
+export const user_id = atom<string>("");
+
 export const loginRedirectCountAtom = atomWithStorage<number>("loginRedirectCount", 0);

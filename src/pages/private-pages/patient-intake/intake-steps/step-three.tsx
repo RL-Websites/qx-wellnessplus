@@ -1,112 +1,125 @@
+import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
+import { getErrorMessage } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Checkbox, Grid, Input } from "@mantine/core";
+import { Button, Radio } from "@mantine/core";
 import { useForm } from "react-hook-form";
-
 import * as yup from "yup";
 
 export const step3Schema = yup.object({
-  history1: yup.array().of(yup.string()).min(1, "Please select at least one option.").required(),
-  discribe: yup.string().when("history1", {
-    is: (val: string[]) => val?.includes("Other"),
-    then: (schema) => schema.required("Please describe your condition."),
-    otherwise: (schema) => schema.notRequired(),
+  hadPrevWeightLoss: yup.string().required("Please select at least one value."),
+  descPrevWeightLoss: yup.string().when("hadPrevWeightLoss", {
+    is: "Yes",
+    then: (schema) => schema.required("Please select at least one value."),
   }),
 });
 
-export type Step3SchemaType = yup.InferType<typeof step3Schema>;
+export type step3SchemaType = yup.InferType<typeof step3Schema>;
 
-interface IStepThreeProps {
-  onNext: (data: Step3SchemaType) => void;
+interface StepThreeProps {
+  onNext: (data: step3SchemaType) => void;
   onBack: () => void;
-  defaultValues?: Step3SchemaType;
+  defaultValues?: step3SchemaType;
 }
 
-const StepThree = ({ onNext, onBack, defaultValues }: IStepThreeProps) => {
+const StepThree = ({ onNext, onBack, defaultValues }: StepThreeProps) => {
   const {
     handleSubmit,
     setValue,
     watch,
-    register,
+    clearErrors,
     formState: { errors },
-  } = useForm<Step3SchemaType>({
+  } = useForm<step3SchemaType>({
     defaultValues: {
-      history1: defaultValues?.history1 || [],
-      discribe: defaultValues?.discribe || "",
+      hadPrevWeightLoss: defaultValues?.hadPrevWeightLoss || "",
+      descPrevWeightLoss: defaultValues?.descPrevWeightLoss || "",
     },
     resolver: yupResolver(step3Schema),
   });
 
-  const selectedValues = watch("history1");
-  const isOtherSelected = selectedValues.includes("Other");
+  const hadPrevWeightLoss = watch("hadPrevWeightLoss");
+  const descPrevWeightLoss = watch("descPrevWeightLoss");
+  const showDescPrevWeightLoss = hadPrevWeightLoss === "Yes";
 
-  const options = ["Heart disease or stroke", "Liver or kidney disease", "Cancer", "Thyroid disorders", "Other"];
-
-  const toggleValue = (value: string) => {
-    const updated = selectedValues.includes(value) ? selectedValues.filter((v) => v !== value) : [...selectedValues, value];
-    setValue("history1", updated, { shouldValidate: true });
+  const handleSelect = (field: keyof step3SchemaType, value: string) => {
+    setValue(field, value, { shouldValidate: true });
+    clearErrors(field);
   };
+
+  const hadPrevOptions = ["Yes", "No"];
+  const descOptions = [
+    "Was able to lose weight and kept off the weight for a while",
+    "Was able to lose weight but regained the weight shortly after",
+    "Was unable to lose even though I followed my dietary and exercise goals",
+    "Was unable to lose weight and I was unable to follow my dietary and exercise goals",
+  ];
 
   return (
     <form
       id="stepThreeForm"
       onSubmit={handleSubmit(onNext)}
-      className="max-w-xl mx-auto space-y-6"
+      className="max-w-[800px] mx-auto space-y-10 pt-10"
     >
-      <div>
-        <h2 className="text-center text-2xl font-semibold text-foreground font-poppins">Do you have any history of:</h2>
-
-        <Grid
-          gutter="md"
-          className="mt-6"
-        >
-          {options.map((option) => {
-            const isChecked = selectedValues.includes(option);
-            return (
-              <Grid.Col
-                span={6}
-                key={option}
-              >
-                <div
-                  onClick={() => toggleValue(option)}
-                  className={`cursor-pointer border rounded-2xl px-6 py-4 flex justify-between items-center transition-all ${
-                    isChecked ? "border-primary bg-white text-black shadow-sm" : "border-gray-300 bg-transparent text-black"
-                  }`}
-                >
-                  <span className="text-base font-medium font-poppins">{option}</span>
-                  <Checkbox
-                    checked={isChecked}
-                    readOnly
-                    size="md"
-                    radius="md"
-                    classNames={{
-                      input: isChecked ? "bg-primary border-primary text-white" : "bg-transparent",
-                    }}
-                  />
+      <Radio.Group
+        value={hadPrevWeightLoss}
+        onChange={(value) => {
+          handleSelect("hadPrevWeightLoss", value);
+          setValue("descPrevWeightLoss", "");
+          clearErrors("descPrevWeightLoss");
+        }}
+        label="Have you had any previous weight loss attempts or programs?"
+        error={getErrorMessage(errors?.hadPrevWeightLoss)}
+        classNames={{ label: "!text-3xl pb-2" }}
+      >
+        <div className="grid grid-cols-2 gap-5">
+          {hadPrevOptions.map((option) => (
+            <Radio
+              key={option}
+              value={option}
+              classNames={getBaseWebRadios(hadPrevWeightLoss, option)}
+              label={
+                <div className="relative text-center">
+                  <span className="text-foreground font-poppins">{option}</span>
+                  {hadPrevWeightLoss === option && (
+                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                      <i className="icon-tick text-sm/none"></i>
+                    </span>
+                  )}
                 </div>
-              </Grid.Col>
-            );
-          })}
-        </Grid>
+              }
+            />
+          ))}
+        </div>
+      </Radio.Group>
 
-        {errors.history1 && <div className="text-red-500 text-sm mt-2 text-center">{errors.history1.message}</div>}
-
-        {isOtherSelected && (
-          <div className="mt-4">
-            <Input.Wrapper
-              label="Discribe"
-              withAsterisk
-              className="sm:col-span-1 col-span-2"
-              error={errors?.discribe?.message}
-            >
-              <Input
-                type="text"
-                {...register("discribe")}
-                error={Boolean(errors?.discribe?.message)}
+      {showDescPrevWeightLoss && (
+        <Radio.Group
+          value={descPrevWeightLoss}
+          onChange={(value) => handleSelect("descPrevWeightLoss", value)}
+          label="Please select the statement that best describes your previous weight loss attempts."
+          error={getErrorMessage(errors?.descPrevWeightLoss)}
+          classNames={{ label: "!text-3xl pt-10 pb-2" }}
+        >
+          <div className="grid grid-cols-1 gap-5">
+            {descOptions.map((option) => (
+              <Radio
+                key={option}
+                value={option}
+                classNames={getBaseWebRadios(descPrevWeightLoss, option)}
+                label={
+                  <div className="relative text-center">
+                    <span className="text-foreground font-poppins">{option}</span>
+                    {descPrevWeightLoss === option && (
+                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <i className="icon-tick text-sm/none"></i>
+                      </span>
+                    )}
+                  </div>
+                }
               />
-            </Input.Wrapper>
+            ))}
           </div>
-        )}
-      </div>
+        </Radio.Group>
+      )}
 
       <div className="flex justify-center gap-6 pt-4">
         <Button

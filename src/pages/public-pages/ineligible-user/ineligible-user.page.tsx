@@ -1,4 +1,5 @@
 import { Button } from "@mantine/core";
+import { Link } from "react-router-dom";
 
 export default function InEligibleUser() {
   return (
@@ -12,6 +13,8 @@ export default function InEligibleUser() {
         <Button
           variant="outline"
           className="w-[200px]"
+          component={Link}
+          to="/"
         >
           Go Back to Home
         </Button>

@@ -4,7 +4,7 @@ import authApiRepository from "@/common/api/repositories/authRepository";
 import dmlToast from "@/common/configs/toaster.config";
 import useAuthToken from "@/common/hooks/useAuthToken";
 import { cartItemsAtom } from "@/common/states/product.atom";
-import { userAtom } from "@/common/states/user.atom";
+import { user_id, userAtom } from "@/common/states/user.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Input, PasswordInput } from "@mantine/core";
 import { useMutation } from "@tanstack/react-query";
@@ -16,14 +16,10 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import * as yup from "yup";
 
 const loginSchema = yup.object({
-  emailAddress: yup
-    .string()
-    .required(({ label }) => `${label} is required.`)
-    .label("Email")
-    .email(),
+  emailAddress: yup.string().required(`Please provide your email address.`).label("Email").email(),
   password: yup
     .string()
-    .required("You need to add a password")
+    .required("Please provide your password")
     .min(8, "Password must have at least 8 characters")
     .matches(/^(?=.*\d).*$/, "Password must contain at least one numerical value")
     .matches(/^((?=.*[a-z]){1}).*$/, "Password must contain at least one lower case alphabetical character")
@@ -41,6 +37,7 @@ const Login = () => {
   const { getAccessToken, setAccessToken } = useAuthToken();
   const [cartItems] = useAtom(cartItemsAtom);
   const [userData, setUserDataAtom] = useAtom(userAtom);
+  const [userId, setUserId] = useAtom(user_id);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -83,6 +80,7 @@ const Login = () => {
     LoginMutation.mutate(payload, {
       onSuccess: (res) => {
         // setUserEmail(data.emailAddress);
+        setUserId(res?.data?.user_id);
         setAccessToken(res?.data.access_token);
 
         getAuthQuery.mutate(undefined, {

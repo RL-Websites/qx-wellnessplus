@@ -44,16 +44,23 @@ const HomePage = () => {
             <div className="flex flex-col gap-7 lg:py-16 py-10">
               <div className="logo flex items-center gap-2">
                 <NavLink
-                  to={userData?.userable_type ? "/category" : "/"}
+                  to={userData?.userable_type ? "/" : "/"}
                   component={RdNavLink}
                   className={`p-0 bg-transparent hover:bg-transparent h-8 w-auto border-r border-r-grey-low`}
+                  classNames={{
+                    label: "flex items-center gap-4",
+                  }}
                   label={
                     <>
-                      <Image
-                        src={customerData?.logo ? `${import.meta.env.VITE_BASE_PATH}/storage/${customerData?.logo}` : ""}
-                        alt={customerData?.name || ""}
-                        className="lg:w-16 md:w-12 w-10"
-                      />
+                      {customerData?.logo ? (
+                        <Image
+                          src={customerData?.logo ? `${import.meta.env.VITE_BASE_PATH}/storage/${customerData?.logo}` : ""}
+                          alt={customerData?.name || ""}
+                          className="lg:w-16 md:w-12 w-10"
+                        />
+                      ) : (
+                        ""
+                      )}
                       <span className="text-foreground font-impact md:text-[28px] text-2xl">{customerData?.name}</span>
                     </>
                   }

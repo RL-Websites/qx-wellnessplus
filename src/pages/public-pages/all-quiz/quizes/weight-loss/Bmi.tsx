@@ -4,19 +4,19 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 // Validation schema
-export const ageSchema = yup.object({
-  age: yup.string().required("Please add your age"),
+export const bmiSchema = yup.object({
+  bmi: yup.number().typeError("BMI must be a number").required("Please add your current BMI").min(25, "BMI must be at least 25 to proceed"),
 });
 
-export type ageSchemaType = yup.InferType<typeof ageSchema>;
+export type bmiSchemaType = yup.InferType<typeof bmiSchema>;
 
-interface IAgeProps {
-  onNext: (data: ageSchemaType) => void;
+interface IBMIProps {
+  onNext: (data: bmiSchemaType) => void;
   onBack: () => void;
-  defaultValues?: ageSchemaType;
+  defaultValues?: bmiSchemaType;
 }
 
-const Age = ({ onNext, onBack, defaultValues }: IAgeProps) => {
+const BMI = ({ onNext, onBack, defaultValues }: IBMIProps) => {
   const {
     handleSubmit,
     register,
@@ -24,49 +24,49 @@ const Age = ({ onNext, onBack, defaultValues }: IAgeProps) => {
     watch,
     clearErrors,
     formState: { errors },
-  } = useForm<ageSchemaType>({
+  } = useForm<bmiSchemaType>({
     defaultValues: {
-      age: defaultValues?.age || "",
+      bmi: defaultValues?.bmi || "",
     },
-    resolver: yupResolver(ageSchema),
+    resolver: yupResolver(bmiSchema),
   });
 
-  const age = watch("age");
-
-  const options = ["No", "Yes"];
+  const bmi = watch("bmi");
 
   const handleSelect = (value: string) => {
-    setValue("age", value, { shouldValidate: true });
-    clearErrors("age");
+    setValue("bmi", value, { shouldValidate: true });
+    clearErrors("bmi");
   };
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
-      <div className=" card-common-width mx-auto mt-6">
-        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">What is your age?</h2>
+      <div className="card-common-width mx-auto">
+        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">What is your current BMI?</h2>
         <form
-          id="ageForm"
+          id="bmiForm"
           onSubmit={handleSubmit(onNext)}
           className="max-w-xl mx-auto space-y-6 card-common"
         >
           <div>
             <Input.Wrapper
-              label="Your Age"
+              label="Your BMI"
               required
-              error={errors.age?.message ? errors.age?.message : false}
+              error={errors.bmi?.message ? errors.bmi?.message : false}
               classNames={{
                 label: "!text-sm md:!text-base lg:!text-lg",
               }}
             >
               <Input
-                type="text"
-                {...register("age")}
+                type="number"
+                step="0.1"
+                min={0}
+                {...register("bmi")}
               />
             </Input.Wrapper>
           </div>
         </form>
       </div>
-      <div className="flex justify-center gap-6 pt-4">
+      <div className="flex justify-center gap-6 pt-8">
         <Button
           variant="outline"
           className="w-[200px]"
@@ -77,7 +77,7 @@ const Age = ({ onNext, onBack, defaultValues }: IAgeProps) => {
         <Button
           type="submit"
           className="w-[200px]"
-          form="ageForm"
+          form="bmiForm"
         >
           Next
         </Button>
@@ -86,4 +86,4 @@ const Age = ({ onNext, onBack, defaultValues }: IAgeProps) => {
   );
 };
 
-export default Age;
+export default BMI;

@@ -1,59 +1,62 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Group, Radio } from "@mantine/core";
+import { Button, Group, Radio, Text } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 // Validation schema
-export const scalpInfectionsSchema = yup.object({
-  scalpInfactions: yup.string().required("Please select an option."),
+export const priapismSchema = yup.object({
+  priapism: yup.string().required("Please select an option."),
 });
 
-export type scalpInfectionsSchemaType = yup.InferType<typeof scalpInfectionsSchema>;
+export type PriapismSchemaType = yup.InferType<typeof priapismSchema>;
 
-interface IScalpInfectionsProps {
-  onNext: (data: scalpInfectionsSchemaType) => void;
+interface IPriapismProps {
+  onNext: (data: PriapismSchemaType & { eligible?: boolean }) => void;
   onBack: () => void;
-  defaultValues?: scalpInfectionsSchemaType;
+  defaultValues?: PriapismSchemaType;
 }
 
-const ScalpInfectionsTestosterone = ({ onNext, onBack, defaultValues }: IScalpInfectionsProps) => {
+const Priapism = ({ onNext, onBack, defaultValues }: IPriapismProps) => {
   const {
     handleSubmit,
     setValue,
     watch,
     clearErrors,
     formState: { errors },
-  } = useForm<scalpInfectionsSchemaType>({
+  } = useForm<PriapismSchemaType>({
     defaultValues: {
-      scalpInfactions: defaultValues?.scalpInfactions || "",
+      priapism: defaultValues?.priapism || "",
     },
-    resolver: yupResolver(scalpInfectionsSchema),
+    resolver: yupResolver(priapismSchema),
   });
 
-  const scalpInfactions = watch("scalpInfactions");
+  const priapism = watch("priapism");
 
   const options = ["No", "Yes"];
 
   const handleSelect = (value: string) => {
-    setValue("scalpInfactions", value, { shouldValidate: true });
-    clearErrors("scalpInfactions");
+    setValue("priapism", value, { shouldValidate: true });
+    clearErrors("priapism");
+  };
+
+  const onSubmit = (data: PriapismSchemaType) => {
+    onNext({ ...data, eligible: data.priapism === "Yes" });
   };
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <form
-        id="scalpInfectionsForm"
-        onSubmit={handleSubmit(onNext)}
+        id="priapismForm"
+        onSubmit={handleSubmit(onSubmit)}
         className="max-w-xl mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Do you have a history of scalp infections (e.g., seborrheic dermatitis)?</h2>
+          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Do you have a history of priapism (prolonged erections)?</h2>
 
           <Radio.Group
-            value={scalpInfactions}
+            value={priapism}
             onChange={handleSelect}
             className="mt-6"
-            error={errors?.scalpInfactions?.message}
           >
             <Group grow>
               {options.map((option) => (
@@ -66,14 +69,14 @@ const ScalpInfectionsTestosterone = ({ onNext, onBack, defaultValues }: IScalpIn
                     inner: "hidden",
                     labelWrapper: "w-full",
                     label: `
-                    block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointer
-                    ${scalpInfactions === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
-                  `,
+                      block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointer
+                      ${priapism === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
+                    `,
                   }}
                   label={
                     <div className="relative text-center">
                       <span className="text-foreground font-poppins">{option}</span>
-                      {scalpInfactions === option && (
+                      {priapism === option && (
                         <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
@@ -84,6 +87,8 @@ const ScalpInfectionsTestosterone = ({ onNext, onBack, defaultValues }: IScalpIn
               ))}
             </Group>
           </Radio.Group>
+
+          {errors.priapism && <Text className="text-red-500 text-sm mt-5 text-center">{errors.priapism.message}</Text>}
         </div>
 
         <div className="flex justify-center gap-6 pt-4">
@@ -97,7 +102,7 @@ const ScalpInfectionsTestosterone = ({ onNext, onBack, defaultValues }: IScalpIn
           <Button
             type="submit"
             className="w-[200px]"
-            form="scalpInfectionsForm"
+            form="priapismForm"
           >
             Next
           </Button>
@@ -107,4 +112,4 @@ const ScalpInfectionsTestosterone = ({ onNext, onBack, defaultValues }: IScalpIn
   );
 };
 
-export default ScalpInfectionsTestosterone;
+export default Priapism;
