@@ -405,7 +405,6 @@ const QuizPage = () => {
                   setEligibleComponent(<InEligibleUser />);
                 }
               }}
-              onBack={handleBack}
               defaultValues={formData}
             />
           )}
@@ -437,6 +436,8 @@ const QuizPage = () => {
                   setEligibleComponent(<InEligibleUser />);
                 }
               }}
+              onBack={handleBack}
+              defaultValues={formData}
             />
           )}
         </>
