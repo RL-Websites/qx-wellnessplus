@@ -1,6 +1,6 @@
 import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { useWindowScroll } from "@mantine/hooks";
-import { useAtomValue } from "jotai"; // ✅ useAtomValue for reading
+import { useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
 import DateOfBirth from "./quizes/DateOfBirth";
 
@@ -47,6 +47,9 @@ import SleepApnea from "./quizes/peptides-blends/SleepApnea";
 import ThyroidCancerHistory from "./quizes/peptides-blends/ThyroidCancerHistory";
 import UsedPeptidesBefore from "./quizes/peptides-blends/UsedPeptidesBefore";
 import CardiovascularDisease from "./quizes/testosterone/CardiovascularDisease";
+import GenderTestosterone from "./quizes/testosterone/Gender";
+import Impairment from "./quizes/testosterone/Impairment";
+import Nitroglycerin from "./quizes/testosterone/Nitroglycerin";
 import Priapism from "./quizes/testosterone/Priapism";
 import WeightLossBreastFeeding from "./quizes/weight-loss/BreastFeeding";
 import CustomerStatus from "./quizes/weight-loss/CustomerStatus";
@@ -167,84 +170,6 @@ const QuizPage = () => {
               defaultValues={formData}
             />
           )}
-          {selectedCategory?.includes("Hair Growth (Male)") && (
-            <>
-              {activeStep === 3 && (
-                <ScalpInfections
-                  onNext={handleNext}
-                  onBack={handleBack}
-                  defaultValues={formData}
-                />
-              )}
-              {activeStep === 4 && (
-                <AlopeciaAreata
-                  onNext={handleNext}
-                  onBack={handleBack}
-                  defaultValues={formData}
-                />
-              )}
-              {activeStep === 5 && (
-                <MedicationTaking
-                  onNext={handleNext}
-                  onBack={handleBack}
-                  defaultValues={formData}
-                />
-              )}
-              {activeStep === 6 && (
-                <ThyroidDisease
-                  onNext={handleNext}
-                  onBack={handleBack}
-                  defaultValues={formData}
-                />
-              )}
-              {activeStep === 7 && (
-                <Chemotherapy
-                  onNext={handleFinalSubmit}
-                  onBack={handleBack}
-                  defaultValues={formData}
-                />
-              )}
-            </>
-          )}
-          {selectedCategory?.includes("Hair Growth (Female)") && (
-            <>
-              {activeStep === 3 && (
-                <PlanningPregnancy
-                  onNext={handleNext}
-                  onBack={handleBack}
-                  defaultValues={formData}
-                />
-              )}
-              {activeStep === 4 && (
-                <BreastFeeding
-                  onNext={handleNext}
-                  onBack={handleBack}
-                  defaultValues={formData}
-                />
-              )}
-              {activeStep === 5 && (
-                <Pcos
-                  onNext={handleNext}
-                  onBack={handleBack}
-                  defaultValues={formData}
-                />
-              )}
-              {activeStep === 6 && (
-                <ScalpInfectionsTwo
-                  onNext={handleNext}
-                  onBack={handleBack}
-                  defaultValues={formData}
-                />
-              )}
-              {activeStep === 7 && (
-                <HairTreatment
-                  onNext={handleFinalSubmit}
-                  onBack={handleBack}
-                  defaultValues={formData}
-                />
-              )}
-            </>
-          )}
         </>
       )}
 
@@ -358,7 +283,7 @@ const QuizPage = () => {
       {selectedCategory?.includes("Testosterone") && (
         <>
           {activeStep === 2 && (
-            <CardiovascularDisease
+            <GenderTestosterone
               onNext={(data) => {
                 const { eligible, ...rest } = data;
                 setFormData((prev) => ({ ...prev, ...rest }));
@@ -374,8 +299,55 @@ const QuizPage = () => {
             />
           )}
           {activeStep === 3 && (
+            <CardiovascularDisease
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+                setFormData((prev) => ({ ...prev, ...rest }));
+
+                if (eligible) {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(rest);
+                }
+              }}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {activeStep === 4 && (
             <Priapism
               onBack={handleBack}
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+                setFormData((prev) => ({ ...prev, ...rest }));
+
+                if (eligible) {
+                  handleNext(rest);
+                } else {
+                  setEligibleComponent(<InEligibleUser />);
+                }
+              }}
+              defaultValues={formData}
+            />
+          )}
+          {activeStep === 5 && (
+            <Nitroglycerin
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+                setFormData((prev) => ({ ...prev, ...rest }));
+
+                if (eligible) {
+                  handleNext(rest);
+                } else {
+                  setEligibleComponent(<InEligibleUser />);
+                }
+              }}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {activeStep === 6 && (
+            <Impairment
               onNext={(data) => {
                 const { eligible, ...rest } = data;
                 setFormData((prev) => ({ ...prev, ...rest }));
@@ -386,6 +358,8 @@ const QuizPage = () => {
                   setEligibleComponent(<InEligibleUser />);
                 }
               }}
+              onBack={handleBack}
+              defaultValues={formData}
             />
           )}
         </>
