@@ -54,7 +54,7 @@ const CustomerStatus = ({ onNext, onBack, defaultValues }: ICustomerStatusProps)
         className="card-common-width-lg mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Are you new or an existing Wellness Plus customer?</h2>
+          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Are you new or an existing Dosevana customer?</h2>
 
           <Radio.Group
             value={customerStatus}

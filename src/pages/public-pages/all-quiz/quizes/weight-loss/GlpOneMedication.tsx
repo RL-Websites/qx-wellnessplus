@@ -15,7 +15,7 @@ export const glpOneMedicationSchema = yup.object({
 export type glpOneMedicationSchemaType = yup.InferType<typeof glpOneMedicationSchema>;
 
 interface GlpOneMedicationProps {
-  onNext: (data: glpOneMedicationSchemaType) => void;
+  onNext: (data: glpOneMedicationSchemaType & { eligible?: boolean }) => void;
   onBack: () => void;
   defaultValues?: glpOneMedicationSchemaType;
 }
@@ -44,7 +44,7 @@ const GlpOneMedication = ({ onNext, onBack, defaultValues }: GlpOneMedicationPro
     clearErrors(field);
   };
 
-  const takesGlpOptions = ["Yes", "No"];
+  const takesGlpOptions = ["No", "Yes"];
   const glpDetailsOptions = ["Semaglutide", "Tirzepatide"];
 
   return (
@@ -63,7 +63,7 @@ const GlpOneMedication = ({ onNext, onBack, defaultValues }: GlpOneMedicationPro
           }}
           label="Are you currently or have you ever taken
 GLP-1 medication?"
-          classNames={{ label: "!text-3xl pb-2" }}
+          classNames={{ label: "!text-3xl pb-2 text-center" }}
         >
           <div className="grid md:grid-cols-2 gap-5 w-full">
             {takesGlpOptions.map((option) => (
