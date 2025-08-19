@@ -19,7 +19,7 @@ class DmlToast {
       icon: <IconTick />,
       classNames: {
         root: "border-l-[11px] border-green-middle h-[92px] shadow-custom-2 rounded-xl",
-        title: "heading-xxs",
+        title: " md:text-lg text-base !font-poppins",
         description: "text-fs-sm",
         closeButton: "text-foreground",
       },
@@ -35,7 +35,7 @@ class DmlToast {
       icon: <IconCross />,
       classNames: {
         root: "border-l-[11px] border-danger h-[92px] shadow-custom-2 rounded-xl",
-        title: "heading-xxs",
+        title: " md:text-lg text-base !font-poppins",
         description: "text-fs-sm",
         closeButton: "text-foreground",
       },
@@ -51,7 +51,7 @@ class DmlToast {
       icon: <IconCross />,
       classNames: {
         root: "border-l-[11px] border-danger h-[92px] shadow-custom-2 rounded-xl",
-        title: "heading-xxs",
+        title: "md:text-lg text-base !font-poppins",
         description: "text-fs-sm",
         closeButton: "text-foreground",
       },
