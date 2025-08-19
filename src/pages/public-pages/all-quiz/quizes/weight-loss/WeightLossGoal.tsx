@@ -49,7 +49,7 @@ const WeightLossGoal = ({ onNext, onBack, defaultValues }: IWeightLossGoalProps)
         >
           <div>
             <Input.Wrapper
-              label="Weight Loss Goal"
+              label="Weight Loss Goal (lbs)"
               required
               error={errors.weightlossgoal?.message ? errors.weightlossgoal?.message : false}
               classNames={InputErrorMessage}

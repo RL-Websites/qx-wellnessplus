@@ -37,8 +37,8 @@ const CategoryPage = () => {
     "Weight Loss": "images/weight-loos.png",
     Testosterone: "images/sexual-health.png",
     "Hair Growth": "images/hair-loos.png",
-    "Peptides Blends": "images/weight-loos.png",
-    "Single Peptides": "images/weight-loos.png",
+    Peptides: "images/peptides.png",
+    "Hormone Therapy": "images/hormone-therapy.png",
   };
 
   const transformedCategories = category?.reduce((acc: string[], item: string) => {
@@ -80,7 +80,7 @@ const CategoryPage = () => {
           <CategoryCard
             key={index}
             onClick={() => handleCategoryClick(item)}
-            image={item === "Peptides" ? "images/injection-3.png" : categoryImages[item]}
+            image={categoryImages[item]}
             title={item}
             link="/quiz"
           />

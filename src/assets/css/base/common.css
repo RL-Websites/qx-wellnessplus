@@ -4,6 +4,6 @@
   }
   &-home-hero {
     @apply md:bg-[url(/images/home-banner.png)] min-h-screen bg-none xl:bg-no-repeat bg-repeat-y bg-right;
-    background-size: 38%;
+    background-size: 35%;
   }
 }
