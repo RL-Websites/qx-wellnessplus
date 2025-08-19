@@ -76,7 +76,7 @@ const StepSix = ({ onNext, onBack, defaultValues }: StepSixProps) => {
         classNames={{
           root: "sm:!grid !block w-full",
           error: "sm:!text-end !text-start w-full",
-          label: "sm:!text-3xl pb-2",
+          label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
         <div className="grid grid-cols-2 gap-5">
@@ -109,7 +109,7 @@ const StepSix = ({ onNext, onBack, defaultValues }: StepSixProps) => {
           classNames={{
             root: "sm:!grid !block w-full",
             error: "sm:!text-end !text-start w-full",
-            label: "sm:!text-3xl pb-2",
+            label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           }}
         >
           <div className="grid sm:grid-cols-2 gap-5">
@@ -144,7 +144,7 @@ const StepSix = ({ onNext, onBack, defaultValues }: StepSixProps) => {
           classNames={{
             root: "sm:!grid !block w-full",
             error: "sm:!text-end !text-start w-full",
-            label: "sm:!text-3xl pb-2",
+            label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           }}
         >
           <Input
