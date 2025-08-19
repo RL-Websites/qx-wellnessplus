@@ -1,16 +1,19 @@
-import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
 import { getErrorMessage } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { ActionIcon, Button, Image, NumberInput, Text } from "@mantine/core";
+import { ActionIcon, Button, Image, Input, NumberInput, Text } from "@mantine/core";
 import { Dropzone, MIME_TYPES } from "@mantine/dropzone";
 import { IconCloudUp, IconX } from "@tabler/icons-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 export const fullBodyPhotoSchema = yup.object({
   measurement: yup.object({
-    height: yup
+    height_feet: yup
+      .string()
+      .required(({ label }) => `${label} is required`)
+      .label("Height"),
+    height_inch: yup
       .string()
       .required(({ label }) => `${label} is required`)
       .label("Height"),
@@ -54,6 +57,15 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
     reader.onerror = (error) => console.error("Error converting file: ", error);
   };
 
+  useEffect(() => {
+    if (defaultValues && defaultValues?.measurement?.weight) {
+      setValue("measurement.height_feet", defaultValues.measurement.height_feet);
+      setValue("measurement.height_inch", defaultValues.measurement.height_inch);
+      setValue("measurement.weight", defaultValues.measurement.weight);
+      setValue("measurement.full_body_image", defaultValues.measurement.full_body_image);
+    }
+  }, [defaultValues]);
+
   const handleFileUpload = (files: File[]) => {
     if (files.length > 0) {
       const file = files[0];
@@ -83,29 +95,46 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
           <h6 className="text-[30px] font-semibold text-foreground font-poppins">Progress Tracking</h6>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <NumberInput
+          <Input.Wrapper
+            label="Height"
+            required
             className="md:col-span-1 col-span-2"
-            classNames={InputErrorMessage}
-            label="Height (inches)"
-            value={height}
-            {...register("measurement.height")}
-            onChange={(value) => {
-              if (value) {
-                setHeight(value?.toString());
-                setValue("measurement.height", value?.toString());
-                clearErrors("measurement.height");
-              }
+            styles={{
+              label: { fontWeight: 500, marginBottom: "0.5rem" },
             }}
-            // value={height}
-            max={9999}
-            min={0}
-            clampBehavior="strict"
-            error={getErrorMessage(errors?.measurement?.height)}
-            hideControls
-            allowNegative={false}
-            allowDecimal={true}
             withAsterisk
-          />
+          >
+            <div className="grid grid-cols-2 gap-5">
+              <NumberInput
+                placeholder="Feet"
+                {...register("measurement.height_feet")}
+                onChange={(value) => {
+                  setValue("measurement.height_feet", value.toString());
+                  if (value) {
+                    clearErrors("measurement.height_feet");
+                  }
+                }}
+                min={0}
+                max={99}
+                hideControls
+                clampBehavior="strict"
+              />
+              <NumberInput
+                placeholder="Inches"
+                {...register("measurement.height_inch")}
+                onChange={(value) => {
+                  setValue("measurement.height_inch", value.toString());
+                  if (value) {
+                    clearErrors("measurement.height_inch");
+                  }
+                }}
+                min={0}
+                max={12}
+                hideControls
+                clampBehavior="strict"
+              />
+            </div>
+          </Input.Wrapper>
           <NumberInput
             className="md:col-span-1 col-span-2"
             classNames={{

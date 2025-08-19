@@ -138,7 +138,8 @@ const PatientIntake = () => {
 
   const handleFinalSubmit = (data: any) => {
     const tempData = { ...formData, ...data };
-    const measurement = tempData.measurement;
+    // const measurement = tempData.measurement;
+    const measurement = { ...tempData.measurement, height: `${tempData.measurement.height_feet}'${tempData.measurement.height_inch}''` };
 
     const formattedData = questions
       .map((item) =>
