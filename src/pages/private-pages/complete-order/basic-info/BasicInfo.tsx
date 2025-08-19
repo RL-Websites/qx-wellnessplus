@@ -2,6 +2,7 @@ import { IPatientBookingPatientInfoDTO } from "@/common/api/models/interfaces/Pa
 import { IUserData } from "@/common/api/models/interfaces/User.model";
 import AddressAutoGoogle from "@/common/components/AddressAutoGoogle";
 import { BaseWebDatePickerOverrides } from "@/common/configs/baseWebOverrides";
+import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
 import dmlToast from "@/common/configs/toaster.config";
 import { formatDate } from "@/utils/date.utils";
 import { getErrorMessage } from "@/utils/helper.utils";
@@ -154,13 +155,14 @@ const BasicInfo = ({ userData, onNext, isSubmitting }: BasicInfoPropTypes) => {
           <h3 className="font-poppins font-semibold lg:text-3xl text-2xl">Basic Information</h3>
         </div>
         <form
-          className="grid sm:grid-cols-2 gap-y-4 gap-x-6 pt-5"
+          className="grid grid-cols-1  md:grid-cols-2 gap-y-4 gap-x-6 pt-5"
           onSubmit={handleNext}
         >
           <Input.Wrapper
             label="First Name"
             withAsterisk
-            className="sm:col-span-1 col-span-2"
+            className="md:col-span-1 col-span-2"
+            classNames={InputErrorMessage}
             error={getErrorMessage(errors?.first_name)}
           >
             <Input
@@ -173,7 +175,8 @@ const BasicInfo = ({ userData, onNext, isSubmitting }: BasicInfoPropTypes) => {
           <Input.Wrapper
             label="Last Name"
             withAsterisk
-            className="sm:col-span-1 col-span-2"
+            className="md:col-span-1 col-span-2"
+            classNames={InputErrorMessage}
             error={getErrorMessage(errors?.last_name)}
           >
             <Input
@@ -186,7 +189,8 @@ const BasicInfo = ({ userData, onNext, isSubmitting }: BasicInfoPropTypes) => {
           <Input.Wrapper
             label="Email"
             withAsterisk
-            className="sm:col-span-1 col-span-2"
+            className="md:col-span-1 col-span-2"
+            classNames={InputErrorMessage}
             error={getErrorMessage(errors?.email)}
           >
             <Input
@@ -201,7 +205,8 @@ const BasicInfo = ({ userData, onNext, isSubmitting }: BasicInfoPropTypes) => {
             hideControls
             clampBehavior="strict"
             withAsterisk
-            className="sm:col-span-1 col-span-2"
+            className="md:col-span-1 col-span-2"
+            classNames={InputErrorMessage}
             value={phone}
             {...register("phone")}
             onChange={(value) => {
@@ -228,7 +233,8 @@ const BasicInfo = ({ userData, onNext, isSubmitting }: BasicInfoPropTypes) => {
               }
             }}
             name="gender"
-            className="sm:col-span-1 col-span-2 justify-start"
+            className="md:col-span-1 col-span-2 justify-start"
+            classNames={InputErrorMessage}
             error={getErrorMessage(errors?.gender)}
           >
             <Group
@@ -260,7 +266,8 @@ const BasicInfo = ({ userData, onNext, isSubmitting }: BasicInfoPropTypes) => {
             label="Date of Birth"
             error={getErrorMessage(errors.dob)}
             withAsterisk
-            className="sm:col-span-1 col-span-2"
+            className="md:col-span-1 col-span-2 "
+            classNames={InputErrorMessage}
           >
             <div className={`${errors?.dob ? "baseWeb-error" : ""} dml-Input-wrapper dml-Input-Calendar relative`}>
               <StyletronProvider value={engine}>
@@ -290,9 +297,10 @@ const BasicInfo = ({ userData, onNext, isSubmitting }: BasicInfoPropTypes) => {
             </div>
           </Input.Wrapper>
           <Input.Wrapper
-            className="sm:col-span-1 col-span-2"
+            className="md:col-span-1 col-span-2"
             label="Address"
             error={getErrorMessage(errors.address)}
+            classNames={InputErrorMessage}
             withAsterisk
           >
             <AddressAutoGoogle
@@ -316,9 +324,10 @@ const BasicInfo = ({ userData, onNext, isSubmitting }: BasicInfoPropTypes) => {
             />
           </Input.Wrapper>
           <Input.Wrapper
-            className="sm:col-span-1 col-span-2"
+            className="md:col-span-1 col-span-2"
             label="Country"
             error={getErrorMessage(errors.country)}
+            classNames={InputErrorMessage}
           >
             <Input
               type="text"
@@ -327,10 +336,11 @@ const BasicInfo = ({ userData, onNext, isSubmitting }: BasicInfoPropTypes) => {
             />
           </Input.Wrapper>
           <Input.Wrapper
-            className="sm:col-span-1 col-span-2"
+            className="md:col-span-1 col-span-2"
             label="State"
             withAsterisk
             error={getErrorMessage(errors.state)}
+            classNames={InputErrorMessage}
           >
             <Input
               {...register("state")}
@@ -339,10 +349,11 @@ const BasicInfo = ({ userData, onNext, isSubmitting }: BasicInfoPropTypes) => {
             />
           </Input.Wrapper>
           <Input.Wrapper
-            className="sm:col-span-1 col-span-2"
+            className="md:col-span-1 col-span-2"
             label="City"
             withAsterisk
             error={getErrorMessage(errors.city)}
+            classNames={InputErrorMessage}
           >
             <Input
               {...register("city")}
@@ -353,7 +364,8 @@ const BasicInfo = ({ userData, onNext, isSubmitting }: BasicInfoPropTypes) => {
           <div className="col-span-2 grid grid-cols-2 gap-5">
             <NumberInput
               {...register("zip_code")}
-              className="sm:col-span-1 col-span-2"
+              className="md:col-span-1 col-span-2"
+              classNames={InputErrorMessage}
               label="Zip Code"
               onChange={(value) => {
                 if (value) {
@@ -373,7 +385,7 @@ const BasicInfo = ({ userData, onNext, isSubmitting }: BasicInfoPropTypes) => {
               withAsterisk
             />
           </div>
-          <div className="sm:col-span-1 col-span-2">
+          <div className="md:col-span-1 col-span-2">
             <h6 className="font-poppins extra-form-text-medium text-foreground mb-2">Upload Driving License (Front Side)</h6>
             <Dropzone
               onDrop={(files) => handleFileUpload(files, "front")}
@@ -422,7 +434,7 @@ const BasicInfo = ({ userData, onNext, isSubmitting }: BasicInfoPropTypes) => {
               )}
             </Dropzone>
           </div>
-          <div className="sm:col-span-1 col-span-2">
+          <div className="md:col-span-1 col-span-2">
             <h6 className="font-poppins extra-form-text-medium text-foreground mb-2">Upload Driving License (Back Side)</h6>
             <Dropzone
               onDrop={(files) => handleFileUpload(files, "back")}
