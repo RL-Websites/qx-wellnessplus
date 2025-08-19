@@ -1,7 +1,7 @@
 import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
 import { getErrorMessage } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { ActionIcon, Button, Image, NumberInput, Text } from "@mantine/core";
+import { ActionIcon, Anchor, Button, Image, NumberInput, Text } from "@mantine/core";
 import { Dropzone, MIME_TYPES } from "@mantine/dropzone";
 import { IconCloudUp, IconX } from "@tabler/icons-react";
 import { useState } from "react";
@@ -180,7 +180,14 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
                 <div className="pointer-events-none h-full flex justify-center">
                   <div className="flex flex-col items-center justify-center h-full">
                     <IconCloudUp size={30} />
-                    <h6 className="text-grey-medium">Drag and Drop Here</h6>
+                    <h6 className="text-grey-medium font-semibold">Drag and Drop Here</h6>
+                    <span className="text-grey-medium text-base font-medium">Or</span>
+                    <Anchor
+                      underline="always"
+                      className="font-medium"
+                    >
+                      Browse Files
+                    </Anchor>
                   </div>
                 </div>
               ) : (
