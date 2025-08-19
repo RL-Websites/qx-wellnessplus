@@ -51,12 +51,12 @@ const categoryStepsMap: Record<string, CategoryConfig> = {
     finalStep: -1,
   },
   Testosterone: {
-    steps: [1, 2, 3, 13],
-    finalStep: 13,
+    steps: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+    finalStep: -1,
   },
   "Hair Growth": {
-    steps: [1, 3, 13],
-    finalStep: 13,
+    steps: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+    finalStep: -1,
   },
   Others: {
     steps: [1, 2, 13],
