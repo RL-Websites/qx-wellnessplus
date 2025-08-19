@@ -65,7 +65,7 @@ const Age = ({ onNext, onBack, defaultValues }: IAgeProps) => {
             </Input.Wrapper>
           </div>
 
-          <div className="flex justify-center gap-6 pt-8">
+          <div className="flex justify-center md:gap-6 gap-3 md:pt-8 pt-5">
             <Button
               variant="outline"
               className="w-[200px]"

@@ -5,7 +5,8 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 export const weightLossHeightSchema = yup.object({
-  weightlossheight: yup.string().required("Please add your current height").matches(/^\d+$/, "Height must be a number"),
+  weightlossheightFeet: yup.string().required("Please enter your height in feet").matches(/^\d+$/, "Feet must be a number"),
+  weightlossheightInch: yup.string().required("Please enter your height in inches").matches(/^\d+$/, "Inches must be a number"),
 });
 
 export type weightLossHeightSchemaType = yup.InferType<typeof weightLossHeightSchema>;
@@ -26,65 +27,76 @@ const WeightLossHeight = ({ onNext, onBack, defaultValues }: IWeightLossHeightPr
     formState: { errors },
   } = useForm<weightLossHeightSchemaType>({
     defaultValues: {
-      weightlossheight: defaultValues?.weightlossheight || "",
+      weightlossheightFeet: defaultValues?.weightlossheightFeet || "",
+      weightlossheightInch: defaultValues?.weightlossheightInch || "",
     },
     resolver: yupResolver(weightLossHeightSchema),
   });
 
-  const weightLossHeight = watch("weightlossheight");
-
-  const handleSelect = (value: string) => {
-    setValue("weightlossheight", value, { shouldValidate: true });
-    clearErrors("weightlossheight");
-  };
-
-  const height = watch("weightlossheight");
-
   const handleNext = (data: weightLossHeightSchemaType) => {
     const weight = Number(defaultValues?.weightlossweight);
-    const height = Number(data.weightlossheight);
+    const feet = Number(data.weightlossheightFeet);
+    const inch = Number(data.weightlossheightInch);
 
-    if (isNaN(weight) || isNaN(height)) {
-      alert("Height and weight must be valid numbers.");
+    if (isNaN(weight) || isNaN(feet) || isNaN(inch)) {
+      alert("Please enter valid numbers for height and weight.");
       return;
     }
 
-    const bmi = calculateBMI(weight, height);
+    const bmi = calculateBMI(weight, feet, inch);
 
-    if (bmi >= 25) {
-      onNext({ ...data, eligible: true });
-    } else {
-      onNext({ ...data, eligible: false });
-    }
+    onNext({ ...data, eligible: bmi >= 25 });
   };
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
-      <div className=" card-common-width mx-auto ">
+      <div className="card-common-width mx-auto">
         <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">What is your current height?</h2>
+
         <form
           id="weightLossHeightForm"
           onSubmit={handleSubmit(handleNext)}
           className="max-w-xl mx-auto space-y-6 card-common"
         >
-          <div>
+          <div className="grid grid-cols-1  gap-5">
             <Input.Wrapper
-              label="Your Height (cm)"
               required
-              error={errors.weightlossheight?.message ? errors.weightlossheight?.message : false}
+              error={errors.weightlossheightFeet?.message || false}
               classNames={{
                 label: "!text-sm md:!text-base lg:!text-lg",
+                root: "sm:!grid !block",
+                error: "sm:!text-end !text-start w-full",
               }}
+              className="w-full"
             >
               <Input
+                placeholder="Feet"
                 type="text"
-                {...register("weightlossheight")}
+                {...register("weightlossheightFeet")}
+              />
+            </Input.Wrapper>
+
+            <Input.Wrapper
+              required
+              error={errors.weightlossheightInch?.message || false}
+              classNames={{
+                label: "!text-sm md:!text-base lg:!text-lg",
+                root: "sm:!grid !block",
+                error: "sm:!text-end !text-start w-full",
+              }}
+              className="w-full"
+            >
+              <Input
+                placeholder="Inches"
+                type="text"
+                {...register("weightlossheightInch")}
               />
             </Input.Wrapper>
           </div>
         </form>
       </div>
-      <div className="flex justify-center gap-6 pt-8">
+
+      <div className="flex justify-center md:gap-6 gap-3 md:pt-8 pt-5">
         <Button
           variant="outline"
           className="w-[200px]"

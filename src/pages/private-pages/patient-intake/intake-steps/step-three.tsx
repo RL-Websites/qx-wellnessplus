@@ -68,7 +68,11 @@ const StepThree = ({ onNext, onBack, defaultValues }: StepThreeProps) => {
         }}
         label="Have you had any previous weight loss attempts or programs?"
         error={getErrorMessage(errors?.hadPrevWeightLoss)}
-        classNames={{ label: "!text-3xl pb-2" }}
+        classNames={{
+          root: "sm:!grid !block w-full",
+          error: "sm:!text-end !text-start w-full",
+          label: "sm:!text-3xl pb-2",
+        }}
       >
         <div className="grid grid-cols-2 gap-5">
           {hadPrevOptions.map((option) => (
@@ -80,7 +84,7 @@ const StepThree = ({ onNext, onBack, defaultValues }: StepThreeProps) => {
                 <div className="relative text-center">
                   <span className="text-foreground font-poppins">{option}</span>
                   {hadPrevWeightLoss === option && (
-                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                       <i className="icon-tick text-sm/none"></i>
                     </span>
                   )}
@@ -97,7 +101,11 @@ const StepThree = ({ onNext, onBack, defaultValues }: StepThreeProps) => {
           onChange={(value) => handleSelect("descPrevWeightLoss", value)}
           label="Please select the statement that best describes your previous weight loss attempts."
           error={getErrorMessage(errors?.descPrevWeightLoss)}
-          classNames={{ label: "!text-3xl pt-10 pb-2" }}
+          classNames={{
+            root: "sm:!grid !block w-full",
+            error: "sm:!text-end !text-start w-full",
+            label: "sm:!text-3xl pb-2",
+          }}
         >
           <div className="grid grid-cols-1 gap-5">
             {descOptions.map((option) => (
@@ -109,7 +117,7 @@ const StepThree = ({ onNext, onBack, defaultValues }: StepThreeProps) => {
                   <div className="relative text-center">
                     <span className="text-foreground font-poppins">{option}</span>
                     {descPrevWeightLoss === option && (
-                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                         <i className="icon-tick text-sm/none"></i>
                       </span>
                     )}

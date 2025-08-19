@@ -1,5 +1,6 @@
 import EditableDocumentTag from "@/common/components/EditableDocumentTag";
 import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
+import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
 import dmlToast from "@/common/configs/toaster.config";
 import { compressFileToBase64 } from "@/utils/fileUpload";
 import { getErrorMessage } from "@/utils/helper.utils";
@@ -240,7 +241,11 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
         }}
         label="Have you taken a GLP-1 medication?"
         error={getErrorMessage(errors?.takenGlpMedication)}
-        classNames={{ label: "!text-3xl pb-2" }}
+        classNames={{
+          root: "sm:!grid !block w-full",
+          error: "sm:!text-end !text-start w-full",
+          label: "sm:!text-3xl pb-2",
+        }}
       >
         <div className="grid grid-cols-1 gap-5">
           {["Yes", "Not within 30 days, but previously", "I have never taken GLPs"].map((option) => (
@@ -252,7 +257,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 <div className="relative text-center w-full">
                   <span className="text-foreground font-poppins">{option}</span>
                   {takenGlpMedication === option && (
-                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                       <i className="icon-tick text-sm/none"></i>
                     </span>
                   )}
@@ -271,6 +276,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
             <Input.Wrapper
               label="What was your height when you started the GLP-1 medication? (In inches)"
               error={getErrorMessage(errors?.heightWhenStartGlp)}
+              classNames={InputErrorMessage}
             >
               <Input
                 {...register("heightWhenStartGlp")}
@@ -281,6 +287,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
             <Input.Wrapper
               label="What was your weight when you started the GLP-1 medication? (In pounds)"
               error={getErrorMessage(errors?.weightWhenStartGlp)}
+              classNames={InputErrorMessage}
             >
               <Input
                 {...register("weightWhenStartGlp")}
@@ -311,7 +318,11 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
             }}
             label="Which weight loss medication are you currently taking?"
             error={getErrorMessage(errors?.currentWeightLossMedication)}
-            classNames={{ label: "!text-3xl pb-2" }}
+            classNames={{
+              root: "sm:!grid !block",
+              error: "sm:!text-end !text-start w-full",
+              label: "sm:!text-3xl pb-2",
+            }}
           >
             <div className="grid grid-cols-1 gap-5">
               {["Semaglutide (Wegovy, Ozempic, Generic)", "Tirzepatide (Mounjaro, Zepbound, Generic)", "Liraglutide (Saxenda)", "Other Weight Loss Medication"].map((option) => (
@@ -323,7 +334,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     <div className="relative text-center w-full">
                       <span className="text-foreground font-poppins">{option}</span>
                       {currentWeightLossMedication === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -342,7 +353,11 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 onChange={(value) => handleSelect("sema_lastWeightLossMedicationDoase", value)}
                 label="What was the last dosage you took?"
                 error={getErrorMessage(errors?.sema_lastWeightLossMedicationDoase)}
-                classNames={{ label: "!text-3xl pb-2" }}
+                classNames={{
+                  root: "sm:!grid !block",
+                  error: "sm:!text-end !text-start w-full",
+                  label: "sm:!text-3xl pb-2",
+                }}
               >
                 <div className="grid grid-cols-1 gap-5">
                   {["0.25mg weekly", "0.5mg weekly", "0.75mg weekly", "1mg weekly", "1.5mg weekly", "1.7mg weekly", "2mg weekly", "2.5mg weekly", "Other"].map((option) => (
@@ -354,7 +369,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         <div className="relative text-center w-full">
                           <span className="text-foreground font-poppins">{option}</span>
                           {sema_lastWeightLossMedicationDoase === option && (
-                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                               <i className="icon-tick text-sm/none"></i>
                             </span>
                           )}
@@ -369,6 +384,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 <Input.Wrapper
                   label="Specify dosage"
                   error={getErrorMessage(errors?.sema_lastWeightLossMedicationDoaseOther)}
+                  classNames={InputErrorMessage}
                 >
                   <Input
                     {...register("sema_lastWeightLossMedicationDoaseOther")}
@@ -387,9 +403,13 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 }}
                 label="Do you have a PDF of your previous script, or a picture of your current vial?"
                 error={getErrorMessage(errors?.sema_hasPdfForPreviousRx)}
-                classNames={{ label: "!text-3xl pb-2" }}
+                classNames={{
+                  root: "sm:!grid !block",
+                  error: "sm:!text-end !text-start w-full",
+                  label: "sm:!text-3xl pb-2",
+                }}
               >
-                <div className="grid grid-cols-2 gap-5">
+                <div className="grid sm:grid-cols-2 gap-5">
                   {["Yes", "No"].map((option) => (
                     <Radio
                       key={option}
@@ -399,7 +419,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         <div className="relative text-center w-full">
                           <span className="text-foreground font-poppins">{option}</span>
                           {sema_hasPdfForPreviousRx === option && (
-                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                               <i className="icon-tick text-sm/none"></i>
                             </span>
                           )}
@@ -412,7 +432,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
 
               {sema_hasPdfForPreviousRx === "Yes" && (
                 <div className="space-y-4">
-                  <Text className="text-foreground font-poppins !text-3xl">Please upload your script or a picture of your current vial.</Text>
+                  <Text className="text-foreground font-semibold font-poppins sm:!text-3xl text-xl">Please upload your script or a picture of your current vial.</Text>
                   {!sema_previousRxDocument ? (
                     <Dropzone
                       onDrop={(files) => handleUpFileForPrevRXOfSema(files)}
@@ -455,7 +475,11 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 onChange={(value) => handleSelect("tirz_lastWeightLossMedicationDoase", value)}
                 label="What was the last dosage you took?"
                 error={getErrorMessage(errors?.tirz_lastWeightLossMedicationDoase)}
-                classNames={{ label: "!text-3xl pb-2" }}
+                classNames={{
+                  root: "sm:!grid !block",
+                  error: "sm:!text-end !text-start w-full",
+                  label: "sm:!text-3xl pb-2",
+                }}
               >
                 <div className="grid grid-cols-1 gap-5">
                   {["2.5mg weekly", "5mg weekly", "7.5mg weekly", "10mg weekly", "12.5mg weekly", "15mg weekly", "Other"].map((option) => (
@@ -467,7 +491,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         <div className="relative text-center w-full">
                           <span className="text-foreground font-poppins">{option}</span>
                           {tirz_lastWeightLossMedicationDoase === option && (
-                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                               <i className="icon-tick text-sm/none"></i>
                             </span>
                           )}
@@ -500,9 +524,13 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 }}
                 label="Do you have a PDF of your previous script, or a picture of your current vial?"
                 error={getErrorMessage(errors?.tirz_hasPdfForPreviousRx)}
-                classNames={{ label: "!text-3xl pb-2" }}
+                classNames={{
+                  root: "sm:!grid !block",
+                  error: "sm:!text-end !text-start w-full",
+                  label: "sm:!text-3xl pb-2",
+                }}
               >
-                <div className="grid grid-cols-2 gap-5">
+                <div className="grid sm:grid-cols-2 gap-5">
                   {["Yes", "No"].map((option) => (
                     <Radio
                       key={option}
@@ -512,7 +540,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         <div className="relative text-center w-full">
                           <span className="text-foreground font-poppins">{option}</span>
                           {tirz_hasPdfForPreviousRx === option && (
-                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                               <i className="icon-tick text-sm/none"></i>
                             </span>
                           )}
@@ -525,7 +553,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
 
               {tirz_hasPdfForPreviousRx === "Yes" && (
                 <div className="space-y-4">
-                  <Text className="text-foreground font-poppins !text-3xl">Please upload your script or a picture of your current vial.</Text>
+                  <Text className="text-foreground font-semibold font-poppins sm:!text-3xl text-xl">Please upload your script or a picture of your current vial.</Text>
                   {!tirz_previousRxDocument ? (
                     <Dropzone
                       onDrop={(files) => handleUpFileForPrevRXOfTirz(files)}
@@ -566,7 +594,11 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
             onChange={(value) => handleSelect("howLongTakeGlpMedication", value)}
             label="How long have you been taking the medication consecutively?"
             error={getErrorMessage(errors?.howLongTakeGlpMedication)}
-            classNames={{ label: "!text-3xl pb-2" }}
+            classNames={{
+              root: "sm:!grid !block",
+              error: "sm:!text-end !text-start w-full",
+              label: "sm:!text-3xl pb-2",
+            }}
           >
             <div className="grid grid-cols-1 gap-5">
               {["One Month", "Two Months", "Three Months", "Four Months", "Five Months", "Six Months", "More than Six Months"].map((option) => (
@@ -578,7 +610,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     <div className="relative text-center w-full">
                       <span className="text-foreground font-poppins">{option}</span>
                       {watch("howLongTakeGlpMedication") === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -595,7 +627,11 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
             onChange={(value) => handleSelect("howLongTakeGlpCurrentDosage", value)}
             label="How long have you been on your current dose?"
             error={getErrorMessage(errors?.howLongTakeGlpCurrentDosage)}
-            classNames={{ label: "!text-3xl pb-2" }}
+            classNames={{
+              root: "sm:!grid !block",
+              error: "sm:!text-end !text-start w-full",
+              label: "sm:!text-3xl pb-2",
+            }}
           >
             <div className="grid grid-cols-1 gap-5">
               {["Less than one month", "One Month", "Two Months", "Three Months", "Four Months", "Five Months", "Six Months", "More than Six Months"].map((option) => (
@@ -607,7 +643,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     <div className="relative text-center w-full">
                       <span className="text-foreground font-poppins">{option}</span>
                       {watch("howLongTakeGlpCurrentDosage") === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -624,7 +660,11 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
             onChange={(value) => handleSelect("wouldYouLikeContinueGlpCurrentDosage", value)}
             label="Would you like to continue your current dose, move up to the next dose, or titrate down?"
             error={getErrorMessage(errors?.wouldYouLikeContinueGlpCurrentDosage)}
-            classNames={{ label: "!text-3xl pb-2" }}
+            classNames={{
+              root: "sm:!grid !block",
+              error: "sm:!text-end !text-start w-full",
+              label: "sm:!text-3xl pb-2",
+            }}
           >
             <div className="grid grid-cols-1 gap-5">
               {["Stay on current dose", "Move up", "Titrate down"].map((option) => (
@@ -636,7 +676,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     <div className="relative text-center w-full">
                       <span className="text-foreground font-poppins">{option}</span>
                       {wouldYouLikeContinueGlpCurrentDosage === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -654,7 +694,11 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
               onChange={(value) => handleSelect("stayCurrent_howLongTakeGlpCurrentDosage", value)}
               label="How long would you like to stay on your current dose?"
               error={getErrorMessage(errors?.stayCurrent_howLongTakeGlpCurrentDosage)}
-              classNames={{ label: "!text-3xl pb-2" }}
+              classNames={{
+                root: "sm:!grid !block",
+                error: "sm:!text-end !text-start w-full",
+                label: "sm:!text-3xl pb-2",
+              }}
             >
               <div className="grid grid-cols-1 gap-5">
                 {["One month, then titrate up the next two months", "Two months, then titrate up the third month", "All three months"].map((option) => (
@@ -666,7 +710,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                       <div className="relative text-center w-full">
                         <span className="text-foreground font-poppins">{option}</span>
                         {watch("stayCurrent_howLongTakeGlpCurrentDosage") === option && (
-                          <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                          <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                             <i className="icon-tick text-sm/none"></i>
                           </span>
                         )}
@@ -685,7 +729,11 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
               onChange={(value) => handleSelect("moveUp_wouldLikeToMoveUp", value)}
               label="How would you like to move up your dose?"
               error={getErrorMessage(errors?.moveUp_wouldLikeToMoveUp)}
-              classNames={{ label: "!text-3xl pb-2" }}
+              classNames={{
+                root: "sm:!grid !block",
+                error: "sm:!text-end !text-start w-full",
+                label: "sm:!text-3xl pb-2",
+              }}
             >
               <div className="grid grid-cols-1 gap-5">
                 {[
@@ -702,7 +750,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                       <div className="relative text-center w-full">
                         <span className="text-foreground font-poppins">{option}</span>
                         {watch("moveUp_wouldLikeToMoveUp") === option && (
-                          <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                          <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                             <i className="icon-tick text-sm/none"></i>
                           </span>
                         )}
@@ -720,9 +768,13 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
             onChange={(value) => handleSelect("haveTakenMedicationAsPrescribed", value)}
             label="Have you taken the medication as prescribed?"
             error={getErrorMessage(errors?.haveTakenMedicationAsPrescribed)}
-            classNames={{ label: "!text-3xl pb-2" }}
+            classNames={{
+              root: "sm:!grid !block",
+              error: "sm:!text-end !text-start w-full",
+              label: "sm:!text-3xl pb-2",
+            }}
           >
-            <div className="grid grid-cols-2 gap-5">
+            <div className="grid sm:grid-cols-2 gap-5">
               {["Yes", "No"].map((option) => (
                 <Radio
                   key={option}
@@ -732,7 +784,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     <div className="relative text-center w-full">
                       <span className="text-foreground font-poppins">{option}</span>
                       {haveTakenMedicationAsPrescribed === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -758,7 +810,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
 
           {/* Side effects */}
           <div className="space-y-4">
-            <Text className="text-foreground font-poppins !text-3xl">Have you experienced any of the following side effects?</Text>
+            <Text className="text-foreground font-semibold font-poppins sm:!text-3xl text-xl">Have you experienced any of the following side effects?</Text>
             <Grid
               gutter="md"
               className="mt-4"
@@ -767,7 +819,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 const isChecked = glpSideEffect ? glpSideEffect.split(", ").includes(option) : false;
                 return (
                   <Grid.Col
-                    span={6}
+                    span={{ sm: 6 }}
                     key={option}
                   >
                     <div
@@ -777,7 +829,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         setValue("glpSideEffect", updatedValues.join(", "), { shouldValidate: true });
                       }}
                       className={`cursor-pointer border rounded-2xl px-6 py-4 flex justify-between items-center transition-all ${
-                        isChecked ? "border-primary bg-white text-black shadow-sm" : "border-gray-300 bg-transparent text-black"
+                        isChecked ? "border-primary bg-white text-black shadow-sm" : "border-foreground bg-transparent text-black"
                       }`}
                     >
                       <span className="text-base font-medium font-poppins">{option}</span>
@@ -787,7 +839,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         size="md"
                         radius="md"
                         classNames={{
-                          input: isChecked ? "bg-primary border-primary text-white" : "bg-transparent",
+                          input: isChecked ? "bg-primary border-primary text-white" : "bg-transparent border-foreground",
                         }}
                       />
                     </div>
@@ -799,7 +851,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
           </div>
 
           <div className="space-y-4">
-            <Text className="text-foreground font-poppins !text-3xl">Did you experience any of the following side effects?</Text>
+            <Text className="text-foreground font-semibold font-poppins sm:!text-3xl text-xl">Did you experience any of the following side effects?</Text>
             <Grid
               gutter="md"
               className="mt-4"
@@ -808,7 +860,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 const isChecked = takenPrevGlp_sideEffect ? takenPrevGlp_sideEffect.split(", ").includes(option) : false;
                 return (
                   <Grid.Col
-                    span={6}
+                    span={{ sm: 6 }}
                     key={option}
                   >
                     <div
@@ -818,7 +870,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         setValue("takenPrevGlp_sideEffect", updatedValues.join(", "), { shouldValidate: true });
                       }}
                       className={`cursor-pointer border rounded-2xl px-6 py-4 flex justify-between items-center transition-all ${
-                        isChecked ? "border-primary bg-white text-black shadow-sm" : "border-gray-300 bg-transparent text-black"
+                        isChecked ? "border-primary bg-white text-black shadow-sm" : "border-foreground bg-transparent text-black"
                       }`}
                     >
                       <span className="text-base font-medium font-poppins">{option}</span>
@@ -828,7 +880,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         size="md"
                         radius="md"
                         classNames={{
-                          input: isChecked ? "bg-primary border-primary text-white" : "bg-transparent",
+                          input: isChecked ? "bg-primary border-primary text-white" : "bg-transparent border-foreground",
                         }}
                       />
                     </div>
@@ -845,7 +897,11 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
             onChange={(value) => handleSelect("glpDrugEffectManageWeight", value)}
             label="How effective do you feel the medication has been in managing your weight"
             error={getErrorMessage(errors?.glpDrugEffectManageWeight)}
-            classNames={{ label: "!text-3xl pb-2" }}
+            classNames={{
+              root: "sm:!grid !block",
+              error: "sm:!text-end !text-start w-full",
+              label: "sm:!text-3xl pb-2",
+            }}
           >
             <div className="grid grid-cols-1 gap-5">
               {["Very Effective", "Somewhat Effective", "Not Effective"].map((option) => (
@@ -857,7 +913,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     <div className="relative text-center w-full">
                       <span className="text-foreground font-poppins">{option}</span>
                       {watch("glpDrugEffectManageWeight") === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -879,7 +935,11 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
             onChange={(value) => handleSelect("glpHowLongTaken", value)}
             label="How long has it been since you stopped taking your GLP medication"
             error={getErrorMessage(errors?.glpHowLongTaken)}
-            classNames={{ label: "!text-3xl pb-2" }}
+            classNames={{
+              root: "sm:!grid !block",
+              error: "sm:!text-end !text-start w-full",
+              label: "sm:!text-3xl pb-2",
+            }}
           >
             <div className="grid grid-cols-1 gap-5">
               {["2-5 months", "6-9 months", "10-11 months", "12+ months"].map((option) => (
@@ -891,7 +951,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     <div className="relative text-center w-full">
                       <span className="text-foreground font-poppins">{option}</span>
                       {watch("glpHowLongTaken") === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -907,6 +967,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
             <Input.Wrapper
               label="What was your height when you started the GLP-1 medication? (In inches)"
               error={getErrorMessage(errors?.glpStartingHeight)}
+              classNames={getErrorMessage}
             >
               <Input
                 {...register("glpStartingHeight")}
@@ -917,6 +978,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
             <Input.Wrapper
               label="What was your weight when you started the GLP-1 medication? (In Pounds)"
               error={getErrorMessage(errors?.glpStartingWeight)}
+              classNames={getErrorMessage}
             >
               <Input
                 {...register("glpStartingWeight")}
@@ -947,7 +1009,11 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
             }}
             label="What GLP medication have you previously taken?"
             error={getErrorMessage(errors?.takenPrevGlpMedication)}
-            classNames={{ label: "!text-3xl pb-2" }}
+            classNames={{
+              root: "sm:!grid !block",
+              error: "sm:!text-end !text-start w-full",
+              label: "sm:!text-3xl pb-2",
+            }}
           >
             <div className="grid grid-cols-1 gap-5">
               {["Semaglutide (Wegovy, Ozempic, Generic)", "Tirzepatide (Mounjaro, Zepbound, Generic)", "Liraglutide (Saxenda)", "Other Weight Loss Medication"].map((option) => (
@@ -959,7 +1025,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     <div className="relative text-center w-full">
                       <span className="text-foreground font-poppins">{option}</span>
                       {takenPrevGlpMedication === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -978,7 +1044,11 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 onChange={(value) => handleSelect("takenPrevSema_lastDosage", value)}
                 label="What was the last dosage you took?"
                 error={getErrorMessage(errors?.takenPrevSema_lastDosage)}
-                classNames={{ label: "!text-3xl pb-2" }}
+                classNames={{
+                  root: "sm:!grid !block",
+                  error: "sm:!text-end !text-start w-full",
+                  label: "sm:!text-3xl pb-2",
+                }}
               >
                 <div className="grid grid-cols-1 gap-5">
                   {["0.25mg weekly", "0.5mg weekly", "0.75mg weekly", "1mg weekly", "1.5mg weekly", "1.7mg weekly", "2mg weekly", "2.5mg weekly", "Other"].map((option) => (
@@ -990,7 +1060,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         <div className="relative text-center w-full">
                           <span className="text-foreground font-poppins">{option}</span>
                           {takenPrevSema_lastDosage === option && (
-                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                               <i className="icon-tick text-sm/none"></i>
                             </span>
                           )}
@@ -1005,6 +1075,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 <Input.Wrapper
                   label="Specify dosage"
                   error={getErrorMessage(errors?.takenPrevSema_lastDosageOther)}
+                  classNames={getErrorMessage}
                 >
                   <Input
                     {...register("takenPrevSema_lastDosageOther")}
@@ -1023,9 +1094,13 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 }}
                 label="Do you have a PDF of your previous script, or a picture of your current vial?"
                 error={getErrorMessage(errors?.takenPrevSema_hasPdfForPreviousRx)}
-                classNames={{ label: "!text-3xl pb-2" }}
+                classNames={{
+                  root: "sm:!grid !block",
+                  error: "sm:!text-end !text-start w-full",
+                  label: "sm:!text-3xl pb-2",
+                }}
               >
-                <div className="grid grid-cols-2 gap-5">
+                <div className="grid sm:grid-cols-2 gap-5">
                   {["Yes", "No"].map((option) => (
                     <Radio
                       key={option}
@@ -1035,7 +1110,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         <div className="relative text-center w-full">
                           <span className="text-foreground font-poppins">{option}</span>
                           {takenPrevSema_hasPdfForPreviousRx === option && (
-                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                               <i className="icon-tick text-sm/none"></i>
                             </span>
                           )}
@@ -1048,7 +1123,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
 
               {takenPrevSema_hasPdfForPreviousRx === "Yes" && (
                 <div className="space-y-4">
-                  <Text className="text-foreground font-poppins !text-3xl">Please upload your script or a picture of your current vial.</Text>
+                  <Text className="text-foreground font-semibold font-poppins sm:!text-3xl text-xl">Please upload your script or a picture of your current vial.</Text>
                   {!takenPrevSema_previousRxDocument ? (
                     <Dropzone
                       onDrop={(files) => handleUpFileForPrevRXOfPrevSema(files)}
@@ -1091,7 +1166,11 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 onChange={(value) => handleSelect("takenPrevTirz_lastWeightLossMedicationDoase", value)}
                 label="What was the last dosage you took?"
                 error={getErrorMessage(errors?.takenPrevTirz_lastWeightLossMedicationDoase)}
-                classNames={{ label: "!text-3xl pb-2" }}
+                classNames={{
+                  root: "sm:!grid !block",
+                  error: "sm:!text-end !text-start w-full",
+                  label: "sm:!text-3xl pb-2",
+                }}
               >
                 <div className="grid grid-cols-1 gap-5">
                   {["2.5mg weekly", "5mg weekly", "7.5mg weekly", "10mg weekly", "12.5mg weekly", "15mg weekly", "Other"].map((option) => (
@@ -1103,7 +1182,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         <div className="relative text-center w-full">
                           <span className="text-foreground font-poppins">{option}</span>
                           {takenPrevTirz_lastWeightLossMedicationDoase === option && (
-                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                               <i className="icon-tick text-sm/none"></i>
                             </span>
                           )}
@@ -1136,9 +1215,13 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 }}
                 label="Do you have a PDF of your previous script, or a picture of your current vial?"
                 error={getErrorMessage(errors?.takenPrevTirz_hasPdfForPreviousRx)}
-                classNames={{ label: "!text-3xl pb-2" }}
+                classNames={{
+                  root: "sm:!grid !block",
+                  error: "sm:!text-end !text-start w-full",
+                  label: "sm:!text-3xl pb-2",
+                }}
               >
-                <div className="grid grid-cols-2 gap-5">
+                <div className="grid sm:grid-cols-2 gap-5">
                   {["Yes", "No"].map((option) => (
                     <Radio
                       key={option}
@@ -1148,7 +1231,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         <div className="relative text-center w-full">
                           <span className="text-foreground font-poppins">{option}</span>
                           {takenPrevTirz_hasPdfForPreviousRx === option && (
-                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                               <i className="icon-tick text-sm/none"></i>
                             </span>
                           )}
@@ -1161,7 +1244,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
 
               {takenPrevTirz_hasPdfForPreviousRx === "Yes" && (
                 <div className="space-y-4">
-                  <Text className="text-foreground font-poppins !text-3xl">Please upload your script or a picture of your current vial.</Text>
+                  <Text className="text-foreground font-semibold font-poppins sm:!text-3xl text-xl">Please upload your script or a picture of your current vial.</Text>
                   {!takenPrevTirz_previousRxDocument ? (
                     <Dropzone
                       onDrop={(files) => handleUpFileForPrevRXOfPrevTirz(files)}
@@ -1198,7 +1281,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
 
           {/* Previous side effects */}
           <div className="space-y-4">
-            <Text className="text-foreground font-poppins !text-3xl">Did you experience any of the following side effects?</Text>
+            <Text className="text-foreground font-semibold font-poppins sm:!text-3xl text-xl">Did you experience any of the following side effects?</Text>
             <Grid
               gutter="md"
               className="mt-4"
@@ -1244,7 +1327,11 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
             onChange={(value) => handleSelect("takenPrevGlp_howEffective", value)}
             label="How effective do you feel the medication has been in managing your weight?"
             error={getErrorMessage(errors?.takenPrevGlp_howEffective)}
-            classNames={{ label: "!text-3xl pb-2" }}
+            classNames={{
+              root: "sm:!grid !block",
+              error: "sm:!text-end !text-start w-full",
+              label: "sm:!text-3xl pb-2",
+            }}
           >
             <div className="grid grid-cols-1 gap-5">
               {["Very Effective", "Somewhat Effective", "Not Effective"].map((option) => (
@@ -1256,7 +1343,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     <div className="relative text-center w-full">
                       <span className="text-foreground font-poppins">{option}</span>
                       {watch("takenPrevGlp_howEffective") === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}

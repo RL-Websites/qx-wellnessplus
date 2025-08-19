@@ -97,7 +97,11 @@ const StepFour = ({ onNext, onBack, defaultValues }: StepFourProps) => {
         }}
         label="Have you been diagnosed with any eating disorders or have a history of disordered eating?"
         error={getErrorMessage(errors?.anyEatingDisorder)}
-        classNames={{ label: "!text-3xl pb-2" }}
+        classNames={{
+          root: "sm:!grid !block w-full",
+          error: "sm:!text-end !text-start w-full",
+          label: "sm:!text-3xl pb-2",
+        }}
       >
         <div className="grid grid-cols-1 gap-5">
           {anyEatingOptions.map((option) => (
@@ -109,7 +113,7 @@ const StepFour = ({ onNext, onBack, defaultValues }: StepFourProps) => {
                 <div className="relative text-center">
                   <span className="text-foreground font-poppins">{option}</span>
                   {anyEatingDisorder === option && (
-                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                       <i className="icon-tick text-sm/none"></i>
                     </span>
                   )}
@@ -130,9 +134,13 @@ const StepFour = ({ onNext, onBack, defaultValues }: StepFourProps) => {
           }}
           label="What are you diagnosed with?"
           error={getErrorMessage(errors?.currentDiagnose)}
-          classNames={{ label: "!text-3xl pt-10 pb-2" }}
+          classNames={{
+            root: "sm:!grid !block w-full",
+            error: "sm:!text-end !text-start w-full",
+            label: "sm:!text-3xl pb-2",
+          }}
         >
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid sm:grid-cols-2 gap-5">
             {diagnoseOptions.map((option) => (
               <Radio
                 key={option}
@@ -142,7 +150,7 @@ const StepFour = ({ onNext, onBack, defaultValues }: StepFourProps) => {
                   <div className="relative text-center">
                     <span className="text-foreground font-poppins">{option}</span>
                     {currentDiagnose === option && (
-                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                         <i className="icon-tick text-sm/none"></i>
                       </span>
                     )}
@@ -160,6 +168,11 @@ const StepFour = ({ onNext, onBack, defaultValues }: StepFourProps) => {
           withAsterisk
           className="pt-8"
           error={getErrorMessage(errors.currentDiagOther)}
+          classNames={{
+            root: "sm:!grid !block w-full",
+            error: "sm:!text-end !text-start w-full",
+            label: "sm:!text-3xl pb-2",
+          }}
         >
           <Input
             type="text"
@@ -191,7 +204,7 @@ const StepFour = ({ onNext, onBack, defaultValues }: StepFourProps) => {
                   <div className="relative text-center">
                     <span className="text-foreground font-poppins">{option}</span>
                     {pastDiagnose === option && (
-                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                         <i className="icon-tick text-sm/none"></i>
                       </span>
                     )}
@@ -221,7 +234,7 @@ const StepFour = ({ onNext, onBack, defaultValues }: StepFourProps) => {
                   <div className="relative text-center">
                     <span className="text-foreground font-poppins">{option}</span>
                     {pastDiagBullmia === option && (
-                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                         <i className="icon-tick text-sm/none"></i>
                       </span>
                     )}

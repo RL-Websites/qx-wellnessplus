@@ -65,7 +65,11 @@ const StepTwo = ({ onNext, onBack, defaultValues }: StepTwoProps) => {
         }}
         label="Are you willing to follow a weight loss dietary plan/reduce calories and exercise?"
         error={getErrorMessage(errors?.doesDiet)}
-        classNames={{ label: "!text-3xl pb-2" }}
+        classNames={{
+          root: "sm:!grid !block w-full",
+          error: "sm:!text-end !text-start w-full",
+          label: "sm:!text-3xl pb-2",
+        }}
       >
         <div className="grid grid-cols-2 gap-5">
           {doesDietOptions.map((option) => (
@@ -77,7 +81,7 @@ const StepTwo = ({ onNext, onBack, defaultValues }: StepTwoProps) => {
                 <div className="relative text-center">
                   <span className="text-foreground font-poppins">{option}</span>
                   {doesDiet === option && (
-                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 sm:right-3 -right-2 -translate-y-1/2">
                       <i className="icon-tick text-sm/none"></i>
                     </span>
                   )}
@@ -94,7 +98,11 @@ const StepTwo = ({ onNext, onBack, defaultValues }: StepTwoProps) => {
           onChange={(value) => handleSelect("agreeGlpExercise", value)}
           label="I acknowledge that GLP medications are most effective when used in conjunction with exercise."
           error={getErrorMessage(errors?.agreeGlpExercise)}
-          classNames={{ label: "!text-3xl pt-10 pb-2" }}
+          classNames={{
+            root: "sm:!grid !block w-full",
+            error: "sm:!text-end !text-start w-full",
+            label: "sm:!text-3xl pb-2",
+          }}
         >
           <div className="grid grid-cols-2 gap-5">
             {agreeOptions.map((option) => (
@@ -106,7 +114,7 @@ const StepTwo = ({ onNext, onBack, defaultValues }: StepTwoProps) => {
                   <div className="relative text-center">
                     <span className="text-foreground font-poppins">{option}</span>
                     {agreeGlpExercise === option && (
-                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 sm:right-3 -right-2 -translate-y-1/2">
                         <i className="icon-tick text-sm/none"></i>
                       </span>
                     )}

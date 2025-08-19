@@ -49,7 +49,11 @@ const StepThirteen = ({ onNext, onBack, defaultValues }: StepThirteenProps) => {
         onChange={handleSelect}
         label="Do you have a personal or family history of multiple endocrine neoplasia?"
         error={getErrorMessage(errors?.endocrineNeoplasia)}
-        classNames={{ label: "!text-3xl pb-2" }}
+        classNames={{
+          root: "sm:!grid !block w-full",
+          error: "sm:!text-end !text-start w-full",
+          label: "sm:!text-3xl pb-2",
+        }}
       >
         <div className="grid grid-cols-2 gap-5">
           {["Yes", "No"].map((option) => (
@@ -61,7 +65,7 @@ const StepThirteen = ({ onNext, onBack, defaultValues }: StepThirteenProps) => {
                 <div className="relative text-center">
                   <span className="text-foreground font-poppins">{option}</span>
                   {endocrineNeoplasia === option && (
-                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                       <i className="icon-tick text-sm/none"></i>
                     </span>
                   )}

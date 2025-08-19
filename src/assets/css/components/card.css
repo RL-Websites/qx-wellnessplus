@@ -25,6 +25,9 @@
       &-width {
         max-width: 570px;
       }
+      &-width-lg {
+        max-width: 800px;
+      }
     }
     &-bg {
       @apply backdrop-blur-[30px] shadow-[0px_16px_16px_0px_#0000000d] bg-[rgba(255,255,255,0.6)] rounded-[20px];

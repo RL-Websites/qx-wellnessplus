@@ -187,9 +187,13 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
         value={thyroidCancer}
         onChange={(val) => handleSelect("thyroidCancer", val)}
         error={getErrorMessage(errors.thyroidCancer)}
-        classNames={{ label: "!text-3xl pb-2" }}
+        classNames={{
+          root: "sm:!grid !block w-full",
+          error: "sm:!text-end !text-start w-full",
+          label: "sm:!text-3xl pb-2",
+        }}
       >
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid sm:grid-cols-2 gap-5">
           {radioOptions.map((option) => (
             <Radio
               key={option}
@@ -199,7 +203,7 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
                 <div className="relative text-center">
                   <span className="text-foreground font-poppins">{option}</span>
                   {thyroidCancer === option && (
-                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                       <i className="icon-tick text-sm/none"></i>
                     </span>
                   )}
@@ -217,9 +221,13 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
           value={thyroidCancerType}
           onChange={(val) => handleSelect("thyroidCancerType", val)}
           error={getErrorMessage(errors.thyroidCancerType)}
-          classNames={{ label: "!text-3xl pt-10 pb-2" }}
+          classNames={{
+            root: "sm:!grid !block w-full",
+            error: "sm:!text-end !text-start w-full",
+            label: "sm:!text-3xl pb-2",
+          }}
         >
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid sm:grid-cols-2 gap-5">
             {thyroidTypes.map((option) => (
               <Radio
                 key={option}
@@ -229,7 +237,7 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
                   <div className="relative text-center">
                     <span className="text-foreground font-poppins">{option}</span>
                     {thyroidCancerType === option && (
-                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                         <i className="icon-tick text-sm/none"></i>
                       </span>
                     )}
@@ -248,9 +256,13 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
           value={papillaryReport}
           onChange={(val) => handleSelect("papillaryReport", val)}
           error={getErrorMessage(errors.papillaryReport)}
-          classNames={{ label: "!text-3xl pt-8 pb-2" }}
+          classNames={{
+            root: "sm:!grid !block w-full",
+            error: "sm:!text-end !text-start w-full",
+            label: "sm:!text-3xl pb-2",
+          }}
         >
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid sm:grid-cols-2 gap-5">
             {radioOptions.map((option) => (
               <Radio
                 key={option}
@@ -260,7 +272,7 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
                   <div className="relative text-center">
                     <span className="text-foreground font-poppins">{option}</span>
                     {papillaryReport === option && (
-                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                         <i className="icon-tick text-sm/none"></i>
                       </span>
                     )}
@@ -314,7 +326,11 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
           value={follicularReport}
           onChange={(val) => handleSelect("follicularReport", val)}
           error={getErrorMessage(errors.follicularReport)}
-          classNames={{ label: "!text-3xl pt-8 pb-2" }}
+          classNames={{
+            root: "sm:!grid !block w-full",
+            error: "sm:!text-end !text-start w-full",
+            label: "sm:!text-3xl pb-2",
+          }}
         >
           <div className="grid grid-cols-2 gap-5">
             {radioOptions.map((option) => (
@@ -326,7 +342,7 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
                   <div className="relative text-center">
                     <span className="text-foreground font-poppins">{option}</span>
                     {follicularReport === option && (
-                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                         <i className="icon-tick text-sm/none"></i>
                       </span>
                     )}
@@ -380,6 +396,11 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
             label="Please specify what type of thyroid cancer?"
             withAsterisk
             error={getErrorMessage(errors.thyroidCancerOther)}
+            classNames={{
+              root: "sm:!grid !block w-full",
+              error: "sm:!text-end !text-start w-full",
+              label: "sm:!text-3xl pb-2",
+            }}
           >
             <Input
               type="text"
@@ -392,7 +413,11 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
             value={thyroidOtherReport}
             onChange={(val) => handleSelect("thyroidOtherReport", val)}
             error={getErrorMessage(errors.thyroidOtherReport)}
-            classNames={{ label: "!text-3xl pt-8 pb-2" }}
+            classNames={{
+              root: "sm:!grid !block w-full",
+              error: "sm:!text-end !text-start w-full",
+              label: "sm:!text-3xl pb-2",
+            }}
           >
             <div className="grid grid-cols-2 gap-5">
               {radioOptions.map((option) => (
@@ -404,7 +429,7 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
                     <div className="relative text-center">
                       <span className="text-foreground font-poppins">{option}</span>
                       {thyroidOtherReport === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}

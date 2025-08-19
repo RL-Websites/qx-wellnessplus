@@ -173,6 +173,7 @@ const CompleteOrderPage = () => {
             setBasicInfo(data);
             nextStep();
           }}
+          formData={formData}
           isSubmitting={patientBookingMutation?.isPending}
         />
       )}

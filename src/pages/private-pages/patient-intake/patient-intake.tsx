@@ -64,6 +64,8 @@ const categoryStepsMap: Record<string, CategoryConfig> = {
   },
 };
 
+const maleExcludedSteps = [6, 18];
+
 const PatientIntake = () => {
   const [activeStep, setActiveStep] = useState(1);
   const [formData, setFormData] = useState<any>({});
@@ -76,14 +78,16 @@ const PatientIntake = () => {
   const selectedCategory = useAtomValue(selectedCategoryAtom);
   const [basicInfo] = useAtom(basicInfoAtom);
 
-  const isFinalStep = (step: number) => step === finalStep;
-
   useEffect(() => {
     const categoriesArray: string[] = Array.isArray(selectedCategory) ? selectedCategory : selectedCategory ? [selectedCategory] : [];
 
     if (!categoriesArray.length) return;
+
     const allSteps = categoriesArray.map((cat) => categoryStepsMap[cat]?.steps || []).flat();
-    const uniqueSteps = Array.from(new Set(allSteps)).sort((a, b) => a - b);
+
+    const filteredSteps = basicInfo?.patient?.gender === "male" ? allSteps.filter((step) => !maleExcludedSteps.includes(step)) : allSteps;
+
+    const uniqueSteps = Array.from(new Set(filteredSteps)).sort((a, b) => a - b);
 
     let calculatedFinalStep = 17; // default for male
     if (basicInfo?.patient?.gender === "female") {
@@ -94,7 +98,7 @@ const PatientIntake = () => {
     if (categoriesArray.some((cat) => peptideCategories.includes(cat))) {
       calculatedFinalStep = 10;
     } else if (categoriesArray.includes("Weight Loss")) {
-      // Keep the gender-specific final step (17 or 18)
+      // Keep the gender-specific final step
     } else if (categoriesArray[0] && categoryStepsMap[categoriesArray[0]]) {
       calculatedFinalStep = categoryStepsMap[categoriesArray[0]].finalStep;
     }
@@ -107,7 +111,9 @@ const PatientIntake = () => {
     }
   }, [selectedCategory, basicInfo?.patient?.gender]);
 
-  const progress = visibleSteps.length > 1 ? (visibleSteps.indexOf(activeStep) / (visibleSteps.length - 1)) * 100 : 100;
+  const progressSteps = visibleSteps.filter((step) => step !== 1);
+
+  const progress = progressSteps.length > 1 ? (progressSteps.indexOf(activeStep) / (progressSteps.length - 1)) * 100 : activeStep === 1 ? 0 : 100;
 
   const handleNext = (data: any) => {
     setFormData((prev) => ({ ...prev, ...data }));
@@ -132,7 +138,8 @@ const PatientIntake = () => {
 
   const handleFinalSubmit = (data: any) => {
     const tempData = { ...formData, ...data };
-    const measurement = tempData.measurement;
+    // const measurement = tempData.measurement;
+    const measurement = { ...tempData.measurement, height: `${tempData.measurement.height_feet}'${tempData.measurement.height_inch}''` };
 
     const formattedData = questions
       .map((item) =>
@@ -191,10 +198,10 @@ const PatientIntake = () => {
     <>
       {activeStep !== visibleSteps[0] && activeStep !== 19 ? (
         <div className="max-w-[520px] mx-auto mb-6">
-          <h2 className="heading-text text-foreground uppercase text-center pb-12">Intake Form</h2>
+          <h2 className="heading-text pb-12 text-center">Intake Form</h2>
           <Progress value={progress} />
           <div className="text-center text-base text-foreground font-bold mt-3">
-            {visibleSteps.indexOf(activeStep) + 1} / {visibleSteps.length}
+            {progressSteps.indexOf(activeStep) + 1} / {progressSteps.length}
           </div>
         </div>
       ) : activeStep === visibleSteps[0] ? (
