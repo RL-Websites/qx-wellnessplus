@@ -66,7 +66,7 @@ GLP-1 medication?"
           classNames={{
             root: "sm:!grid !block",
             error: "sm:!text-end !text-start w-full",
-            label: "sm:!text-3xl pb-2",
+            label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           }}
         >
           <div className="grid md:grid-cols-2 gap-5 w-full">

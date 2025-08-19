@@ -21,6 +21,7 @@ interface IProductDetailsModalProps {
     lab_fee?: string;
     sku?: string;
     strength?: string;
+    full_strength?: string;
     unit?: string;
     is_research_only?: number;
     total_price?: string;
@@ -75,7 +76,7 @@ function ProductDetailsModal({ openModal, onModalClose, medicationDetails }: IPr
               </div>
               <div className="space-y-2">
                 <h6 className="text-fs-sp font-semibold">Strength :</h6>
-                <p className="text-fs-md">{medicationDetails?.strength}</p>
+                <p className="text-fs-md">{medicationDetails?.full_strength || "N/A"}</p>
               </div>
               <div className="space-y-2">
                 <h6 className="text-fs-sp font-semibold">Medication Group :</h6>
@@ -95,7 +96,7 @@ function ProductDetailsModal({ openModal, onModalClose, medicationDetails }: IPr
               </div>
               <div className="space-y-2">
                 <h6 className="text-fs-sp font-semibold">Days Supply :</h6>
-                <p className="text-fs-md">{medicationDetails?.duration || "N/A"}</p>
+                <p className="text-fs-md">{medicationDetails?.days_supply || "N/A"}</p>
               </div>
               <div className="space-y-2">
                 <h6 className="text-fs-sp font-semibold">Research Only :</h6>
