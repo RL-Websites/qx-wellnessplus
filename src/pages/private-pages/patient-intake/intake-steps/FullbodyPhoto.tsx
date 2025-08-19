@@ -1,15 +1,19 @@
 import { getErrorMessage } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { ActionIcon, Button, Image, NumberInput, Text } from "@mantine/core";
+import { ActionIcon, Button, Image, Input, NumberInput, Text } from "@mantine/core";
 import { Dropzone, MIME_TYPES } from "@mantine/dropzone";
 import { IconCloudUp, IconX } from "@tabler/icons-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 export const fullBodyPhotoSchema = yup.object({
   measurement: yup.object({
-    height: yup
+    height_feet: yup
+      .string()
+      .required(({ label }) => `${label} is required`)
+      .label("Height"),
+    height_inch: yup
       .string()
       .required(({ label }) => `${label} is required`)
       .label("Height"),
@@ -53,6 +57,15 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
     reader.onerror = (error) => console.error("Error converting file: ", error);
   };
 
+  useEffect(() => {
+    if (defaultValues && defaultValues?.measurement?.weight) {
+      setValue("measurement.height_feet", defaultValues.measurement.height_feet);
+      setValue("measurement.height_inch", defaultValues.measurement.height_inch);
+      setValue("measurement.weight", defaultValues.measurement.weight);
+      setValue("measurement.full_body_image", defaultValues.measurement.full_body_image);
+    }
+  }, [defaultValues]);
+
   const handleFileUpload = (files: File[]) => {
     if (files.length > 0) {
       const file = files[0];
@@ -82,30 +95,52 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
           <h6 className="text-[30px] font-semibold text-foreground font-poppins">Progress Tracking</h6>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <NumberInput
+          <Input.Wrapper
+            label="Height"
+            required
             className="md:col-span-1 col-span-2"
-            label="Height (inches)"
-            value={height}
-            {...register("measurement.height")}
-            onChange={(value) => {
-              if (value) {
-                setHeight(value?.toString());
-                setValue("measurement.height", value?.toString());
-                clearErrors("measurement.height");
-              }
+            styles={{
+              label: { fontWeight: 500, marginBottom: "0.5rem" },
             }}
-            // value={height}
-            max={9999}
-            min={0}
-            clampBehavior="strict"
-            error={getErrorMessage(errors?.measurement?.height)}
-            hideControls
-            allowNegative={false}
-            allowDecimal={true}
             withAsterisk
-          />
+          >
+            <div className="grid grid-cols-2 gap-5">
+              <NumberInput
+                placeholder="Feet"
+                {...register("measurement.height_feet")}
+                onChange={(value) => {
+                  setValue("measurement.height_feet", value.toString());
+                  if (value) {
+                    clearErrors("measurement.height_feet");
+                  }
+                }}
+                min={0}
+                max={99}
+                hideControls
+                clampBehavior="strict"
+              />
+              <NumberInput
+                placeholder="Inches"
+                {...register("measurement.height_inch")}
+                onChange={(value) => {
+                  setValue("measurement.height_inch", value.toString());
+                  if (value) {
+                    clearErrors("measurement.height_inch");
+                  }
+                }}
+                min={0}
+                max={12}
+                hideControls
+                clampBehavior="strict"
+              />
+            </div>
+          </Input.Wrapper>
           <NumberInput
             className="md:col-span-1 col-span-2"
+            classNames={{
+              root: "sm:!grid !block w-full",
+              error: "sm:!text-end !text-start w-full",
+            }}
             label="Weight (lbs)"
             value={weight}
             {...register("measurement.weight")}
@@ -127,8 +162,7 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
             withAsterisk
           />
         </div>
-
-        <div className="grid md:grid-cols-2 gap-6 py-5">
+        <div className="grid md:grid-cols-2 gap-6 xl:py-5 md:py-8">
           <div className="border-2 border-dashed border-primary bg-primary-secondary p-4 rounded-md text-sm pb-20 text-foreground">
             <h6 className="heading-xxs pb-4">Full Body Photo Guideline</h6>
             <p className="text-fs-md text-foreground pb-5">
@@ -154,9 +188,8 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
               <li>It will not be shared or used for any other purpose</li>
             </ul>
           </div>
-
-          <div className="-mt-10 pb-9">
-            <p className="text-fs-lg text-foreground !font-medium pb-2">Upload Your Full Body Photo for Progress Tracking</p>
+          <div className="xl:pb-9 md:pb-16 xl:-mt-9 md:-mt-16">
+            <p className="text-fs-lg text-foreground !font-medium pb-2 ">Upload Your Full Body Photo for Progress Tracking</p>
             <Dropzone
               onDrop={handleFileUpload}
               onReject={(rejectedFiles) => {
@@ -168,7 +201,7 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
               maxSize={5 * 1024 ** 2}
               multiple={false}
               classNames={{
-                root: "relative w-full h-full border-dashed border border-gray-300 bg-gray-50 cursor-pointer rounded-lg",
+                root: "relative w-full md:h-full h-[500px] border-dashed border border-gray-300 bg-gray-50 cursor-pointer rounded-lg",
                 inner: "absolute !inset-0 !size-full",
               }}
             >

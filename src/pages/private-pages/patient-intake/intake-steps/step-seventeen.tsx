@@ -60,16 +60,21 @@ const StepSeventeen = ({ onNext, onBack, defaultValues, isLoading = false }: Ste
       className="max-w-[800px] mx-auto space-y-10 pt-10"
     >
       <div>
-        <label className="block text-2xl font-poppins font-semibold mb-2">
-          What is your primary goal with peptide therapy?
-          <span className="text-danger">*</span>
-        </label>
-        <Input
-          type="text"
-          {...register("peptidePrimaryGoal")}
-          error={Boolean(errors.peptidePrimaryGoal)}
-        />
-        {errors.peptidePrimaryGoal && <p className="text-danger text-sm mt-1">{getErrorMessage(errors.peptidePrimaryGoal)}</p>}
+        <Input.Wrapper
+          label="What is your primary goal with peptide therapy?"
+          withAsterisk
+          error={getErrorMessage(errors.peptidePrimaryGoal)}
+          classNames={{
+            root: "sm:!grid !block",
+            error: "sm:!text-end !text-start w-full",
+            label: "sm:!text-3xl pb-2",
+          }}
+        >
+          <Input
+            type="text"
+            {...register("peptidePrimaryGoal")}
+          />
+        </Input.Wrapper>
       </div>
 
       {/* Peptide therapy used */}
@@ -78,9 +83,13 @@ const StepSeventeen = ({ onNext, onBack, defaultValues, isLoading = false }: Ste
         onChange={(val) => handleSelect("peptideTherapyUsed", val)}
         label="Have you used peptide therapies before?"
         error={getErrorMessage(errors?.peptideTherapyUsed)}
-        classNames={{ label: "!text-2xl pb-2" }}
+        classNames={{
+          root: "sm:!grid !block",
+          error: "sm:!text-end !text-start w-full",
+          label: "sm:!text-3xl pb-2",
+        }}
       >
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid sm:grid-cols-2 gap-5">
           {["Yes", "No"].map((option) => (
             <Radio
               key={option}
@@ -90,7 +99,7 @@ const StepSeventeen = ({ onNext, onBack, defaultValues, isLoading = false }: Ste
                 <div className="relative text-center">
                   <span className="text-foreground font-poppins">{option}</span>
                   {peptideTherapyUsed === option && (
-                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                       <i className="icon-tick text-sm/none"></i>
                     </span>
                   )}
@@ -107,9 +116,13 @@ const StepSeventeen = ({ onNext, onBack, defaultValues, isLoading = false }: Ste
         onChange={(val) => handleSelect("hormoneSensitiveCancers", val)}
         label="Do you have any history of hormone-sensitive cancers (e.g. breast, prostate)?"
         error={getErrorMessage(errors?.hormoneSensitiveCancers)}
-        classNames={{ label: "!text-2xl pb-2" }}
+        classNames={{
+          root: "sm:!grid !block",
+          error: "sm:!text-end !text-start w-full",
+          label: "sm:!text-3xl pb-2",
+        }}
       >
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid sm:grid-cols-2 gap-5">
           {["Yes", "No"].map((option) => (
             <Radio
               key={option}
@@ -119,7 +132,7 @@ const StepSeventeen = ({ onNext, onBack, defaultValues, isLoading = false }: Ste
                 <div className="relative text-center">
                   <span className="text-foreground font-poppins">{option}</span>
                   {hormoneSensitiveCancers === option && (
-                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                       <i className="icon-tick text-sm/none"></i>
                     </span>
                   )}
@@ -136,9 +149,13 @@ const StepSeventeen = ({ onNext, onBack, defaultValues, isLoading = false }: Ste
         onChange={(val) => handleSelect("endocrineAutoimmune", val)}
         label="Do you have any known endocrine or autoimmune disorders?"
         error={getErrorMessage(errors?.endocrineAutoimmune)}
-        classNames={{ label: "!text-2xl pb-2" }}
+        classNames={{
+          root: "sm:!grid !block",
+          error: "sm:!text-end !text-start w-full",
+          label: "sm:!text-3xl pb-2",
+        }}
       >
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid sm:grid-cols-2 gap-5">
           {["Yes", "No"].map((option) => (
             <Radio
               key={option}
@@ -148,7 +165,7 @@ const StepSeventeen = ({ onNext, onBack, defaultValues, isLoading = false }: Ste
                 <div className="relative text-center">
                   <span className="text-foreground font-poppins">{option}</span>
                   {endocrineAutoimmune === option && (
-                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                       <i className="icon-tick text-sm/none"></i>
                     </span>
                   )}
@@ -165,9 +182,13 @@ const StepSeventeen = ({ onNext, onBack, defaultValues, isLoading = false }: Ste
         onChange={(val) => handleSelect("hormoneTherapySupple", val)}
         label="Are you currently taking hormone therapy, supplements, or other performance enhancers?"
         error={getErrorMessage(errors?.hormoneTherapySupple)}
-        classNames={{ label: "!text-2xl pb-2" }}
+        classNames={{
+          root: "sm:!grid !block",
+          error: "sm:!text-end !text-start w-full",
+          label: "sm:!text-3xl pb-2",
+        }}
       >
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid sm:grid-cols-2 gap-5">
           {["Yes", "No"].map((option) => (
             <Radio
               key={option}
@@ -177,7 +198,7 @@ const StepSeventeen = ({ onNext, onBack, defaultValues, isLoading = false }: Ste
                 <div className="relative text-center">
                   <span className="text-foreground font-poppins">{option}</span>
                   {hormoneTherapySupple === option && (
-                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                       <i className="icon-tick text-sm/none"></i>
                     </span>
                   )}
@@ -189,16 +210,21 @@ const StepSeventeen = ({ onNext, onBack, defaultValues, isLoading = false }: Ste
       </Radio.Group>
 
       <div>
-        <label className="block text-2xl font-poppins font-semibold mb-2">
-          What is your typical physical activity level?
-          <span className="text-danger">*</span>
-        </label>
-        <Input
-          type="text"
-          {...register("physicActLevel")}
-          error={Boolean(errors.physicActLevel)}
-        />
-        {errors.physicActLevel && <p className="text-danger text-sm mt-1">{getErrorMessage(errors.physicActLevel)}</p>}
+        <Input.Wrapper
+          label="What is your typical physical activity level?"
+          withAsterisk
+          error={getErrorMessage(errors.physicActLevel)}
+          classNames={{
+            root: "sm:!grid !block",
+            error: "sm:!text-end !text-start w-full",
+            label: "sm:!text-3xl pb-2",
+          }}
+        >
+          <Input
+            type="text"
+            {...register("physicActLevel")}
+          />
+        </Input.Wrapper>
       </div>
 
       <div className="flex justify-center gap-6 pt-6">

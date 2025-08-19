@@ -12,9 +12,9 @@ interface IMedicationProps {
 
 const MedicationCard = (medicationProps: IMedicationProps) => {
   return (
-    <div className="space-y-6">
+    <div className="md:space-y-6 sm:space-y-4 space-y-3">
       <div
-        className="space-y-4"
+        className="md:space-y-4 sm:space-y-3 space-y-2"
         onClick={medicationProps?.onShowDetails}
       >
         {medicationProps.image && (
@@ -26,10 +26,12 @@ const MedicationCard = (medicationProps: IMedicationProps) => {
             />
           </ThumbBg>
         )}
-        {medicationProps?.title && <h4 className="text-2xl font-poppins leading-snug font-semibold text-foreground h-16 line-clamp-2">{medicationProps?.title}</h4>}
+        {medicationProps?.title && (
+          <h4 className="md:text-2xl sm:text-xl text-lg font-poppins leading-snug font-semibold text-foreground md:h-16 sm:h-8 line-clamp-2">{medicationProps?.title}</h4>
+        )}
         <div className="flex items-center justify-between">
-          <span className="text-foreground text-base font-bold">Medication Cost</span>
-          <span className="text-foreground text-base font-bold">${medicationProps?.cost}</span>
+          <span className="text-foreground sm:text-base text-sm font-bold">Medication Cost</span>
+          <span className="text-foreground sm:text-base text-sm font-bold">${medicationProps?.cost}</span>
         </div>
       </div>
       <Button

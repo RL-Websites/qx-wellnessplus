@@ -71,7 +71,7 @@ const HomeHeader = () => {
               window.location.href = "/";
             }}
           >
-            Logout
+            Log out
           </Button>
         ) : isLoginPage ? (
           <Button
