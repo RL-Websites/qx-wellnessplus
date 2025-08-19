@@ -258,7 +258,8 @@ export interface IPatientInfoDTO {
   first_name?: string;
   last_name?: string;
   email: string;
-  cell_phone: string;
+  cell_phone?: string;
+  phone?: string;
   dob: string;
   gender: string;
   address: string;
