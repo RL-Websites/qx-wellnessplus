@@ -3,6 +3,7 @@ import { formatDate } from "@/utils/date.utils";
 import { getFullName } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Text } from "@mantine/core";
+import { useDebouncedCallback } from "@mantine/hooks";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import SignatureCanvas from "react-signature-canvas";
@@ -43,10 +44,15 @@ const Acknowledgement = ({ onNext, onBack, defaultValues, patientData, hasPeptid
     setValue("signature", "");
   };
 
+  const setSigImg = useDebouncedCallback((base64Data) => {
+    setSignatureImage(base64Data);
+  }, 1600);
+
   const saveSignature = () => {
     const base64Data = sigCanvas.current.toDataURL("image/png");
     setValue("signature", base64Data, { shouldValidate: true });
-    setSignatureImage(base64Data);
+    // setSignatureImage(base64Data);
+    setSigImg(base64Data);
     clearErrors("signature");
   };
 

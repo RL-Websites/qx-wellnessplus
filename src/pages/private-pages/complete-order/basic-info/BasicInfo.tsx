@@ -21,11 +21,12 @@ import { BasicInfoFormFieldsType, basicInfoValidationSchema } from "./validation
 
 interface BasicInfoPropTypes {
   userData?: IUserData;
+  formData?: IPatientBookingPatientInfoDTO;
   onNext: (data) => void;
   isSubmitting?: boolean;
 }
 
-const BasicInfo = ({ userData, onNext, isSubmitting }: BasicInfoPropTypes) => {
+const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTypes) => {
   const engine = new Styletron();
   const [dob, setDob] = useState<any>(null);
   const [phone, setPhone] = useState<string>();
@@ -93,33 +94,76 @@ const BasicInfo = ({ userData, onNext, isSubmitting }: BasicInfoPropTypes) => {
     const tempPatientDetails = userData;
 
     // setPatientDetails(patientDetailsQuery?.data?.data?.data);
+
     setValue("first_name", tempPatientDetails?.userable?.first_name || "", { shouldValidate: true });
     setValue("last_name", tempPatientDetails?.userable?.last_name || "", { shouldValidate: true });
     setValue("email", tempPatientDetails?.email || "", { shouldValidate: true });
-    if (tempPatientDetails?.userable?.dob) {
-      setPhone(tempPatientDetails?.userable?.cell_phone);
 
-      setValue("phone", tempPatientDetails?.userable?.cell_phone, { shouldValidate: true });
-      setDob(new Date(tempPatientDetails?.userable?.dob));
-      setValue("dob", [formatDate(tempPatientDetails?.userable?.dob)]);
-      setGender(tempPatientDetails?.userable?.gender);
-      setValue("gender", tempPatientDetails?.userable?.gender);
-      setAddress(tempPatientDetails?.userable?.address1);
-      setValue("address", tempPatientDetails?.userable?.address1);
-      setValue("state", tempPatientDetails?.userable?.state);
-      setValue("city", tempPatientDetails?.userable?.city);
-      setZipCode(tempPatientDetails?.userable?.zipcode);
-      setValue("zip_code", tempPatientDetails?.userable?.zipcode);
-      setValue("latitude", tempPatientDetails?.userable?.latitude);
-      setValue("longitude", tempPatientDetails?.userable?.longitude);
-      setFrontFile(
-        tempPatientDetails?.userable?.driving_license_front ? `${import.meta.env.VITE_BASE_PATH}/storage/${tempPatientDetails?.userable?.driving_license_front}` : undefined
-      );
-      setBackFile(
-        tempPatientDetails?.userable?.driving_license_back ? `${import.meta.env.VITE_BASE_PATH}/storage/${tempPatientDetails?.userable?.driving_license_back}` : undefined
-      );
+    if (userData != undefined && !formData?.patient?.address) {
+      if (tempPatientDetails?.userable?.dob && !formData?.patient?.dob) {
+        setPhone(tempPatientDetails?.userable?.cell_phone);
+
+        setValue("phone", tempPatientDetails?.userable?.cell_phone, { shouldValidate: true });
+        setDob(new Date(tempPatientDetails?.userable?.dob));
+        setValue("dob", [formatDate(tempPatientDetails?.userable?.dob)]);
+        setGender(tempPatientDetails?.userable?.gender);
+        setValue("gender", tempPatientDetails?.userable?.gender);
+        setAddress(tempPatientDetails?.userable?.address1);
+        setValue("address", tempPatientDetails?.userable?.address1);
+        setValue("state", tempPatientDetails?.userable?.state);
+        setValue("city", tempPatientDetails?.userable?.city);
+        setZipCode(tempPatientDetails?.userable?.zipcode);
+        setValue("zip_code", tempPatientDetails?.userable?.zipcode);
+        setValue("latitude", tempPatientDetails?.userable?.latitude);
+        setValue("longitude", tempPatientDetails?.userable?.longitude);
+        setFrontFile(
+          tempPatientDetails?.userable?.driving_license_front ? `${import.meta.env.VITE_BASE_PATH}/storage/${tempPatientDetails?.userable?.driving_license_front}` : undefined
+        );
+        setBackFile(
+          tempPatientDetails?.userable?.driving_license_back ? `${import.meta.env.VITE_BASE_PATH}/storage/${tempPatientDetails?.userable?.driving_license_back}` : undefined
+        );
+        setFrontBase64(
+          tempPatientDetails?.userable?.driving_license_front ? `${import.meta.env.VITE_BASE_PATH}/storage/${tempPatientDetails?.userable?.driving_license_front}` : ""
+        );
+        setBackBase64(tempPatientDetails?.userable?.driving_license_back ? `${import.meta.env.VITE_BASE_PATH}/storage/${tempPatientDetails?.userable?.driving_license_back}` : "");
+        setValue(
+          "driving_lic_front",
+          tempPatientDetails?.userable?.driving_license_front ? `${import.meta.env.VITE_BASE_PATH}/storage/${tempPatientDetails?.userable?.driving_license_front}` : ""
+        );
+        setValue(
+          "driving_lic_front",
+          tempPatientDetails?.userable?.driving_license_back ? `${import.meta.env.VITE_BASE_PATH}/storage/${tempPatientDetails?.userable?.driving_license_back}` : ""
+        );
+      }
     }
   }, [userData]);
+
+  useEffect(() => {
+    if (formData?.patient?.address) {
+      if (formData?.patient?.dob) {
+        console.log(formData?.patient?.cell_phone);
+        setPhone(formData?.patient?.cell_phone);
+
+        setValue("phone", formData?.patient?.cell_phone || "", { shouldValidate: true });
+        setDob(new Date(formData?.patient?.dob));
+        setValue("dob", [formatDate(formData?.patient?.dob)]);
+        setGender(formData?.patient?.gender);
+        setValue("gender", formData?.patient?.gender);
+        setAddress(formData?.patient?.address);
+        setValue("address", formData?.patient?.address);
+        setValue("state", formData?.patient?.state);
+        setValue("city", formData?.patient?.city);
+        setZipCode(formData?.patient?.zip_code);
+        setValue("zip_code", formData?.patient?.zip_code);
+        setValue("latitude", formData?.patient?.latitude);
+        setValue("longitude", formData?.patient?.longitude);
+        setFrontFile(formData?.patient?.driving_lic_front || "");
+        setBackFile(formData?.patient?.driving_lic_back || "");
+        setFrontBase64(formData?.patient?.driving_lic_front || "");
+        setBackBase64(formData?.patient?.driving_lic_back || "");
+      }
+    }
+  }, [formData]);
 
   const onSubmit = async (data: BasicInfoFormFieldsType) => {
     const payload: Partial<IPatientBookingPatientInfoDTO> = {
