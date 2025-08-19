@@ -64,6 +64,8 @@ const categoryStepsMap: Record<string, CategoryConfig> = {
   },
 };
 
+const maleExcludedSteps = [6, 18];
+
 const PatientIntake = () => {
   const [activeStep, setActiveStep] = useState(1);
   const [formData, setFormData] = useState<any>({});
@@ -76,14 +78,16 @@ const PatientIntake = () => {
   const selectedCategory = useAtomValue(selectedCategoryAtom);
   const [basicInfo] = useAtom(basicInfoAtom);
 
-  const isFinalStep = (step: number) => step === finalStep;
-
   useEffect(() => {
     const categoriesArray: string[] = Array.isArray(selectedCategory) ? selectedCategory : selectedCategory ? [selectedCategory] : [];
 
     if (!categoriesArray.length) return;
+
     const allSteps = categoriesArray.map((cat) => categoryStepsMap[cat]?.steps || []).flat();
-    const uniqueSteps = Array.from(new Set(allSteps)).sort((a, b) => a - b);
+
+    const filteredSteps = basicInfo?.patient?.gender === "male" ? allSteps.filter((step) => !maleExcludedSteps.includes(step)) : allSteps;
+
+    const uniqueSteps = Array.from(new Set(filteredSteps)).sort((a, b) => a - b);
 
     let calculatedFinalStep = 17; // default for male
     if (basicInfo?.patient?.gender === "female") {
@@ -94,7 +98,7 @@ const PatientIntake = () => {
     if (categoriesArray.some((cat) => peptideCategories.includes(cat))) {
       calculatedFinalStep = 10;
     } else if (categoriesArray.includes("Weight Loss")) {
-      // Keep the gender-specific final step (17 or 18)
+      // Keep the gender-specific final step
     } else if (categoriesArray[0] && categoryStepsMap[categoriesArray[0]]) {
       calculatedFinalStep = categoryStepsMap[categoriesArray[0]].finalStep;
     }
