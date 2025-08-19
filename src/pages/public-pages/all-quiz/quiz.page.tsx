@@ -19,6 +19,13 @@ import InEligibleUser from "../ineligible-user/ineligible-user.page";
 import GenderHairGrowth from "./quizes/hair-growth/Gender";
 import ScalpInfectionsTwo from "./quizes/hair-growth/ScalpInfectionsTwo";
 import ThyroidDisease from "./quizes/hair-growth/ThyroidDisease";
+import Cancers from "./quizes/peptides-blends/new/Cancers";
+import CardiovascularDiseasePeptides from "./quizes/peptides-blends/new/CardiovascularDisease";
+import GenderPeptides from "./quizes/peptides-blends/new/Gender";
+import HSCancers from "./quizes/peptides-blends/new/HSCancers";
+import KidneyDisease from "./quizes/peptides-blends/new/KidneyDisease";
+import PregnancyBreastfeeding from "./quizes/peptides-blends/new/PregnancyBreastfeeding";
+import ThyroidLiverKidneyDisease from "./quizes/peptides-blends/new/ThyroidLiverKidneyDisease";
 import CardiovascularDisease from "./quizes/testosterone/CardiovascularDisease";
 import GenderTestosterone from "./quizes/testosterone/Gender";
 import Impairment from "./quizes/testosterone/Impairment";
@@ -437,7 +444,115 @@ const QuizPage = () => {
       )}
 
       {(selectedCategory?.includes("Peptides Blends") || selectedCategory?.includes("Single Blends")) && (
-        <></>
+        <>
+          {activeStep === 2 && (
+            <GenderPeptides
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {formData.genderPeptides === "Male" && activeStep === 3 && (
+            <HSCancers
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+                setFormData((prev) => ({ ...prev, ...rest }));
+
+                if (eligible) {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(rest);
+                }
+              }}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {formData.genderPeptides === "Male" && activeStep === 4 && (
+            <CardiovascularDiseasePeptides
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+                setFormData((prev) => ({ ...prev, ...rest }));
+
+                if (eligible) {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(rest);
+                }
+              }}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+
+          {formData.genderPeptides === "Male" && activeStep === 5 && (
+            <KidneyDisease
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+
+                setFormData((prev) => ({ ...prev, ...rest }));
+                if (eligible) {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleFinalSubmit(rest);
+                }
+              }}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+
+          {/* Female Gender */}
+          {formData.genderPeptides === "Female" && activeStep === 3 && (
+            <PregnancyBreastfeeding
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+                setFormData((prev) => ({ ...prev, ...rest }));
+
+                if (eligible) {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(rest);
+                }
+              }}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {formData.genderPeptides === "Female" && activeStep === 4 && (
+            <Cancers
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+                setFormData((prev) => ({ ...prev, ...rest }));
+
+                if (eligible) {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(rest);
+                }
+              }}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+
+          {formData.genderPeptides === "Female" && activeStep === 5 && (
+            <ThyroidLiverKidneyDisease
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+
+                setFormData((prev) => ({ ...prev, ...rest }));
+                if (eligible) {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleFinalSubmit(rest);
+                }
+              }}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+        </>
 
         // <>
         //   {activeStep === 2 && (
