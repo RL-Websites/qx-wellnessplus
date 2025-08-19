@@ -12,7 +12,7 @@ interface IConfirmationModalProps {
 }
 
 function ConfirmProductOrderModal(modalProps: IConfirmationModalProps) {
-  const [selectedQty, setSelectedQty] = useState<number>(2);
+  const [selectedQty, setSelectedQty] = useState<number>(1);
 
   return (
     <Modal.Root

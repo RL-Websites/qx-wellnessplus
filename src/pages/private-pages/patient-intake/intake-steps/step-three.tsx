@@ -71,7 +71,7 @@ const StepThree = ({ onNext, onBack, defaultValues }: StepThreeProps) => {
         classNames={{
           root: "sm:!grid !block w-full",
           error: "sm:!text-end !text-start w-full",
-          label: "sm:!text-3xl pb-2",
+          label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
         <div className="grid grid-cols-2 gap-5">
@@ -104,7 +104,7 @@ const StepThree = ({ onNext, onBack, defaultValues }: StepThreeProps) => {
           classNames={{
             root: "sm:!grid !block w-full",
             error: "sm:!text-end !text-start w-full",
-            label: "sm:!text-3xl pb-2",
+            label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           }}
         >
           <div className="grid grid-cols-1 gap-5">

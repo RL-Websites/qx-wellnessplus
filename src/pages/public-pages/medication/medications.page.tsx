@@ -108,7 +108,7 @@ const MedicationsPage = () => {
               key={index}
               image={`${import.meta.env.VITE_BASE_PATH}/storage/${item?.image}`}
               title={item?.name}
-              cost={item?.price}
+              cost={item?.customer_medication?.price}
               onAddToCart={() => handleAddToCart(item)}
               onShowDetails={() => handelDetailsModal(item)}
               disabled={isInCart} // pass this prop to your MedicationCard
