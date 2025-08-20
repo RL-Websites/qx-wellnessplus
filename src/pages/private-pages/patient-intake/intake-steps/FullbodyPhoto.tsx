@@ -164,11 +164,11 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
         </div>
         <div className="grid md:grid-cols-2 gap-6 xl:py-5 md:py-8">
           <div className="border-2 border-dashed border-primary bg-primary-secondary p-4 rounded-md text-sm pb-20 text-foreground">
-            <h6 className="heading-xxs pb-4">Full Body Photo Guideline</h6>
+            <h6 className="heading-xxs !font-bold pb-4 !font-poppins">Full Body Photo Guideline</h6>
             <p className="text-fs-md text-foreground pb-5">
               To help our healthcare providers assess your current wellness status and personalize your treatment, we ask for a clear, full-body photo.
             </p>
-            <h6 className="heading-xxs pb-4">Tips for the Best Photo:</h6>
+            <h6 className="heading-xxs pb-4 !font-poppins !font-bold">Tips for the Best Photo:</h6>
             <ul className="list-disc ps-5 space-y-1">
               <li>Stand upright, arms relaxed at your sides</li>
               <li>Use a plain/light background for better visibility</li>
@@ -176,13 +176,13 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
               <li>Remove hats/sunglasses (if any)</li>
               <li>Face the camera directly (front-facing photo is preferred)</li>
             </ul>
-            <h6 className="heading-xxs pb-4 pt-5">How to Take the Photo:</h6>
+            <h6 className="heading-xxs pb-4 pt-5 !font-poppins !font-bold">How to Take the Photo:</h6>
             <ul className="list-disc ps-5 space-y-1">
               <li>Use your phone camera or upload from your gallery</li>
               <li>Ask someone to help take the picture if needed</li>
               <li>Make sure the entire body is visible in the frame</li>
             </ul>
-            <h6 className="heading-xxs pb-4 pt-5">Privacy First:</h6>
+            <h6 className="heading-xxs pb-4 pt-5 !font-poppins !font-bold">Privacy First:</h6>
             <ul className="list-disc ps-5 space-y-1">
               <li>Your image is securely stored and only accessible to medical staff</li>
               <li>It will not be shared or used for any other purpose</li>
