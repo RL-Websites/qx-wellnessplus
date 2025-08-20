@@ -23,9 +23,10 @@ interface StepFourteenProps {
   onNext: (data: step14SchemaType) => void;
   onBack: () => void;
   defaultValues?: step14SchemaType;
+  isLoading?: boolean;
 }
 
-const StepFourteen = ({ onNext, onBack, defaultValues }: StepFourteenProps) => {
+const StepFourteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepFourteenProps) => {
   const {
     handleSubmit,
     setValue,
@@ -189,6 +190,7 @@ const StepFourteen = ({ onNext, onBack, defaultValues }: StepFourteenProps) => {
           type="submit"
           className="w-[200px]"
           form="step14Form"
+          loading={isLoading}
         >
           Next
         </Button>

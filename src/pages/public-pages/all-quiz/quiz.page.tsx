@@ -1,6 +1,6 @@
 import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { useWindowScroll } from "@mantine/hooks";
-import { useAtomValue } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
 import DateOfBirth from "./quizes/DateOfBirth";
 
@@ -16,6 +16,9 @@ import ScalpInfections from "./quizes/hair-growth/ScalpInfections";
 import { useNavigate } from "react-router-dom";
 import InEligibleUser from "../ineligible-user/ineligible-user.page";
 
+import { selectedGenderAtom } from "@/common/states/gender.atom";
+import { weightAtom } from "@/common/states/height.atom";
+import { dobAtom } from "@/common/states/user.atom";
 import GenderHairGrowth from "./quizes/hair-growth/Gender";
 import ScalpInfectionsTwo from "./quizes/hair-growth/ScalpInfectionsTwo";
 import ThyroidDisease from "./quizes/hair-growth/ThyroidDisease";
@@ -50,10 +53,13 @@ const QuizPage = () => {
   const [totalStep, setTotalStep] = useState(20);
   const [, scrollTo] = useWindowScroll();
   const selectedCategory = useAtomValue(selectedCategoryAtom);
+  const [selectedGender, setSelectedGender] = useAtom(selectedGenderAtom);
   const [eligibleComponent, setEligibleComponent] = useState<React.ReactNode | null>(null);
   const [isHairGrowthMale, setHairGrowthMale] = useState(false);
   const [isHairGrowthFemale, setHairGrowthFemale] = useState(false);
   const [skipInjectionDate, setSkipInjectionDate] = useState(false);
+  const [globalWeight, setGlobalWeight] = useAtom(weightAtom);
+  const [globalDob, setGlobalDob] = useAtom(dobAtom);
 
   const navigate = useNavigate();
 
@@ -150,7 +156,10 @@ const QuizPage = () => {
     <>
       {activeStep === 1 && (
         <DateOfBirth
-          onNext={handleNext}
+          onNext={(data) => {
+            setGlobalDob(data?.date_of_birth);
+            handleNext(data);
+          }}
           onBack={handleBack}
           defaultValues={formData}
         />
@@ -193,7 +202,10 @@ const QuizPage = () => {
 
           {activeStep === 4 && (
             <WeightLossWeight
-              onNext={handleNext}
+              onNext={(data) => {
+                setGlobalWeight(data?.weightlossweight);
+                handleNext(data);
+              }}
               onBack={handleBack}
               defaultValues={formData}
             />
@@ -215,14 +227,14 @@ const QuizPage = () => {
             />
           )}
 
-          {formData.genderWeightLoss === "Female" && activeStep === 6 && (
+          {selectedGender === "Female" && activeStep === 6 && (
             <WeightLossPregnant
               onNext={handleNext}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
-          {formData.genderWeightLoss === "Female" && activeStep === 7 && (
+          {selectedGender === "Female" && activeStep === 7 && (
             <WeightLossBreastFeeding
               onNext={handleNext}
               onBack={handleBack}
@@ -452,7 +464,7 @@ const QuizPage = () => {
               defaultValues={formData}
             />
           )}
-          {formData.genderPeptides === "Male" && activeStep === 3 && (
+          {selectedGender === "Male" && activeStep === 3 && (
             <HSCancers
               onNext={(data) => {
                 const { eligible, ...rest } = data;
@@ -468,7 +480,7 @@ const QuizPage = () => {
               defaultValues={formData}
             />
           )}
-          {formData.genderPeptides === "Male" && activeStep === 4 && (
+          {selectedGender === "Male" && activeStep === 4 && (
             <CardiovascularDiseasePeptides
               onNext={(data) => {
                 const { eligible, ...rest } = data;
@@ -485,7 +497,7 @@ const QuizPage = () => {
             />
           )}
 
-          {formData.genderPeptides === "Male" && activeStep === 5 && (
+          {selectedGender === "Male" && activeStep === 5 && (
             <KidneyDisease
               onNext={(data) => {
                 const { eligible, ...rest } = data;
@@ -503,7 +515,7 @@ const QuizPage = () => {
           )}
 
           {/* Female Gender */}
-          {formData.genderPeptides === "Female" && activeStep === 3 && (
+          {selectedGender === "Female" && activeStep === 3 && (
             <PregnancyBreastfeeding
               onNext={(data) => {
                 const { eligible, ...rest } = data;
@@ -519,7 +531,7 @@ const QuizPage = () => {
               defaultValues={formData}
             />
           )}
-          {formData.genderPeptides === "Female" && activeStep === 4 && (
+          {selectedGender === "Female" && activeStep === 4 && (
             <Cancers
               onNext={(data) => {
                 const { eligible, ...rest } = data;
@@ -536,7 +548,7 @@ const QuizPage = () => {
             />
           )}
 
-          {formData.genderPeptides === "Female" && activeStep === 5 && (
+          {selectedGender === "Female" && activeStep === 5 && (
             <ThyroidLiverKidneyDisease
               onNext={(data) => {
                 const { eligible, ...rest } = data;

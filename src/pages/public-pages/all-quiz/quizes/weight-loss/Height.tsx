@@ -1,6 +1,8 @@
+import { heightAtom } from "@/common/states/height.atom";
 import { calculateBMI } from "@/utils/bmi.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Input } from "@mantine/core";
+import { useAtom } from "jotai";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -18,6 +20,7 @@ interface IWeightLossHeightProps {
 }
 
 const WeightLossHeight = ({ onNext, onBack, defaultValues }: IWeightLossHeightProps) => {
+  const [height, setHeight] = useAtom(heightAtom);
   const {
     handleSubmit,
     register,
@@ -44,6 +47,9 @@ const WeightLossHeight = ({ onNext, onBack, defaultValues }: IWeightLossHeightPr
     }
 
     const bmi = calculateBMI(weight, feet, inch);
+
+    const height = { height_feet: Number(data.weightlossheightFeet), height_inch: Number(data.weightlossheightInch) };
+    setHeight(height);
 
     onNext({ ...data, eligible: bmi >= 25 });
   };

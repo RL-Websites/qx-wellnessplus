@@ -1,8 +1,10 @@
+import { heightAtom, weightAtom } from "@/common/states/height.atom";
 import { getErrorMessage } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ActionIcon, Anchor, Button, Image, Input, NumberInput, Text } from "@mantine/core";
 import { Dropzone, MIME_TYPES } from "@mantine/dropzone";
 import { IconCloudUp, IconX } from "@tabler/icons-react";
+import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -34,9 +36,12 @@ interface FullBodyPhotoProps {
 
 const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
   const [fullBodyFile, setFullBodyFile] = useState<File | null>(null);
-  const [height, setHeight] = useState<string>("");
   const [weight, setWeight] = useState<string>("");
+  const [heightFeet, setHeightFeet] = useState<string>("");
+  const [heightInch, setHeightInch] = useState<string>("");
   const [fullBodyBase64, setFullBodyBase64] = useState<string | null>(null);
+  const [heightObj, setHeightObj] = useAtom(heightAtom);
+  const [globalWeight, setGlobalWeight] = useAtom(weightAtom);
 
   const {
     register,
@@ -47,7 +52,6 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
     formState: { errors },
   } = useForm<fullBodyPhotoSchemaType>({
     resolver: yupResolver(fullBodyPhotoSchema),
-    defaultValues: {},
   });
 
   const fileToBase64 = (file: File, callback: (result: string) => void) => {
@@ -58,13 +62,22 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
   };
 
   useEffect(() => {
-    if (defaultValues && defaultValues?.measurement?.weight) {
+    if (defaultValues?.measurement?.height_feet) {
       setValue("measurement.height_feet", defaultValues.measurement.height_feet);
+      setHeightFeet(defaultValues.measurement.height_feet || "");
       setValue("measurement.height_inch", defaultValues.measurement.height_inch);
+      setHeightInch(defaultValues.measurement.height_inch || "");
       setValue("measurement.weight", defaultValues.measurement.weight);
       setValue("measurement.full_body_image", defaultValues.measurement.full_body_image);
+    } else {
+      setValue("measurement.height_feet", heightObj?.height_feet?.toString() || "");
+      setValue("measurement.height_inch", heightObj?.height_inch?.toString() || "");
+      setHeightFeet(heightObj?.height_feet?.toString() || "");
+      setHeightInch(heightObj?.height_inch?.toString() || "");
+      setValue("measurement.weight", globalWeight || "");
+      setWeight(globalWeight);
     }
-  }, [defaultValues]);
+  }, [defaultValues, heightObj]);
 
   const handleFileUpload = (files: File[]) => {
     if (files.length > 0) {
@@ -107,6 +120,7 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
             <div className="grid grid-cols-2 gap-5">
               <NumberInput
                 placeholder="Feet"
+                value={heightFeet}
                 {...register("measurement.height_feet")}
                 onChange={(value) => {
                   setValue("measurement.height_feet", value.toString());
@@ -121,6 +135,7 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
               />
               <NumberInput
                 placeholder="Inches"
+                value={heightInch}
                 {...register("measurement.height_inch")}
                 onChange={(value) => {
                   setValue("measurement.height_inch", value.toString());
@@ -164,11 +179,11 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
         </div>
         <div className="grid md:grid-cols-2 gap-6 xl:py-5 md:py-8">
           <div className="border-2 border-dashed border-primary bg-primary-secondary p-4 rounded-md text-sm pb-20 text-foreground">
-            <h6 className="heading-xxs pb-4">Full Body Photo Guideline</h6>
+            <h6 className="heading-xxs !font-bold pb-4 !font-poppins">Full Body Photo Guideline</h6>
             <p className="text-fs-md text-foreground pb-5">
               To help our healthcare providers assess your current wellness status and personalize your treatment, we ask for a clear, full-body photo.
             </p>
-            <h6 className="heading-xxs pb-4">Tips for the Best Photo:</h6>
+            <h6 className="heading-xxs pb-4 !font-poppins !font-bold">Tips for the Best Photo:</h6>
             <ul className="list-disc ps-5 space-y-1">
               <li>Stand upright, arms relaxed at your sides</li>
               <li>Use a plain/light background for better visibility</li>
@@ -176,13 +191,13 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
               <li>Remove hats/sunglasses (if any)</li>
               <li>Face the camera directly (front-facing photo is preferred)</li>
             </ul>
-            <h6 className="heading-xxs pb-4 pt-5">How to Take the Photo:</h6>
+            <h6 className="heading-xxs pb-4 pt-5 !font-poppins !font-bold">How to Take the Photo:</h6>
             <ul className="list-disc ps-5 space-y-1">
               <li>Use your phone camera or upload from your gallery</li>
               <li>Ask someone to help take the picture if needed</li>
               <li>Make sure the entire body is visible in the frame</li>
             </ul>
-            <h6 className="heading-xxs pb-4 pt-5">Privacy First:</h6>
+            <h6 className="heading-xxs pb-4 pt-5 !font-poppins !font-bold">Privacy First:</h6>
             <ul className="list-disc ps-5 space-y-1">
               <li>Your image is securely stored and only accessible to medical staff</li>
               <li>It will not be shared or used for any other purpose</li>

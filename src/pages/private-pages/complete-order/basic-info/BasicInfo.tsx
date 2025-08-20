@@ -4,6 +4,8 @@ import AddressAutoGoogle from "@/common/components/AddressAutoGoogle";
 import { BaseWebDatePickerOverrides } from "@/common/configs/baseWebOverrides";
 import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
 import dmlToast from "@/common/configs/toaster.config";
+import { selectedGenderAtom } from "@/common/states/gender.atom";
+import { dobAtom } from "@/common/states/user.atom";
 import { formatDate } from "@/utils/date.utils";
 import { getErrorMessage } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -12,8 +14,10 @@ import { Dropzone, MIME_TYPES } from "@mantine/dropzone";
 import { IconX } from "@tabler/icons-react";
 import { BaseProvider, LightTheme } from "baseui";
 import { Datepicker as UberDatePicker } from "baseui/datepicker";
+import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { IMaskInput } from "react-imask";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Client as Styletron } from "styletron-engine-monolithic";
 import { Provider as StyletronProvider } from "styletron-react";
@@ -37,7 +41,9 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
   const [backFile, setBackFile] = useState<string>();
   const [frontBase64, setFrontBase64] = useState<string | null>(null);
   const [backBase64, setBackBase64] = useState<string | null>(null);
+  const [selectedGender, setSelectedGender] = useAtom(selectedGenderAtom);
   const [params] = useSearchParams();
+  const [globalDob, setGlobalDob] = useAtom(dobAtom);
   const prescriptionUId = params.get("prescription_u_id");
   const navigate = useNavigate();
 
@@ -104,10 +110,7 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
         setPhone(tempPatientDetails?.userable?.cell_phone);
 
         setValue("phone", tempPatientDetails?.userable?.cell_phone, { shouldValidate: true });
-        setDob(new Date(tempPatientDetails?.userable?.dob));
-        setValue("dob", [formatDate(tempPatientDetails?.userable?.dob)]);
-        setGender(tempPatientDetails?.userable?.gender);
-        setValue("gender", tempPatientDetails?.userable?.gender);
+
         setAddress(tempPatientDetails?.userable?.address1);
         setValue("address", tempPatientDetails?.userable?.address1);
         setValue("state", tempPatientDetails?.userable?.state);
@@ -136,6 +139,22 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
         );
       }
     }
+
+    if (!userData?.userable?.dob && !formData?.patient?.dob) {
+      setDob(globalDob);
+      setValue("dob", [formatDate(globalDob)]);
+    } else if (userData?.userable?.dob) {
+      setDob(new Date(userData?.userable?.dob));
+      setValue("dob", [formatDate(tempPatientDetails?.userable?.dob)]);
+    }
+
+    if (!userData?.userable?.gender) {
+      setGender(selectedGender.toLowerCase());
+      setValue("gender", selectedGender.toLowerCase());
+    } else {
+      setGender(userData?.userable?.gender);
+      setValue("gender", userData?.userable?.gender);
+    }
   }, [userData]);
 
   useEffect(() => {
@@ -145,10 +164,7 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
         setPhone(formData?.patient?.cell_phone);
 
         setValue("phone", formData?.patient?.cell_phone || "", { shouldValidate: true });
-        setDob(new Date(formData?.patient?.dob));
-        setValue("dob", [formatDate(formData?.patient?.dob)]);
-        setGender(formData?.patient?.gender);
-        setValue("gender", formData?.patient?.gender);
+
         setAddress(formData?.patient?.address);
         setValue("address", formData?.patient?.address);
         setValue("state", formData?.patient?.state);
@@ -162,6 +178,23 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
         setFrontBase64(formData?.patient?.driving_lic_front || "");
         setBackBase64(formData?.patient?.driving_lic_back || "");
       }
+
+      if (!formData?.patient?.dob) {
+        setDob(globalDob);
+        setValue("dob", [formatDate(globalDob)]);
+      } else if (formData?.patient?.dob) {
+        setDob(new Date(formData?.patient?.dob));
+        setValue("dob", [formatDate(formData?.patient?.dob)]);
+      }
+    }
+
+    if (!formData?.patient?.gender) {
+      console.log(selectedGender);
+      setGender(selectedGender.toLowerCase());
+      setValue("gender", selectedGender.toLowerCase());
+    } else {
+      setGender(formData?.patient?.gender);
+      setValue("gender", formData?.patient?.gender);
     }
   }, [formData]);
 
@@ -244,26 +277,24 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
               error={Boolean(errors?.email?.message)}
             />
           </Input.Wrapper>
-          <NumberInput
-            label="Phone/Mobile No"
-            hideControls
-            clampBehavior="strict"
+          <Input.Wrapper
+            label="Phone Number"
             withAsterisk
             className="md:col-span-1 col-span-2"
-            classNames={InputErrorMessage}
-            value={phone}
-            {...register("phone")}
-            onChange={(value) => {
-              setValue("phone", value.toString());
-              setPhone(value.toString());
-              if (value) {
-                clearErrors(`phone`);
-              }
-            }}
             error={getErrorMessage(errors?.phone)}
-            max={9999999999}
-            min={0}
-          />
+          >
+            <Input
+              component={IMaskInput}
+              mask="(000) 000-0000"
+              value={phone}
+              {...register("phone")}
+              onAccept={(value: string) => {
+                setValue("phone", value, { shouldValidate: true });
+                setPhone(value);
+                clearErrors("phone");
+              }}
+            />
+          </Input.Wrapper>
           <Radio.Group
             label="Gender"
             withAsterisk
