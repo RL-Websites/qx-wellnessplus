@@ -1,4 +1,4 @@
-import { heightAtom } from "@/common/states/height.atom";
+import { heightAtom, weightAtom } from "@/common/states/height.atom";
 import { getErrorMessage } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ActionIcon, Anchor, Button, Image, Input, NumberInput, Text } from "@mantine/core";
@@ -41,6 +41,7 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
   const [heightInch, setHeightInch] = useState<string>("");
   const [fullBodyBase64, setFullBodyBase64] = useState<string | null>(null);
   const [heightObj, setHeightObj] = useAtom(heightAtom);
+  const [globalWeight, setGlobalWeight] = useAtom(weightAtom);
 
   const {
     register,
@@ -73,6 +74,8 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
       setValue("measurement.height_inch", heightObj?.height_inch?.toString() || "");
       setHeightFeet(heightObj?.height_feet?.toString() || "");
       setHeightInch(heightObj?.height_inch?.toString() || "");
+      setValue("measurement.weight", globalWeight || "");
+      setWeight(globalWeight);
     }
   }, [defaultValues, heightObj]);
 

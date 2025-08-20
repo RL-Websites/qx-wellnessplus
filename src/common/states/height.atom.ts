@@ -6,3 +6,5 @@ export interface IHeightFeet {
 }
 
 export const heightAtom = atomWithStorage<IHeightFeet | undefined>("height", undefined);
+
+export const weightAtom = atomWithStorage<string>("weight", "");
