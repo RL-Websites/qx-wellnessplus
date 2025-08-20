@@ -14,6 +14,7 @@ import { BaseProvider, LightTheme } from "baseui";
 import { Datepicker as UberDatePicker } from "baseui/datepicker";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { IMaskInput } from "react-imask";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Client as Styletron } from "styletron-engine-monolithic";
 import { Provider as StyletronProvider } from "styletron-react";
@@ -244,26 +245,24 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
               error={Boolean(errors?.email?.message)}
             />
           </Input.Wrapper>
-          <NumberInput
-            label="Phone/Mobile No"
-            hideControls
-            clampBehavior="strict"
+          <Input.Wrapper
+            label="Phone Number"
             withAsterisk
             className="md:col-span-1 col-span-2"
-            classNames={InputErrorMessage}
-            value={phone}
-            {...register("phone")}
-            onChange={(value) => {
-              setValue("phone", value.toString());
-              setPhone(value.toString());
-              if (value) {
-                clearErrors(`phone`);
-              }
-            }}
             error={getErrorMessage(errors?.phone)}
-            max={9999999999}
-            min={0}
-          />
+          >
+            <Input
+              component={IMaskInput}
+              mask="(000) 000-0000"
+              value={phone}
+              {...register("phone")}
+              onAccept={(value: string) => {
+                setValue("phone", value, { shouldValidate: true });
+                setPhone(value);
+                clearErrors("phone");
+              }}
+            />
+          </Input.Wrapper>
           <Radio.Group
             label="Gender"
             withAsterisk
