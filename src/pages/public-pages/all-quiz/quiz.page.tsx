@@ -18,6 +18,7 @@ import InEligibleUser from "../ineligible-user/ineligible-user.page";
 
 import { selectedGenderAtom } from "@/common/states/gender.atom";
 import { weightAtom } from "@/common/states/height.atom";
+import { dobAtom } from "@/common/states/user.atom";
 import GenderHairGrowth from "./quizes/hair-growth/Gender";
 import ScalpInfectionsTwo from "./quizes/hair-growth/ScalpInfectionsTwo";
 import ThyroidDisease from "./quizes/hair-growth/ThyroidDisease";
@@ -58,6 +59,7 @@ const QuizPage = () => {
   const [isHairGrowthFemale, setHairGrowthFemale] = useState(false);
   const [skipInjectionDate, setSkipInjectionDate] = useState(false);
   const [globalWeight, setGlobalWeight] = useAtom(weightAtom);
+  const [globalDob, setGlobalDob] = useAtom(dobAtom);
 
   const navigate = useNavigate();
 
@@ -154,7 +156,10 @@ const QuizPage = () => {
     <>
       {activeStep === 1 && (
         <DateOfBirth
-          onNext={handleNext}
+          onNext={(data) => {
+            setGlobalDob(data?.date_of_birth);
+            handleNext(data);
+          }}
           onBack={handleBack}
           defaultValues={formData}
         />
