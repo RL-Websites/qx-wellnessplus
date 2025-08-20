@@ -4,6 +4,7 @@ import AddressAutoGoogle from "@/common/components/AddressAutoGoogle";
 import { BaseWebDatePickerOverrides } from "@/common/configs/baseWebOverrides";
 import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
 import dmlToast from "@/common/configs/toaster.config";
+import { selectedGenderAtom } from "@/common/states/gender.atom";
 import { formatDate } from "@/utils/date.utils";
 import { getErrorMessage } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -12,6 +13,7 @@ import { Dropzone, MIME_TYPES } from "@mantine/dropzone";
 import { IconX } from "@tabler/icons-react";
 import { BaseProvider, LightTheme } from "baseui";
 import { Datepicker as UberDatePicker } from "baseui/datepicker";
+import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -37,6 +39,7 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
   const [backFile, setBackFile] = useState<string>();
   const [frontBase64, setFrontBase64] = useState<string | null>(null);
   const [backBase64, setBackBase64] = useState<string | null>(null);
+  const [selectedGender, setSelectedGender] = useAtom(selectedGenderAtom);
   const [params] = useSearchParams();
   const prescriptionUId = params.get("prescription_u_id");
   const navigate = useNavigate();
@@ -106,8 +109,7 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
         setValue("phone", tempPatientDetails?.userable?.cell_phone, { shouldValidate: true });
         setDob(new Date(tempPatientDetails?.userable?.dob));
         setValue("dob", [formatDate(tempPatientDetails?.userable?.dob)]);
-        setGender(tempPatientDetails?.userable?.gender);
-        setValue("gender", tempPatientDetails?.userable?.gender);
+
         setAddress(tempPatientDetails?.userable?.address1);
         setValue("address", tempPatientDetails?.userable?.address1);
         setValue("state", tempPatientDetails?.userable?.state);
@@ -136,6 +138,15 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
         );
       }
     }
+
+    if (!userData?.userable?.gender) {
+      console.log(selectedGender);
+      setGender(selectedGender.toLowerCase());
+      setValue("gender", selectedGender.toLowerCase());
+    } else {
+      setGender(userData?.userable?.gender);
+      setValue("gender", userData?.userable?.gender);
+    }
   }, [userData]);
 
   useEffect(() => {
@@ -147,8 +158,7 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
         setValue("phone", formData?.patient?.cell_phone || "", { shouldValidate: true });
         setDob(new Date(formData?.patient?.dob));
         setValue("dob", [formatDate(formData?.patient?.dob)]);
-        setGender(formData?.patient?.gender);
-        setValue("gender", formData?.patient?.gender);
+
         setAddress(formData?.patient?.address);
         setValue("address", formData?.patient?.address);
         setValue("state", formData?.patient?.state);
@@ -162,6 +172,15 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
         setFrontBase64(formData?.patient?.driving_lic_front || "");
         setBackBase64(formData?.patient?.driving_lic_back || "");
       }
+    }
+
+    if (!formData?.patient?.gender) {
+      console.log(selectedGender);
+      setGender(selectedGender.toLowerCase());
+      setValue("gender", selectedGender.toLowerCase());
+    } else {
+      setGender(formData?.patient?.gender);
+      setValue("gender", formData?.patient?.gender);
     }
   }, [formData]);
 
