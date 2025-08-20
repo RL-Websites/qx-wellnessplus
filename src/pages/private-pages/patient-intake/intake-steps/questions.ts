@@ -92,4 +92,5 @@ export const questions = [
   { name: "endocrineAutoimmune", label: "Do you have any known endocrine or autoimmune disorders?" },
   { name: "hormoneTherapySupple", label: "Are you currently taking hormone therapy, supplements, or other performance enhancers?" },
   { name: "physicActLevel", label: "What is your typical physical activity level?" },
+  { name: "peptideHealthHistory", label: "Health History (Needed for Peptide Treatments) (Please select all that apply):" },
 ];

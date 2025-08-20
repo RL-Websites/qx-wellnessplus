@@ -1,9 +1,23 @@
 import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
 import { getErrorMessage } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Input, Radio } from "@mantine/core";
+import { Button, Checkbox, Grid, Input, Radio } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
+
+export const pepTideHistoryList = [
+  "None of these",
+  "Pancreatitis",
+  "Medullary thyroid cancer",
+  "Multiple endocrine neoplasia",
+  "Wilson's disease",
+  "MTHFR",
+  "Vitiligo",
+  "Erectile dysfunction",
+  "Growth hormone deficiency",
+  "Growth hormone excess",
+  "Addison's  disease",
+];
 
 export const step17Schema = yup.object({
   peptidePrimaryGoal: yup.string().required("Please mention your primary goal."),
@@ -12,6 +26,7 @@ export const step17Schema = yup.object({
   endocrineAutoimmune: yup.string().required("Please select at least one value."),
   hormoneTherapySupple: yup.string().required("Please select at least one value."),
   physicActLevel: yup.string().required("Please mention your physical activity level."),
+  peptideHealthHistory: yup.string().required("At least one option must be selected"),
 });
 
 export type Step17SchemaType = yup.InferType<typeof step17Schema>;
@@ -39,6 +54,7 @@ const StepSeventeen = ({ onNext, onBack, defaultValues, isLoading = false }: Ste
       endocrineAutoimmune: defaultValues?.endocrineAutoimmune || "",
       hormoneTherapySupple: defaultValues?.hormoneTherapySupple || "",
       physicActLevel: defaultValues?.physicActLevel || "",
+      peptideHealthHistory: defaultValues?.peptideHealthHistory || "",
     },
     resolver: yupResolver(step17Schema),
   });
@@ -47,6 +63,18 @@ const StepSeventeen = ({ onNext, onBack, defaultValues, isLoading = false }: Ste
   const hormoneSensitiveCancers = watch("hormoneSensitiveCancers");
   const endocrineAutoimmune = watch("endocrineAutoimmune");
   const hormoneTherapySupple = watch("hormoneTherapySupple");
+  const selectedHistory = watch("peptideHealthHistory")?.split(", ") || [];
+
+  const toggleHistory = (value: string) => {
+    let updated: string[];
+    if (selectedHistory.includes(value)) {
+      updated = selectedHistory.filter((v) => v !== value);
+    } else {
+      updated = [...selectedHistory, value];
+    }
+    setValue("peptideHealthHistory", updated.join(", "), { shouldValidate: true });
+    clearErrors("peptideHealthHistory");
+  };
 
   const handleSelect = (field: keyof Step17SchemaType, value: string) => {
     setValue(field, value, { shouldValidate: true });
@@ -225,6 +253,43 @@ const StepSeventeen = ({ onNext, onBack, defaultValues, isLoading = false }: Ste
             {...register("physicActLevel")}
           />
         </Input.Wrapper>
+      </div>
+
+      <div>
+        <h3 className="sm:text-2xl text-lg font-semibold text-foreground font-poppins">Health History (Needed for Peptide Treatments) (Select all that apply)</h3>
+        <Grid
+          gutter="md"
+          className="mt-6"
+        >
+          {pepTideHistoryList.map((option) => {
+            const isChecked = selectedHistory.includes(option);
+            return (
+              <Grid.Col
+                span={{ sm: 6 }}
+                key={option}
+              >
+                <div
+                  onClick={() => toggleHistory(option)}
+                  className={`cursor-pointer border rounded-2xl px-6 py-4 flex justify-between items-center transition-all ${
+                    isChecked ? "border-primary bg-white text-black shadow-sm" : "border-grey-medium bg-transparent text-black"
+                  }`}
+                >
+                  <span className="text-base font-medium font-poppins">{option}</span>
+                  <Checkbox
+                    checked={isChecked}
+                    readOnly
+                    size="md"
+                    radius="md"
+                    classNames={{
+                      input: isChecked ? "bg-primary border-primary text-white" : "bg-transparent border-foreground",
+                    }}
+                  />
+                </div>
+              </Grid.Col>
+            );
+          })}
+        </Grid>
+        {errors.peptideHealthHistory && <div className="text-danger text-sm mt-2 text-center">{errors.peptideHealthHistory.message}</div>}
       </div>
 
       <div className="flex justify-center gap-6 pt-6">
