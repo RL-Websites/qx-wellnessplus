@@ -5,7 +5,7 @@ import * as yup from "yup";
 
 // Validation schema
 export const customerStatusSchema = yup.object({
-  customerStatus: yup.string().required("Please select an option."),
+  customerStatus: yup.string().required("Please select customer status"),
 });
 
 export type customerStatusSchemaType = yup.InferType<typeof customerStatusSchema>;

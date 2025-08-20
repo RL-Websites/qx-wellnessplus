@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Group, Radio, Text } from "@mantine/core";
+import { Button, Radio, Text } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -48,7 +48,7 @@ const CardiovascularDisease = ({ onNext, onBack, defaultValues }: ICardiovascula
       <form
         id="cardiovascularDiseaseForm"
         onSubmit={handleSubmit(onSubmit)}
-        className="max-w-xl mx-auto space-y-6"
+        className="card-common-width-lg mx-auto space-y-6"
       >
         <div>
           <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Do you have a history of uncontrolled cardiovascular disease (e.g., unstable angina)?</h2>
@@ -56,9 +56,9 @@ const CardiovascularDisease = ({ onNext, onBack, defaultValues }: ICardiovascula
           <Radio.Group
             value={cardiovascularDisease}
             onChange={handleSelect}
-            className="mt-6"
+            className="mt-6 w-full"
           >
-            <Group grow>
+            <div className="grid md:grid-cols-2 gap-5 w-full">
               {options.map((option) => (
                 <Radio
                   key={option}
@@ -85,7 +85,7 @@ const CardiovascularDisease = ({ onNext, onBack, defaultValues }: ICardiovascula
                   }
                 />
               ))}
-            </Group>
+            </div>
           </Radio.Group>
           {errors.cardiovascularDisease && <Text className="text-red-500 text-sm mt-5 text-center">{errors.cardiovascularDisease.message}</Text>}
         </div>

@@ -58,9 +58,11 @@ const CompleteOrderPage = () => {
       selectedCategory.includes("Hair Growth (Female)")
     ) {
       setHasOthers(true);
+      setHasPeptides(false);
     }
     if (selectedCategory && (selectedCategory?.includes("Peptides Blends") || selectedCategory?.includes("Single Blends"))) {
       setHasPeptides(true);
+      setHasOthers(false);
     }
   }, [selectedCategory]);
 
@@ -111,6 +113,7 @@ const CompleteOrderPage = () => {
   const nextStep = () => {
     const tempNextStep = currentStep + 1;
     setCurrentStep(tempNextStep);
+    scrollTo({ y: 0 });
   };
 
   const prevStep = () => {
