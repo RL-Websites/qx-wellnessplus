@@ -2,6 +2,7 @@
 
 import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
 import { selectedCategoryAtom } from "@/common/states/category.atom";
+import { selectedGenderAtom } from "@/common/states/gender.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Radio, Text } from "@mantine/core";
 import { useAtom } from "jotai";
@@ -22,6 +23,7 @@ interface IGenderPeptidesProps {
 
 export default function GenderPeptides({ onNext, onBack, defaultValues }: IGenderPeptidesProps) {
   const [selectedCategory, setSelectedCategory] = useAtom(selectedCategoryAtom);
+  const [selectedGender, setSelectedGender] = useAtom(selectedGenderAtom);
   const {
     handleSubmit,
     setValue,
@@ -45,6 +47,7 @@ export default function GenderPeptides({ onNext, onBack, defaultValues }: IGende
     }
     setValue("genderPeptides", value, { shouldValidate: true });
     clearErrors("genderPeptides");
+    setSelectedGender(value);
   };
 
   const handleFormSubmit = (data: GenderPeptidesSchemaType) => {

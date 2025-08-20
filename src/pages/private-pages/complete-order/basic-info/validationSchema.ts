@@ -17,6 +17,7 @@ export const basicInfoValidationSchema = yup.object({
   phone: yup
     .string()
     .required(({ label }) => `${label} is required`)
+    .transform((value) => (value ? value.replace(/\D/g, "") : ""))
     .length(10, "Phone number must be 10 digits long")
     .label("Phone number"),
   gender: yup
