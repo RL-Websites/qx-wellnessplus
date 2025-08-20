@@ -40,12 +40,7 @@ const StepOne = ({ onNext, onBack, defaultValues }: IStepOneProps) => {
   const amountOfWeightLoss = watch("amountOfWeightLoss");
   const exerciseTimes = watch("exerciseTimes");
 
-  const primaryGoalOptions = [
-    "Overall health improvement",
-    "Specific weight loss target",
-    "Increased energy",
-    "Was unable to lose weight and I was unable to follow my dietary and exercise goals",
-  ];
+  const primaryGoalOptions = ["Overall health improvement", "Specific weight loss target", "Increased energy", "Improved body composition"];
 
   const weightOptions = ["10-20 lbs", "20-30 lbs", "30-40 lbs", "40-50 lbs", "50+ lbs"];
 

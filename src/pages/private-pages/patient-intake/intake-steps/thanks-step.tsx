@@ -1,14 +1,9 @@
 import { user_id } from "@/common/states/user.atom";
 import { Button } from "@mantine/core";
 import { useAtom } from "jotai";
-import { useEffect } from "react";
 
 const ThanksStep = () => {
   const [userId, setUserId] = useAtom(user_id);
-
-  useEffect(() => {
-    console.log(userId);
-  }, [userId]);
 
   const goToDosvanaDashboard = () => {
     window.open(`${import.meta.env.VITE_DOSVANA_URL}/oauth/${userId}`, "_blank");

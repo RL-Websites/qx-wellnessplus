@@ -10,7 +10,7 @@ import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useAtom, useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import FullBodyPhoto from "./intake-steps/FullbodyPhoto";
 import { questions } from "./intake-steps/questions";
 import StepEight from "./intake-steps/step-eight";
@@ -64,7 +64,7 @@ const categoryStepsMap: Record<string, CategoryConfig> = {
   },
 };
 
-const maleExcludedSteps = [6, 17];
+const maleExcludedSteps = [6, 18];
 
 const PatientIntake = () => {
   const [activeStep, setActiveStep] = useState(1);
@@ -73,7 +73,6 @@ const PatientIntake = () => {
   const [finalStep, setFinalStep] = useState<number>(18);
   const [, scrollTo] = useWindowScroll();
   const [params] = useSearchParams();
-  const navigate = useNavigate();
   const prescriptionUId = params.get("prescription_u_id");
   const selectedCategory = useAtomValue(selectedCategoryAtom);
   const [basicInfo] = useAtom(basicInfoAtom);
@@ -97,9 +96,9 @@ const PatientIntake = () => {
 
     const uniqueSteps = Array.from(new Set(filteredSteps)).sort((a, b) => a - b);
 
-    let calculatedFinalStep = 17; // default for male
+    let calculatedFinalStep = 16; // default for male
     if (basicInfo?.patient?.gender === "female") {
-      calculatedFinalStep = 18;
+      calculatedFinalStep = 17;
     }
 
     if (isPeptideCategory) {
@@ -187,10 +186,15 @@ const PatientIntake = () => {
     const categories = Array.isArray(selectedCategory) ? selectedCategory : selectedCategory ? [selectedCategory] : [];
     const isPeptideCategory = categories.some((category) => ["Single Peptides", "Peptides Blends"].includes(category));
 
+    console.log("Current step:", step);
+    console.log("Final step:", finalStep);
+
     if (isPeptideCategory) {
       return step === 18;
     } else if (categories.includes("Weight Loss")) {
-      return (basicInfo?.patient?.gender === "female" && step === 17) || (basicInfo?.patient?.gender === "male" && step === 16);
+      return (basicInfo?.patient?.gender === "female" && step === 17) || (basicInfo?.patient?.gender === "male" && step === 17);
+    } else if (categories.includes("Testosterone")) {
+      return (basicInfo?.patient?.gender === "female" && step === 17) || (basicInfo?.patient?.gender === "male" && step === 17);
     } else if (categories.includes("Others")) {
       return step === 13;
     }
@@ -213,7 +217,7 @@ const PatientIntake = () => {
 
   return (
     <>
-      {(activeStep !== visibleSteps[0] && activeStep !== 19) || selectedCategory?.includes("Single Peptides") ? (
+      {(activeStep !== visibleSteps[0] && activeStep !== 19) || (selectedCategory?.includes("Single Peptides") && activeStep !== 19) ? (
         <div className="max-w-[520px] mx-auto mb-6">
           <h2 className="heading-text pb-12 text-center">Intake Form</h2>
           <Progress value={progress} />
