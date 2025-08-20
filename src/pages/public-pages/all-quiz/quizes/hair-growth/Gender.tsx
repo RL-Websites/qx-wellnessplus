@@ -2,6 +2,7 @@
 
 import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
 import { selectedCategoryAtom } from "@/common/states/category.atom";
+import { selectedGenderAtom } from "@/common/states/gender.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Group, Radio, Text } from "@mantine/core";
 import { useAtom } from "jotai";
@@ -23,6 +24,7 @@ interface IGenderHairGrowthProps {
 
 export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGenderHairGrowthProps) {
   const [selectedCategory, setSelectedCategory] = useAtom(selectedCategoryAtom);
+  const [selectedGender, setSelectedGender] = useAtom(selectedGenderAtom);
   const {
     handleSubmit,
     setValue,
@@ -48,6 +50,7 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGen
 
     setValue("genderHairGrowth", value, { shouldValidate: true });
     clearErrors("genderHairGrowth");
+    setSelectedGender(value);
   };
 
   // const handleSelect = (value: string) => {
