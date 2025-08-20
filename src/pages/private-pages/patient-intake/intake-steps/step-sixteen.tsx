@@ -273,28 +273,32 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
         <>
           {/* Height and Weight */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <Input.Wrapper
-              label="What was your height when you started the GLP-1 medication? (In inches)"
-              error={getErrorMessage(errors?.heightWhenStartGlp)}
-              classNames={InputErrorMessage}
-            >
-              <Input
-                {...register("heightWhenStartGlp")}
-                className="border-grey rounded-lg"
-              />
-            </Input.Wrapper>
+            <div>
+              <Input.Wrapper
+                label="What was your height when you started the GLP-1 medication? (In inches)"
+                classNames={InputErrorMessage}
+              >
+                <Input
+                  {...register("heightWhenStartGlp")}
+                  className="border-grey rounded-lg"
+                />
+              </Input.Wrapper>
+              {errors?.heightWhenStartGlp?.message && <Text className="text-sm text-red-500 mt-2">{errors.heightWhenStartGlp.message}</Text>}
+            </div>
 
-            <Input.Wrapper
-              label="What was your weight when you started the GLP-1 medication? (In pounds)"
-              error={getErrorMessage(errors?.weightWhenStartGlp)}
-              classNames={InputErrorMessage}
-            >
-              <Input
-                {...register("weightWhenStartGlp")}
-                placeholder="e.g., 170 lbs"
-                className="border-grey rounded-lg"
-              />
-            </Input.Wrapper>
+            <div>
+              <Input.Wrapper
+                label="What was your weight when you started the GLP-1 medication? (In pounds)"
+                classNames={InputErrorMessage}
+              >
+                <Input
+                  {...register("weightWhenStartGlp")}
+                  placeholder="e.g., 170 lbs"
+                  className="border-grey rounded-lg"
+                />
+              </Input.Wrapper>
+              {errors?.weightWhenStartGlp?.message && <Text className="text-sm text-red-500 mt-2">{errors.weightWhenStartGlp.message}</Text>}
+            </div>
           </div>
 
           {/* Current Weight Loss Medication */}
