@@ -1,8 +1,10 @@
+import { heightAtom } from "@/common/states/height.atom";
 import { getErrorMessage } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ActionIcon, Anchor, Button, Image, Input, NumberInput, Text } from "@mantine/core";
 import { Dropzone, MIME_TYPES } from "@mantine/dropzone";
 import { IconCloudUp, IconX } from "@tabler/icons-react";
+import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -34,9 +36,11 @@ interface FullBodyPhotoProps {
 
 const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
   const [fullBodyFile, setFullBodyFile] = useState<File | null>(null);
-  const [height, setHeight] = useState<string>("");
   const [weight, setWeight] = useState<string>("");
+  const [heightFeet, setHeightFeet] = useState<string>("");
+  const [heightInch, setHeightInch] = useState<string>("");
   const [fullBodyBase64, setFullBodyBase64] = useState<string | null>(null);
+  const [heightObj, setHeightObj] = useAtom(heightAtom);
 
   const {
     register,
@@ -47,7 +51,6 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
     formState: { errors },
   } = useForm<fullBodyPhotoSchemaType>({
     resolver: yupResolver(fullBodyPhotoSchema),
-    defaultValues: {},
   });
 
   const fileToBase64 = (file: File, callback: (result: string) => void) => {
@@ -58,13 +61,20 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
   };
 
   useEffect(() => {
-    if (defaultValues && defaultValues?.measurement?.weight) {
+    if (defaultValues?.measurement?.height_feet) {
       setValue("measurement.height_feet", defaultValues.measurement.height_feet);
+      setHeightFeet(defaultValues.measurement.height_feet || "");
       setValue("measurement.height_inch", defaultValues.measurement.height_inch);
+      setHeightInch(defaultValues.measurement.height_inch || "");
       setValue("measurement.weight", defaultValues.measurement.weight);
       setValue("measurement.full_body_image", defaultValues.measurement.full_body_image);
+    } else {
+      setValue("measurement.height_feet", heightObj?.height_feet?.toString() || "");
+      setValue("measurement.height_inch", heightObj?.height_inch?.toString() || "");
+      setHeightFeet(heightObj?.height_feet?.toString() || "");
+      setHeightInch(heightObj?.height_inch?.toString() || "");
     }
-  }, [defaultValues]);
+  }, [defaultValues, heightObj]);
 
   const handleFileUpload = (files: File[]) => {
     if (files.length > 0) {
@@ -107,6 +117,7 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
             <div className="grid grid-cols-2 gap-5">
               <NumberInput
                 placeholder="Feet"
+                value={heightFeet}
                 {...register("measurement.height_feet")}
                 onChange={(value) => {
                   setValue("measurement.height_feet", value.toString());
@@ -121,6 +132,7 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
               />
               <NumberInput
                 placeholder="Inches"
+                value={heightInch}
                 {...register("measurement.height_inch")}
                 onChange={(value) => {
                   setValue("measurement.height_inch", value.toString());
