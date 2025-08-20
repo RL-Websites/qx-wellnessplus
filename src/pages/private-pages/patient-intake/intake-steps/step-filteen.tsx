@@ -16,9 +16,10 @@ interface StepFifteenProps {
   onNext: (data: step15SchemaType) => void;
   onBack: () => void;
   defaultValues?: step15SchemaType;
+  isLoading?: boolean;
 }
 
-const StepFifteen = ({ onNext, onBack, defaultValues }: StepFifteenProps) => {
+const StepFifteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepFifteenProps) => {
   const {
     handleSubmit,
     setValue,
@@ -122,6 +123,7 @@ const StepFifteen = ({ onNext, onBack, defaultValues }: StepFifteenProps) => {
           type="submit"
           className="w-[200px]"
           form="step15Form"
+          loading={isLoading}
         >
           Next
         </Button>
