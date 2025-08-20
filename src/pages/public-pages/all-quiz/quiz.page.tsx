@@ -454,7 +454,7 @@ const QuizPage = () => {
               defaultValues={formData}
             />
           )}
-          {formData.genderPeptides === "Male" && activeStep === 3 && (
+          {selectedGender === "Male" && activeStep === 3 && (
             <HSCancers
               onNext={(data) => {
                 const { eligible, ...rest } = data;
@@ -470,7 +470,7 @@ const QuizPage = () => {
               defaultValues={formData}
             />
           )}
-          {formData.genderPeptides === "Male" && activeStep === 4 && (
+          {selectedGender === "Male" && activeStep === 4 && (
             <CardiovascularDiseasePeptides
               onNext={(data) => {
                 const { eligible, ...rest } = data;
@@ -487,7 +487,7 @@ const QuizPage = () => {
             />
           )}
 
-          {formData.genderPeptides === "Male" && activeStep === 5 && (
+          {selectedGender === "Male" && activeStep === 5 && (
             <KidneyDisease
               onNext={(data) => {
                 const { eligible, ...rest } = data;
@@ -505,7 +505,7 @@ const QuizPage = () => {
           )}
 
           {/* Female Gender */}
-          {formData.genderPeptides === "Female" && activeStep === 3 && (
+          {selectedGender === "Female" && activeStep === 3 && (
             <PregnancyBreastfeeding
               onNext={(data) => {
                 const { eligible, ...rest } = data;
@@ -521,7 +521,7 @@ const QuizPage = () => {
               defaultValues={formData}
             />
           )}
-          {formData.genderPeptides === "Female" && activeStep === 4 && (
+          {selectedGender === "Female" && activeStep === 4 && (
             <Cancers
               onNext={(data) => {
                 const { eligible, ...rest } = data;
@@ -538,7 +538,7 @@ const QuizPage = () => {
             />
           )}
 
-          {formData.genderPeptides === "Female" && activeStep === 5 && (
+          {selectedGender === "Female" && activeStep === 5 && (
             <ThyroidLiverKidneyDisease
               onNext={(data) => {
                 const { eligible, ...rest } = data;
