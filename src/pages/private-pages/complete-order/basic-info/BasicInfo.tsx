@@ -5,6 +5,7 @@ import { BaseWebDatePickerOverrides } from "@/common/configs/baseWebOverrides";
 import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
 import dmlToast from "@/common/configs/toaster.config";
 import { selectedGenderAtom } from "@/common/states/gender.atom";
+import { dobAtom } from "@/common/states/user.atom";
 import { formatDate } from "@/utils/date.utils";
 import { getErrorMessage } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -41,6 +42,7 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
   const [backBase64, setBackBase64] = useState<string | null>(null);
   const [selectedGender, setSelectedGender] = useAtom(selectedGenderAtom);
   const [params] = useSearchParams();
+  const [globalDob, setGlobalDob] = useAtom(dobAtom);
   const prescriptionUId = params.get("prescription_u_id");
   const navigate = useNavigate();
 
@@ -107,8 +109,6 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
         setPhone(tempPatientDetails?.userable?.cell_phone);
 
         setValue("phone", tempPatientDetails?.userable?.cell_phone, { shouldValidate: true });
-        setDob(new Date(tempPatientDetails?.userable?.dob));
-        setValue("dob", [formatDate(tempPatientDetails?.userable?.dob)]);
 
         setAddress(tempPatientDetails?.userable?.address1);
         setValue("address", tempPatientDetails?.userable?.address1);
@@ -139,8 +139,15 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
       }
     }
 
+    if (!userData?.userable?.dob && !formData?.patient?.dob) {
+      setDob(globalDob);
+      setValue("dob", [formatDate(globalDob)]);
+    } else if (userData?.userable?.dob) {
+      setDob(new Date(userData?.userable?.dob));
+      setValue("dob", [formatDate(tempPatientDetails?.userable?.dob)]);
+    }
+
     if (!userData?.userable?.gender) {
-      console.log(selectedGender);
       setGender(selectedGender.toLowerCase());
       setValue("gender", selectedGender.toLowerCase());
     } else {
@@ -156,8 +163,6 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
         setPhone(formData?.patient?.cell_phone);
 
         setValue("phone", formData?.patient?.cell_phone || "", { shouldValidate: true });
-        setDob(new Date(formData?.patient?.dob));
-        setValue("dob", [formatDate(formData?.patient?.dob)]);
 
         setAddress(formData?.patient?.address);
         setValue("address", formData?.patient?.address);
@@ -171,6 +176,14 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
         setBackFile(formData?.patient?.driving_lic_back || "");
         setFrontBase64(formData?.patient?.driving_lic_front || "");
         setBackBase64(formData?.patient?.driving_lic_back || "");
+      }
+
+      if (!formData?.patient?.dob) {
+        setDob(globalDob);
+        setValue("dob", [formatDate(globalDob)]);
+      } else if (formData?.patient?.dob) {
+        setDob(new Date(formData?.patient?.dob));
+        setValue("dob", [formatDate(formData?.patient?.dob)]);
       }
     }
 
