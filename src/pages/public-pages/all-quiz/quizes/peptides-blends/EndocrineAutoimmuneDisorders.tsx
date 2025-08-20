@@ -12,7 +12,7 @@ interface EndocrineAutoimmuneProps {
 const options = ["Yes", "No"];
 
 const schema = yup.object({
-  endocrineAutoimmuneDisorder: yup.string().required("Please select an option."),
+  endocrineAutoimmuneDisorder: yup.string().required("Please select endocrine or autoimmune disorders."),
 });
 
 type EndocrineAutoimmuneFormType = yup.InferType<typeof schema>;

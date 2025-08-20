@@ -1,10 +1,10 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Group, Radio, Text } from "@mantine/core";
+import { Button, Radio, Text } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 export const priapismSchema = yup.object({
-  priapism: yup.string().required("Please select an option."),
+  priapism: yup.string().required("Please select your experienced of priapism."),
 });
 
 export type PriapismSchemaType = yup.InferType<typeof priapismSchema>;
@@ -47,7 +47,7 @@ const Priapism = ({ onNext, onBack, defaultValues }: IPriapismProps) => {
       <form
         id="priapismForm"
         onSubmit={handleSubmit(onSubmit)}
-        className="max-w-xl mx-auto space-y-6"
+        className="card-common-width-lg mx-auto space-y-6"
       >
         <div>
           <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Have you ever experienced priapism lasting &gt; 4 hours?</h2>
@@ -55,9 +55,9 @@ const Priapism = ({ onNext, onBack, defaultValues }: IPriapismProps) => {
           <Radio.Group
             value={priapism}
             onChange={handleSelect}
-            className="mt-6"
+            className="mt-6 w-full"
           >
-            <Group grow>
+            <div className="grid md:grid-cols-2 gap-5 w-full">
               {options.map((option) => (
                 <Radio
                   key={option}
@@ -84,7 +84,7 @@ const Priapism = ({ onNext, onBack, defaultValues }: IPriapismProps) => {
                   }
                 />
               ))}
-            </Group>
+            </div>
           </Radio.Group>
 
           {errors.priapism && <Text className="text-red-500 text-sm mt-5 text-center">{errors.priapism.message}</Text>}

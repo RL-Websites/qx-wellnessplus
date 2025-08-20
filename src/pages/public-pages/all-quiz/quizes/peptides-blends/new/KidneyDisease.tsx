@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Group, Radio, Text } from "@mantine/core";
+import { Button, Radio, Text } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -55,9 +55,9 @@ const KidneyDisease = ({ onNext, onBack, defaultValues }: IKidneyDiseaseProps) =
           <Radio.Group
             value={kidneyDisease}
             onChange={handleSelect}
-            className="mt-6"
+            className="mt-6 w-full"
           >
-            <Group grow>
+            <div className="grid md:grid-cols-2 w-full gap-5">
               {options.map((option) => (
                 <Radio
                   key={option}
@@ -84,7 +84,7 @@ const KidneyDisease = ({ onNext, onBack, defaultValues }: IKidneyDiseaseProps) =
                   }
                 />
               ))}
-            </Group>
+            </div>
           </Radio.Group>
 
           {errors.kidneyDisease && <Text className="text-red-500 text-sm mt-5 text-center">{errors.kidneyDisease.message}</Text>}
