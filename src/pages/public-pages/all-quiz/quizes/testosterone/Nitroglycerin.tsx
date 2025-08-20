@@ -1,10 +1,10 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Group, Radio, Text } from "@mantine/core";
+import { Button, Radio, Text } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 export const nitroglycerinSchema = yup.object({
-  nitroglycerin: yup.string().required("Please select an option."),
+  nitroglycerin: yup.string().required("Please select nitrates or nitroglycerin status"),
 });
 
 export type NitroglycerinSchemaType = yup.InferType<typeof nitroglycerinSchema>;
@@ -47,7 +47,7 @@ const Nitroglycerin = ({ onNext, onBack, defaultValues }: INitroglycerinProps) =
       <form
         id="nitroglycerinForm"
         onSubmit={handleSubmit(onSubmit)}
-        className="max-w-xl mx-auto space-y-6"
+        className="card-common-width-lg mx-auto space-y-6"
       >
         <div>
           <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Are you currently taking nitrates or nitroglycerin? </h2>
@@ -55,9 +55,9 @@ const Nitroglycerin = ({ onNext, onBack, defaultValues }: INitroglycerinProps) =
           <Radio.Group
             value={nitroglycerin}
             onChange={handleSelect}
-            className="mt-6"
+            className="mt-6 w-full"
           >
-            <Group grow>
+            <div className="grid md:grid-cols-2 gap-5 w-full">
               {options.map((option) => (
                 <Radio
                   key={option}
@@ -84,7 +84,7 @@ const Nitroglycerin = ({ onNext, onBack, defaultValues }: INitroglycerinProps) =
                   }
                 />
               ))}
-            </Group>
+            </div>
           </Radio.Group>
 
           {errors.nitroglycerin && <Text className="text-red-500 text-sm mt-5 text-center">{errors.nitroglycerin.message}</Text>}

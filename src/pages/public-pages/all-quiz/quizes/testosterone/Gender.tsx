@@ -3,7 +3,7 @@
 import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
 import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Group, Radio, Text } from "@mantine/core";
+import { Button, Radio, Text } from "@mantine/core";
 import { useAtom } from "jotai";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -62,7 +62,7 @@ export default function GenderTestosterone({ onNext, onBack, defaultValues }: IG
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <h2 className="heading-text text-foreground uppercase text-center">Gender</h2>
 
-      <div className="card-common-width mx-auto mt-10">
+      <div className="card-common-width-lg mx-auto mt-10">
         <form
           id="genderTestosteroneForm"
           onSubmit={handleSubmit(handleFormSubmit)}
@@ -71,9 +71,9 @@ export default function GenderTestosterone({ onNext, onBack, defaultValues }: IG
           <Radio.Group
             value={genderWeightLoss}
             onChange={handleSelect}
-            className="mt-6"
+            className="mt-6 w-full"
           >
-            <Group grow>
+            <div className="grid md:grid-cols-2 gap-5 w-full">
               {options.map((option) => (
                 <Radio
                   key={option}
@@ -91,7 +91,7 @@ export default function GenderTestosterone({ onNext, onBack, defaultValues }: IG
                   }
                 />
               ))}
-            </Group>
+            </div>
           </Radio.Group>
           {errors.genderWeightLoss && <Text className="text-red-500 text-sm mt-5 text-center">Please select your gender.</Text>}
         </form>

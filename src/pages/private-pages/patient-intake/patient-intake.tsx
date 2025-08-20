@@ -39,19 +39,19 @@ interface CategoryConfig {
 
 const categoryStepsMap: Record<string, CategoryConfig> = {
   "Single Peptides": {
-    steps: [1, 10],
-    finalStep: 10,
+    steps: [18],
+    finalStep: 18,
   },
   "Peptides Blends": {
-    steps: [1, 10],
-    finalStep: 10,
+    steps: [18],
+    finalStep: 18,
   },
   "Weight Loss": {
-    steps: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+    steps: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
     finalStep: -1,
   },
   Testosterone: {
-    steps: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+    steps: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
     finalStep: -1,
   },
   "Hair Growth": {
@@ -64,7 +64,7 @@ const categoryStepsMap: Record<string, CategoryConfig> = {
   },
 };
 
-const maleExcludedSteps = [6, 18];
+const maleExcludedSteps = [6, 17];
 
 const PatientIntake = () => {
   const [activeStep, setActiveStep] = useState(1);
@@ -85,7 +85,15 @@ const PatientIntake = () => {
 
     const allSteps = categoriesArray.map((cat) => categoryStepsMap[cat]?.steps || []).flat();
 
-    const filteredSteps = basicInfo?.patient?.gender === "male" ? allSteps.filter((step) => !maleExcludedSteps.includes(step)) : allSteps;
+    // For peptide categories, don't apply gender-based filtering
+    const peptideCategories = ["Single Peptides", "Peptides Blends"];
+    const isPeptideCategory = categoriesArray.some((cat) => peptideCategories.includes(cat));
+
+    const filteredSteps = isPeptideCategory
+      ? allSteps // Don't filter out any steps for peptides
+      : basicInfo?.patient?.gender === "male"
+      ? allSteps.filter((step) => !maleExcludedSteps.includes(step))
+      : allSteps;
 
     const uniqueSteps = Array.from(new Set(filteredSteps)).sort((a, b) => a - b);
 
@@ -94,9 +102,8 @@ const PatientIntake = () => {
       calculatedFinalStep = 18;
     }
 
-    const peptideCategories = ["Single Peptides", "Peptides Blends"];
-    if (categoriesArray.some((cat) => peptideCategories.includes(cat))) {
-      calculatedFinalStep = 10;
+    if (isPeptideCategory) {
+      calculatedFinalStep = 18;
     } else if (categoriesArray.includes("Weight Loss")) {
       // Keep the gender-specific final step
     } else if (categoriesArray[0] && categoryStepsMap[categoriesArray[0]]) {
@@ -138,8 +145,10 @@ const PatientIntake = () => {
 
   const handleFinalSubmit = (data: any) => {
     const tempData = { ...formData, ...data };
-    // const measurement = tempData.measurement;
-    const measurement = { ...tempData.measurement, height: `${tempData.measurement.height_feet}'${tempData.measurement.height_inch}''` };
+    const measurement = {
+      ...tempData.measurement,
+      height: tempData?.measurement?.height_feet ? `${tempData?.measurement?.height_feet}'${tempData?.measurement?.height_inch}''` : undefined,
+    };
 
     const formattedData = questions
       .map((item) =>
@@ -175,9 +184,17 @@ const PatientIntake = () => {
   };
 
   const shouldSubmit = (step: number) => {
-    if (selectedCategory?.includes("Weight Loss")) {
-      return (basicInfo?.patient?.gender === "female" && step === 18) || (basicInfo?.patient?.gender !== "female" && step === 17);
+    const categories = Array.isArray(selectedCategory) ? selectedCategory : selectedCategory ? [selectedCategory] : [];
+    const isPeptideCategory = categories.some((category) => ["Single Peptides", "Peptides Blends"].includes(category));
+
+    if (isPeptideCategory) {
+      return step === 18;
+    } else if (categories.includes("Weight Loss")) {
+      return (basicInfo?.patient?.gender === "female" && step === 17) || (basicInfo?.patient?.gender === "male" && step === 16);
+    } else if (categories.includes("Others")) {
+      return step === 13;
     }
+
     return step === finalStep;
   };
 
@@ -196,7 +213,7 @@ const PatientIntake = () => {
 
   return (
     <>
-      {activeStep !== visibleSteps[0] && activeStep !== 19 ? (
+      {(activeStep !== visibleSteps[0] && activeStep !== 19) || selectedCategory?.includes("Single Peptides") ? (
         <div className="max-w-[520px] mx-auto mb-6">
           <h2 className="heading-text pb-12 text-center">Intake Form</h2>
           <Progress value={progress} />

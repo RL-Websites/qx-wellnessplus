@@ -67,7 +67,7 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGen
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <h2 className="heading-text text-foreground uppercase text-center">Gender</h2>
 
-      <div className="card-common-width mx-auto mt-10">
+      <div className="card-common-width-lg mx-auto mt-10">
         <form
           id="genderHairGrowthForm"
           onSubmit={handleSubmit(onNext)}
