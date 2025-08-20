@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import InEligibleUser from "../ineligible-user/ineligible-user.page";
 
 import { selectedGenderAtom } from "@/common/states/gender.atom";
+import { weightAtom } from "@/common/states/height.atom";
 import GenderHairGrowth from "./quizes/hair-growth/Gender";
 import ScalpInfectionsTwo from "./quizes/hair-growth/ScalpInfectionsTwo";
 import ThyroidDisease from "./quizes/hair-growth/ThyroidDisease";
@@ -56,6 +57,7 @@ const QuizPage = () => {
   const [isHairGrowthMale, setHairGrowthMale] = useState(false);
   const [isHairGrowthFemale, setHairGrowthFemale] = useState(false);
   const [skipInjectionDate, setSkipInjectionDate] = useState(false);
+  const [globalWeight, setGlobalWeight] = useAtom(weightAtom);
 
   const navigate = useNavigate();
 
@@ -195,7 +197,10 @@ const QuizPage = () => {
 
           {activeStep === 4 && (
             <WeightLossWeight
-              onNext={handleNext}
+              onNext={(data) => {
+                setGlobalWeight(data?.weightlossweight);
+                handleNext(data);
+              }}
               onBack={handleBack}
               defaultValues={formData}
             />
