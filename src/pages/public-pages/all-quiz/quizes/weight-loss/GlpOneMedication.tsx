@@ -52,7 +52,7 @@ const GlpOneMedication = ({ onNext, onBack, defaultValues }: GlpOneMedicationPro
       <form
         id="glpOneMedicationForm"
         onSubmit={handleSubmit(onNext)}
-        className="max-w-xl mx-auto space-y-10"
+        className="card-common-width-lg mx-auto space-y-10"
       >
         <Radio.Group
           value={takesGlpOneMedication}
@@ -66,7 +66,7 @@ GLP-1 medication?"
           classNames={{
             root: "sm:!grid !block",
             error: "sm:!text-end !text-start w-full",
-            label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+            label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2 text-center",
           }}
         >
           <div className="grid md:grid-cols-2 gap-5 w-full">
@@ -97,9 +97,13 @@ GLP-1 medication?"
             value={glpOneMedicationDetails}
             onChange={(value) => handleSelect("glpOneMedicationDetails", value)}
             label="Which GLP-1 medication do you use?"
-            classNames={{ label: "!text-3xl  pb-2" }}
+            classNames={{
+              root: " !block mt-6 w-full",
+              error: "sm:!text-end !text-start w-full",
+              label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2 text-center w-full",
+            }}
           >
-            <div className="grid grid-cols-1 gap-5">
+            <div className="grid md:grid-cols-2 gap-5 w-full">
               {glpDetailsOptions.map((option) => (
                 <Radio
                   key={option}
