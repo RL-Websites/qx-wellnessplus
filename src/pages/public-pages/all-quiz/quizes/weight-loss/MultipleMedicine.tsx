@@ -84,6 +84,16 @@ const MultipleMedicine = ({ onNext, onBack, defaultValues }: IMultipleMedicinePr
             </div>
           </Radio.Group>
           {errors.selectedMedicine && <Text className="text-red-500 text-sm mt-5 text-center">{errors.selectedMedicine.message}</Text>}
+          <div className="space-y-2.5 pt-4">
+            <p className="text-xl text-foreground font-medium font-poppins">
+              <span className="font-semibold">Semaglutide:</span> A proven GLP-1 medication that reduces appetite and supports steady weight loss. Often considered a good starting
+              option for beginners.
+            </p>
+            <p className="text-xl text-foreground font-medium font-poppins">
+              <span className="font-semibold">Tirzepatide:</span> A newer dual-action (GLP-1 + GIP) medication that can lead to stronger results. Typically seen as an advanced
+              option for patients seeking greater weight loss.
+            </p>
+          </div>
         </div>
 
         <div className="flex justify-center gap-6 pt-4">

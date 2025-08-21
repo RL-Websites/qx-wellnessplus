@@ -109,7 +109,7 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Input.Wrapper
-            label="Height"
+            label="Current Height"
             required
             className="md:col-span-1 col-span-2"
             styles={{
@@ -156,7 +156,7 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
               root: "sm:!grid !block w-full",
               error: "sm:!text-end !text-start w-full",
             }}
-            label="Weight (lbs)"
+            label="Current Weight (lbs)"
             value={weight}
             {...register("measurement.weight")}
             onChange={(value) => {
