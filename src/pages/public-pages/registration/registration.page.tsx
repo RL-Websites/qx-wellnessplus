@@ -12,7 +12,7 @@ import { AxiosError } from "axios";
 import { useAtom } from "jotai";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 
 const registrationSchema = yup.object({
@@ -189,6 +189,17 @@ const RegistrationPage = () => {
           >
             Register Now
           </Button>
+
+          <p className="text-xl text-primary font-semibold mt-8">
+            <span className="font-normal">Already have an account? </span>
+
+            <Link
+              to="/login"
+              className="text-foreground underline"
+            >
+              Please Login
+            </Link>
+          </p>
         </div>
       </form>
     </div>

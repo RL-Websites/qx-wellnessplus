@@ -2,6 +2,9 @@ import { RouteObject } from "react-router-dom";
 import QuizPage from "./all-quiz/quiz.page";
 
 import CategoryPage from "./category/category.page";
+
+import ChangePasswordPage from "./forgot-password/change-password.page";
+import ForgetPasswordPage from "./forgot-password/forgot-password.page";
 import IneligibleUser from "./ineligible-user/ineligible-user.page";
 import LoadingPage from "./loading/loading.page";
 import Login from "./login/login.page";
@@ -25,6 +28,14 @@ export const PublicPagesRoute: RouteObject[] = [
   {
     path: "registration",
     element: <RegistrationPage />,
+  },
+  {
+    path: "forgot-password",
+    element: <ForgetPasswordPage />,
+  },
+  {
+    path: "change-password",
+    element: <ChangePasswordPage />,
   },
   {
     path: "loading",

@@ -6,13 +6,14 @@ import useAuthToken from "@/common/hooks/useAuthToken";
 import { cartItemsAtom } from "@/common/states/product.atom";
 import { user_id, userAtom } from "@/common/states/user.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Input, PasswordInput } from "@mantine/core";
+import { Button, Checkbox, Input, PasswordInput } from "@mantine/core";
+
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, NavLink as RdNavLink, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import * as yup from "yup";
 
 const loginSchema = yup.object({
@@ -104,15 +105,20 @@ const Login = () => {
     });
   };
 
+  const handleCheckboxChange = (checked: boolean) => {};
+
   return (
     <div className="lg:pt-16 md:pt-10 pt-4">
       <h2 className="heading-text  text-foreground uppercase  text-center">Login</h2>
       <form
-        className="w-full "
+        className="w-full"
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="card-common card-common-width flex flex-col lg:gap-7 md:gap-5 gap-3">
-          <p className="font-semibold lg:text-3xl md:text-xl text-base text-foreground ">Login Details</p>
+          <div className="flex flex-col gap-2.5">
+            <p className="font-semibold lg:text-4xl md:text-xl text-base text-foreground ">Returning Customer</p>
+            <p className="text-sm md:text-base lg:text-2xl font-semibold">Log in to confirm your journey</p>
+          </div>
 
           <Input.Wrapper
             label="Email Address"
@@ -141,16 +147,49 @@ const Login = () => {
               {...register("password")}
             />
           </Input.Wrapper>
+          <Checkbox
+            checked={true}
+            label="Remember me"
+            onChange={(event) => handleCheckboxChange(event.currentTarget.checked)}
+          />
         </div>
-        <div className="text-center mt-10">
-          <Button
-            size="md"
-            type="submit"
-            className="bg-primary text-white rounded-xl lg:w-[206px]"
-            loading={LoginMutation.isPending}
-          >
-            Login
-          </Button>
+        <div className=" card-common-width  mx-auto  mt-10">
+          <div className="flex justify-between gap-6">
+            <Button
+              variant="outline"
+              className="w-[200px]"
+              component={RdNavLink}
+              to={`/`}
+            >
+              Back
+            </Button>
+            <Button
+              size="md"
+              type="submit"
+              className="bg-primary text-white rounded-xl lg:w-[206px]"
+              loading={LoginMutation.isPending}
+            >
+              Login
+            </Button>
+          </div>
+          <div className="mt-10 text-center">
+            <Link
+              to="/forgot-password"
+              className="text-foreground underline"
+            >
+              Forgot Password
+            </Link>
+            <p className="text-xl text-primary font-semibold mt-8">
+              <span className="font-normal">First-time Visitor? </span>
+
+              <Link
+                to="/registration"
+                className="text-foreground underline"
+              >
+                Create an account
+              </Link>
+            </p>
+          </div>
         </div>
       </form>
     </div>
