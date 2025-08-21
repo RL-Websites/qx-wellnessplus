@@ -113,7 +113,10 @@ const Login = () => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="card-common card-common-width flex flex-col lg:gap-7 md:gap-5 gap-3">
-          <p className="font-semibold lg:text-3xl md:text-xl text-base text-foreground ">Login Details</p>
+          <div className="flex flex-col gap-2.5">
+            <p className="font-semibold lg:text-4xl md:text-xl text-base text-foreground ">Returning Customer</p>
+            <p className="text-sm md:text-base lg:text-2xl font-semibold">Log in to confirm your journey</p>
+          </div>
 
           <Input.Wrapper
             label="Email Address"
