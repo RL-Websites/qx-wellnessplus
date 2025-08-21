@@ -6,7 +6,7 @@ import useAuthToken from "@/common/hooks/useAuthToken";
 import { cartItemsAtom } from "@/common/states/product.atom";
 import { user_id, userAtom } from "@/common/states/user.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Checkbox, Input, PasswordInput } from "@mantine/core";
+import { Button, Input, PasswordInput } from "@mantine/core";
 
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
@@ -105,8 +105,6 @@ const Login = () => {
     });
   };
 
-  const handleCheckboxChange = (checked: boolean) => {};
-
   return (
     <div className="lg:pt-16 md:pt-10 pt-4">
       <h2 className="heading-text  text-foreground uppercase  text-center">Login</h2>
@@ -115,10 +113,7 @@ const Login = () => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="card-common card-common-width flex flex-col lg:gap-7 md:gap-5 gap-3">
-          <div className="flex flex-col gap-2.5">
-            <p className="font-semibold lg:text-4xl md:text-xl text-base text-foreground ">Returning Customer</p>
-            <p className="text-sm md:text-base lg:text-2xl font-semibold">Log in to confirm your journey</p>
-          </div>
+          <p className="font-semibold lg:text-3xl md:text-xl text-base text-foreground ">Login Details</p>
 
           <Input.Wrapper
             label="Email Address"
@@ -147,14 +142,9 @@ const Login = () => {
               {...register("password")}
             />
           </Input.Wrapper>
-          <Checkbox
-            checked={true}
-            label="Remember me"
-            onChange={(event) => handleCheckboxChange(event.currentTarget.checked)}
-          />
         </div>
         <div className=" card-common-width  mx-auto  mt-10">
-          <div className="flex justify-center gap-6">
+          <div className="flex justify-center ">
             <Button
               size="md"
               type="submit"
@@ -164,21 +154,21 @@ const Login = () => {
               Login
             </Button>
           </div>
-          <div className="mt-10 text-center">
+          <div className="mt-5 text-center">
             <Link
               to="/forgot-password"
-              className="text-foreground underline"
+              className="text-primary underline font-medium"
             >
               Forgot Password
             </Link>
-            <p className="text-xl text-primary font-semibold mt-8">
+            <p className="text-xl text-foreground font-semibold mt-3">
               <span className="font-normal">First-time Visitor? </span>
 
               <Link
                 to="/registration"
-                className="text-foreground underline"
+                className="text-primary underline"
               >
-                Create an account
+                Register now
               </Link>
             </p>
           </div>

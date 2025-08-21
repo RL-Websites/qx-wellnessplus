@@ -190,12 +190,12 @@ const RegistrationPage = () => {
             Register Now
           </Button>
 
-          <p className="text-xl text-primary font-semibold mt-8">
+          <p className="text-xl text-foreground font-semibold mt-5">
             <span className="font-normal">Already have an account? </span>
 
             <Link
               to="/login"
-              className="text-foreground underline"
+              className="text-primary underline"
             >
               Please Login
             </Link>
