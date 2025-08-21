@@ -41,7 +41,7 @@ const WeightLossGoal = ({ onNext, onBack, defaultValues }: IWeightLossGoalProps)
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <div className="card-common-width mx-auto">
-        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">What is your weight loss goal?</h2>
+        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">What is your ideal target weight?</h2>
         <form
           id="weightLossGoalForm"
           onSubmit={handleSubmit(onNext)}
