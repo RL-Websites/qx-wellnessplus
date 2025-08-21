@@ -226,7 +226,10 @@ const PatientIntake = () => {
           </div>
         </div>
       ) : activeStep === visibleSteps[0] ? (
-        <h2 className="heading-text text-foreground uppercase text-center">help us better understand</h2>
+        <div className="text-center">
+          <h2 className="heading-text text-foreground uppercase">Let's Get to Know You Better</h2>
+          <p className="text-foreground text-xl font-medium font-poppins pt-2.5">Tell us a little about your current stats so we can tailor your plan.</p>
+        </div>
       ) : null}
 
       {/* Render all steps */}

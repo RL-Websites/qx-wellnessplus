@@ -42,7 +42,7 @@ export default function InjectionDate({ onNext, onBack, defaultValues }: IInject
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
-      <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">When was your last injection?</h2>
+      <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">When was the last time you used your medication?</h2>
       <div className="card-common card-common-width relative z-10">
         <form
           id="injectionDateForm"
@@ -50,7 +50,7 @@ export default function InjectionDate({ onNext, onBack, defaultValues }: IInject
           onSubmit={handleSubmit(onNext)}
         >
           <Input.Wrapper
-            label="Injection Date"
+            label="Medication Date"
             error={getErrorMessage(errors.injection_date)}
             withAsterisk
             classNames={InputErrorMessage}
