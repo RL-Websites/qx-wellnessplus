@@ -218,11 +218,19 @@ const PatientIntake = () => {
   return (
     <>
       {(activeStep !== visibleSteps[0] && activeStep !== 19) || (selectedCategory?.includes("Single Peptides") && activeStep !== 19) ? (
-        <div className="max-w-[520px] mx-auto mb-6">
-          <h2 className="heading-text pb-12 text-center">Intake Form</h2>
-          <Progress value={progress} />
-          <div className="text-center text-base text-foreground font-bold mt-3">
-            {progressSteps.indexOf(activeStep) + 1} / {progressSteps.length}
+        <div className="  mb-6">
+          <div className="max-w-[800px] mx-auto pb-12">
+            <h2 className="heading-text  text-center">Intake Form</h2>
+            <p className="text-foreground text-center text-lg font-medium font-poppins pt-5">
+              An intake form is a short questionnaire that collects your health details for review by our licensed providers. Please answer all questions as clearly and accurately
+              as possible. This helps our licensed providers review your information faster and ensures safe, personalized treatment.
+            </p>
+          </div>
+          <div className="max-w-[520px] mx-auto">
+            <Progress value={progress} />
+            <div className="text-center text-base text-foreground font-bold mt-3">
+              {progressSteps.indexOf(activeStep) + 1} / {progressSteps.length}
+            </div>
           </div>
         </div>
       ) : activeStep === visibleSteps[0] ? (

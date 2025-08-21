@@ -4,7 +4,7 @@ import dmlToast from "@/common/configs/toaster.config";
 import { compressFileToBase64 } from "@/utils/fileUpload";
 import { getErrorMessage } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Input, Radio } from "@mantine/core";
+import { Anchor, Button, Input, Radio, Text } from "@mantine/core";
 import { Dropzone, MIME_TYPES } from "@mantine/dropzone";
 import { IconUpload } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
@@ -301,11 +301,10 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
               }}
             >
               <div className="flex flex-col items-center justify-center h-full pointer-events-none">
-                <IconUpload
-                  style={{ width: 52, height: 52 }}
-                  stroke={1.5}
-                />
-                <span>Drag & drop or click to upload</span>
+                <i className="icon-document-upload text-[52px] text-grey" />
+                <Text className="font-semibold text-grey">Drag & drop or click to upload</Text>
+                <div className="d-inline-flex leading-none text-sm">or</div>
+                <Anchor className="underline">Browse Files</Anchor>
               </div>
             </Dropzone>
           ) : (
@@ -375,6 +374,13 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
                   style={{ width: 52, height: 52 }}
                   stroke={1.5}
                 />
+
+                <i className="icon-document-upload text-[52px] text-grey"></i>
+                <i className="icon-document-upload text-[52px] text-grey" />
+                <Text className="font-semibold text-grey">Drag & drop or click to upload</Text>
+                <div className="d-inline-flex leading-none text-sm">or</div>
+                <Anchor className="underline">Browse Files</Anchor>
+
                 <span>Drag & drop or click to upload</span>
               </div>
             </Dropzone>
