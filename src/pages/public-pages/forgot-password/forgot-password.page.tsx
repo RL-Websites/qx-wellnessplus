@@ -37,7 +37,7 @@ const ForgetPasswordPage = () => {
   });
 
   const onSubmit = (data: ForgetPasswordSchemaType) => {
-    const payload = { email: data.email };
+    const payload = { email: data.email, domain_app: "dosvana_qx" };
     forgetMutation.mutate(payload, {
       onSuccess: (res) => {
         dmlToast.success({
