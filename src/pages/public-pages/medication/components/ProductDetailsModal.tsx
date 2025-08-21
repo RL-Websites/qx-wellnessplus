@@ -25,6 +25,7 @@ interface IProductDetailsModalProps {
     unit?: string;
     is_research_only?: number;
     total_price?: string;
+    customer_medication?: { price?: string };
   } | null;
 }
 
@@ -103,28 +104,8 @@ function ProductDetailsModal({ openModal, onModalClose, medicationDetails }: IPr
                 <p className="text-fs-md">{medicationDetails?.is_research_only === 1 ? "Yes" : "No"}</p>
               </div>
               <div className="space-y-2">
-                <h6 className="text-fs-sp font-semibold">Doctor Fee :</h6>
-                <p className="text-fs-md">${medicationDetails?.doctor_fee || "N/A"}</p>
-              </div>
-              <div className="space-y-2">
-                <h6 className="text-fs-sp font-semibold">Price :</h6>
-                <p className="text-fs-md">${medicationDetails?.price || "N/A"}</p>
-              </div>
-              <div className="space-y-2">
-                <h6 className="text-fs-sp font-semibold">Shipping Fee :</h6>
-                <p className="text-fs-md">${medicationDetails?.shipping_fee || "N/A"}</p>
-              </div>
-              <div className="space-y-2">
-                <h6 className="text-fs-sp font-semibold">Stripe Fee :</h6>
-                <p className="text-fs-md">${medicationDetails?.stripe_fee || "N/A"}</p>
-              </div>
-              <div className="space-y-2">
-                <h6 className="text-fs-sp font-semibold">Service Fee :</h6>
-                <p className="text-fs-md">${medicationDetails?.service_fee || "N/A"}</p>
-              </div>
-              <div className="space-y-2">
-                <h6 className="text-fs-sp font-semibold">Lab Fee :</h6>
-                <p className="text-fs-md">${medicationDetails?.lab_fee || "N/A"}</p>
+                <h6 className="text-fs-sp font-semibold">Package Total :</h6>
+                <p className="text-fs-md">${medicationDetails?.customer_medication?.price}</p>
               </div>
             </div>
           </div>

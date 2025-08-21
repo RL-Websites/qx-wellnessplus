@@ -58,6 +58,11 @@ export default function DateOfBirth({ onNext, onBack, defaultValues }: IDobProps
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <h2 className="heading-text text-foreground uppercase text-center">Date of Birth</h2>
+      {selectedCategory?.includes("Testosterone") ? (
+        <p className="text-xl text-foreground font-poppins text-center pt-5">For Testosterone Therapy, you must be {ageLimit} years or older.</p>
+      ) : (
+        <p className="text-xl text-foreground font-poppins text-center pt-5">We cannot prescribe any medication if you are under {ageLimit} years old</p>
+      )}
       <div className="card-common card-common-width relative z-10">
         <form
           id="dobForm"

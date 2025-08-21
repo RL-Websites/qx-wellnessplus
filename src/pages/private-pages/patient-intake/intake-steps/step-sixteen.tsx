@@ -5,9 +5,8 @@ import dmlToast from "@/common/configs/toaster.config";
 import { compressFileToBase64 } from "@/utils/fileUpload";
 import { getErrorMessage } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Checkbox, Grid, Input, Radio, Text } from "@mantine/core";
+import { Anchor, Button, Checkbox, Grid, Input, Radio, Text } from "@mantine/core";
 import { Dropzone, MIME_TYPES } from "@mantine/dropzone";
-import { IconUpload } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -273,28 +272,32 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
         <>
           {/* Height and Weight */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <Input.Wrapper
-              label="What was your height when you started the GLP-1 medication? (In inches)"
-              error={getErrorMessage(errors?.heightWhenStartGlp)}
-              classNames={InputErrorMessage}
-            >
-              <Input
-                {...register("heightWhenStartGlp")}
-                className="border-grey rounded-lg"
-              />
-            </Input.Wrapper>
+            <div>
+              <Input.Wrapper
+                label="What was your height when you started the GLP-1 medication? (In inches)"
+                classNames={InputErrorMessage}
+              >
+                <Input
+                  {...register("heightWhenStartGlp")}
+                  className="border-grey rounded-lg"
+                />
+              </Input.Wrapper>
+              {errors?.heightWhenStartGlp?.message && <Text className="text-sm text-red-500 mt-2">{errors.heightWhenStartGlp.message}</Text>}
+            </div>
 
-            <Input.Wrapper
-              label="What was your weight when you started the GLP-1 medication? (In pounds)"
-              error={getErrorMessage(errors?.weightWhenStartGlp)}
-              classNames={InputErrorMessage}
-            >
-              <Input
-                {...register("weightWhenStartGlp")}
-                placeholder="e.g., 170 lbs"
-                className="border-grey rounded-lg"
-              />
-            </Input.Wrapper>
+            <div>
+              <Input.Wrapper
+                label="What was your weight when you started the GLP-1 medication? (In pounds)"
+                classNames={InputErrorMessage}
+              >
+                <Input
+                  {...register("weightWhenStartGlp")}
+                  placeholder="e.g., 170 lbs"
+                  className="border-grey rounded-lg"
+                />
+              </Input.Wrapper>
+              {errors?.weightWhenStartGlp?.message && <Text className="text-sm text-red-500 mt-2">{errors.weightWhenStartGlp.message}</Text>}
+            </div>
           </div>
 
           {/* Current Weight Loss Medication */}
@@ -446,11 +449,10 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                       className="border-dashed border-gray-300 rounded-lg bg-gray-50 min-h-[220px] flex items-center justify-center"
                     >
                       <div className="flex flex-col items-center gap-4">
-                        <IconUpload
-                          size={52}
-                          stroke={1.5}
-                        />
-                        <Text>Drag & drop or click to upload</Text>
+                        <i className="icon-document-upload text-[52px] text-grey" />
+                        <Text className="font-semibold text-grey">Drag & drop or click to upload</Text>
+                        <div className="d-inline-flex leading-none text-sm">or</div>
+                        <Anchor className="underline">Browse Files</Anchor>
                       </div>
                     </Dropzone>
                   ) : (
@@ -567,11 +569,10 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                       className="border-dashed border-gray-300 rounded-lg bg-gray-50 min-h-[220px] flex items-center justify-center"
                     >
                       <div className="flex flex-col items-center gap-4">
-                        <IconUpload
-                          size={52}
-                          stroke={1.5}
-                        />
-                        <Text>Drag & drop or click to upload</Text>
+                        <i className="icon-document-upload text-[52px] text-grey" />
+                        <Text className="font-semibold text-grey">Drag & drop or click to upload</Text>
+                        <div className="d-inline-flex leading-none text-sm">or</div>
+                        <Anchor className="underline">Browse Files</Anchor>
                       </div>
                     </Dropzone>
                   ) : (
@@ -1137,11 +1138,10 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                       className="border-dashed border-gray-300 rounded-lg bg-gray-50 min-h-[220px] flex items-center justify-center"
                     >
                       <div className="flex flex-col items-center gap-4">
-                        <IconUpload
-                          size={52}
-                          stroke={1.5}
-                        />
-                        <Text>Drag & drop or click to upload</Text>
+                        <i className="icon-document-upload text-[52px] text-grey" />
+                        <Text className="font-semibold text-grey">Drag & drop or click to upload</Text>
+                        <div className="d-inline-flex leading-none text-sm">or</div>
+                        <Anchor className="underline">Browse Files</Anchor>
                       </div>
                     </Dropzone>
                   ) : (
@@ -1258,11 +1258,10 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                       className="border-dashed border-gray-300 rounded-lg bg-gray-50 min-h-[220px] flex items-center justify-center"
                     >
                       <div className="flex flex-col items-center gap-4">
-                        <IconUpload
-                          size={52}
-                          stroke={1.5}
-                        />
-                        <Text>Drag & drop or click to upload</Text>
+                        <i className="icon-document-upload text-[52px] text-grey" />
+                        <Text className="font-semibold text-grey">Drag & drop or click to upload</Text>
+                        <div className="d-inline-flex leading-none text-sm">or</div>
+                        <Anchor className="underline">Browse Files</Anchor>
                       </div>
                     </Dropzone>
                   ) : (
