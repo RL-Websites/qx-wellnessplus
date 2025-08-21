@@ -3,7 +3,7 @@ import { getErrorMessage } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ActionIcon, Anchor, Button, Image, Input, NumberInput, Text } from "@mantine/core";
 import { Dropzone, MIME_TYPES } from "@mantine/dropzone";
-import { IconCloudUp, IconX } from "@tabler/icons-react";
+import { IconX } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -223,7 +223,7 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
               {!fullBodyFile ? (
                 <div className="pointer-events-none h-full flex justify-center">
                   <div className="flex flex-col items-center justify-center h-full">
-                    <IconCloudUp size={30} />
+                    <i className="icon-document-upload text-[52px] text-grey"></i>
                     <h6 className="text-grey-medium font-semibold">Drag and Drop Here</h6>
                     <span className="text-grey-medium text-base font-medium">Or</span>
                     <Anchor

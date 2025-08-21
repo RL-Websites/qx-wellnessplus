@@ -94,7 +94,7 @@ const ForgetPasswordPage = () => {
                       variant="outline"
                       className="w-[200px]"
                       component={RdNavLink}
-                      to={`/medications`}
+                      to={`/login`}
                     >
                       Back
                     </Button>

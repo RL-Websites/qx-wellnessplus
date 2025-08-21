@@ -118,7 +118,7 @@ const ChangePasswordPage = () => {
               variant="outline"
               className="w-[200px]"
               component={RdNavLink}
-              to={`/login`}
+              to={`/forgot-password`}
             >
               Back
             </Button>
