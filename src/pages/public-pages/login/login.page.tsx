@@ -13,7 +13,7 @@ import { AxiosError } from "axios";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, NavLink as RdNavLink, useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import * as yup from "yup";
 
 const loginSchema = yup.object({
@@ -154,15 +154,7 @@ const Login = () => {
           />
         </div>
         <div className=" card-common-width  mx-auto  mt-10">
-          <div className="flex justify-between gap-6">
-            <Button
-              variant="outline"
-              className="w-[200px]"
-              component={RdNavLink}
-              to={`/`}
-            >
-              Back
-            </Button>
+          <div className="flex justify-center gap-6">
             <Button
               size="md"
               type="submit"
