@@ -20,6 +20,7 @@ export interface IRegistrationRequestPayload {
 
 export interface IForgetPassPayload {
   email: string;
+  domain_app: string;
 }
 
 export interface IResetPasswordPayload {

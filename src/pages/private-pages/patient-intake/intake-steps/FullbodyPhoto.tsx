@@ -3,7 +3,7 @@ import { getErrorMessage } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ActionIcon, Anchor, Button, Image, Input, NumberInput, Text } from "@mantine/core";
 import { Dropzone, MIME_TYPES } from "@mantine/dropzone";
-import { IconCloudUp, IconX } from "@tabler/icons-react";
+import { IconX } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -109,7 +109,7 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Input.Wrapper
-            label="Height"
+            label="Current Height"
             required
             className="md:col-span-1 col-span-2"
             styles={{
@@ -156,7 +156,7 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
               root: "sm:!grid !block w-full",
               error: "sm:!text-end !text-start w-full",
             }}
-            label="Weight (lbs)"
+            label="Current Weight (lbs)"
             value={weight}
             {...register("measurement.weight")}
             onChange={(value) => {
@@ -223,7 +223,7 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
               {!fullBodyFile ? (
                 <div className="pointer-events-none h-full flex justify-center">
                   <div className="flex flex-col items-center justify-center h-full">
-                    <IconCloudUp size={30} />
+                    <i className="icon-document-upload text-[52px] text-grey"></i>
                     <h6 className="text-grey-medium font-semibold">Drag and Drop Here</h6>
                     <span className="text-grey-medium text-base font-medium">Or</span>
                     <Anchor

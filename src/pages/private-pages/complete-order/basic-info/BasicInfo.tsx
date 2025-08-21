@@ -149,8 +149,8 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
     }
 
     if (!userData?.userable?.gender) {
-      setGender(selectedGender.toLowerCase());
-      setValue("gender", selectedGender.toLowerCase());
+      setGender(selectedGender);
+      setValue("gender", selectedGender);
     } else {
       setGender(userData?.userable?.gender);
       setValue("gender", userData?.userable?.gender);
@@ -190,8 +190,8 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
 
     if (!formData?.patient?.gender) {
       console.log(selectedGender);
-      setGender(selectedGender.toLowerCase());
-      setValue("gender", selectedGender.toLowerCase());
+      setGender(selectedGender);
+      setValue("gender", selectedGender);
     } else {
       setGender(formData?.patient?.gender);
       setValue("gender", formData?.patient?.gender);
@@ -317,13 +317,13 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
               className="flex justify-between md:gap-7 gap-3 w-full"
             >
               <Radio
-                value="male"
+                value="Male"
                 label="Male"
                 color="dark"
                 {...register("gender")}
               />
               <Radio
-                value="female"
+                value="Female"
                 label="Female"
                 color="dark"
                 {...register("gender")}

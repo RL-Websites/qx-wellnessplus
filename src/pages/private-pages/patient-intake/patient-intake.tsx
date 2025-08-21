@@ -4,6 +4,7 @@ import orderApiRepository from "@/common/api/repositories/orderRepository";
 import dmlToast from "@/common/configs/toaster.config";
 import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { basicInfoAtom } from "@/common/states/customerBasic.atom";
+import StepFifteen from "@/pages/step-filteen";
 import { Progress } from "@mantine/core";
 import { useWindowScroll } from "@mantine/hooks";
 import { useMutation } from "@tanstack/react-query";
@@ -14,7 +15,6 @@ import { useSearchParams } from "react-router-dom";
 import FullBodyPhoto from "./intake-steps/FullbodyPhoto";
 import { questions } from "./intake-steps/questions";
 import StepEight from "./intake-steps/step-eight";
-import StepFifteen from "./intake-steps/step-filteen";
 import StepFive from "./intake-steps/step-five";
 import StepFour from "./intake-steps/step-four";
 import StepFourteen from "./intake-steps/step-fourteen";
@@ -218,15 +218,26 @@ const PatientIntake = () => {
   return (
     <>
       {(activeStep !== visibleSteps[0] && activeStep !== 19) || (selectedCategory?.includes("Single Peptides") && activeStep !== 19) ? (
-        <div className="max-w-[520px] mx-auto mb-6">
-          <h2 className="heading-text pb-12 text-center">Intake Form</h2>
-          <Progress value={progress} />
-          <div className="text-center text-base text-foreground font-bold mt-3">
-            {progressSteps.indexOf(activeStep) + 1} / {progressSteps.length}
+        <div className="  mb-6">
+          <div className="max-w-[800px] mx-auto pb-12">
+            <h2 className="heading-text  text-center">Intake Form</h2>
+            <p className="text-foreground text-center text-lg font-medium font-poppins pt-5">
+              An intake form is a short questionnaire that collects your health details for review by our licensed providers. Please answer all questions as clearly and accurately
+              as possible. This helps our licensed providers review your information faster and ensures safe, personalized treatment.
+            </p>
+          </div>
+          <div className="max-w-[520px] mx-auto">
+            <Progress value={progress} />
+            <div className="text-center text-base text-foreground font-bold mt-3">
+              {progressSteps.indexOf(activeStep) + 1} / {progressSteps.length}
+            </div>
           </div>
         </div>
       ) : activeStep === visibleSteps[0] ? (
-        <h2 className="heading-text text-foreground uppercase text-center">help us better understand</h2>
+        <div className="text-center">
+          <h2 className="heading-text text-foreground uppercase">Let's Get to Know You Better</h2>
+          <p className="text-foreground text-xl font-medium font-poppins pt-2.5">Tell us a little about your current stats so we can tailor your plan.</p>
+        </div>
       ) : null}
 
       {/* Render all steps */}

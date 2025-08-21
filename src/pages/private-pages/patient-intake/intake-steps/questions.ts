@@ -1,6 +1,14 @@
 export const questions = [
   { name: "primaryGoal", label: "What is your primary goal for weight loss?" },
   { name: "amountOfWeightLoss", label: "How much weight would you like to lose?" },
+  { name: "hasAllergy", label: "Do you have any allergy?" },
+  { name: "nameAllergy", label: "Please list any allergies you have (example: Sneezing, Runny Nose, Skin Rash, Difficulty Breathing and etc.):" },
+  { name: "prescribed", label: "Do you take any prescribed medications?" },
+  {
+    name: "medicines",
+    label:
+      "Please specify what medications have you taken?  (Example: [medication name] - [dosage] - [duration], [medication name] - [dosage] - [duration]. If unknown, write 'unknown')",
+  },
   { name: "exerciseTimes", label: "How often do you exercise?" },
   { name: "doesDiet", label: "Are you willing to follow a weight loss dietary plan/reduce calories and exercise?" },
   { name: "agreeGlpExercise", label: "I acknowledge that GLP medications are most effective when used in conjunction with exercise." },
