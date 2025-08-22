@@ -1,5 +1,4 @@
 import { Button } from "@mantine/core";
-import ThumbBg from "./ThumbBg";
 
 interface IMedicationProps {
   image: string;
@@ -18,13 +17,13 @@ const MedicationCard = (medicationProps: IMedicationProps) => {
         onClick={medicationProps?.onShowDetails}
       >
         {medicationProps.image && (
-          <ThumbBg>
+          <div className="rounded-[20px] flex justify-center overflow-hidden">
             <img
               src={medicationProps?.image}
               alt=""
-              className="max-w-full h-[250px] mx-auto"
+              className="max-w-full min-h-[326px] mx-auto"
             />
-          </ThumbBg>
+          </div>
         )}
         {medicationProps?.title && (
           <h4 className="md:text-2xl sm:text-xl text-lg font-poppins leading-snug font-semibold text-foreground md:h-16 sm:h-8 line-clamp-2">{medicationProps?.title}</h4>
