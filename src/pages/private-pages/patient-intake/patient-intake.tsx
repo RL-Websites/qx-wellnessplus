@@ -13,6 +13,10 @@ import { useAtom, useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import FullBodyPhoto from "./intake-steps/FullbodyPhoto";
+
+import MedicalHistory from "./intake-steps/hair-growth/medicalHistory";
+import SymptomHistory from "./intake-steps/hair-growth/symptomHistory";
+import WhenNotice from "./intake-steps/hair-growth/whenNotice";
 import { questions } from "./intake-steps/questions";
 import StepEight from "./intake-steps/step-eight";
 import StepFive from "./intake-steps/step-five";
@@ -30,6 +34,9 @@ import StepThree from "./intake-steps/step-three";
 import StepTwelve from "./intake-steps/step-twelve";
 import StepTwo from "./intake-steps/step-two";
 import StepEleven from "./intake-steps/step.eleven";
+import TestosteroneStepOne from "./intake-steps/testosterone/testosteroneStepOne";
+import TestosteroneStepThree from "./intake-steps/testosterone/testosteroneStepThree";
+import TestosteroneStepTwo from "./intake-steps/testosterone/testosteroneStepTwo";
 import ThanksStep from "./intake-steps/thanks-step";
 
 interface CategoryConfig {
@@ -76,6 +83,12 @@ const PatientIntake = () => {
     { component: StepFifteen, categories: ["weightLoss"] },
     { component: StepSixteen, categories: ["weightLoss"] },
     { component: StepSeventeen, categories: ["peptides"] },
+    { component: TestosteroneStepOne, categories: ["testosterone"] },
+    { component: TestosteroneStepTwo, categories: ["testosterone"] },
+    { component: TestosteroneStepThree, categories: ["testosterone"] },
+    { component: WhenNotice, categories: ["hairGrowth"] },
+    { component: MedicalHistory, categories: ["hairGrowth"] },
+    { component: SymptomHistory, categories: ["hairGrowth"] },
 
     // TODO: add Testosterone-specific steps
     // { component: StepX, categories: ["Testosterone"] },
@@ -91,7 +104,7 @@ const PatientIntake = () => {
     const categories: string[] = [];
     if (medicationCats.some((cat) => ["Single Peptides", "Peptides Blends"].includes(cat))) categories.push("peptides");
     if (medicationCats.some((cat) => ["Testosterone"].includes(cat))) categories.push("testosterone");
-    if (medicationCats.some((cat) => ["Hair Growth (male)", "Hair Growth (female)"].includes(cat))) categories.push("hairGrowth");
+    if (medicationCats.some((cat) => ["Hair Growth (Male)", "Hair Growth (Female)"].includes(cat))) categories.push("hairGrowth");
     if (medicationCats.some((cat) => ["Weight Loss"].includes(cat))) categories.push("weightLoss");
 
     setActiveCategories(categories);
