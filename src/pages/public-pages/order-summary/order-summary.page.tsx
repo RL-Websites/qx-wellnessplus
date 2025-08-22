@@ -37,6 +37,7 @@ const OrderSummary = () => {
   }, [cartItems, navigate]);
 
   const handleNext = () => {
+    console.log(userData, getAccessToken());
     if (userData && getAccessToken()) {
       navigate("/complete-order");
     } else {
