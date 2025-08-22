@@ -48,11 +48,7 @@ export const questions = [
   { name: "gallstones", label: "Did you have your gallbladder removed due to pancreatitis from gallstones?" },
   { name: "removedGallbladderGallstones", label: "When did you have your gallbladder removed?" },
   { name: "endocrineNeoplasia", label: "Do you have a personal or family history of multiple endocrine neoplasia?" },
-  {
-    name: "agreeToPhoneConsult",
-    label:
-      "Depending on state regulations, your provider may reach out to you to perform a consultation over the phone. Otherwise, your provider will review your intake forms and approve your script if all criteria are met",
-  },
+
   { name: "diabeticStatus", label: "Are you pre-diabetic or diabetic?" },
   { name: "takeDiabeticDrugName", label: "Are you currently taking any of the following medications? Select all that apply. (Select Multiple)" },
   { name: "takeDiabeticHemoglobin", label: "What is your hemoglobin A1C?" },
@@ -101,4 +97,33 @@ export const questions = [
   { name: "hormoneTherapySupple", label: "Are you currently taking hormone therapy, supplements, or other performance enhancers?" },
   { name: "physicActLevel", label: "What is your typical physical activity level?" },
   { name: "peptideHealthHistory", label: "Health History (Needed for Peptide Treatments) (Please select all that apply):" },
+
+  { name: "whenNotice", label: "When did you first notice hair loss or thinning?" },
+  { name: "hairLossType", label: "Is your hair loss:" },
+  { name: "hairLossArea", label: "Where is the hair loss most noticeable?" },
+  { name: "familyHistory", label: "Do you have a family history of hair loss?" },
+  { name: "recentStress", label: "Have you had recent stress, illness, or surgery?" },
+  { name: "chronicCondition", label: "Do you have any chronic medical conditions?" },
+  { name: "takingMeds", label: "Are you currently taking any medications or supplements?" },
+  { name: "medsDetails", label: "Please specify the medications or supplements you are taking:" },
+  { name: "excessiveShedding", label: "Do you notice excessive hair shedding while combing/washing?" },
+  { name: "previousTreatments", label: "Have you tried hair loss treatments before?" },
+  { name: "otherSymptoms", label: "Are you experiencing other symptoms?" },
+
+  { name: "edDuration", label: "How long have you been experiencing erectile difficulties?" },
+  { name: "erectionFrequency", label: "How often are you able to achieve and maintain an erection?" },
+  { name: "morningErections", label: "Do you wake up with morning or nighttime erections?" },
+  { name: "diagnosedCondition", label: "Do you have any diagnosed health conditions?" },
+  { name: "takingMedications", label: "Are you currently taking any medications?" },
+  { name: "medicationsList", label: "Do you take any prescribed medications?" },
+  { name: "useSubstances", label: "Do you smoke, drink alcohol, or use recreational drugs?" },
+  { name: "libido", label: "How is your sexual desire (libido)?" },
+  { name: "priorEdTreatment", label: "Have you ever tried ED medications or treatments before?" },
+  { name: "psychStress", label: "Are you experiencing psychological stress, anxiety, or depression?" },
+  { name: "pelvicHistory", label: "Do you have any history of surgeries or injuries affecting the pelvic area?" },
+  {
+    name: "agreeToPhoneConsult",
+    label:
+      "Depending on state regulations, your provider may reach out to you to perform a consultation over the phone. Otherwise, your provider will review your intake forms and approve your script if all criteria are met",
+  },
 ];
