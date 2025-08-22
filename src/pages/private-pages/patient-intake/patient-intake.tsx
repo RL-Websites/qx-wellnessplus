@@ -13,6 +13,10 @@ import { useAtom, useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import FullBodyPhoto from "./intake-steps/FullbodyPhoto";
+
+import MedicalHistory from "./intake-steps/hair-growth/medicalHistory";
+import SymptomHistory from "./intake-steps/hair-growth/symptomHistory";
+import WhenNotice from "./intake-steps/hair-growth/whenNotice";
 import { questions } from "./intake-steps/questions";
 import StepEight from "./intake-steps/step-eight";
 import StepFive from "./intake-steps/step-five";
@@ -30,6 +34,9 @@ import StepThree from "./intake-steps/step-three";
 import StepTwelve from "./intake-steps/step-twelve";
 import StepTwo from "./intake-steps/step-two";
 import StepEleven from "./intake-steps/step.eleven";
+import TestosteroneStepOne from "./intake-steps/testosterone/testosteroneStepOne";
+import TestosteroneStepThree from "./intake-steps/testosterone/testosteroneStepThree";
+import TestosteroneStepTwo from "./intake-steps/testosterone/testosteroneStepTwo";
 import ThanksStep from "./intake-steps/thanks-step";
 
 interface CategoryConfig {
@@ -37,34 +44,10 @@ interface CategoryConfig {
   finalStep: number;
 }
 
-const categoryStepsMap: Record<string, CategoryConfig> = {
-  "Single Peptides": {
-    steps: [18],
-    finalStep: 18,
-  },
-  "Peptides Blends": {
-    steps: [18],
-    finalStep: 18,
-  },
-  "Weight Loss": {
-    steps: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
-    finalStep: -1,
-  },
-  Testosterone: {
-    steps: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
-    finalStep: -1,
-  },
-  "Hair Growth": {
-    steps: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
-    finalStep: -1,
-  },
-  Others: {
-    steps: [1, 2, 13],
-    finalStep: 13,
-  },
-};
-
-const maleExcludedSteps = [6, 18];
+interface StepConfig {
+  component: React.FC<any>;
+  categories: string[]; // active categories for which this step should appear
+}
 
 const PatientIntake = () => {
   const [activeStep, setActiveStep] = useState(1);
@@ -76,64 +59,81 @@ const PatientIntake = () => {
   const prescriptionUId = params.get("prescription_u_id");
   const selectedCategory = useAtomValue(selectedCategoryAtom);
   const [basicInfo] = useAtom(basicInfoAtom);
+  const [activeCategories, setActiveCategories] = useState<string[]>([]);
+  const [filteredSteps, setFilteredSteps] = useState<StepConfig[]>([]);
+  const [totalDynamicSteps, setTotalDynamicSteps] = useState(0);
+
+  const stepConfig: StepConfig[] = [
+    // Shared / Weight Loss steps
+    { component: FullBodyPhoto, categories: ["weightLoss"] },
+    { component: StepOne, categories: ["weightLoss"] },
+    { component: StepTwo, categories: ["weightLoss"] },
+    { component: StepThree, categories: ["weightLoss"] },
+    { component: StepFour, categories: ["weightLoss"] },
+    { component: StepFive, categories: ["weightLoss"] },
+    { component: StepSix, categories: ["weightLoss"] },
+    { component: StepSeven, categories: ["weightLoss"] },
+    { component: StepEight, categories: ["weightLoss"] },
+    { component: StepNine, categories: ["weightLoss"] },
+    { component: StepTen, categories: ["weightLoss"] },
+    { component: StepEleven, categories: ["weightLoss"] },
+    { component: StepTwelve, categories: ["weightLoss"] },
+    { component: StepThirteen, categories: ["weightLoss"] },
+    { component: StepFourteen, categories: ["weightLoss"] },
+    { component: StepFifteen, categories: ["weightLoss"] },
+    { component: StepSixteen, categories: ["weightLoss"] },
+    { component: StepSeventeen, categories: ["peptides"] },
+    { component: TestosteroneStepOne, categories: ["testosterone"] },
+    { component: TestosteroneStepTwo, categories: ["testosterone"] },
+    { component: TestosteroneStepThree, categories: ["testosterone"] },
+    { component: WhenNotice, categories: ["hairGrowth"] },
+    { component: MedicalHistory, categories: ["hairGrowth"] },
+    { component: SymptomHistory, categories: ["hairGrowth"] },
+
+    // TODO: add Testosterone-specific steps
+    // { component: StepX, categories: ["Testosterone"] },
+    // { component: StepY, categories: ["Testosterone"] },
+
+    // TODO: add Hair Growth-specific steps
+    // { component: StepZ, categories: ["Hair Growth"] },
+  ];
 
   useEffect(() => {
-    const categoriesArray: string[] = Array.isArray(selectedCategory) ? selectedCategory : selectedCategory ? [selectedCategory] : [];
+    const medicationCats: string[] = Array.isArray(selectedCategory) ? selectedCategory : selectedCategory ? [selectedCategory] : [];
 
-    if (!categoriesArray.length) return;
+    const categories: string[] = [];
+    if (medicationCats.some((cat) => ["Single Peptides", "Peptides Blends"].includes(cat))) categories.push("peptides");
+    if (medicationCats.some((cat) => ["Testosterone"].includes(cat))) categories.push("testosterone");
+    if (medicationCats.some((cat) => ["Hair Growth (Male)", "Hair Growth (Female)"].includes(cat))) categories.push("hairGrowth");
+    if (medicationCats.some((cat) => ["Weight Loss"].includes(cat))) categories.push("weightLoss");
 
-    const allSteps = categoriesArray.map((cat) => categoryStepsMap[cat]?.steps || []).flat();
+    setActiveCategories(categories);
 
-    // For peptide categories, don't apply gender-based filtering
-    const peptideCategories = ["Single Peptides", "Peptides Blends"];
-    const isPeptideCategory = categoriesArray.some((cat) => peptideCategories.includes(cat));
+    let stepsFiltered = stepConfig.filter((step) => step.categories.some((cat) => categories.includes(cat)));
 
-    const filteredSteps = isPeptideCategory
-      ? allSteps // Don't filter out any steps for peptides
-      : basicInfo?.patient?.gender === "male"
-      ? allSteps.filter((step) => !maleExcludedSteps.includes(step))
-      : allSteps;
-
-    const uniqueSteps = Array.from(new Set(filteredSteps)).sort((a, b) => a - b);
-
-    let calculatedFinalStep = 16; // default for male
-    if (basicInfo?.patient?.gender === "female") {
-      calculatedFinalStep = 17;
+    // Condition: Male + Others → remove StepFive
+    if (basicInfo?.patient?.gender === "male" && categories.includes("Others")) {
+      stepsFiltered = stepsFiltered.filter((step) => step.component !== StepFive);
     }
 
-    if (isPeptideCategory) {
-      calculatedFinalStep = 18;
-    } else if (categoriesArray.includes("Weight Loss")) {
-      // Keep the gender-specific final step
-    } else if (categoriesArray[0] && categoryStepsMap[categoriesArray[0]]) {
-      calculatedFinalStep = categoryStepsMap[categoriesArray[0]].finalStep;
-    }
-
-    setVisibleSteps(uniqueSteps);
-    setFinalStep(calculatedFinalStep);
-
-    if (!uniqueSteps.includes(activeStep)) {
-      setActiveStep(uniqueSteps[0]);
-    }
+    setFilteredSteps(stepsFiltered);
+    setTotalDynamicSteps(stepsFiltered.length);
   }, [selectedCategory, basicInfo?.patient?.gender]);
 
-  const progressSteps = visibleSteps.filter((step) => step !== 1);
-
-  const progress = progressSteps.length > 1 ? (progressSteps.indexOf(activeStep) / (progressSteps.length - 1)) * 100 : activeStep === 1 ? 0 : 100;
+  const progress = (activeStep / (totalDynamicSteps + 1)) * 100;
 
   const handleNext = (data: any) => {
     setFormData((prev) => ({ ...prev, ...data }));
-    const currentIndex = visibleSteps.indexOf(activeStep);
-    if (currentIndex < visibleSteps.length - 1) {
-      setActiveStep(visibleSteps[currentIndex + 1]);
+    // const currentIndex = visibleSteps.indexOf(activeStep);
+    if (activeStep < totalDynamicSteps + 1) {
+      setActiveStep((prev) => prev + 1);
     }
     scrollTo({ y: 0 });
   };
 
   const handleBack = () => {
-    const currentIndex = visibleSteps.indexOf(activeStep);
-    if (currentIndex > 0) {
-      setActiveStep(visibleSteps[currentIndex - 1]);
+    if (activeStep > 1) {
+      setActiveStep((prev) => prev - 1);
     }
     scrollTo({ y: 0 });
   };
@@ -170,7 +170,7 @@ const PatientIntake = () => {
     intakeFormMutation.mutate(payload, {
       onSuccess: () => {
         dmlToast.success({ title: "Intake form submitted successfully" });
-        setActiveStep(19); // Thanks step
+        setActiveStep(totalDynamicSteps + 1); // Thanks step
       },
       onError: (err) => {
         const error = err as AxiosError<IServerErrorResponse>;
@@ -182,85 +182,84 @@ const PatientIntake = () => {
     });
   };
 
+  // Checks if current step is the final dynamic step
   const shouldSubmit = (step: number) => {
-    const categories = Array.isArray(selectedCategory) ? selectedCategory : selectedCategory ? [selectedCategory] : [];
-    const isPeptideCategory = categories.some((category) => ["Single Peptides", "Peptides Blends"].includes(category));
-
-    console.log("Current step:", step);
-    console.log("Final step:", finalStep);
-
-    if (isPeptideCategory) {
-      return step === 18;
-    } else if (categories.includes("Weight Loss")) {
-      return (basicInfo?.patient?.gender === "female" && step === 17) || (basicInfo?.patient?.gender === "male" && step === 17);
-    } else if (categories.includes("Testosterone")) {
-      return (basicInfo?.patient?.gender === "female" && step === 17) || (basicInfo?.patient?.gender === "male" && step === 17);
-    } else if (categories.includes("Others")) {
-      return step === 13;
-    }
-
-    return step === finalStep;
+    return step === totalDynamicSteps;
   };
 
-  const renderStep = (stepNumber: number, Component: React.ComponentType<any>) => {
-    if (!visibleSteps.includes(stepNumber)) return null;
-
-    return (
-      <Component
-        onNext={shouldSubmit(stepNumber) ? handleFinalSubmit : handleNext}
-        onBack={handleBack}
-        defaultValues={formData}
-        isLoading={shouldSubmit(stepNumber) && intakeFormMutation.isPending}
-      />
-    );
-  };
+  const CurrentStepComponent = filteredSteps[activeStep - 1]?.component;
 
   return (
     <>
-      {(activeStep !== visibleSteps[0] && activeStep !== 19) || (selectedCategory?.includes("Single Peptides") && activeStep !== 19) ? (
-        <div className="  mb-6">
-          <div className="max-w-[800px] mx-auto pb-12">
-            <h2 className="heading-text  text-center">Intake Form</h2>
-            <p className="text-foreground text-center text-lg font-medium font-poppins pt-5">
-              An intake form is a short questionnaire that collects your health details for review by our licensed providers. Please answer all questions as clearly and accurately
-              as possible. This helps our licensed providers review your information faster and ensures safe, personalized treatment.
-            </p>
-          </div>
-          <div className="max-w-[520px] mx-auto">
-            <Progress value={progress} />
-            <div className="text-center text-base text-foreground font-bold mt-3">
-              {progressSteps.indexOf(activeStep) + 1} / {progressSteps.length}
+      {/* Dynamic Header + Progress */}
+      {activeStep <= totalDynamicSteps && (
+        <>
+          {activeStep === 1 ? (
+            activeCategories.length === 1 && activeCategories[0] === "weightLoss" ? (
+              // Only Weight Loss → special first step header
+              <div className=" mb-6">
+                <div className="text-center">
+                  <h2 className="heading-text text-foreground uppercase">Let's Get to Know You Better</h2>
+                  <p className="text-foreground text-xl font-medium font-poppins pt-2.5">Tell us a little about your current stats so we can tailor your plan.</p>
+                </div>
+                <div className="max-w-[520px] mx-auto">
+                  <Progress value={progress} />
+                  <div className="text-center text-base text-foreground font-bold mt-3">
+                    {activeStep <= totalDynamicSteps ? `${activeStep} / ${totalDynamicSteps}` : `${totalDynamicSteps + 1} / ${totalDynamicSteps + 1}`}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              // Any other category or multiple categories → generic intake header
+              <div className="mb-6">
+                <div className="max-w-[800px] mx-auto pb-12">
+                  <h2 className="heading-text text-center">Intake Form</h2>
+                  <p className="text-foreground text-center text-lg font-medium font-poppins pt-5">
+                    An intake form is a short questionnaire that collects your health details for review by our licensed providers. Please answer all questions as clearly and
+                    accurately as possible. This helps our licensed providers review your information faster and ensures safe, personalized treatment.
+                  </p>
+                </div>
+                <div className="max-w-[520px] mx-auto">
+                  <Progress value={progress} />
+                  <div className="text-center text-base text-foreground font-bold mt-3">
+                    {activeStep <= totalDynamicSteps ? `${activeStep} / ${totalDynamicSteps}` : `${totalDynamicSteps + 1} / ${totalDynamicSteps + 1}`}
+                  </div>
+                </div>
+              </div>
+            )
+          ) : (
+            // All other steps → generic intake header
+            <div className="mb-6">
+              <div className="max-w-[800px] mx-auto pb-12">
+                <h2 className="heading-text text-center">Intake Form</h2>
+                <p className="text-foreground text-center text-lg font-medium font-poppins pt-5">
+                  An intake form is a short questionnaire that collects your health details for review by our licensed providers. Please answer all questions as clearly and
+                  accurately as possible. This helps our licensed providers review your information faster and ensures safe, personalized treatment.
+                </p>
+              </div>
+              <div className="max-w-[520px] mx-auto">
+                <Progress value={progress} />
+                <div className="text-center text-base text-foreground font-bold mt-3">
+                  {activeStep} / {totalDynamicSteps}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      ) : activeStep === visibleSteps[0] ? (
-        <div className="text-center">
-          <h2 className="heading-text text-foreground uppercase">Let's Get to Know You Better</h2>
-          <p className="text-foreground text-xl font-medium font-poppins pt-2.5">Tell us a little about your current stats so we can tailor your plan.</p>
-        </div>
-      ) : null}
+          )}
+        </>
+      )}
 
       {/* Render all steps */}
-      {activeStep === 1 && renderStep(1, FullBodyPhoto)}
-      {activeStep === 2 && renderStep(2, StepOne)}
-      {activeStep === 3 && renderStep(3, StepTwo)}
-      {activeStep === 4 && renderStep(4, StepThree)}
-      {activeStep === 5 && renderStep(5, StepFour)}
-      {activeStep === 6 && renderStep(6, StepFive)}
-      {activeStep === 7 && renderStep(7, StepSix)}
-      {activeStep === 8 && renderStep(8, StepSeven)}
-      {activeStep === 9 && renderStep(9, StepEight)}
-      {activeStep === 10 && renderStep(10, StepNine)}
-      {activeStep === 11 && renderStep(11, StepTen)}
-      {activeStep === 12 && renderStep(12, StepEleven)}
-      {activeStep === 13 && renderStep(13, StepTwelve)}
-      {activeStep === 14 && renderStep(14, StepThirteen)}
-      {activeStep === 15 && renderStep(15, StepFourteen)}
-      {activeStep === 16 && renderStep(16, StepFifteen)}
-      {activeStep === 17 && renderStep(17, StepSixteen)}
-      {activeStep === 18 && renderStep(18, StepSeventeen)}
+      {activeStep <= totalDynamicSteps && CurrentStepComponent && (
+        <CurrentStepComponent
+          onNext={shouldSubmit(activeStep) ? handleFinalSubmit : handleNext}
+          onBack={handleBack}
+          defaultValues={formData}
+          isLoading={shouldSubmit(activeStep) && intakeFormMutation.isPending}
+        />
+      )}
 
-      {activeStep === 19 && <ThanksStep />}
+      {/* Thanks Step */}
+      {activeStep === totalDynamicSteps + 1 && <ThanksStep />}
     </>
   );
 };

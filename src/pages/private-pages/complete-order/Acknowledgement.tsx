@@ -307,15 +307,24 @@ const Acknowledgement = ({ onNext, onBack, defaultValues, patientData, hasPeptid
 
             <div className="text-medium text-lg space-y-7">
               <div>
-                By proceeding with this purchase, I confirm that I have read, understood, and agree to the Terms & Conditions governing the use of GLP-1 medications and related
-                products offered by Thrivewell.
+                By proceeding with this purchase, I confirm that I have read, understood, and agree to the Terms & Conditions governing the use of all treatments and related
+                products offered by <strong>Dosevana LLC</strong>, including GLP-1 medications, peptides, testosterone therapy, hair growth solutions, and sexual health products.
               </div>
               <div>
                 I acknowledge that:
                 <ul className="!list-disc list-inside">
-                  <li>I have completed the required medical quiz and intake form truthfully to the best of my knowledge.</li>
-                  <li>I understand that my treatment is subject to provider review and may be declined based on medical eligibility.</li>
-                  <li>I agree that these products are not a replacement for professional medical advice and will be used under appropriate guidance.</li>
+                  <>
+                    <li>I have completed the required medical quiz and intake form truthfully and accurately to the best of my knowledge.</li>
+                    <li>
+                      I understand that my eligibility for treatment is subject to review and approval by a licensed provider, and my order may be declined if I do not meet medical
+                      requirements.
+                    </li>
+                    <li>
+                      I agree that these products and treatments are not substitutes for comprehensive medical advice and will only be used under appropriate medical supervision
+                      and guidance.
+                    </li>
+                    <li>I accept that treatment outcomes may vary based on individual health factors, and no specific results are guaranteed.</li>
+                  </>
                 </ul>
               </div>
             </div>
