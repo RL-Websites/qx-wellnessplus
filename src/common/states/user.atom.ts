@@ -9,4 +9,4 @@ export const user_id = atom<string>("");
 
 export const loginRedirectCountAtom = atomWithStorage<number>("loginRedirectCount", 0);
 
-export const dobAtom = atomWithStorage<Date | undefined>("dateOfBirth", undefined);
+export const dobAtom = atomWithStorage<string | null>("dateOfBirth", null);

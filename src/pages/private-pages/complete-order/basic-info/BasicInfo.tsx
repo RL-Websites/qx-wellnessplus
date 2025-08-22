@@ -140,18 +140,19 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
       }
     }
 
-    if (!userData?.userable?.dob && !formData?.patient?.dob) {
-      setDob(globalDob);
+    if (!userData?.userable?.dob && !formData?.patient?.dob && globalDob) {
+      setDob(new Date(globalDob));
+      console.log(globalDob, formatDate(globalDob));
       setValue("dob", [formatDate(globalDob)]);
     } else if (userData?.userable?.dob) {
       setDob(new Date(userData?.userable?.dob));
       setValue("dob", [formatDate(tempPatientDetails?.userable?.dob)]);
     }
 
-    if (!userData?.userable?.gender) {
+    if (!userData?.userable?.gender && selectedGender) {
       setGender(selectedGender);
       setValue("gender", selectedGender);
-    } else {
+    } else if (userData?.userable?.gender) {
       setGender(userData?.userable?.gender);
       setValue("gender", userData?.userable?.gender);
     }
@@ -179,8 +180,9 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
         setBackBase64(formData?.patient?.driving_lic_back || "");
       }
 
-      if (!formData?.patient?.dob) {
-        setDob(globalDob);
+      if (!formData?.patient?.dob && globalDob) {
+        setDob(new Date(globalDob));
+        console.log(globalDob, new Date(globalDob));
         setValue("dob", [formatDate(globalDob)]);
       } else if (formData?.patient?.dob) {
         setDob(new Date(formData?.patient?.dob));
@@ -188,11 +190,11 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
       }
     }
 
-    if (!formData?.patient?.gender) {
+    if (!formData?.patient?.gender && selectedGender) {
       console.log(selectedGender);
       setGender(selectedGender);
       setValue("gender", selectedGender);
-    } else {
+    } else if (formData?.patient?.gender) {
       setGender(formData?.patient?.gender);
       setValue("gender", formData?.patient?.gender);
     }
