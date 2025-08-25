@@ -35,7 +35,7 @@ const CategoryPage = () => {
 
   const categoryImages = {
     "Weight Loss": "images/weight-loos.png",
-    Testosterone: "images/sexual-health.png",
+    Testosterone: "images/testestorne.png",
     "Hair Growth": "images/hair-loos.png",
     Peptides: "images/peptides.png",
     "Hormone Therapy": "images/hormone-therapy.png",
@@ -43,10 +43,22 @@ const CategoryPage = () => {
   };
 
   const transformedCategories = category?.reduce((acc: string[], item: string) => {
-    if (item === "Hair Growth (male)" || item === "Hair Growth (female)" || item === "Single Peptides" || item === "Peptides Blends") {
+    if (
+      item === "Hair Growth (male)" ||
+      item === "Hair Growth (female)" ||
+      item === "Single Peptides" ||
+      item === "Peptides Blends" ||
+      item === "Sexual Health (male)" ||
+      item === "Sexual Health (female)"
+    ) {
       if (item === "Hair Growth (male)" || item === "Hair Growth (female)") {
         if (!acc.includes("Hair Growth")) {
           acc.push("Hair Growth");
+        }
+      }
+      if (item === "Sexual Health (male)" || item === "Sexual Health (female)") {
+        if (!acc.includes("Sexual Health")) {
+          acc.push("Sexual Health");
         }
       }
       if (item === "Single Peptides" || item === "Peptides Blends") {

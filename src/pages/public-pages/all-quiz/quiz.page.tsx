@@ -30,10 +30,10 @@ import HSCancers from "./quizes/peptides-blends/new/HSCancers";
 import KidneyDisease from "./quizes/peptides-blends/new/KidneyDisease";
 import PregnancyBreastfeeding from "./quizes/peptides-blends/new/PregnancyBreastfeeding";
 import ThyroidLiverKidneyDisease from "./quizes/peptides-blends/new/ThyroidLiverKidneyDisease";
-import CardiovascularDisease from "./quizes/testosterone/CardiovascularDisease";
-import GenderTestosterone from "./quizes/testosterone/Gender";
-import Impairment from "./quizes/testosterone/Impairment";
-import Nitroglycerin from "./quizes/testosterone/Nitroglycerin";
+import CardiovascularDisease from "./quizes/sexual-health/CardiovascularDisease";
+import GenderSexualHealth from "./quizes/sexual-health/Gender";
+import Impairment from "./quizes/sexual-health/Impairment";
+import Nitroglycerin from "./quizes/sexual-health/Nitroglycerin";
 import WeightLossBreastFeeding from "./quizes/weight-loss/BreastFeeding";
 import CustomerStatus from "./quizes/weight-loss/CustomerStatus";
 import DiseaseList from "./quizes/weight-loss/DiseaseList";
@@ -303,10 +303,10 @@ const QuizPage = () => {
         </>
       )}
 
-      {selectedCategory?.includes("Testosterone") && (
+      {(selectedCategory?.includes("Sexual Health") || selectedCategory?.includes("Sexual Health (Male)") || selectedCategory?.includes("Sexual Health (Female)")) && (
         <>
           {activeStep === 2 && (
-            <GenderTestosterone
+            <GenderSexualHealth
               onNext={handleNext}
               onBack={handleBack}
               defaultValues={formData}
