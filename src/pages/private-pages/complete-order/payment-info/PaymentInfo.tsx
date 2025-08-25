@@ -242,7 +242,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
                     {item?.name} {`${item?.strength}${item?.unit}`}
                   </h6>
                   <div className="text-gray">
-                    {item?.medicine_type} | {item?.medication_category}
+                    {item?.medicine_type == "ODT" ? "Oral" : item?.medicine_type} | {item?.medication_category}
                   </div>
                   {/* TOdo: need to update */}
                   {/* <div className="text-gray">Duration: 1 month</div> */}

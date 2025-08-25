@@ -82,6 +82,7 @@ const AddressAutoGoogle = forwardRef(function ({ address, onSelect, isError, isR
       readOnly={isReadonly}
       disabled={isDisabled}
       autocomplete="new-password"
+      placeholder="Enter your address"
       aria-autocomplete="none"
       classNames={{
         input: classname,
