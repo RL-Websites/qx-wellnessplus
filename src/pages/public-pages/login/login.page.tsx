@@ -7,6 +7,7 @@ import { cartItemsAtom } from "@/common/states/product.atom";
 import { user_id, userAtom } from "@/common/states/user.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Input, PasswordInput } from "@mantine/core";
+import { useWindowScroll } from "@mantine/hooks";
 
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
@@ -41,6 +42,11 @@ const Login = () => {
   const [userId, setUserId] = useAtom(user_id);
   const navigate = useNavigate();
   const location = useLocation();
+  const [, scrollTo] = useWindowScroll();
+
+  useEffect(() => {
+    scrollTo({ y: 0 });
+  }, []);
 
   useEffect(() => {
     if (location.pathname == "/login" && getAccessToken()) {
