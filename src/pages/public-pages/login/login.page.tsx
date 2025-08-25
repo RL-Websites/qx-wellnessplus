@@ -1,6 +1,7 @@
 import { IServerErrorResponse } from "@/common/api/models/interfaces/ApiResponse.model";
 import { ILoginRequestPayload } from "@/common/api/models/interfaces/Auth.model";
 import authApiRepository from "@/common/api/repositories/authRepository";
+import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
 import dmlToast from "@/common/configs/toaster.config";
 import useAuthToken from "@/common/hooks/useAuthToken";
 import { cartItemsAtom } from "@/common/states/product.atom";
@@ -122,9 +123,7 @@ const Login = () => {
             label="Email Address"
             required
             error={errors.emailAddress?.message ? errors.emailAddress?.message : false}
-            classNames={{
-              label: "!text-sm md:!text-base lg:!text-lg",
-            }}
+            classNames={InputErrorMessage}
           >
             <Input
               type="email"
@@ -136,13 +135,12 @@ const Login = () => {
             mt="12"
             required
             error={errors.password?.message ? errors.password?.message : false}
-            classNames={{
-              label: "!text-sm md:!text-base lg:!text-lg",
-            }}
+            classNames={InputErrorMessage}
           >
             <PasswordInput
               visibilityToggleIcon={({ reveal }) => (reveal ? <i className="icon-view text-2xl"></i> : <i className="icon-view-off text-2xl"></i>)}
               {...register("password")}
+              classNames={InputErrorMessage}
             />
           </Input.Wrapper>
         </div>

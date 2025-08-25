@@ -1,6 +1,7 @@
 import { IServerErrorResponse } from "@/common/api/models/interfaces/ApiResponse.model";
 import { IRegistrationRequestPayload } from "@/common/api/models/interfaces/Auth.model";
 import authApiRepository from "@/common/api/repositories/authRepository";
+import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
 import dmlToast from "@/common/configs/toaster.config";
 import useAuthToken from "@/common/hooks/useAuthToken";
 import { cartItemsAtom } from "@/common/states/product.atom";
@@ -116,9 +117,7 @@ const RegistrationPage = () => {
             label="First Name"
             required
             error={errors.firstName?.message ? errors.firstName?.message : false}
-            classNames={{
-              label: "!text-sm md:!text-base lg:!text-lg",
-            }}
+            classNames={InputErrorMessage}
           >
             <Input
               type="text"
@@ -129,9 +128,7 @@ const RegistrationPage = () => {
             label="Last Name"
             required
             error={errors.lastName?.message ? errors.lastName?.message : false}
-            classNames={{
-              label: "!text-sm md:!text-base lg:!text-lg",
-            }}
+            classNames={InputErrorMessage}
           >
             <Input
               type="text"
@@ -142,9 +139,7 @@ const RegistrationPage = () => {
             label="Email Address"
             required
             error={errors.emailAddress?.message ? errors.emailAddress?.message : false}
-            classNames={{
-              label: "!text-sm md:!text-base lg:!text-lg",
-            }}
+            classNames={InputErrorMessage}
           >
             <Input
               type="email"
@@ -156,13 +151,12 @@ const RegistrationPage = () => {
             mt="12"
             required
             error={errors.password?.message ? errors.password?.message : false}
-            classNames={{
-              label: "!text-sm !md:text-base !lg:text-lg",
-            }}
+            classNames={InputErrorMessage}
           >
             <PasswordInput
               visibilityToggleIcon={({ reveal }) => (reveal ? <i className="icon-view text-2xl"></i> : <i className="icon-view-off text-2xl"></i>)}
               {...register("password")}
+              classNames={InputErrorMessage}
             />
           </Input.Wrapper>
           <Input.Wrapper
@@ -170,13 +164,12 @@ const RegistrationPage = () => {
             mt="12"
             required
             error={errors.confirmPassword?.message ? errors.confirmPassword?.message : false}
-            classNames={{
-              label: "!text-sm !md:text-base !lg:text-lg",
-            }}
+            classNames={InputErrorMessage}
           >
             <PasswordInput
               visibilityToggleIcon={({ reveal }) => (reveal ? <i className="icon-view text-2xl"></i> : <i className="icon-view-off text-2xl"></i>)}
               {...register("confirmPassword")}
+              classNames={InputErrorMessage}
             />
           </Input.Wrapper>
         </div>
