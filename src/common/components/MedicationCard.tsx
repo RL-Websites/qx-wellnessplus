@@ -17,7 +17,7 @@ const MedicationCard = (medicationProps: IMedicationProps) => {
         onClick={medicationProps?.onShowDetails}
       >
         {medicationProps.image && (
-          <div className="rounded-[20px] flex justify-center overflow-hidden bg-[url(/images/thumb-bg.png)] bg-no-repeat bg-cover">
+          <div className="rounded-[20px] flex justify-center overflow-hidden bg-[url(/images/thumb-bg.png)] bg-no-repeat  bg-cover">
             <img
               src={medicationProps?.image}
               alt=""

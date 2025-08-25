@@ -99,7 +99,7 @@ const MedicationsPage = () => {
         <div className="rounded-lg bg-green-badge text-center py-2.5 px-6">Doctor consultation & shipping cost included</div>
       </div>
 
-      <div className="grid md:grid-cols-3 sm:grid-cols-2  lg:gap-y-12 lg:gap-x-20 gap-7  py-12">
+      <div className="grid md:grid-cols-3 sm:grid-cols-2 lg:gap-y-12 lg:gap-x-20 gap-7 py-12">
         {medicines?.map((item, index) => {
           const isInCart = cartItems.some((cartItem) => cartItem.id === item.id);
 
@@ -107,7 +107,7 @@ const MedicationsPage = () => {
             <MedicationCard
               key={index}
               image={`${import.meta.env.VITE_BASE_PATH}/storage/${item?.image}`}
-              title={item?.name}
+              title={`${item?.name} ${item.strength ? item.strength + " " + item.unit : ""} `}
               cost={item?.customer_medication?.price}
               onAddToCart={() => handleAddToCart(item)}
               onShowDetails={() => handelDetailsModal(item)}

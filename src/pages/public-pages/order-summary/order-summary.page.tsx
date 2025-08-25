@@ -58,15 +58,17 @@ const OrderSummary = () => {
               >
                 <img
                   src={item.image ? `${import.meta.env.VITE_BASE_PATH}/storage/${item.image}` : "/placeholder.png"}
-                  className="size-32"
+                  className="size-32 rounded-lg"
                   alt={item.name}
                 />
                 <div className="lg:w-[calc(100%_-_154px)]">
-                  <h6 className="text-xl font-semibold text-foreground font-poppins max-w-[300px]">{item.name}</h6>
+                  <h6 className="text-xl font-semibold text-foreground font-poppins max-w-[300px]">
+                    {item.name} {item.strength ? `${item.strength} ${item.unit}` : ""}
+                  </h6>
                   <div className="flex items-center gap-2.5 pt-2.5 font-poppins">
                     <span className="text-lg text-foreground">{item.medication_category}</span>
                     <span className="text-lg text-foreground">|</span>
-                    <span className="text-lg text-foreground">{item.medicine_type}</span>
+                    <span className="text-lg text-foreground">{item.medicine_type == "ODT" ? "Oral" : item.medicine_type}</span>
                   </div>
                 </div>
                 <i
