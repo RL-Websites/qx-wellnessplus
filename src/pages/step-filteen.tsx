@@ -52,10 +52,8 @@ const StepFifteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepF
         value={cpapWithDiagonSedSleep}
         onChange={(val) => handleSelect("cpapWithDiagonSedSleep", val)}
         label="Are you on CPAP with diagnosed Sleep Apnea?"
-        error={getErrorMessage(errors?.cpapWithDiagonSedSleep)}
         classNames={{
-          root: "sm:!grid !block w-full",
-          error: "sm:!text-end !text-start w-full",
+          root: "!block",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
@@ -78,16 +76,15 @@ const StepFifteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepF
             />
           ))}
         </div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.cpapWithDiagonSedSleep)}</p>
       </Radio.Group>
 
       <Radio.Group
         value={haveBariantricSurgery}
         onChange={(val) => handleSelect("haveBariantricSurgery", val)}
         label="Have you had bariatric surgery within the last 12 months?"
-        error={getErrorMessage(errors?.haveBariantricSurgery)}
         classNames={{
-          root: "sm:!grid !block w-full",
-          error: "sm:!text-end !text-start w-full",
+          root: "!block",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
@@ -110,6 +107,7 @@ const StepFifteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepF
             />
           ))}
         </div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.haveBariantricSurgery)}</p>
       </Radio.Group>
       <div className="flex justify-center gap-6 pt-4">
         <Button

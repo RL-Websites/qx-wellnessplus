@@ -34,7 +34,7 @@ export const questions = [
   { name: "thyroidism", label: "Do you have a history of any of the following?" },
   { name: "thyroidCancer", label: "Do you have a personal or family history of thyroid cancer?" },
   { name: "thyroidCancerType", label: "What type of thyroid cancer?" },
-  { name: "papillaryReport", label: "Do you have your pathology report?" },
+  { name: "papillaryReport", label: "Do you have accurate lab report?" },
   { name: "papillaryReportUp", label: "Please upload your pathology report." },
   { name: "follicularReport", label: "Do you have your pathology report?" },
   { name: "follicularReportUp", label: "Please upload your pathology report." },

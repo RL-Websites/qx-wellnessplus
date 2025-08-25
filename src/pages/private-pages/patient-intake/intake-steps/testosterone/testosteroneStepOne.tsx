@@ -59,10 +59,7 @@ const TestosteroneStepOne = ({ onNext, onBack, defaultValues }: Props) => {
         value={edDuration}
         onChange={(val) => handleSelect("edDuration", val)}
         label="How long have you been experiencing erectile difficulties?"
-        error={getErrorMessage(errors.edDuration)}
         classNames={{
-          root: "sm:!grid !block",
-          error: "sm:!text-end !text-start w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2 pt",
         }}
       >
@@ -85,6 +82,7 @@ const TestosteroneStepOne = ({ onNext, onBack, defaultValues }: Props) => {
             />
           ))}
         </div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.edDuration)}</p>
       </Radio.Group>
 
       {/* Q2 */}
@@ -92,10 +90,7 @@ const TestosteroneStepOne = ({ onNext, onBack, defaultValues }: Props) => {
         value={erectionFrequency}
         onChange={(val) => handleSelect("erectionFrequency", val)}
         label="How often are you able to achieve and maintain an erection?"
-        error={getErrorMessage(errors.erectionFrequency)}
         classNames={{
-          root: "sm:!grid !block",
-          error: "sm:!text-end !text-start w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
@@ -118,6 +113,7 @@ const TestosteroneStepOne = ({ onNext, onBack, defaultValues }: Props) => {
             />
           ))}
         </div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.erectionFrequency)}</p>
       </Radio.Group>
 
       {/* Q3 */}
@@ -125,10 +121,7 @@ const TestosteroneStepOne = ({ onNext, onBack, defaultValues }: Props) => {
         value={morningErections}
         onChange={(val) => handleSelect("morningErections", val)}
         label="Do you wake up with morning or nighttime erections?"
-        error={getErrorMessage(errors.morningErections)}
         classNames={{
-          root: "sm:!grid !block",
-          error: "sm:!text-end !text-start w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
@@ -151,6 +144,7 @@ const TestosteroneStepOne = ({ onNext, onBack, defaultValues }: Props) => {
             />
           ))}
         </div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.morningErections)}</p>
       </Radio.Group>
 
       {/* Q4 */}
@@ -158,10 +152,7 @@ const TestosteroneStepOne = ({ onNext, onBack, defaultValues }: Props) => {
         value={diagnosedCondition}
         onChange={(val) => handleSelect("diagnosedCondition", val)}
         label="Do you have any diagnosed health conditions?"
-        error={getErrorMessage(errors.diagnosedCondition)}
         classNames={{
-          root: "sm:!grid !block",
-          error: "sm:!text-end !text-start w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
@@ -184,6 +175,7 @@ const TestosteroneStepOne = ({ onNext, onBack, defaultValues }: Props) => {
             />
           ))}
         </div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.diagnosedCondition)}</p>
       </Radio.Group>
 
       <div className="flex justify-center gap-6 pt-6">

@@ -48,10 +48,7 @@ const StepThirteen = ({ onNext, onBack, defaultValues }: StepThirteenProps) => {
         value={endocrineNeoplasia}
         onChange={handleSelect}
         label="Do you have a personal or family history of multiple endocrine neoplasia?"
-        error={getErrorMessage(errors?.endocrineNeoplasia)}
         classNames={{
-          root: "sm:!grid !block w-full",
-          error: "sm:!text-end !text-start w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
@@ -74,6 +71,7 @@ const StepThirteen = ({ onNext, onBack, defaultValues }: StepThirteenProps) => {
             />
           ))}
         </div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.endocrineNeoplasia)}</p>
       </Radio.Group>
 
       <div className="flex justify-center gap-6 pt-4">

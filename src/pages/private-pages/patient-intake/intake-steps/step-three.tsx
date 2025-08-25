@@ -67,10 +67,7 @@ const StepThree = ({ onNext, onBack, defaultValues }: StepThreeProps) => {
           clearErrors("descPrevWeightLoss");
         }}
         label="Have you had any previous weight loss attempts or programs?"
-        error={getErrorMessage(errors?.hadPrevWeightLoss)}
         classNames={{
-          root: "sm:!grid !block w-full",
-          error: "sm:!text-end !text-start w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
@@ -93,6 +90,7 @@ const StepThree = ({ onNext, onBack, defaultValues }: StepThreeProps) => {
             />
           ))}
         </div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.hadPrevWeightLoss)}</p>
       </Radio.Group>
 
       {showDescPrevWeightLoss && (
@@ -100,10 +98,7 @@ const StepThree = ({ onNext, onBack, defaultValues }: StepThreeProps) => {
           value={descPrevWeightLoss}
           onChange={(value) => handleSelect("descPrevWeightLoss", value)}
           label="Please select the statement that best describes your previous weight loss attempts."
-          error={getErrorMessage(errors?.descPrevWeightLoss)}
           classNames={{
-            root: "sm:!grid !block w-full",
-            error: "sm:!text-end !text-start w-full",
             label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           }}
         >
@@ -126,6 +121,7 @@ const StepThree = ({ onNext, onBack, defaultValues }: StepThreeProps) => {
               />
             ))}
           </div>
+          <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.descPrevWeightLoss)}</p>
         </Radio.Group>
       )}
 
