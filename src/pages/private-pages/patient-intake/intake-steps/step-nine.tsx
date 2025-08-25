@@ -87,10 +87,7 @@ const StepNine = ({ onNext, onBack, defaultValues, isLoading = false }: StepNine
           value={q.value}
           onChange={(val) => handleSelect(q.name as keyof step9SchemaType, val)}
           label={q.label}
-          error={getErrorMessage(errors[q.name as keyof step9SchemaType])}
           classNames={{
-            root: "sm:!grid !block w-full",
-            error: "sm:!text-end !text-start w-full",
             label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           }}
         >
@@ -113,6 +110,7 @@ const StepNine = ({ onNext, onBack, defaultValues, isLoading = false }: StepNine
               />
             ))}
           </div>
+          <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors[q.name as keyof step9SchemaType])}</p>
         </Radio.Group>
       ))}
 

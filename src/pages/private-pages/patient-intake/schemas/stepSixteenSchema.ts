@@ -31,14 +31,16 @@ export const stepSixteenTeenSchema = yup.object({
     is: "Semaglutide",
     then: (schema) => schema.required("Please indicate if you have a script or vial picture."),
   }),
-  sema_previousRxDocument: yup.string().when("sema_hasPdfForPreviousRx", {
-    is: "Yes",
-    then: (schema) => schema.required("Please upload your script or vial photo."),
-  }),
-  sema_previousRxDocName: yup.string().when("sema_hasPdfForPreviousRx", {
-    is: "Yes",
-    then: (schema) => schema.required("Please upload your script or vial photo."),
-  }),
+  sema_previousRxDocument: yup.mixed().nullable().optional(),
+  sema_previousRxDocName: yup.mixed().nullable().optional(),
+  // sema_previousRxDocument: yup.string().when("sema_hasPdfForPreviousRx", {
+  //   is: "Yes",
+  //   then: (schema) => schema.required("Please upload your script or vial photo."),
+  // }),
+  // sema_previousRxDocName: yup.string().when("sema_hasPdfForPreviousRx", {
+  //   is: "Yes",
+  //   then: (schema) => schema.required("Please upload your script or vial photo."),
+  // }),
 
   // TIRZEPATIDE path
   tirz_lastWeightLossMedicationDoase: yup.string().when("currentWeightLossMedication", {
@@ -53,14 +55,16 @@ export const stepSixteenTeenSchema = yup.object({
     is: "Tirzepatide",
     then: (schema) => schema.required("Please indicate if you have a script or vial picture."),
   }),
-  tirz_previousRxDocument: yup.string().when("tirz_hasPdfForPreviousRx", {
-    is: "Yes",
-    then: (schema) => schema.required("Please upload your script or vial photo."),
-  }),
-  tirz_previousRxDocName: yup.string().when("tirz_hasPdfForPreviousRx", {
-    is: "Yes",
-    then: (schema) => schema.required("Please upload your script or vial photo."),
-  }),
+  tirz_previousRxDocument: yup.mixed().nullable().optional(),
+  tirz_previousRxDocName: yup.mixed().nullable().optional(),
+  // tirz_previousRxDocument: yup.string().when("tirz_hasPdfForPreviousRx", {
+  //   is: "Yes",
+  //   then: (schema) => schema.required("Please upload your script or vial photo."),
+  // }),
+  // tirz_previousRxDocName: yup.string().when("tirz_hasPdfForPreviousRx", {
+  //   is: "Yes",
+  //   then: (schema) => schema.required("Please upload your script or vial photo."),
+  // }),
 
   howLongTakeGlpMedication: yup.string().when("takenGlpMedication", {
     is: "Yes",
@@ -141,14 +145,16 @@ export const stepSixteenTeenSchema = yup.object({
     is: "Semaglutide",
     then: (schema) => schema.required("Please indicate if you have your previous script."),
   }),
-  takenPrevSema_previousRxDocument: yup.string().when("takenPrevSema_hasPdfForPreviousRx", {
-    is: "Yes",
-    then: (schema) => schema.required("Please upload your previous script or photo."),
-  }),
-  takenPrevSema_previousRxDocName: yup.string().when("takenPrevSema_hasPdfForPreviousRx", {
-    is: "Yes",
-    then: (schema) => schema.required("Please upload your previous script or photo."),
-  }),
+  takenPrevSema_previousRxDocument: yup.mixed().nullable().optional(),
+  takenPrevSema_previousRxDocName: yup.mixed().nullable().optional(),
+  // takenPrevSema_previousRxDocument: yup.string().when("takenPrevSema_hasPdfForPreviousRx", {
+  //   is: "Yes",
+  //   then: (schema) => schema.required("Please upload your previous script or photo."),
+  // }),
+  // takenPrevSema_previousRxDocName: yup.string().when("takenPrevSema_hasPdfForPreviousRx", {
+  //   is: "Yes",
+  //   then: (schema) => schema.required("Please upload your previous script or photo."),
+  // }),
 
   // Previous Tirzepatide
   takenPrevTirz_lastWeightLossMedicationDoase: yup.string().when("takenPrevGlpMedication", {
@@ -163,14 +169,16 @@ export const stepSixteenTeenSchema = yup.object({
     is: "Tirzepatide",
     then: (schema) => schema.required("Please indicate if you have your previous script."),
   }),
-  takenPrevTirz_previousRxDocument: yup.string().when("takenPrevTirz_hasPdfForPreviousRx", {
-    is: "Yes",
-    then: (schema) => schema.required("Please upload your previous script or photo."),
-  }),
-  takenPrevTirz_previousRxDocName: yup.string().when("takenPrevTirz_hasPdfForPreviousRx", {
-    is: "Yes",
-    then: (schema) => schema.required("Please upload your previous script or photo."),
-  }),
+  takenPrevTirz_previousRxDocument: yup.mixed().optional().optional(),
+  takenPrevTirz_previousRxDocName: yup.mixed().optional().optional(),
+  // takenPrevTirz_previousRxDocument: yup.string().when("takenPrevTirz_hasPdfForPreviousRx", {
+  //   is: "Yes",
+  //   then: (schema) => schema.required("Please upload your previous script or photo."),
+  // }),
+  // takenPrevTirz_previousRxDocName: yup.string().when("takenPrevTirz_hasPdfForPreviousRx", {
+  //   is: "Yes",
+  //   then: (schema) => schema.required("Please upload your previous script or photo."),
+  // }),
   takenPrevGlp_sideEffect: yup.string().when("takenGlpMedication", {
     is: "Not within 30 days, but previously",
     then: (schema) => schema.min(1, "Please select any side effects you've experienced."),

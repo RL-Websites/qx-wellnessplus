@@ -69,10 +69,7 @@ const StepTwelve = ({ onNext, onBack, defaultValues }: StepTwelveProps) => {
           clearErrors("removedGallbladderGallstones");
         }}
         label="Do you have a personal history of acute or chronic pancreatitis?"
-        error={getErrorMessage(errors?.pancreatitis)}
         classNames={{
-          root: "sm:!grid !block w-full",
-          error: "sm:!text-end !text-start w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
@@ -95,6 +92,7 @@ const StepTwelve = ({ onNext, onBack, defaultValues }: StepTwelveProps) => {
             />
           ))}
         </div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.pancreatitis)}</p>
       </Radio.Group>
 
       {showGallstones && (
@@ -106,10 +104,7 @@ const StepTwelve = ({ onNext, onBack, defaultValues }: StepTwelveProps) => {
             clearErrors("removedGallbladderGallstones");
           }}
           label="Did you have your gallbladder removed due to pancreatitis from gallstones?"
-          error={getErrorMessage(errors?.gallstones)}
           classNames={{
-            root: "sm:!grid !block w-full",
-            error: "sm:!text-end !text-start w-full",
             label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           }}
         >
@@ -132,6 +127,7 @@ const StepTwelve = ({ onNext, onBack, defaultValues }: StepTwelveProps) => {
               />
             ))}
           </div>
+          <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.gallstones)}</p>
         </Radio.Group>
       )}
 
@@ -140,10 +136,7 @@ const StepTwelve = ({ onNext, onBack, defaultValues }: StepTwelveProps) => {
           value={removedGallbladderGallstones}
           onChange={(value) => handleSelect("removedGallbladderGallstones", value)}
           label="When did you have your gallbladder removed?"
-          error={getErrorMessage(errors?.removedGallbladderGallstones)}
           classNames={{
-            root: "sm:!grid !block w-full",
-            error: "sm:!text-end !text-start w-full",
             label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           }}
         >
@@ -166,6 +159,7 @@ const StepTwelve = ({ onNext, onBack, defaultValues }: StepTwelveProps) => {
               />
             ))}
           </div>
+          <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.removedGallbladderGallstones)}</p>
         </Radio.Group>
       )}
 

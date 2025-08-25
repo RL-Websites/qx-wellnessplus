@@ -64,10 +64,7 @@ const StepEight = ({ onNext, onBack, defaultValues }: Step8Props) => {
     <Radio.Group
       value={value}
       label={label}
-      error={errorMsg}
       classNames={{
-        root: "sm:!grid !block w-full",
-        error: "sm:!text-end !text-start w-full",
         label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
       }}
     >
@@ -91,6 +88,7 @@ const StepEight = ({ onNext, onBack, defaultValues }: Step8Props) => {
           />
         ))}
       </div>
+      <p className="text-sm text-danger text-center mt-3">{errorMsg}</p>
     </Radio.Group>
   );
 
