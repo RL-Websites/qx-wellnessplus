@@ -11,7 +11,7 @@ export const hairTreatmentSchema = yup.object({
 export type hairTreatmentSchemaType = yup.InferType<typeof hairTreatmentSchema>;
 
 interface IHairTreatmentProps {
-  onNext: (data: hairTreatmentSchemaType) => void;
+  onNext: (data: hairTreatmentSchemaType & { eligible?: boolean }) => void;
   onBack: () => void;
   defaultValues?: hairTreatmentSchemaType;
 }
