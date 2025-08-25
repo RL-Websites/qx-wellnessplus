@@ -112,7 +112,7 @@ const PatientIntake = () => {
     let stepsFiltered = stepConfig.filter((step) => step.categories.some((cat) => categories.includes(cat)));
 
     // Condition: Male + Others → remove StepFive
-    if (basicInfo?.patient?.gender === "male" && categories.includes("Others")) {
+    if (basicInfo?.patient?.gender === "male" || basicInfo?.patient?.gender === "Male") {
       stepsFiltered = stepsFiltered.filter((step) => step.component !== StepFive);
     }
 
