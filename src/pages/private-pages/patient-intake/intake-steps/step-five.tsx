@@ -49,10 +49,7 @@ const StepFive = ({ onNext, onBack, defaultValues }: StepFiveProps) => {
       <Radio.Group
         value={isPregnant}
         label="Are you currently?"
-        error={getErrorMessage(errors?.isPregnant)}
         classNames={{
-          root: "sm:!grid !block w-full",
-          error: "sm:!text-end !text-start w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
@@ -76,6 +73,7 @@ const StepFive = ({ onNext, onBack, defaultValues }: StepFiveProps) => {
             />
           ))}
         </div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.isPregnant)}</p>
       </Radio.Group>
 
       <div className="flex justify-center gap-6 pt-4">

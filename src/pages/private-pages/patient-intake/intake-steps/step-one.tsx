@@ -62,11 +62,8 @@ const StepOne = ({ onNext, onBack, defaultValues }: IStepOneProps) => {
           value={primaryGoal}
           onChange={(value) => handleSelect("primaryGoal", value)}
           label="What is your primary goal for weight loss?"
-          error={getErrorMessage(errors?.primaryGoal)}
           classNames={{
-            root: "sm:!grid !block w-full",
-            error: "sm:!text-end !text-start w-full",
-            label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+            label: "!order-1 lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           }}
         >
           <div className="space-y-5">
@@ -88,15 +85,13 @@ const StepOne = ({ onNext, onBack, defaultValues }: IStepOneProps) => {
               />
             ))}
           </div>
+          <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.primaryGoal)}</p>
         </Radio.Group>
         <Radio.Group
           value={amountOfWeightLoss}
           onChange={(value) => handleSelect("amountOfWeightLoss", value)}
           label="How much weight would you like to lose?"
-          error={getErrorMessage(errors?.amountOfWeightLoss)}
           classNames={{
-            root: "sm:!grid !block w-full",
-            error: "sm:!text-end !text-start w-full",
             label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           }}
         >
@@ -119,15 +114,13 @@ const StepOne = ({ onNext, onBack, defaultValues }: IStepOneProps) => {
               />
             ))}
           </div>
+          <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.amountOfWeightLoss)}</p>
         </Radio.Group>
         <Radio.Group
           value={exerciseTimes}
           onChange={(value) => handleSelect("exerciseTimes", value)}
           label="How often do you exercise?"
-          error={getErrorMessage(errors?.exerciseTimes)}
           classNames={{
-            root: "sm:!grid !block w-full",
-            error: "sm:!text-end !text-start w-full",
             label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           }}
         >
@@ -150,6 +143,7 @@ const StepOne = ({ onNext, onBack, defaultValues }: IStepOneProps) => {
               />
             ))}
           </div>
+          <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.exerciseTimes)}</p>
         </Radio.Group>
       </div>
 

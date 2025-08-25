@@ -11,7 +11,7 @@ export const chemotherapySchema = yup.object({
 export type chemotherapySchemaType = yup.InferType<typeof chemotherapySchema>;
 
 interface IChemotherapyProps {
-  onNext: (data: chemotherapySchemaType) => void;
+  onNext: (data: chemotherapySchemaType & { eligible?: boolean }) => void;
   onBack: () => void;
   defaultValues?: chemotherapySchemaType;
 }

@@ -64,10 +64,7 @@ const StepTwo = ({ onNext, onBack, defaultValues }: StepTwoProps) => {
           }
         }}
         label="Are you willing to follow a weight loss dietary plan/reduce calories and exercise?"
-        error={getErrorMessage(errors?.doesDiet)}
         classNames={{
-          root: "sm:!grid !block w-full",
-          error: "sm:!text-end !text-start w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
@@ -90,6 +87,7 @@ const StepTwo = ({ onNext, onBack, defaultValues }: StepTwoProps) => {
             />
           ))}
         </div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.doesDiet)}</p>
       </Radio.Group>
 
       {showAgreeGlpExercise && (
@@ -97,10 +95,7 @@ const StepTwo = ({ onNext, onBack, defaultValues }: StepTwoProps) => {
           value={agreeGlpExercise}
           onChange={(value) => handleSelect("agreeGlpExercise", value)}
           label="I acknowledge that GLP medications are most effective when used in conjunction with exercise."
-          error={getErrorMessage(errors?.agreeGlpExercise)}
           classNames={{
-            root: "sm:!grid !block w-full",
-            error: "sm:!text-end !text-start w-full",
             label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           }}
         >
@@ -123,6 +118,7 @@ const StepTwo = ({ onNext, onBack, defaultValues }: StepTwoProps) => {
               />
             ))}
           </div>
+          <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.agreeGlpExercise)}</p>
         </Radio.Group>
       )}
 

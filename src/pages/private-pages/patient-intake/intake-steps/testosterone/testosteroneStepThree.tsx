@@ -56,10 +56,7 @@ const TestosteroneStepThree = ({ onNext, onBack, defaultValues }: Props) => {
         value={priorEdTreatment}
         onChange={(val) => handleSelect("priorEdTreatment", val)}
         label="Have you ever tried ED medications or treatments before?"
-        error={getErrorMessage(errors.priorEdTreatment)}
         classNames={{
-          root: "sm:!grid !block",
-          error: "sm:!text-end !text-start w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
@@ -82,6 +79,7 @@ const TestosteroneStepThree = ({ onNext, onBack, defaultValues }: Props) => {
             />
           ))}
         </div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.priorEdTreatment)}</p>
       </Radio.Group>
 
       {/* Q9 */}
@@ -89,10 +87,7 @@ const TestosteroneStepThree = ({ onNext, onBack, defaultValues }: Props) => {
         value={psychStress}
         onChange={(val) => handleSelect("psychStress", val)}
         label="Are you experiencing psychological stress, anxiety, or depression?"
-        error={getErrorMessage(errors.psychStress)}
         classNames={{
-          root: "sm:!grid !block",
-          error: "sm:!text-end !text-start w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
@@ -115,6 +110,7 @@ const TestosteroneStepThree = ({ onNext, onBack, defaultValues }: Props) => {
             />
           ))}
         </div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.psychStress)}</p>
       </Radio.Group>
 
       {/* Q10 */}
@@ -122,10 +118,7 @@ const TestosteroneStepThree = ({ onNext, onBack, defaultValues }: Props) => {
         value={pelvicHistory}
         onChange={(val) => handleSelect("pelvicHistory", val)}
         label="Do you have any history of surgeries or injuries affecting the pelvic area?"
-        error={getErrorMessage(errors.pelvicHistory)}
         classNames={{
-          root: "sm:!grid !block",
-          error: "sm:!text-end !text-start w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
@@ -148,6 +141,7 @@ const TestosteroneStepThree = ({ onNext, onBack, defaultValues }: Props) => {
             />
           ))}
         </div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.pelvicHistory)}</p>
       </Radio.Group>
 
       <div className="flex justify-center gap-6 pt-6">
