@@ -422,7 +422,6 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
             <Input
               {...register("state")}
               error={getErrorMessage(errors.state?.message)}
-              disabled
             />
           </Input.Wrapper>
           <Input.Wrapper
