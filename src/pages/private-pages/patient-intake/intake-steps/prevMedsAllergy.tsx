@@ -71,10 +71,7 @@ const MedsAllergy = ({ onNext, onBack, defaultValues }: MedsAllergyProps) => {
           setValue("nameAllergy", "");
         }}
         label="Do you have any allergy?"
-        error={getErrorMessage(errors?.hasAllergy)}
         classNames={{
-          root: "sm:!grid !block w-full",
-          error: "sm:!text-end !text-start w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
@@ -97,25 +94,27 @@ const MedsAllergy = ({ onNext, onBack, defaultValues }: MedsAllergyProps) => {
             />
           ))}
         </div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.hasAllergy)}</p>
       </Radio.Group>
 
       {showAllergyNames && (
-        <Input.Wrapper
-          label="Please list any allergies you have (example: Sneezing, Runny Nose, Skin Rash, Difficulty Breathing, etc.):"
-          withAsterisk
-          className="pt-8"
-          error={getErrorMessage(errors.nameAllergy)}
-          classNames={{
-            root: "sm:!grid !block w-full",
-            error: "sm:!text-end !text-start w-full",
-            label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
-          }}
-        >
-          <Input
-            type="text"
-            {...register("nameAllergy")}
-          />
-        </Input.Wrapper>
+        <div>
+          <Input.Wrapper
+            label="Please list any allergies you have (example: Sneezing, Runny Nose, Skin Rash, Difficulty Breathing, etc.):"
+            withAsterisk
+            className="pt-8"
+            error={getErrorMessage(errors.nameAllergy)}
+            classNames={{
+              label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+            }}
+          >
+            <Input
+              type="text"
+              {...register("nameAllergy")}
+            />
+          </Input.Wrapper>
+          <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.nameAllergy)}</p>
+        </div>
       )}
 
       {/* Prescribed Medicines Section */}
@@ -131,10 +130,7 @@ const MedsAllergy = ({ onNext, onBack, defaultValues }: MedsAllergyProps) => {
             setValue("medicines", "");
           }}
           label="Do you take any prescribed medications?"
-          error={getErrorMessage(errors?.prescribed)}
           classNames={{
-            root: "sm:!grid !block w-full",
-            error: "sm:!text-end !text-start w-full",
             label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           }}
         >
@@ -157,26 +153,27 @@ const MedsAllergy = ({ onNext, onBack, defaultValues }: MedsAllergyProps) => {
               />
             ))}
           </div>
+          <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.prescribed)}</p>
         </Radio.Group>
       </div>
 
       {showMedicineNames && (
-        <Input.Wrapper
-          label="Please specify the medications you take (Example: Amoxicillin - 500mg - 7 days, Ibuprofen - 200mg - 5 days, Tylenol - unknown)"
-          withAsterisk
-          className="pt-8"
-          error={getErrorMessage(errors.medicines)}
-          classNames={{
-            root: "sm:!grid !block w-full",
-            error: "sm:!text-end !text-start w-full",
-            label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
-          }}
-        >
-          <Input
-            type="text"
-            {...register("medicines")}
-          />
-        </Input.Wrapper>
+        <div>
+          <Input.Wrapper
+            label="Please specify the medications you take (Example: Amoxicillin - 500mg - 7 days, Ibuprofen - 200mg - 5 days, Tylenol - unknown)"
+            withAsterisk
+            className="pt-8"
+            classNames={{
+              label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+            }}
+          >
+            <Input
+              type="text"
+              {...register("medicines")}
+            />
+          </Input.Wrapper>
+          <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.medicines)}</p>
+        </div>
       )}
 
       {/* Buttons */}
