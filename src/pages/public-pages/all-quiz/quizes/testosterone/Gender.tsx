@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 export const GenderTestosteroneSchema = yup.object({
-  genderWeightLoss: yup.string().required("Please select your gender for testosterone support"),
+  genderTestosterone: yup.string().required("Please select your gender for testosterone support"),
 });
 
 export type GenderTestosteroneSchemaType = yup.InferType<typeof GenderTestosteroneSchema>;
@@ -32,32 +32,24 @@ export default function GenderTestosterone({ onNext, onBack, defaultValues }: IG
     formState: { errors },
   } = useForm<GenderTestosteroneSchemaType>({
     defaultValues: {
-      genderWeightLoss: defaultValues?.genderWeightLoss || "",
+      genderTestosterone: defaultValues?.genderTestosterone || "",
     },
     resolver: yupResolver(GenderTestosteroneSchema),
   });
 
-  const genderWeightLoss = watch("genderWeightLoss");
+  const genderTestosterone = watch("genderTestosterone");
   const options = ["Male", "Female"];
 
   const handleSelect = (value: string) => {
-    if (selectedCategory?.includes("Hair Growth")) {
-      if (value === "Male") {
-        setSelectedCategory(["Hair Growth (Male)"]);
-      }
-      if (value === "Female") {
-        setSelectedCategory(["Hair Growth (Female)"]);
-      }
-    }
-    setValue("genderWeightLoss", value, { shouldValidate: true });
-    clearErrors("genderWeightLoss");
+    setValue("genderTestosterone", value, { shouldValidate: true });
+    clearErrors("genderTestosterone");
     setSelectedGender(value);
   };
 
   const handleFormSubmit = (data: GenderTestosteroneSchemaType) => {
     onNext({
       ...data,
-      eligible: data.genderWeightLoss === "Female",
+      // eligible: data.genderTestosterone === "Female",
     });
   };
 
@@ -72,7 +64,7 @@ export default function GenderTestosterone({ onNext, onBack, defaultValues }: IG
           className="w-full"
         >
           <Radio.Group
-            value={genderWeightLoss}
+            value={genderTestosterone}
             onChange={handleSelect}
             className="mt-6 w-full"
           >
@@ -81,11 +73,11 @@ export default function GenderTestosterone({ onNext, onBack, defaultValues }: IG
                 <Radio
                   key={option}
                   value={option}
-                  classNames={getBaseWebRadios(genderWeightLoss, option)}
+                  classNames={getBaseWebRadios(genderTestosterone, option)}
                   label={
                     <div className="relative text-center">
                       <span className="text-foreground font-poppins">{option}</span>
-                      {genderWeightLoss === option && (
+                      {genderTestosterone === option && (
                         <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
@@ -96,7 +88,7 @@ export default function GenderTestosterone({ onNext, onBack, defaultValues }: IG
               ))}
             </div>
           </Radio.Group>
-          {errors.genderWeightLoss && <Text className="text-red-500 text-sm mt-5 text-center">Please select your gender.</Text>}
+          {errors.genderTestosterone && <Text className="text-red-500 text-sm mt-5 text-center">Please select your gender.</Text>}
         </form>
       </div>
 

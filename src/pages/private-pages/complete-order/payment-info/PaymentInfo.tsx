@@ -1,6 +1,7 @@
 import { IPatientBookingPatientInfoDTO } from "@/common/api/models/interfaces/PartnerPatient.model";
 import AddressAutoGoogle from "@/common/components/AddressAutoGoogle";
 import ConfirmationModal from "@/common/components/ConfirmationModal";
+import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
 import dmlToast from "@/common/configs/toaster.config";
 import { customerAtom } from "@/common/states/customer.atom";
 import { cartItemsAtom } from "@/common/states/product.atom";
@@ -287,8 +288,9 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
               onChange={(event) => handleCheckboxChange(event.currentTarget.checked)}
             />
           </div>
-          <div className="grid grid-cols-2 gap-6 pt-10">
+          <div className="grid md:grid-cols-2 gap-6 pt-10">
             <Input.Wrapper
+              classNames={InputErrorMessage}
               label="Name"
               withAsterisk
               error={getErrorMessage(errors?.shipping?.name)}
@@ -308,6 +310,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
               label="Email Address"
               withAsterisk
               className="col-span-1"
+              classNames={InputErrorMessage}
               error={getErrorMessage(errors?.shipping?.email)}
             >
               <Input
@@ -324,6 +327,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
             <Input.Wrapper
               label="Address"
               withAsterisk
+              classNames={InputErrorMessage}
               error={getErrorMessage(errors?.shipping?.address)}
             >
               <AddressAutoGoogle
@@ -350,6 +354,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
               className="w-full"
               label="State"
               withAsterisk
+              classNames={InputErrorMessage}
               error={getErrorMessage(errors?.shipping?.state)}
             >
               <Input
@@ -364,6 +369,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
               className="w-full"
               label="City"
               withAsterisk
+              classNames={InputErrorMessage}
               error={getErrorMessage(errors?.shipping?.city)}
             >
               <Input
@@ -412,11 +418,12 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
               />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-6 pt-10">
+          <div className="grid md:grid-cols-2 gap-6 pt-10">
             <Input.Wrapper
               label="Name"
               withAsterisk
               error={getErrorMessage(errors?.billing?.name)}
+              classNames={InputErrorMessage}
             >
               <Input
                 type="text"
@@ -434,6 +441,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
               withAsterisk
               className="col-span-1"
               error={getErrorMessage(errors?.billing?.email)}
+              classNames={InputErrorMessage}
             >
               <Input
                 type="email"
@@ -450,6 +458,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
               label="Address"
               withAsterisk
               error={getErrorMessage(errors?.billing?.address)}
+              classNames={InputErrorMessage}
             >
               <AddressAutoGoogle
                 {...register("billing.address")}
@@ -478,6 +487,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
               label="State"
               withAsterisk
               error={getErrorMessage(errors?.billing?.state)}
+              classNames={InputErrorMessage}
             >
               <Input
                 {...register(`billing.state`)}
@@ -494,6 +504,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
               label="City"
               withAsterisk
               error={getErrorMessage(errors?.billing?.city)}
+              classNames={InputErrorMessage}
             >
               <Input
                 type="text"

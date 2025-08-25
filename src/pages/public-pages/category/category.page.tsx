@@ -39,6 +39,7 @@ const CategoryPage = () => {
     "Hair Growth": "images/hair-loos.png",
     Peptides: "images/peptides.png",
     "Hormone Therapy": "images/hormone-therapy.png",
+    "Sexual Health": "images/sexual-health.png",
   };
 
   const transformedCategories = category?.reduce((acc: string[], item: string) => {

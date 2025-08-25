@@ -34,7 +34,6 @@ import CardiovascularDisease from "./quizes/testosterone/CardiovascularDisease";
 import GenderTestosterone from "./quizes/testosterone/Gender";
 import Impairment from "./quizes/testosterone/Impairment";
 import Nitroglycerin from "./quizes/testosterone/Nitroglycerin";
-import Priapism from "./quizes/testosterone/Priapism";
 import WeightLossBreastFeeding from "./quizes/weight-loss/BreastFeeding";
 import CustomerStatus from "./quizes/weight-loss/CustomerStatus";
 import DiseaseList from "./quizes/weight-loss/DiseaseList";
@@ -308,16 +307,7 @@ const QuizPage = () => {
         <>
           {activeStep === 2 && (
             <GenderTestosterone
-              onNext={(data) => {
-                const { eligible, ...rest } = data;
-                setFormData((prev) => ({ ...prev, ...rest }));
-
-                if (eligible) {
-                  setEligibleComponent(<InEligibleUser />);
-                } else {
-                  handleNext(rest);
-                }
-              }}
+              onNext={handleNext}
               onBack={handleBack}
               defaultValues={formData}
             />
@@ -338,7 +328,7 @@ const QuizPage = () => {
               defaultValues={formData}
             />
           )}
-          {activeStep === 4 && (
+          {/* {activeStep === 4 && (
             <Priapism
               onNext={(data) => {
                 const { eligible, ...rest } = data;
@@ -353,8 +343,8 @@ const QuizPage = () => {
               onBack={handleBack}
               defaultValues={formData}
             />
-          )}
-          {activeStep === 5 && (
+          )} */}
+          {activeStep === 4 && (
             <Nitroglycerin
               onNext={(data) => {
                 const { eligible, ...rest } = data;
@@ -370,7 +360,7 @@ const QuizPage = () => {
               defaultValues={formData}
             />
           )}
-          {activeStep === 6 && (
+          {activeStep === 5 && (
             <Impairment
               onNext={handleFinalSubmit}
               onBack={handleBack}
