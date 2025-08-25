@@ -141,9 +141,11 @@ const QuizPage = () => {
     }
     if (selectedCategory && selectedCategory.includes("Hair Growth (Male)")) {
       setHairGrowthMale(true);
+      setHairGrowthFemale(false);
     }
-    if (selectedCategory && selectedCategory.includes("Hair Growth (Male)")) {
-      setHairGrowthMale(true);
+    if (selectedCategory && selectedCategory.includes("Hair Growth (Female)")) {
+      setHairGrowthFemale(true);
+      setHairGrowthMale(false);
     }
   }, [selectedCategory]);
 
@@ -381,35 +383,71 @@ const QuizPage = () => {
         <>
           {activeStep === 3 && (
             <ScalpInfections
-              onNext={handleNext}
+              onNext={(data) => {
+                setFormData((prev) => ({ ...prev, ...data }));
+                if (data.scalpInfactions === "Yes") {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(data);
+                }
+              }}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
           {activeStep === 4 && (
             <AlopeciaAreata
-              onNext={handleNext}
+              onNext={(data) => {
+                setFormData((prev) => ({ ...prev, ...data }));
+                if (data.alopeciaAreata === "Yes") {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(data);
+                }
+              }}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
           {activeStep === 5 && (
             <MedicationTaking
-              onNext={handleNext}
+              onNext={(data) => {
+                setFormData((prev) => ({ ...prev, ...data }));
+                if (data.medicationTaking === "Yes") {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(data);
+                }
+              }}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
           {activeStep === 6 && (
             <ThyroidDisease
-              onNext={handleNext}
+              onNext={(data) => {
+                setFormData((prev) => ({ ...prev, ...data }));
+                if (data.thyroidDisease === "Yes") {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(data);
+                }
+              }}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
           {activeStep === 7 && (
             <Chemotherapy
-              onNext={handleFinalSubmit}
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+                setFormData((prev) => ({ ...prev, ...rest }));
+                if (data.chemotherapy === "Yes") {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleFinalSubmit(data);
+                }
+              }}
               onBack={handleBack}
               defaultValues={formData}
             />
@@ -420,35 +458,71 @@ const QuizPage = () => {
         <>
           {activeStep === 3 && (
             <PlanningPregnancy
-              onNext={handleNext}
+              onNext={(data) => {
+                setFormData((prev) => ({ ...prev, ...data }));
+                if (data.planningPregnancy === "Yes") {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(data);
+                }
+              }}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
           {activeStep === 4 && (
             <BreastFeeding
-              onNext={handleNext}
+              onNext={(data) => {
+                setFormData((prev) => ({ ...prev, ...data }));
+                if (data.breastFeeding === "Yes") {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(data);
+                }
+              }}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
           {activeStep === 5 && (
             <Pcos
-              onNext={handleNext}
+              onNext={(data) => {
+                setFormData((prev) => ({ ...prev, ...data }));
+                if (data.pcos === "Yes") {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(data);
+                }
+              }}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
           {activeStep === 6 && (
             <ScalpInfectionsTwo
-              onNext={handleNext}
+              onNext={(data) => {
+                setFormData((prev) => ({ ...prev, ...data }));
+                if (data.scalpInfactions === "Yes") {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(data);
+                }
+              }}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
           {activeStep === 7 && (
             <HairTreatment
-              onNext={handleFinalSubmit}
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+                setFormData((prev) => ({ ...prev, ...rest }));
+                if (data.hairTreatment === "Yes") {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleFinalSubmit(data);
+                }
+              }}
               onBack={handleBack}
               defaultValues={formData}
             />
