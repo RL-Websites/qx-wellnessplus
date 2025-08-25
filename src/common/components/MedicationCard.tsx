@@ -1,4 +1,5 @@
 import { Button } from "@mantine/core";
+import { IconInfoCircleFilled } from "@tabler/icons-react";
 
 interface IMedicationProps {
   image: string;
@@ -17,12 +18,18 @@ const MedicationCard = (medicationProps: IMedicationProps) => {
         onClick={medicationProps?.onShowDetails}
       >
         {medicationProps.image && (
-          <div className="rounded-[20px] flex justify-center overflow-hidden bg-[url(/images/thumb-bg.png)] bg-no-repeat bg-cover">
+          <div className="rounded-[20px] flex justify-center overflow-hidden bg-[url(/images/thumb-bg.png)] bg-no-repeat bg-cover relative">
             <img
               src={medicationProps?.image}
               alt=""
               className="max-w-full min-h-[326px] mx-auto"
             />
+            <span className="absolute size-8 top-4 right-4 rounded-full cursor-pointer">
+              <IconInfoCircleFilled
+                stroke={2}
+                className="text-white size-8"
+              />
+            </span>
           </div>
         )}
         {medicationProps?.title && (
