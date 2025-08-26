@@ -66,7 +66,7 @@ export default function GenderSexualHealth({ onNext, onBack, defaultValues }: IG
           <Radio.Group
             value={genderSexualHealth}
             onChange={handleSelect}
-            className="mt-6"
+            className="mt-6 w-full"
           >
             <div className="grid md:grid-cols-2 w-full gap-5">
               {options.map((option) => (

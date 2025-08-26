@@ -1,3 +1,4 @@
+import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Radio, Text } from "@mantine/core";
 import { useForm } from "react-hook-form";
@@ -62,16 +63,7 @@ const Nitroglycerin = ({ onNext, onBack, defaultValues }: INitroglycerinProps) =
                 <Radio
                   key={option}
                   value={option}
-                  classNames={{
-                    root: "relative w-full",
-                    radio: "hidden",
-                    inner: "hidden",
-                    labelWrapper: "w-full",
-                    label: `
-                      block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointer
-                      ${nitroglycerin === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
-                    `,
-                  }}
+                  classNames={getBaseWebRadios(nitroglycerin, option)}
                   label={
                     <div className="relative text-center">
                       <span className="text-foreground font-poppins">{option}</span>
