@@ -141,9 +141,9 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
     }
 
     if (!userData?.userable?.dob && !formData?.patient?.dob && globalDob) {
-      setDob(new Date(globalDob));
-      console.log(globalDob, formatDate(globalDob));
-      setValue("dob", [formatDate(globalDob)]);
+      // setDob(new Date(globalDob));
+      // console.log(globalDob, formatDate(globalDob));
+      // setValue("dob", [formatDate(globalDob)]);
     } else if (userData?.userable?.dob) {
       setDob(new Date(userData?.userable?.dob));
       setValue("dob", [formatDate(tempPatientDetails?.userable?.dob)]);
@@ -181,9 +181,9 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
       }
 
       if (!formData?.patient?.dob && globalDob) {
-        setDob(new Date(globalDob));
-        console.log(globalDob, new Date(globalDob));
-        setValue("dob", [formatDate(globalDob)]);
+        // setDob(new Date(globalDob));
+        // console.log(globalDob, new Date(globalDob));
+        // setValue("dob", [formatDate(globalDob)]);
       } else if (formData?.patient?.dob) {
         setDob(new Date(formData?.patient?.dob));
         setValue("dob", [formatDate(formData?.patient?.dob)]);
@@ -228,7 +228,7 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
 
   return (
     <>
-      <h1 className="text-center text-foreground text-[90px]/none">FEW QUICK QUESTIONS</h1>
+      <h1 className="heading-text text-foreground uppercase text-center">FEW QUICK QUESTIONS</h1>
       <div className="card-common">
         <div className="card-title">
           <h3 className="font-poppins font-semibold lg:text-3xl text-2xl">Basic Information</h3>
@@ -284,6 +284,7 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
             withAsterisk
             className="md:col-span-1 col-span-2"
             error={getErrorMessage(errors?.phone)}
+            classNames={InputErrorMessage}
           >
             <Input
               component={IMaskInput}
@@ -422,7 +423,6 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
             <Input
               {...register("state")}
               error={getErrorMessage(errors.state?.message)}
-              disabled
             />
           </Input.Wrapper>
           <Input.Wrapper

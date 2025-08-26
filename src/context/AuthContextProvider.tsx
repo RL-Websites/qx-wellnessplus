@@ -1,5 +1,5 @@
 import authApiRepository from "@/common/api/repositories/authRepository";
-import { userAtom } from "@/common/states/user.atom";
+import { user_id, userAtom } from "@/common/states/user.atom";
 import { useAtom } from "jotai/react";
 import { createContext, useContext, useEffect, useState } from "react";
 
@@ -12,6 +12,7 @@ const AuthContextProvider = ({ children }: React.PropsWithChildren) => {
   const accessToken = localStorage.getItem("accessToken");
 
   const [, setUserDataAtom] = useAtom(userAtom);
+  const [, setUserId] = useAtom(user_id);
 
   // const navigate = useNavigate();
 
@@ -33,16 +34,18 @@ const AuthContextProvider = ({ children }: React.PropsWithChildren) => {
         if (res.status == 200) {
           const data = res?.data?.data;
           setUserData(data);
+          setUserId(data?.user_enc_id || "");
           setUserDataAtom(data);
           setUserLoading(false);
-          switch (data?.userable_type) {
-            case "spa_clinic":
-              localStorage.setItem("isSpaClinic", "1");
-              break;
-            case "customer":
-              localStorage.setItem("isPartner", "1");
-              break;
-          }
+
+          // switch (data?.userable_type) {
+          //   case "spa_clinic":
+          //     localStorage.setItem("isSpaClinic", "1");
+          //     break;
+          //   case "customer":
+          //     localStorage.setItem("isPartner", "1");
+          //     break;
+          // }
           // if (data?.userable_type == "spa_clinic") {
           //   localStorage.setItem("isSpaClinic", "1");
           // }

@@ -72,10 +72,7 @@ const StepSix = ({ onNext, onBack, defaultValues }: StepSixProps) => {
       <Radio.Group
         value={takesDrug}
         label="Do you use recreational drugs?"
-        error={getErrorMessage(errors?.takesDrug)}
         classNames={{
-          root: "sm:!grid !block w-full",
-          error: "sm:!text-end !text-start w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
@@ -99,16 +96,14 @@ const StepSix = ({ onNext, onBack, defaultValues }: StepSixProps) => {
             />
           ))}
         </div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.takesDrug)}</p>
       </Radio.Group>
 
       {showWhatDrugs && (
         <Radio.Group
           value={whatDrugs}
           label="What drugs do you use?"
-          error={getErrorMessage(errors?.whatDrugs)}
           classNames={{
-            root: "sm:!grid !block w-full",
-            error: "sm:!text-end !text-start w-full",
             label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           }}
         >
@@ -132,26 +127,27 @@ const StepSix = ({ onNext, onBack, defaultValues }: StepSixProps) => {
               />
             ))}
           </div>
+          <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.whatDrugs)}</p>
         </Radio.Group>
       )}
 
       {showWhatDrugsOther && (
-        <Input.Wrapper
-          label="Please specify what drugs do you use?"
-          withAsterisk
-          error={getErrorMessage(errors.whatDrugsOther)}
-          className="pt-4"
-          classNames={{
-            root: "sm:!grid !block w-full",
-            error: "sm:!text-end !text-start w-full",
-            label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
-          }}
-        >
-          <Input
-            type="text"
-            {...register("whatDrugsOther")}
-          />
-        </Input.Wrapper>
+        <div>
+          <Input.Wrapper
+            label="Please specify what drugs do you use?"
+            withAsterisk
+            className="pt-4"
+            classNames={{
+              label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+            }}
+          >
+            <Input
+              type="text"
+              {...register("whatDrugsOther")}
+            />
+          </Input.Wrapper>
+          <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.whatDrugsOther)}</p>
+        </div>
       )}
 
       <div className="flex justify-center gap-6 pt-4">

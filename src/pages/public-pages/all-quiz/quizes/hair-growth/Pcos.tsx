@@ -1,5 +1,6 @@
+import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Group, Radio } from "@mantine/core";
+import { Button, Radio } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -51,24 +52,15 @@ const Pcos = ({ onNext, onBack, defaultValues }: IPcosProps) => {
         <Radio.Group
           value={pcos}
           onChange={handleSelect}
-          className="mt-6"
+          className="mt-6 w-full"
           error={errors?.pcos?.message}
         >
-          <Group grow>
+          <div className="grid md:grid-cols-2 w-full gap-5">
             {options.map((option) => (
               <Radio
                 key={option}
                 value={option}
-                classNames={{
-                  root: "relative w-full",
-                  radio: "hidden",
-                  inner: "hidden",
-                  labelWrapper: "w-full",
-                  label: `
-                    block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointer
-                    ${pcos === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
-                  `,
-                }}
+                classNames={getBaseWebRadios(pcos, option)}
                 label={
                   <div className="relative text-center">
                     <span className="text-foreground font-poppins">{option}</span>
@@ -81,7 +73,7 @@ const Pcos = ({ onNext, onBack, defaultValues }: IPcosProps) => {
                 }
               />
             ))}
-          </Group>
+          </div>
         </Radio.Group>
       </div>
 

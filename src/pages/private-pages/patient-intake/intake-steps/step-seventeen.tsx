@@ -91,7 +91,6 @@ const StepSeventeen = ({ onNext, onBack, defaultValues, isLoading = false }: Ste
         <Input.Wrapper
           label="What is your primary goal with peptide therapy?"
           withAsterisk
-          error={getErrorMessage(errors.peptidePrimaryGoal)}
           classNames={{
             root: "sm:!grid !block",
             error: "sm:!text-end !text-start w-full",
@@ -103,6 +102,7 @@ const StepSeventeen = ({ onNext, onBack, defaultValues, isLoading = false }: Ste
             {...register("peptidePrimaryGoal")}
           />
         </Input.Wrapper>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.peptidePrimaryGoal)}</p>
       </div>
 
       {/* Peptide therapy used */}
@@ -110,10 +110,7 @@ const StepSeventeen = ({ onNext, onBack, defaultValues, isLoading = false }: Ste
         value={peptideTherapyUsed}
         onChange={(val) => handleSelect("peptideTherapyUsed", val)}
         label="Have you used peptide therapies before?"
-        error={getErrorMessage(errors?.peptideTherapyUsed)}
         classNames={{
-          root: "sm:!grid !block",
-          error: "sm:!text-end !text-start w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
@@ -136,6 +133,7 @@ const StepSeventeen = ({ onNext, onBack, defaultValues, isLoading = false }: Ste
             />
           ))}
         </div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.peptideTherapyUsed)}</p>
       </Radio.Group>
 
       {/* Hormone-sensitive cancers */}
@@ -143,10 +141,7 @@ const StepSeventeen = ({ onNext, onBack, defaultValues, isLoading = false }: Ste
         value={hormoneSensitiveCancers}
         onChange={(val) => handleSelect("hormoneSensitiveCancers", val)}
         label="Do you have any history of hormone-sensitive cancers (e.g. breast, prostate)?"
-        error={getErrorMessage(errors?.hormoneSensitiveCancers)}
         classNames={{
-          root: "sm:!grid !block",
-          error: "sm:!text-end !text-start w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
@@ -169,6 +164,7 @@ const StepSeventeen = ({ onNext, onBack, defaultValues, isLoading = false }: Ste
             />
           ))}
         </div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.hormoneSensitiveCancers)}</p>
       </Radio.Group>
 
       {/* Endocrine / autoimmune */}
@@ -176,10 +172,7 @@ const StepSeventeen = ({ onNext, onBack, defaultValues, isLoading = false }: Ste
         value={endocrineAutoimmune}
         onChange={(val) => handleSelect("endocrineAutoimmune", val)}
         label="Do you have any known endocrine or autoimmune disorders?"
-        error={getErrorMessage(errors?.endocrineAutoimmune)}
         classNames={{
-          root: "sm:!grid !block",
-          error: "sm:!text-end !text-start w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
@@ -202,6 +195,7 @@ const StepSeventeen = ({ onNext, onBack, defaultValues, isLoading = false }: Ste
             />
           ))}
         </div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.endocrineAutoimmune)}</p>
       </Radio.Group>
 
       {/* Hormone therapy / supplements */}
@@ -209,10 +203,7 @@ const StepSeventeen = ({ onNext, onBack, defaultValues, isLoading = false }: Ste
         value={hormoneTherapySupple}
         onChange={(val) => handleSelect("hormoneTherapySupple", val)}
         label="Are you currently taking hormone therapy, supplements, or other performance enhancers?"
-        error={getErrorMessage(errors?.hormoneTherapySupple)}
         classNames={{
-          root: "sm:!grid !block",
-          error: "sm:!text-end !text-start w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
@@ -235,6 +226,7 @@ const StepSeventeen = ({ onNext, onBack, defaultValues, isLoading = false }: Ste
             />
           ))}
         </div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.hormoneTherapySupple)}</p>
       </Radio.Group>
 
       <div>
@@ -253,6 +245,7 @@ const StepSeventeen = ({ onNext, onBack, defaultValues, isLoading = false }: Ste
             {...register("physicActLevel")}
           />
         </Input.Wrapper>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.physicActLevel)}</p>
       </div>
 
       <div>

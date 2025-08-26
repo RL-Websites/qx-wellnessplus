@@ -1,58 +1,60 @@
+import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Radio, Text } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
-export const impairmentSchema = yup.object({
-  impairment: yup.string().required("Please select an option."),
+export const nitroglycerinSchema = yup.object({
+  nitroglycerin: yup.string().required("Please select nitrates or nitroglycerin status"),
 });
 
-export type ImpairmentSchemaType = yup.InferType<typeof impairmentSchema>;
+export type NitroglycerinSchemaType = yup.InferType<typeof nitroglycerinSchema>;
 
-interface IImpairmentProps {
-  onNext: (data: ImpairmentSchemaType & { eligible?: boolean }) => void;
+interface INitroglycerinProps {
+  onNext: (data: NitroglycerinSchemaType & { eligible?: boolean }) => void;
   onBack: () => void;
-  defaultValues?: ImpairmentSchemaType;
+  defaultValues?: NitroglycerinSchemaType;
 }
 
-const Impairment = ({ onNext, onBack, defaultValues }: IImpairmentProps) => {
+const Nitroglycerin = ({ onNext, onBack, defaultValues }: INitroglycerinProps) => {
   const {
     handleSubmit,
     setValue,
     watch,
     clearErrors,
     formState: { errors },
-  } = useForm<ImpairmentSchemaType>({
+  } = useForm<NitroglycerinSchemaType>({
     defaultValues: {
-      impairment: defaultValues?.impairment || "",
+      nitroglycerin: defaultValues?.nitroglycerin || "",
     },
-    resolver: yupResolver(impairmentSchema),
+    resolver: yupResolver(nitroglycerinSchema),
   });
 
-  const impairment = watch("impairment");
+  const nitroglycerin = watch("nitroglycerin");
+
   const options = ["No", "Yes"];
 
   const handleSelect = (value: string) => {
-    setValue("impairment", value, { shouldValidate: true });
-    clearErrors("impairment");
+    setValue("nitroglycerin", value, { shouldValidate: true });
+    clearErrors("nitroglycerin");
   };
 
-  const onSubmit = (data: ImpairmentSchemaType) => {
-    onNext({ ...data, eligible: data.impairment === "Yes" });
+  const onSubmit = (data: NitroglycerinSchemaType) => {
+    onNext({ ...data, eligible: data.nitroglycerin === "Yes" });
   };
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <form
-        id="impairmentForm"
+        id="nitroglycerinForm"
         onSubmit={handleSubmit(onSubmit)}
         className="card-common-width-lg mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Do you have severe liver or renal impairment?</h2>
+          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Are you currently taking nitrates or nitroglycerin?</h2>
 
           <Radio.Group
-            value={impairment}
+            value={nitroglycerin}
             onChange={handleSelect}
             className="mt-6 w-full"
           >
@@ -61,20 +63,11 @@ const Impairment = ({ onNext, onBack, defaultValues }: IImpairmentProps) => {
                 <Radio
                   key={option}
                   value={option}
-                  classNames={{
-                    root: "relative w-full",
-                    radio: "hidden",
-                    inner: "hidden",
-                    labelWrapper: "w-full",
-                    label: `
-                      block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointer
-                      ${impairment === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
-                    `,
-                  }}
+                  classNames={getBaseWebRadios(nitroglycerin, option)}
                   label={
                     <div className="relative text-center">
                       <span className="text-foreground font-poppins">{option}</span>
-                      {impairment === option && (
+                      {nitroglycerin === option && (
                         <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
@@ -86,7 +79,7 @@ const Impairment = ({ onNext, onBack, defaultValues }: IImpairmentProps) => {
             </div>
           </Radio.Group>
 
-          {errors.impairment && <Text className="text-red-500 text-sm mt-5 text-center">{errors.impairment.message}</Text>}
+          {errors.nitroglycerin && <Text className="text-red-500 text-sm mt-5 text-center">{errors.nitroglycerin.message}</Text>}
         </div>
 
         <div className="flex justify-center gap-6 pt-4">
@@ -100,7 +93,7 @@ const Impairment = ({ onNext, onBack, defaultValues }: IImpairmentProps) => {
           <Button
             type="submit"
             className="w-[200px]"
-            form="impairmentForm"
+            form="nitroglycerinForm"
           >
             Next
           </Button>
@@ -110,4 +103,4 @@ const Impairment = ({ onNext, onBack, defaultValues }: IImpairmentProps) => {
   );
 };
 
-export default Impairment;
+export default Nitroglycerin;

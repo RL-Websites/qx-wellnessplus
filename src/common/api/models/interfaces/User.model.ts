@@ -37,6 +37,7 @@ export interface IUserData {
   can_prescribe?: number;
   clinic_id?: number;
   prescription_count?: number;
+  user_enc_id: string;
 }
 
 export interface IUserable {
@@ -65,6 +66,7 @@ export interface IUserable {
   stripe_connect_id?: string;
   driving_license_front: string;
   driving_license_back: string;
+  u_id: string;
 }
 
 export interface IAdminBasicInfoDto {

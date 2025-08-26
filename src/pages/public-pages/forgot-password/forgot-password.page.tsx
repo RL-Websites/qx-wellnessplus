@@ -1,6 +1,7 @@
 import { IForgetPassPayload } from "@/common/api/models/interfaces/Auth.model";
 import authApiRepository from "@/common/api/repositories/authRepository";
 import SuccessContent from "@/common/components/SuccessContent";
+import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
 import dmlToast from "@/common/configs/toaster.config";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Input } from "@mantine/core";
@@ -77,9 +78,7 @@ const ForgetPasswordPage = () => {
                     label="Email Address"
                     required
                     error={errors.email?.message ? errors.email?.message : false}
-                    classNames={{
-                      label: "!text-sm md:!text-base lg:!text-lg",
-                    }}
+                    classNames={InputErrorMessage}
                   >
                     <Input
                       type="email"
@@ -89,10 +88,10 @@ const ForgetPasswordPage = () => {
                 </div>
 
                 <div className=" card-common-width  mx-auto  mt-10">
-                  <div className="flex justify-between gap-6">
+                  <div className="flex md:justify-between justify-center md:gap-6 gap-3">
                     <Button
                       variant="outline"
-                      className="w-[200px]"
+                      className="md:min-w-[200px] min-w-[150px]"
                       component={RdNavLink}
                       to={`/login`}
                     >
@@ -101,7 +100,7 @@ const ForgetPasswordPage = () => {
                     <Button
                       size="md"
                       type="submit"
-                      className="bg-primary text-white rounded-xl lg:w-[206px]"
+                      className="bg-primary text-white rounded-xl md:w-[200px] min-w-[150px]"
                       loading={forgetMutation.isPending}
                     >
                       Send Reset Link

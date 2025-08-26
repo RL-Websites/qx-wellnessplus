@@ -1,59 +1,59 @@
+import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Radio, Text } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
-export const priapismSchema = yup.object({
-  priapism: yup.string().required("Please select your experienced of priapism."),
+export const impairmentSchema = yup.object({
+  impairment: yup.string().required("Please select an option."),
 });
 
-export type PriapismSchemaType = yup.InferType<typeof priapismSchema>;
+export type ImpairmentSchemaType = yup.InferType<typeof impairmentSchema>;
 
-interface IPriapismProps {
-  onNext: (data: PriapismSchemaType & { eligible?: boolean }) => void;
+interface IImpairmentProps {
+  onNext: (data: ImpairmentSchemaType & { eligible?: boolean }) => void;
   onBack: () => void;
-  defaultValues?: PriapismSchemaType;
+  defaultValues?: ImpairmentSchemaType;
 }
 
-const Priapism = ({ onNext, onBack, defaultValues }: IPriapismProps) => {
+const Impairment = ({ onNext, onBack, defaultValues }: IImpairmentProps) => {
   const {
     handleSubmit,
     setValue,
     watch,
     clearErrors,
     formState: { errors },
-  } = useForm<PriapismSchemaType>({
+  } = useForm<ImpairmentSchemaType>({
     defaultValues: {
-      priapism: defaultValues?.priapism || "",
+      impairment: defaultValues?.impairment || "",
     },
-    resolver: yupResolver(priapismSchema),
+    resolver: yupResolver(impairmentSchema),
   });
 
-  const priapism = watch("priapism");
-
+  const impairment = watch("impairment");
   const options = ["No", "Yes"];
 
   const handleSelect = (value: string) => {
-    setValue("priapism", value, { shouldValidate: true });
-    clearErrors("priapism");
+    setValue("impairment", value, { shouldValidate: true });
+    clearErrors("impairment");
   };
 
-  const onSubmit = (data: PriapismSchemaType) => {
-    onNext({ ...data, eligible: data.priapism === "Yes" });
+  const onSubmit = (data: ImpairmentSchemaType) => {
+    onNext({ ...data, eligible: data.impairment === "Yes" });
   };
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <form
-        id="priapismForm"
+        id="impairmentForm"
         onSubmit={handleSubmit(onSubmit)}
         className="card-common-width-lg mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Have you ever experienced priapism lasting &gt; 4 hours?</h2>
+          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Do you have severe liver or renal impairment?</h2>
 
           <Radio.Group
-            value={priapism}
+            value={impairment}
             onChange={handleSelect}
             className="mt-6 w-full"
           >
@@ -62,20 +62,11 @@ const Priapism = ({ onNext, onBack, defaultValues }: IPriapismProps) => {
                 <Radio
                   key={option}
                   value={option}
-                  classNames={{
-                    root: "relative w-full",
-                    radio: "hidden",
-                    inner: "hidden",
-                    labelWrapper: "w-full",
-                    label: `
-                      block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointer
-                      ${priapism === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
-                    `,
-                  }}
+                  classNames={getBaseWebRadios(impairment, option)}
                   label={
                     <div className="relative text-center">
                       <span className="text-foreground font-poppins">{option}</span>
-                      {priapism === option && (
+                      {impairment === option && (
                         <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
@@ -87,7 +78,7 @@ const Priapism = ({ onNext, onBack, defaultValues }: IPriapismProps) => {
             </div>
           </Radio.Group>
 
-          {errors.priapism && <Text className="text-red-500 text-sm mt-5 text-center">{errors.priapism.message}</Text>}
+          {errors.impairment && <Text className="text-red-500 text-sm mt-5 text-center">{errors.impairment.message}</Text>}
         </div>
 
         <div className="flex justify-center gap-6 pt-4">
@@ -101,7 +92,7 @@ const Priapism = ({ onNext, onBack, defaultValues }: IPriapismProps) => {
           <Button
             type="submit"
             className="w-[200px]"
-            form="priapismForm"
+            form="impairmentForm"
           >
             Next
           </Button>
@@ -111,4 +102,4 @@ const Priapism = ({ onNext, onBack, defaultValues }: IPriapismProps) => {
   );
 };
 
-export default Priapism;
+export default Impairment;

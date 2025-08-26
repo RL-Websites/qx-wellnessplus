@@ -1,5 +1,6 @@
+import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Group, Radio } from "@mantine/core";
+import { Button, Radio } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -11,7 +12,7 @@ export const chemotherapySchema = yup.object({
 export type chemotherapySchemaType = yup.InferType<typeof chemotherapySchema>;
 
 interface IChemotherapyProps {
-  onNext: (data: chemotherapySchemaType) => void;
+  onNext: (data: chemotherapySchemaType & { eligible?: boolean }) => void;
   onBack: () => void;
   defaultValues?: chemotherapySchemaType;
 }
@@ -51,24 +52,15 @@ const Chemotherapy = ({ onNext, onBack, defaultValues }: IChemotherapyProps) => 
         <Radio.Group
           value={chemotherapy}
           onChange={handleSelect}
-          className="mt-6"
+          className="mt-6 w-full"
           error={errors?.chemotherapy?.message}
         >
-          <Group grow>
+          <div className="grid md:grid-cols-2 w-full gap-5">
             {options.map((option) => (
               <Radio
                 key={option}
                 value={option}
-                classNames={{
-                  root: "relative w-full",
-                  radio: "hidden",
-                  inner: "hidden",
-                  labelWrapper: "w-full",
-                  label: `
-                    block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointer
-                    ${chemotherapy === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
-                  `,
-                }}
+                classNames={getBaseWebRadios(chemotherapy, option)}
                 label={
                   <div className="relative text-center">
                     <span className="text-foreground font-poppins">{option}</span>
@@ -81,7 +73,7 @@ const Chemotherapy = ({ onNext, onBack, defaultValues }: IChemotherapyProps) => 
                 }
               />
             ))}
-          </Group>
+          </div>
         </Radio.Group>
       </div>
 

@@ -9,62 +9,49 @@ import { useAtom } from "jotai";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
-// Validation Schema
-export const GenderHairGrowthSchema = yup.object({
-  genderHairGrowth: yup.string().required("Please select your gender for hair growth"),
+export const GenderSexualHealthSchema = yup.object({
+  genderSexualHealth: yup.string().required("Please select your gender for sexual health"),
 });
 
-export type GenderHairGrowthSchemaType = yup.InferType<typeof GenderHairGrowthSchema>;
+export type GenderSexualHealthSchemaType = yup.InferType<typeof GenderSexualHealthSchema>;
 
-interface IGenderHairGrowthProps {
-  onNext: (data: GenderHairGrowthSchemaType) => void;
+interface IGenderSexualHealthProps {
+  onNext: (data: GenderSexualHealthSchemaType) => void;
   onBack: () => void;
-  defaultValues?: GenderHairGrowthSchemaType;
+  defaultValues?: GenderSexualHealthSchemaType;
 }
 
-export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGenderHairGrowthProps) {
+export default function GenderSexualHealth({ onNext, onBack, defaultValues }: IGenderSexualHealthProps) {
   const [selectedCategory, setSelectedCategory] = useAtom(selectedCategoryAtom);
   const [selectedGender, setSelectedGender] = useAtom(selectedGenderAtom);
+
   const {
     handleSubmit,
     setValue,
     watch,
     clearErrors,
     formState: { errors },
-  } = useForm<GenderHairGrowthSchemaType>({
+  } = useForm<GenderSexualHealthSchemaType>({
     defaultValues: {
-      genderHairGrowth: defaultValues?.genderHairGrowth || "",
+      genderSexualHealth: defaultValues?.genderSexualHealth || "",
     },
-    resolver: yupResolver(GenderHairGrowthSchema),
+    resolver: yupResolver(GenderSexualHealthSchema),
   });
 
-  const genderHairGrowth = watch("genderHairGrowth");
+  const genderSexualHealth = watch("genderSexualHealth");
   const options = ["Male", "Female"];
 
   const handleSelect = (value: string) => {
     if (value === "Male") {
-      setSelectedCategory(["Hair Growth (Male)"]);
+      setSelectedCategory(["Sexual Health (Male)"]);
     } else if (value === "Female") {
-      setSelectedCategory(["Hair Growth (Female)"]);
+      setSelectedCategory(["Sexual Health (Female)"]);
     }
 
-    setValue("genderHairGrowth", value, { shouldValidate: true });
-    clearErrors("genderHairGrowth");
+    setValue("genderSexualHealth", value, { shouldValidate: true });
+    clearErrors("genderSexualHealth");
     setSelectedGender(value);
   };
-
-  // const handleSelect = (value: string) => {
-  //   if (selectedCategory?.includes("Hair Growth")) {
-  //     if (value === "Male") {
-  //       setSelectedCategory(["Hair Growth (Male)"]);
-  //     } else if (value === "Female") {
-  //       setSelectedCategory(["Hair Growth (Female)"]);
-  //     }
-  //   }
-
-  //   setValue("genderHairGrowth", value, { shouldValidate: true });
-  //   clearErrors("genderHairGrowth");
-  // };
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
@@ -72,12 +59,12 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGen
 
       <div className="card-common-width-lg mx-auto mt-10">
         <form
-          id="genderHairGrowthForm"
+          id="genderSexualHealthForm"
           onSubmit={handleSubmit(onNext)}
           className="w-full"
         >
           <Radio.Group
-            value={genderHairGrowth}
+            value={genderSexualHealth}
             onChange={handleSelect}
             className="mt-6 w-full"
           >
@@ -86,11 +73,11 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGen
                 <Radio
                   key={option}
                   value={option}
-                  classNames={getBaseWebRadios(genderHairGrowth, option)}
+                  classNames={getBaseWebRadios(genderSexualHealth, option)}
                   label={
                     <div className="relative text-center">
                       <span className="text-foreground font-poppins">{option}</span>
-                      {genderHairGrowth === option && (
+                      {genderSexualHealth === option && (
                         <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
@@ -101,7 +88,7 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGen
               ))}
             </div>
           </Radio.Group>
-          {errors.genderHairGrowth && <Text className="text-red-500 text-sm mt-5 text-center">Please select your gender.</Text>}
+          {errors.genderSexualHealth && <Text className="text-red-500 text-sm mt-5 text-center">Please select your gender.</Text>}
         </form>
       </div>
 
@@ -116,7 +103,7 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGen
         <Button
           type="submit"
           className="w-[200px]"
-          form="genderHairGrowthForm"
+          form="genderSexualHealthForm"
         >
           Next
         </Button>

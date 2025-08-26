@@ -64,7 +64,7 @@ const Acknowledgement = ({ onNext, onBack, defaultValues, patientData, hasPeptid
   }, [defaultValues]);
   return (
     <>
-      <h1 className="text-center text-foreground text-[90px]/none uppercase">Acknowledgement</h1>
+      <h1 className="heading-text text-foreground uppercase text-center">Acknowledgement</h1>
       <div className="card-common bg-white">
         <div className="card-body">
           <div className="space-y-7">
@@ -395,7 +395,7 @@ const Acknowledgement = ({ onNext, onBack, defaultValues, patientData, hasPeptid
       <div className="flex justify-between mt-6">
         <div className="flex gap-3 ms-auto">
           <Button
-            w={256}
+            className="md:w-[200px] w-[150px]"
             color="grey.4"
             c="foreground"
             onClick={onBack}
@@ -403,7 +403,7 @@ const Acknowledgement = ({ onNext, onBack, defaultValues, patientData, hasPeptid
             Back
           </Button>
           <Button
-            w={256}
+            className="md:w-[200px] w-[150px]"
             onClick={handleSubmit(onNext)}
           >
             Next

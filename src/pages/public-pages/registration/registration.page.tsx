@@ -1,6 +1,7 @@
 import { IServerErrorResponse } from "@/common/api/models/interfaces/ApiResponse.model";
 import { IRegistrationRequestPayload } from "@/common/api/models/interfaces/Auth.model";
 import authApiRepository from "@/common/api/repositories/authRepository";
+import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
 import dmlToast from "@/common/configs/toaster.config";
 import useAuthToken from "@/common/hooks/useAuthToken";
 import { cartItemsAtom } from "@/common/states/product.atom";
@@ -116,9 +117,7 @@ const RegistrationPage = () => {
             label="First Name"
             required
             error={errors.firstName?.message ? errors.firstName?.message : false}
-            classNames={{
-              label: "!text-sm md:!text-base lg:!text-lg",
-            }}
+            classNames={InputErrorMessage}
           >
             <Input
               type="text"
@@ -129,9 +128,7 @@ const RegistrationPage = () => {
             label="Last Name"
             required
             error={errors.lastName?.message ? errors.lastName?.message : false}
-            classNames={{
-              label: "!text-sm md:!text-base lg:!text-lg",
-            }}
+            classNames={InputErrorMessage}
           >
             <Input
               type="text"
@@ -142,9 +139,7 @@ const RegistrationPage = () => {
             label="Email Address"
             required
             error={errors.emailAddress?.message ? errors.emailAddress?.message : false}
-            classNames={{
-              label: "!text-sm md:!text-base lg:!text-lg",
-            }}
+            classNames={InputErrorMessage}
           >
             <Input
               type="email"
@@ -156,13 +151,12 @@ const RegistrationPage = () => {
             mt="12"
             required
             error={errors.password?.message ? errors.password?.message : false}
-            classNames={{
-              label: "!text-sm !md:text-base !lg:text-lg",
-            }}
+            classNames={InputErrorMessage}
           >
             <PasswordInput
               visibilityToggleIcon={({ reveal }) => (reveal ? <i className="icon-view text-2xl"></i> : <i className="icon-view-off text-2xl"></i>)}
               {...register("password")}
+              classNames={InputErrorMessage}
             />
           </Input.Wrapper>
           <Input.Wrapper
@@ -170,32 +164,40 @@ const RegistrationPage = () => {
             mt="12"
             required
             error={errors.confirmPassword?.message ? errors.confirmPassword?.message : false}
-            classNames={{
-              label: "!text-sm !md:text-base !lg:text-lg",
-            }}
+            classNames={InputErrorMessage}
           >
             <PasswordInput
               visibilityToggleIcon={({ reveal }) => (reveal ? <i className="icon-view text-2xl"></i> : <i className="icon-view-off text-2xl"></i>)}
               {...register("confirmPassword")}
+              classNames={InputErrorMessage}
             />
           </Input.Wrapper>
         </div>
-        <div className="text-center mt-10">
-          <Button
-            size="md"
-            type="submit"
-            className="bg-primary text-white rounded-xl lg:w-[206px]"
-            loading={RegistrationMutation.isPending}
-          >
-            Register Now
-          </Button>
-
-          <p className="text-xl text-foreground font-semibold mt-5">
-            <span className="font-normal">Already have an account? </span>
-
+        <div className="card-common-width  mx-auto mt-10">
+          <div className="flex justify-between">
+            <Button
+              size="md"
+              className="lg:w-[206px]"
+              variant="outline"
+              component={Link}
+              to={`/login`}
+            >
+              Back
+            </Button>
+            <Button
+              size="md"
+              type="submit"
+              className="bg-primary text-white rounded-xl lg:w-[206px]"
+              loading={RegistrationMutation.isPending}
+            >
+              Register Now
+            </Button>
+          </div>
+          <p className="text-xl text-foreground font-semibold mt-6 text-center">
+            <span className="text-primary font-normal font-poppins">Already have an account? </span>
             <Link
               to="/login"
-              className="text-primary underline"
+              className="text-foreground underline"
             >
               Please Login
             </Link>
