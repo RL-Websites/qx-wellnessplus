@@ -129,7 +129,7 @@ const PatientIntake = () => {
     setTotalDynamicSteps(stepsFiltered.length);
   }, [selectedCategory, basicInfo?.patient?.gender]);
 
-  const progress = (activeStep / (totalDynamicSteps + 1)) * 100;
+  const progress = (activeStep / totalDynamicSteps) * 100;
 
   const handleNext = (data: any) => {
     setFormData((prev) => ({ ...prev, ...data }));
