@@ -1,7 +1,7 @@
 import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
 import { getErrorMessage } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Checkbox, Radio, TextInput } from "@mantine/core";
+import { Button, Checkbox, Grid, Radio, TextInput } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -22,11 +22,12 @@ interface SexualHealthFinalProps {
   onNext: (data: SexualHealthFinalSchemaType) => void;
   onBack: () => void;
   defaultValues?: Partial<SexualHealthFinalSchemaType>;
+  isLoading?: boolean;
 }
 
 const goalOptions = ["Better performance", "Increased libido", "Hormonal balance", "Overall wellness"];
 
-const SexualHealthFinal = ({ onNext, onBack, defaultValues }: SexualHealthFinalProps) => {
+const SexualHealthFinal = ({ onNext, onBack, defaultValues, isLoading = false }: SexualHealthFinalProps) => {
   const {
     handleSubmit,
     setValue,
@@ -45,11 +46,24 @@ const SexualHealthFinal = ({ onNext, onBack, defaultValues }: SexualHealthFinalP
 
   const hasLiverKidneyIssues = watch("hasLiverKidneyIssues");
   const lifestyleFactors = watch("lifestyleFactors");
+  const lifestyleDetails = watch("lifestyleDetails");
   const sexualHealthGoals = watch("sexualHealthGoals");
+  const selectedGoals = sexualHealthGoals?.split(", ") || [];
 
   const handleSelect = (field: keyof SexualHealthFinalSchemaType, value: string) => {
     setValue(field, value, { shouldValidate: true });
     clearErrors(field);
+  };
+
+  const toggleGoal = (goal: string) => {
+    let updated: string[];
+    if (selectedGoals.includes(goal)) {
+      updated = selectedGoals.filter((g) => g !== goal);
+    } else {
+      updated = [...selectedGoals, goal];
+    }
+    setValue("sexualHealthGoals", updated.join(", "), { shouldValidate: true });
+    clearErrors("sexualHealthGoals");
   };
 
   return (
@@ -58,6 +72,7 @@ const SexualHealthFinal = ({ onNext, onBack, defaultValues }: SexualHealthFinalP
       onSubmit={handleSubmit(onNext)}
       className="max-w-[800px] mx-auto space-y-10 pt-10"
     >
+      {/* Liver/Kidney Question */}
       <Radio.Group
         value={hasLiverKidneyIssues}
         onChange={(val) => handleSelect("hasLiverKidneyIssues", val)}
@@ -69,6 +84,7 @@ const SexualHealthFinal = ({ onNext, onBack, defaultValues }: SexualHealthFinalP
             <Radio
               key={option}
               value={option}
+              classNames={getBaseWebRadios(hasLiverKidneyIssues, option)}
               label={
                 <div className="relative text-center">
                   <span className="text-foreground font-poppins">{option}</span>
@@ -79,13 +95,13 @@ const SexualHealthFinal = ({ onNext, onBack, defaultValues }: SexualHealthFinalP
                   )}
                 </div>
               }
-              classNames={getBaseWebRadios(hasLiverKidneyIssues, option)}
             />
           ))}
         </div>
         <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.hasLiverKidneyIssues)}</p>
       </Radio.Group>
 
+      {/* Lifestyle Factors Question */}
       <Radio.Group
         value={lifestyleFactors}
         onChange={(val) => handleSelect("lifestyleFactors", val)}
@@ -97,6 +113,7 @@ const SexualHealthFinal = ({ onNext, onBack, defaultValues }: SexualHealthFinalP
             <Radio
               key={option}
               value={option}
+              classNames={getBaseWebRadios(lifestyleFactors, option)}
               label={
                 <div className="relative text-center">
                   <span className="text-foreground font-poppins">{option}</span>
@@ -107,18 +124,18 @@ const SexualHealthFinal = ({ onNext, onBack, defaultValues }: SexualHealthFinalP
                   )}
                 </div>
               }
-              classNames={getBaseWebRadios(lifestyleFactors, option)}
             />
           ))}
         </div>
         <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.lifestyleFactors)}</p>
       </Radio.Group>
 
+      {/* Lifestyle Details (conditional) */}
       {lifestyleFactors === "Yes" && (
         <TextInput
           label="Please describe the lifestyle factors affecting your sexual health:"
           placeholder="e.g. Smoking, stress from work, poor sleep"
-          value={watch("lifestyleDetails")}
+          value={lifestyleDetails}
           onChange={(e) => handleSelect("lifestyleDetails", e.currentTarget.value)}
           error={getErrorMessage(errors?.lifestyleDetails)}
           className="pt-6"
@@ -126,34 +143,44 @@ const SexualHealthFinal = ({ onNext, onBack, defaultValues }: SexualHealthFinalP
       )}
 
       {/* Sexual Health Goals */}
-      <Checkbox.Group
-        label="What are your goals for sexual health treatment?"
-        value={sexualHealthGoals ? sexualHealthGoals.split(", ") : []}
-        onChange={(valueArray) => handleSelect("sexualHealthGoals", valueArray.join(", "))}
-        className="pt-4"
-      >
-        <div className="grid sm:grid-cols-2 gap-5">
-          {goalOptions.map((option) => (
-            <Checkbox
-              key={option}
-              value={option}
-              label={
-                <div className="relative text-center">
-                  <span className="text-foreground font-poppins">{option}</span>
-                  {sexualHealthGoals?.split(", ").includes(option) && (
-                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
-                      <i className="icon-tick text-sm/none"></i>
-                    </span>
-                  )}
+      <div>
+        <h3 className="sm:text-2xl text-lg font-semibold text-foreground font-poppins">What are your goals for sexual health treatment?</h3>
+        <Grid
+          gutter="md"
+          className="mt-4"
+        >
+          {goalOptions.map((goal) => {
+            const isChecked = selectedGoals.includes(goal);
+            return (
+              <Grid.Col
+                span={{ sm: 6 }}
+                key={goal}
+              >
+                <div
+                  onClick={() => toggleGoal(goal)}
+                  className={`cursor-pointer border rounded-2xl px-6 py-4 flex justify-between items-center transition-all ${
+                    isChecked ? "border-primary bg-white text-black shadow-sm" : "border-grey-medium bg-transparent text-black"
+                  }`}
+                >
+                  <span className="text-base font-medium font-poppins">{goal}</span>
+                  <Checkbox
+                    checked={isChecked}
+                    readOnly
+                    size="md"
+                    radius="md"
+                    classNames={{
+                      input: isChecked ? "bg-primary border-primary text-white" : "bg-transparent border-foreground",
+                    }}
+                  />
                 </div>
-              }
-              classNames={getBaseWebRadios(sexualHealthGoals, option)}
-            />
-          ))}
-        </div>
-        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.sexualHealthGoals)}</p>
-      </Checkbox.Group>
+              </Grid.Col>
+            );
+          })}
+        </Grid>
+        {errors.sexualHealthGoals && <div className="text-danger text-sm mt-2 text-center">{errors.sexualHealthGoals.message}</div>}
+      </div>
 
+      {/* Navigation */}
       <div className="flex justify-center gap-6 pt-6">
         <Button
           variant="outline"
@@ -166,6 +193,7 @@ const SexualHealthFinal = ({ onNext, onBack, defaultValues }: SexualHealthFinalP
           type="submit"
           form="sexualHealthFinalForm"
           className="w-[200px]"
+          loading={isLoading}
         >
           Submit
         </Button>

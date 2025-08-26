@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 export const sexualHealthRiskSchema = yup.object({
-  onSexMeds: yup.string().required("Please select at least one value."),
   hasCardioDisease: yup.string().required("Please select at least one value."),
   experiencedPriapism: yup.string().required("Please select at least one value."),
   takesNitrates: yup.string().required("Please select at least one value."),
@@ -30,14 +29,12 @@ const SexualHealthRisks = ({ onNext, onBack, defaultValues }: SexualHealthRisksP
   } = useForm<SexualHealthRiskSchemaType>({
     resolver: yupResolver(sexualHealthRiskSchema),
     defaultValues: {
-      onSexMeds: defaultValues?.onSexMeds || "",
       hasCardioDisease: defaultValues?.hasCardioDisease || "",
       experiencedPriapism: defaultValues?.experiencedPriapism || "",
       takesNitrates: defaultValues?.takesNitrates || "",
     },
   });
 
-  const onSexMeds = watch("onSexMeds");
   const hasCardioDisease = watch("hasCardioDisease");
   const experiencedPriapism = watch("experiencedPriapism");
   const takesNitrates = watch("takesNitrates");
@@ -55,34 +52,6 @@ const SexualHealthRisks = ({ onNext, onBack, defaultValues }: SexualHealthRisksP
       onSubmit={handleSubmit(onNext)}
       className="max-w-[800px] mx-auto space-y-10 pt-10"
     >
-      <Radio.Group
-        value={onSexMeds}
-        onChange={(val) => handleSelect("onSexMeds", val)}
-        label="Do you currently take any medications for sexual health (e.g., Viagra, Cialis, hormone therapy)?"
-        classNames={{ label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2" }}
-      >
-        <div className="grid sm:grid-cols-2 gap-5">
-          {yesNoOptions.map((option) => (
-            <Radio
-              key={option}
-              value={option}
-              label={
-                <div className="relative text-center">
-                  <span className="text-foreground font-poppins">{option}</span>
-                  {onSexMeds === option && (
-                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
-                      <i className="icon-tick text-sm/none"></i>
-                    </span>
-                  )}
-                </div>
-              }
-              classNames={getBaseWebRadios(onSexMeds, option)}
-            />
-          ))}
-        </div>
-        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.onSexMeds)}</p>
-      </Radio.Group>
-
       <Radio.Group
         value={hasCardioDisease}
         onChange={(val) => handleSelect("hasCardioDisease", val)}
