@@ -88,7 +88,7 @@ const OrderSummary = () => {
                 className="flex flex-wrap items-center justify-between"
               >
                 <span className="text-foreground text-lg inline-block max-w-[226px]">
-                  {item.name} x {item.qty}
+                  {item.name} {item.strength ? `${item.strength} ${item.unit}` : ""} x {item.qty}
                 </span>
                 <span className="text-foreground text-lg">${calculatePrice(item)}</span>
               </div>
