@@ -3,57 +3,57 @@ import { Button, Radio, Text } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
-export const priapismSchema = yup.object({
-  priapism: yup.string().required("Please select your experienced of priapism."),
+// Validation schema
+export const activeCancerTreatmentSchema = yup.object({
+  activeCancerTreatment: yup.string().required("Please select an option."),
 });
 
-export type PriapismSchemaType = yup.InferType<typeof priapismSchema>;
+export type ActiveCancerTreatmentSchemaType = yup.InferType<typeof activeCancerTreatmentSchema>;
 
-interface IPriapismProps {
-  onNext: (data: PriapismSchemaType & { eligible?: boolean }) => void;
+interface IActiveCancerTreatmentProps {
+  onNext: (data: ActiveCancerTreatmentSchemaType & { eligible?: boolean }) => void;
   onBack: () => void;
-  defaultValues?: PriapismSchemaType;
+  defaultValues?: ActiveCancerTreatmentSchemaType;
 }
 
-const Priapism = ({ onNext, onBack, defaultValues }: IPriapismProps) => {
+const ActiveCancerTreatment = ({ onNext, onBack, defaultValues }: IActiveCancerTreatmentProps) => {
   const {
     handleSubmit,
     setValue,
     watch,
     clearErrors,
     formState: { errors },
-  } = useForm<PriapismSchemaType>({
+  } = useForm<ActiveCancerTreatmentSchemaType>({
     defaultValues: {
-      priapism: defaultValues?.priapism || "",
+      activeCancerTreatment: defaultValues?.activeCancerTreatment || "",
     },
-    resolver: yupResolver(priapismSchema),
+    resolver: yupResolver(activeCancerTreatmentSchema),
   });
 
-  const priapism = watch("priapism");
-
+  const activeCancerTreatment = watch("activeCancerTreatment");
   const options = ["No", "Yes"];
 
   const handleSelect = (value: string) => {
-    setValue("priapism", value, { shouldValidate: true });
-    clearErrors("priapism");
+    setValue("activeCancerTreatment", value, { shouldValidate: true });
+    clearErrors("activeCancerTreatment");
   };
 
-  const onSubmit = (data: PriapismSchemaType) => {
-    onNext({ ...data, eligible: data.priapism === "Yes" });
+  const onSubmit = (data: ActiveCancerTreatmentSchemaType) => {
+    onNext({ ...data, eligible: data.activeCancerTreatment === "Yes" });
   };
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <form
-        id="priapismForm"
+        id="activeCancerTreatmentForm"
         onSubmit={handleSubmit(onSubmit)}
         className="card-common-width-lg mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Have you ever experienced priapism lasting &gt; 4 hours?</h2>
+          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Are you currently under active cancer treatment?</h2>
 
           <Radio.Group
-            value={priapism}
+            value={activeCancerTreatment}
             onChange={handleSelect}
             className="mt-6 w-full"
           >
@@ -69,13 +69,13 @@ const Priapism = ({ onNext, onBack, defaultValues }: IPriapismProps) => {
                     labelWrapper: "w-full",
                     label: `
                       block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointer
-                      ${priapism === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
+                      ${activeCancerTreatment === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
                     `,
                   }}
                   label={
                     <div className="relative text-center">
                       <span className="text-foreground font-poppins">{option}</span>
-                      {priapism === option && (
+                      {activeCancerTreatment === option && (
                         <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
@@ -87,7 +87,7 @@ const Priapism = ({ onNext, onBack, defaultValues }: IPriapismProps) => {
             </div>
           </Radio.Group>
 
-          {errors.priapism && <Text className="text-red-500 text-sm mt-5 text-center">{errors.priapism.message}</Text>}
+          {errors.activeCancerTreatment && <Text className="text-red-500 text-sm mt-5 text-center">{errors.activeCancerTreatment.message}</Text>}
         </div>
 
         <div className="flex justify-center gap-6 pt-4">
@@ -101,7 +101,7 @@ const Priapism = ({ onNext, onBack, defaultValues }: IPriapismProps) => {
           <Button
             type="submit"
             className="w-[200px]"
-            form="priapismForm"
+            form="activeCancerTreatmentForm"
           >
             Next
           </Button>
@@ -111,4 +111,4 @@ const Priapism = ({ onNext, onBack, defaultValues }: IPriapismProps) => {
   );
 };
 
-export default Priapism;
+export default ActiveCancerTreatment;

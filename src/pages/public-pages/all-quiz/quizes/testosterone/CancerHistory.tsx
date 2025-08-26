@@ -3,57 +3,56 @@ import { Button, Radio, Text } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
-export const nitroglycerinSchema = yup.object({
-  nitroglycerin: yup.string().required("Please select nitrates or nitroglycerin status"),
+export const cancerHistorySchema = yup.object({
+  cancerHistory: yup.string().required("Please select your cancer history."),
 });
 
-export type NitroglycerinSchemaType = yup.InferType<typeof nitroglycerinSchema>;
+export type CancerHistorySchemaType = yup.InferType<typeof cancerHistorySchema>;
 
-interface INitroglycerinProps {
-  onNext: (data: NitroglycerinSchemaType & { eligible?: boolean }) => void;
+interface ICancerHistoryProps {
+  onNext: (data: CancerHistorySchemaType & { eligible?: boolean }) => void;
   onBack: () => void;
-  defaultValues?: NitroglycerinSchemaType;
+  defaultValues?: CancerHistorySchemaType;
 }
 
-const Nitroglycerin = ({ onNext, onBack, defaultValues }: INitroglycerinProps) => {
+const CancerHistory = ({ onNext, onBack, defaultValues }: ICancerHistoryProps) => {
   const {
     handleSubmit,
     setValue,
     watch,
     clearErrors,
     formState: { errors },
-  } = useForm<NitroglycerinSchemaType>({
+  } = useForm<CancerHistorySchemaType>({
     defaultValues: {
-      nitroglycerin: defaultValues?.nitroglycerin || "",
+      cancerHistory: defaultValues?.cancerHistory || "",
     },
-    resolver: yupResolver(nitroglycerinSchema),
+    resolver: yupResolver(cancerHistorySchema),
   });
 
-  const nitroglycerin = watch("nitroglycerin");
-
+  const cancerHistory = watch("cancerHistory");
   const options = ["No", "Yes"];
 
   const handleSelect = (value: string) => {
-    setValue("nitroglycerin", value, { shouldValidate: true });
-    clearErrors("nitroglycerin");
+    setValue("cancerHistory", value, { shouldValidate: true });
+    clearErrors("cancerHistory");
   };
 
-  const onSubmit = (data: NitroglycerinSchemaType) => {
-    onNext({ ...data, eligible: data.nitroglycerin === "Yes" });
+  const onSubmit = (data: CancerHistorySchemaType) => {
+    onNext({ ...data, eligible: data.cancerHistory === "No" });
   };
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <form
-        id="nitroglycerinForm"
+        id="cancerHistoryForm"
         onSubmit={handleSubmit(onSubmit)}
         className="card-common-width-lg mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Are you currently taking nitrates or nitroglycerin?</h2>
+          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Do you have a history of prostate or breast cancer?</h2>
 
           <Radio.Group
-            value={nitroglycerin}
+            value={cancerHistory}
             onChange={handleSelect}
             className="mt-6 w-full"
           >
@@ -69,13 +68,13 @@ const Nitroglycerin = ({ onNext, onBack, defaultValues }: INitroglycerinProps) =
                     labelWrapper: "w-full",
                     label: `
                       block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointer
-                      ${nitroglycerin === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
+                      ${cancerHistory === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
                     `,
                   }}
                   label={
                     <div className="relative text-center">
                       <span className="text-foreground font-poppins">{option}</span>
-                      {nitroglycerin === option && (
+                      {cancerHistory === option && (
                         <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
@@ -87,7 +86,7 @@ const Nitroglycerin = ({ onNext, onBack, defaultValues }: INitroglycerinProps) =
             </div>
           </Radio.Group>
 
-          {errors.nitroglycerin && <Text className="text-red-500 text-sm mt-5 text-center">{errors.nitroglycerin.message}</Text>}
+          {errors.cancerHistory && <Text className="text-red-500 text-sm mt-5 text-center">{errors.cancerHistory.message}</Text>}
         </div>
 
         <div className="flex justify-center gap-6 pt-4">
@@ -101,7 +100,7 @@ const Nitroglycerin = ({ onNext, onBack, defaultValues }: INitroglycerinProps) =
           <Button
             type="submit"
             className="w-[200px]"
-            form="nitroglycerinForm"
+            form="cancerHistoryForm"
           >
             Next
           </Button>
@@ -111,4 +110,4 @@ const Nitroglycerin = ({ onNext, onBack, defaultValues }: INitroglycerinProps) =
   );
 };
 
-export default Nitroglycerin;
+export default CancerHistory;

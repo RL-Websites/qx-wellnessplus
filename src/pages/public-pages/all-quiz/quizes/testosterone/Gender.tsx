@@ -4,19 +4,19 @@ import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
 import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { selectedGenderAtom } from "@/common/states/gender.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Group, Radio, Text } from "@mantine/core";
+import { Button, Radio, Text } from "@mantine/core";
 import { useAtom } from "jotai";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 export const GenderSexualHealthSchema = yup.object({
-  genderSexualHealth: yup.string().required("Please select your gender for sexual health"),
+  genderSexualHealth: yup.string().required("Please select your gender for sexual health support"),
 });
 
 export type GenderSexualHealthSchemaType = yup.InferType<typeof GenderSexualHealthSchema>;
 
 interface IGenderSexualHealthProps {
-  onNext: (data: GenderSexualHealthSchemaType) => void;
+  onNext: (data: GenderSexualHealthSchemaType & { eligible?: boolean }) => void;
   onBack: () => void;
   defaultValues?: GenderSexualHealthSchemaType;
 }
@@ -41,9 +41,17 @@ export default function GenderSexualHealth({ onNext, onBack, defaultValues }: IG
   const genderSexualHealth = watch("genderSexualHealth");
   const options = ["Male", "Female"];
 
+  const handleFormSubmit = (data: GenderSexualHealthSchemaType) => {
+    onNext({
+      ...data,
+      // You can uncomment below if you need conditional logic
+      // eligible: data.genderSexualHealth === "Female",
+    });
+  };
+
   const handleSelect = (value: string) => {
     if (value === "Male") {
-      setSelectedCategory(["Sexual Health (Male)"]);
+      setSelectedCategory(["Sexual Health (Male"]);
     } else if (value === "Female") {
       setSelectedCategory(["Sexual Health (Female)"]);
     }
@@ -60,15 +68,15 @@ export default function GenderSexualHealth({ onNext, onBack, defaultValues }: IG
       <div className="card-common-width-lg mx-auto mt-10">
         <form
           id="genderSexualHealthForm"
-          onSubmit={handleSubmit(onNext)}
+          onSubmit={handleSubmit(handleFormSubmit)}
           className="w-full"
         >
           <Radio.Group
             value={genderSexualHealth}
             onChange={handleSelect}
-            className="mt-6"
+            className="mt-6 w-full"
           >
-            <Group grow>
+            <div className="grid md:grid-cols-2 gap-5 w-full">
               {options.map((option) => (
                 <Radio
                   key={option}
@@ -86,9 +94,10 @@ export default function GenderSexualHealth({ onNext, onBack, defaultValues }: IG
                   }
                 />
               ))}
-            </Group>
+            </div>
           </Radio.Group>
-          {errors.genderSexualHealth && <Text className="text-red-500 text-sm mt-5 text-center">Please select your gender.</Text>}
+
+          {errors.genderSexualHealth && <Text className="text-red-500 text-sm mt-5 text-center">{errors.genderSexualHealth.message}</Text>}
         </form>
       </div>
 

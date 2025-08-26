@@ -34,6 +34,9 @@ import CardiovascularDisease from "./quizes/sexual-health/CardiovascularDisease"
 import GenderSexualHealth from "./quizes/sexual-health/Gender";
 import Impairment from "./quizes/sexual-health/Impairment";
 import Nitroglycerin from "./quizes/sexual-health/Nitroglycerin";
+import ActiveCancerTreatment from "./quizes/testosterone/ActiveCancerTreatment";
+import CancerHistory from "./quizes/testosterone/CancerHistory";
+import UncontrolledHeartOrSleepApnea from "./quizes/testosterone/UncontrolledHeartOrSleepApnea";
 import WeightLossBreastFeeding from "./quizes/weight-loss/BreastFeeding";
 import CustomerStatus from "./quizes/weight-loss/CustomerStatus";
 import DiseaseList from "./quizes/weight-loss/DiseaseList";
@@ -57,6 +60,8 @@ const QuizPage = () => {
   const [eligibleComponent, setEligibleComponent] = useState<React.ReactNode | null>(null);
   const [isHairGrowthMale, setHairGrowthMale] = useState(false);
   const [isHairGrowthFemale, setHairGrowthFemale] = useState(false);
+  const [sexualHealthMale, setSexualHealthMale] = useState(false);
+  const [sexualHealthFemale, setSexualHealthFemale] = useState(false);
   const [skipInjectionDate, setSkipInjectionDate] = useState(false);
   const [globalWeight, setGlobalWeight] = useAtom(weightAtom);
   const [globalDob, setGlobalDob] = useAtom(dobAtom);
@@ -146,6 +151,14 @@ const QuizPage = () => {
       setHairGrowthFemale(true);
       setHairGrowthMale(false);
     }
+    if (selectedCategory && selectedCategory.includes("Sexual Health (Male)")) {
+      setSexualHealthMale(true);
+      setSexualHealthFemale(false);
+    }
+    if (selectedCategory && selectedCategory.includes("Sexual Health (Female)")) {
+      setSexualHealthFemale(true);
+      setSexualHealthMale(false);
+    }
   }, [selectedCategory]);
 
   useEffect(() => {
@@ -170,6 +183,18 @@ const QuizPage = () => {
         <>
           {activeStep === 2 && (
             <GenderHairGrowth
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+        </>
+      )}
+
+      {(selectedCategory?.includes("Sexual Health") || selectedCategory?.includes("Sexual Health (Male)") || selectedCategory?.includes("Sexual Health (Female)")) && (
+        <>
+          {activeStep === 2 && (
+            <GenderSexualHealth
               onNext={handleNext}
               onBack={handleBack}
               defaultValues={formData}
@@ -303,15 +328,115 @@ const QuizPage = () => {
         </>
       )}
 
-      {(selectedCategory?.includes("Sexual Health") || selectedCategory?.includes("Sexual Health (Male)") || selectedCategory?.includes("Sexual Health (Female)")) && (
+      {selectedCategory?.includes("Testosterone") && (
         <>
           {activeStep === 2 && (
-            <GenderSexualHealth
-              onNext={handleNext}
+            <CancerHistory
+              onNext={(data) => {
+                setFormData((prev) => ({ ...prev, ...data }));
+                if (data.cancerHistory === "Yes") {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(data);
+                }
+              }}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
+          {activeStep === 3 && (
+            <UncontrolledHeartOrSleepApnea
+              onNext={(data) => {
+                setFormData((prev) => ({ ...prev, ...data }));
+                if (data.heartOrSleepApnea === "Yes") {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(data);
+                }
+              }}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {activeStep === 4 && (
+            <ActiveCancerTreatment
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+                setFormData((prev) => ({ ...prev, ...rest }));
+                if (data.activeCancerTreatment === "Yes") {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleFinalSubmit(data);
+                }
+              }}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+        </>
+      )}
+
+      {sexualHealthMale && (
+        <>
+          {activeStep === 3 && (
+            <CardiovascularDisease
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+                setFormData((prev) => ({ ...prev, ...rest }));
+
+                if (eligible) {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(rest);
+                }
+              }}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {/* {activeStep === 4 && (
+            <Priapism
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+                setFormData((prev) => ({ ...prev, ...rest }));
+
+                if (eligible) {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(rest);
+                }
+              }}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )} */}
+          {activeStep === 4 && (
+            <Nitroglycerin
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+                setFormData((prev) => ({ ...prev, ...rest }));
+
+                if (eligible) {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(rest);
+                }
+              }}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {activeStep === 5 && (
+            <Impairment
+              onNext={handleFinalSubmit}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+        </>
+      )}
+      {sexualHealthFemale && (
+        <>
           {activeStep === 3 && (
             <CardiovascularDisease
               onNext={(data) => {

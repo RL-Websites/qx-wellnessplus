@@ -20,7 +20,7 @@ const CategoryCard = (cardProps: ICardProps) => {
           <img
             src={cardProps.image}
             alt=""
-            className="max-w-full xl:h-[286px] lg:h-[230px] h-[200px]"
+            className="max-w-full xl:h-[260px] lg:h-[230px] h-[200px]"
           />
         </ThumbBg>
       ) : (

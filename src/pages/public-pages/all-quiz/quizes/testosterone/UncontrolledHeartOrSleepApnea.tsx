@@ -3,57 +3,56 @@ import { Button, Radio, Text } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
-export const nitroglycerinSchema = yup.object({
-  nitroglycerin: yup.string().required("Please select nitrates or nitroglycerin status"),
+export const uncontrolledHeartOrSleepApneaSchema = yup.object({
+  heartOrSleepApnea: yup.string().required("Please select an option."),
 });
 
-export type NitroglycerinSchemaType = yup.InferType<typeof nitroglycerinSchema>;
+export type UncontrolledHeartOrSleepApneaSchemaType = yup.InferType<typeof uncontrolledHeartOrSleepApneaSchema>;
 
-interface INitroglycerinProps {
-  onNext: (data: NitroglycerinSchemaType & { eligible?: boolean }) => void;
+interface IUncontrolledHeartOrSleepApneaProps {
+  onNext: (data: UncontrolledHeartOrSleepApneaSchemaType & { eligible?: boolean }) => void;
   onBack: () => void;
-  defaultValues?: NitroglycerinSchemaType;
+  defaultValues?: UncontrolledHeartOrSleepApneaSchemaType;
 }
 
-const Nitroglycerin = ({ onNext, onBack, defaultValues }: INitroglycerinProps) => {
+const UncontrolledHeartOrSleepApnea = ({ onNext, onBack, defaultValues }: IUncontrolledHeartOrSleepApneaProps) => {
   const {
     handleSubmit,
     setValue,
     watch,
     clearErrors,
     formState: { errors },
-  } = useForm<NitroglycerinSchemaType>({
+  } = useForm<UncontrolledHeartOrSleepApneaSchemaType>({
     defaultValues: {
-      nitroglycerin: defaultValues?.nitroglycerin || "",
+      heartOrSleepApnea: defaultValues?.heartOrSleepApnea || "",
     },
-    resolver: yupResolver(nitroglycerinSchema),
+    resolver: yupResolver(uncontrolledHeartOrSleepApneaSchema),
   });
 
-  const nitroglycerin = watch("nitroglycerin");
-
+  const heartOrSleepApnea = watch("heartOrSleepApnea");
   const options = ["No", "Yes"];
 
   const handleSelect = (value: string) => {
-    setValue("nitroglycerin", value, { shouldValidate: true });
-    clearErrors("nitroglycerin");
+    setValue("heartOrSleepApnea", value, { shouldValidate: true });
+    clearErrors("heartOrSleepApnea");
   };
 
-  const onSubmit = (data: NitroglycerinSchemaType) => {
-    onNext({ ...data, eligible: data.nitroglycerin === "Yes" });
+  const onSubmit = (data: UncontrolledHeartOrSleepApneaSchemaType) => {
+    onNext({ ...data, eligible: data.heartOrSleepApnea === "No" });
   };
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <form
-        id="nitroglycerinForm"
+        id="uncontrolledHeartOrSleepApneaForm"
         onSubmit={handleSubmit(onSubmit)}
         className="card-common-width-lg mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Are you currently taking nitrates or nitroglycerin?</h2>
+          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Have you been diagnosed with uncontrolled heart disease or severe sleep apnea?</h2>
 
           <Radio.Group
-            value={nitroglycerin}
+            value={heartOrSleepApnea}
             onChange={handleSelect}
             className="mt-6 w-full"
           >
@@ -69,13 +68,13 @@ const Nitroglycerin = ({ onNext, onBack, defaultValues }: INitroglycerinProps) =
                     labelWrapper: "w-full",
                     label: `
                       block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointer
-                      ${nitroglycerin === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
+                      ${heartOrSleepApnea === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
                     `,
                   }}
                   label={
                     <div className="relative text-center">
                       <span className="text-foreground font-poppins">{option}</span>
-                      {nitroglycerin === option && (
+                      {heartOrSleepApnea === option && (
                         <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
@@ -87,7 +86,7 @@ const Nitroglycerin = ({ onNext, onBack, defaultValues }: INitroglycerinProps) =
             </div>
           </Radio.Group>
 
-          {errors.nitroglycerin && <Text className="text-red-500 text-sm mt-5 text-center">{errors.nitroglycerin.message}</Text>}
+          {errors.heartOrSleepApnea && <Text className="text-red-500 text-sm mt-5 text-center">{errors.heartOrSleepApnea.message}</Text>}
         </div>
 
         <div className="flex justify-center gap-6 pt-4">
@@ -101,7 +100,7 @@ const Nitroglycerin = ({ onNext, onBack, defaultValues }: INitroglycerinProps) =
           <Button
             type="submit"
             className="w-[200px]"
-            form="nitroglycerinForm"
+            form="uncontrolledHeartOrSleepApneaForm"
           >
             Next
           </Button>
@@ -111,4 +110,4 @@ const Nitroglycerin = ({ onNext, onBack, defaultValues }: INitroglycerinProps) =
   );
 };
 
-export default Nitroglycerin;
+export default UncontrolledHeartOrSleepApnea;
