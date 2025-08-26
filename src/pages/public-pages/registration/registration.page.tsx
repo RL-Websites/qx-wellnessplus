@@ -105,10 +105,10 @@ const RegistrationPage = () => {
   };
 
   return (
-    <div className="lg:pt-16 md:pt-10 pt-4">
-      <h2 className="heading-text  text-foreground uppercase  text-center">Registration</h2>
+    <div className="">
+      <h2 className="lg:text-[70px] md:text-6xl text-4xl text-foreground uppercase text-center">Registration</h2>
       <form
-        className="w-full "
+        className="w-full -mt-5"
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="card-common card-common-width flex flex-col lg:gap-7 md:gap-5 gap-3">
@@ -148,7 +148,6 @@ const RegistrationPage = () => {
           </Input.Wrapper>
           <Input.Wrapper
             label="Password"
-            mt="12"
             required
             error={errors.password?.message ? errors.password?.message : false}
             classNames={InputErrorMessage}
@@ -161,7 +160,6 @@ const RegistrationPage = () => {
           </Input.Wrapper>
           <Input.Wrapper
             label="Confirm password"
-            mt="12"
             required
             error={errors.confirmPassword?.message ? errors.confirmPassword?.message : false}
             classNames={InputErrorMessage}
