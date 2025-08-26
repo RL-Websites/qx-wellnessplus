@@ -173,22 +173,31 @@ const RegistrationPage = () => {
             />
           </Input.Wrapper>
         </div>
-        <div className="text-center mt-10">
-          <Button
-            size="md"
-            type="submit"
-            className="bg-primary text-white rounded-xl lg:w-[206px]"
-            loading={RegistrationMutation.isPending}
-          >
-            Register Now
-          </Button>
-
-          <p className="text-xl text-foreground font-semibold mt-5">
-            <span className="font-normal">Already have an account? </span>
-
+        <div className="card-common-width  mx-auto mt-10">
+          <div className="flex justify-between">
+            <Button
+              size="md"
+              className="lg:w-[206px]"
+              variant="outline"
+              component={Link}
+              to={`/login`}
+            >
+              Back
+            </Button>
+            <Button
+              size="md"
+              type="submit"
+              className="bg-primary text-white rounded-xl lg:w-[206px]"
+              loading={RegistrationMutation.isPending}
+            >
+              Register Now
+            </Button>
+          </div>
+          <p className="text-xl text-foreground font-semibold mt-6 text-center">
+            <span className="text-primary font-normal font-poppins">Already have an account? </span>
             <Link
               to="/login"
-              className="text-primary underline"
+              className="text-foreground underline"
             >
               Please Login
             </Link>

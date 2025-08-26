@@ -30,11 +30,13 @@ import HSCancers from "./quizes/peptides-blends/new/HSCancers";
 import KidneyDisease from "./quizes/peptides-blends/new/KidneyDisease";
 import PregnancyBreastfeeding from "./quizes/peptides-blends/new/PregnancyBreastfeeding";
 import ThyroidLiverKidneyDisease from "./quizes/peptides-blends/new/ThyroidLiverKidneyDisease";
-import CardiovascularDisease from "./quizes/testosterone/CardiovascularDisease";
-import GenderTestosterone from "./quizes/testosterone/Gender";
-import Impairment from "./quizes/testosterone/Impairment";
-import Nitroglycerin from "./quizes/testosterone/Nitroglycerin";
-import Priapism from "./quizes/testosterone/Priapism";
+import CardiovascularDisease from "./quizes/sexual-health/CardiovascularDisease";
+import GenderSexualHealth from "./quizes/sexual-health/Gender";
+import Impairment from "./quizes/sexual-health/Impairment";
+import Nitroglycerin from "./quizes/sexual-health/Nitroglycerin";
+import ActiveCancerTreatment from "./quizes/testosterone/ActiveCancerTreatment";
+import CancerHistory from "./quizes/testosterone/CancerHistory";
+import UncontrolledHeartOrSleepApnea from "./quizes/testosterone/UncontrolledHeartOrSleepApnea";
 import WeightLossBreastFeeding from "./quizes/weight-loss/BreastFeeding";
 import CustomerStatus from "./quizes/weight-loss/CustomerStatus";
 import DiseaseList from "./quizes/weight-loss/DiseaseList";
@@ -58,6 +60,8 @@ const QuizPage = () => {
   const [eligibleComponent, setEligibleComponent] = useState<React.ReactNode | null>(null);
   const [isHairGrowthMale, setHairGrowthMale] = useState(false);
   const [isHairGrowthFemale, setHairGrowthFemale] = useState(false);
+  const [sexualHealthMale, setSexualHealthMale] = useState(false);
+  const [sexualHealthFemale, setSexualHealthFemale] = useState(false);
   const [skipInjectionDate, setSkipInjectionDate] = useState(false);
   const [globalWeight, setGlobalWeight] = useAtom(weightAtom);
   const [globalDob, setGlobalDob] = useAtom(dobAtom);
@@ -106,13 +110,6 @@ const QuizPage = () => {
     scrollTo({ y: 0 });
   };
 
-  // const handleBack = () => {
-  //   if (activeStep > 1) {
-  //     setActiveStep((prev) => prev - 1);
-  //   }
-  //   scrollTo({ y: 0 });
-  // };
-
   const handleBack = () => {
     if (activeStep > 1) {
       if (skipInjectionDate && activeStep === 8 + genderOffset) {
@@ -147,6 +144,14 @@ const QuizPage = () => {
       setHairGrowthFemale(true);
       setHairGrowthMale(false);
     }
+    if (selectedCategory && selectedCategory.includes("Sexual Health (Male)")) {
+      setSexualHealthMale(true);
+      setSexualHealthFemale(false);
+    }
+    if (selectedCategory && selectedCategory.includes("Sexual Health (Female)")) {
+      setSexualHealthFemale(true);
+      setSexualHealthMale(false);
+    }
   }, [selectedCategory]);
 
   useEffect(() => {
@@ -171,6 +176,18 @@ const QuizPage = () => {
         <>
           {activeStep === 2 && (
             <GenderHairGrowth
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+        </>
+      )}
+
+      {(selectedCategory?.includes("Sexual Health") || selectedCategory?.includes("Sexual Health (Male)") || selectedCategory?.includes("Sexual Health (Female)")) && (
+        <>
+          {activeStep === 2 && (
+            <GenderSexualHealth
               onNext={handleNext}
               onBack={handleBack}
               defaultValues={formData}
@@ -307,21 +324,53 @@ const QuizPage = () => {
       {selectedCategory?.includes("Testosterone") && (
         <>
           {activeStep === 2 && (
-            <GenderTestosterone
+            <CancerHistory
               onNext={(data) => {
-                const { eligible, ...rest } = data;
-                setFormData((prev) => ({ ...prev, ...rest }));
-
-                if (eligible) {
+                setFormData((prev) => ({ ...prev, ...data }));
+                if (data.cancerHistory === "Yes") {
                   setEligibleComponent(<InEligibleUser />);
                 } else {
-                  handleNext(rest);
+                  handleNext(data);
                 }
               }}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
+          {activeStep === 3 && (
+            <UncontrolledHeartOrSleepApnea
+              onNext={(data) => {
+                setFormData((prev) => ({ ...prev, ...data }));
+                if (data.heartOrSleepApnea === "Yes") {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(data);
+                }
+              }}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {activeStep === 4 && (
+            <ActiveCancerTreatment
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+                setFormData((prev) => ({ ...prev, ...rest }));
+                if (data.activeCancerTreatment === "Yes") {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleFinalSubmit(data);
+                }
+              }}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+        </>
+      )}
+
+      {sexualHealthMale && (
+        <>
           {activeStep === 3 && (
             <CardiovascularDisease
               onNext={(data) => {
@@ -339,22 +388,6 @@ const QuizPage = () => {
             />
           )}
           {activeStep === 4 && (
-            <Priapism
-              onNext={(data) => {
-                const { eligible, ...rest } = data;
-                setFormData((prev) => ({ ...prev, ...rest }));
-
-                if (eligible) {
-                  setEligibleComponent(<InEligibleUser />);
-                } else {
-                  handleNext(rest);
-                }
-              }}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-          {activeStep === 5 && (
             <Nitroglycerin
               onNext={(data) => {
                 const { eligible, ...rest } = data;
@@ -370,9 +403,68 @@ const QuizPage = () => {
               defaultValues={formData}
             />
           )}
-          {activeStep === 6 && (
+          {activeStep === 5 && (
             <Impairment
-              onNext={handleFinalSubmit}
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+                setFormData((prev) => ({ ...prev, ...rest }));
+                if (data.impairment === "Yes") {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleFinalSubmit(data);
+                }
+              }}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+        </>
+      )}
+      {sexualHealthFemale && (
+        <>
+          {activeStep === 3 && (
+            <CardiovascularDisease
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+                setFormData((prev) => ({ ...prev, ...rest }));
+
+                if (eligible) {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(rest);
+                }
+              }}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {activeStep === 4 && (
+            <Nitroglycerin
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+                setFormData((prev) => ({ ...prev, ...rest }));
+
+                if (eligible) {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(rest);
+                }
+              }}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {activeStep === 5 && (
+            <Impairment
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+                setFormData((prev) => ({ ...prev, ...rest }));
+                if (data.impairment === "Yes") {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleFinalSubmit(data);
+                }
+              }}
               onBack={handleBack}
               defaultValues={formData}
             />

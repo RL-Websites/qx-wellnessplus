@@ -34,7 +34,7 @@ export const questions = [
   { name: "thyroidism", label: "Do you have a history of any of the following?" },
   { name: "thyroidCancer", label: "Do you have a personal or family history of thyroid cancer?" },
   { name: "thyroidCancerType", label: "What type of thyroid cancer?" },
-  { name: "papillaryReport", label: "Do you have accurate lab report?" },
+  { name: "papillaryReport", label: "Do you have your pathology report?" },
   { name: "papillaryReportUp", label: "Please upload your pathology report." },
   { name: "follicularReport", label: "Do you have your pathology report?" },
   { name: "follicularReportUp", label: "Please upload your pathology report." },
@@ -110,17 +110,37 @@ export const questions = [
   { name: "previousTreatments", label: "Have you tried hair loss treatments before?" },
   { name: "otherSymptoms", label: "Are you experiencing other symptoms?" },
 
-  { name: "edDuration", label: "How long have you been experiencing erectile difficulties?" },
-  { name: "erectionFrequency", label: "How often are you able to achieve and maintain an erection?" },
-  { name: "morningErections", label: "Do you wake up with morning or nighttime erections?" },
-  { name: "diagnosedCondition", label: "Do you have any diagnosed health conditions?" },
-  { name: "takingMedications", label: "Are you currently taking any medications?" },
-  { name: "medicationsList", label: "Do you take any prescribed medications?" },
-  { name: "useSubstances", label: "Do you smoke, drink alcohol, or use recreational drugs?" },
-  { name: "libido", label: "How is your sexual desire (libido)?" },
-  { name: "priorEdTreatment", label: "Have you ever tried ED medications or treatments before?" },
-  { name: "psychStress", label: "Are you experiencing psychological stress, anxiety, or depression?" },
-  { name: "pelvicHistory", label: "Do you have any history of surgeries or injuries affecting the pelvic area?" },
+  { name: "concernSH", label: "What sexual health concern are you seeking help with?" },
+  { name: "otherConcern", label: "Please specify your concern:" },
+  { name: "durationSH", label: "How long have you been experiencing this issue? (in months)" },
+  { name: "onSexMeds", label: "Do you currently take any medications for sexual health (e.g., Viagra, Cialis, hormone therapy)?" },
+
+  { name: "hasCardioDisease", label: "Do you have a history of uncontrolled cardiovascular disease (heart attack, stroke, arrhythmia)?" },
+  { name: "experiencedPriapism", label: "Have you ever experienced priapism (erection lasting more than 4 hours)?" },
+  { name: "takesNitrates", label: "Do you currently take nitrates or nitroglycerin?" },
+
+  { name: "hasLiverKidneyIssues", label: "Do you have any history of liver or kidney disease?" },
+  { name: "lifestyleFactors", label: "Do you have any lifestyle factors affecting sexual health (smoking, heavy alcohol use, stress, lack of sleep)?" },
+  { name: "lifestyleDetails", label: "Please describe the lifestyle factors affecting your sexual health:" },
+  { name: "sexualHealthGoals", label: "What are your goals for sexual health treatment?" },
+
+  { name: "lowTestosterone", label: "Have you ever been diagnosed with low testosterone (hypogonadism)?" },
+  { name: "symptomsSH", label: "Are you currently experiencing any of the following symptoms?" },
+
+  { name: "takingMedsSH", label: "Are you currently taking any medications (especially anticoagulants, steroids, or hormone therapy)?" },
+  { name: "medsListSH", label: "If yes, please list them:" },
+
+  { name: "usesSubstances", label: "Do you consume alcohol or use recreational drugs?" },
+  { name: "substanceDetails", label: "If yes, please provide details:" },
+
+  { name: "hasChildrenOrPlans", label: "Do you have children or plan to have children in the future?" },
+
+  { name: "takenTestosterone", label: "Have you taken testosterone therapy before?" },
+  { name: "testosteroneForms", label: "If yes, what form (injections, gels, patches, oral)?" },
+
+  { name: "hasCancerHistory", label: "Do you have a history of prostate cancer, breast cancer, or high PSA levels?" },
+  { name: "hasCardioHistory", label: "Do you currently have or have a history of heart disease, stroke, or blood clotting disorders?" },
+
   {
     name: "agreeToPhoneConsult",
     label:

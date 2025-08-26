@@ -4,57 +4,56 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 // Validation schema
-export const cardiovascularDiseaseSchema = yup.object({
-  cardiovascularDisease: yup.string().required("Please select cardiovascular history."),
+export const activeCancerTreatmentSchema = yup.object({
+  activeCancerTreatment: yup.string().required("Please select an option."),
 });
 
-export type CardiovascularDiseaseSchemaType = yup.InferType<typeof cardiovascularDiseaseSchema>;
+export type ActiveCancerTreatmentSchemaType = yup.InferType<typeof activeCancerTreatmentSchema>;
 
-interface ICardiovascularDiseaseProps {
-  onNext: (data: CardiovascularDiseaseSchemaType & { eligible?: boolean }) => void;
+interface IActiveCancerTreatmentProps {
+  onNext: (data: ActiveCancerTreatmentSchemaType & { eligible?: boolean }) => void;
   onBack: () => void;
-  defaultValues?: CardiovascularDiseaseSchemaType;
+  defaultValues?: ActiveCancerTreatmentSchemaType;
 }
 
-const CardiovascularDisease = ({ onNext, onBack, defaultValues }: ICardiovascularDiseaseProps) => {
+const ActiveCancerTreatment = ({ onNext, onBack, defaultValues }: IActiveCancerTreatmentProps) => {
   const {
     handleSubmit,
     setValue,
     watch,
     clearErrors,
     formState: { errors },
-  } = useForm<CardiovascularDiseaseSchemaType>({
+  } = useForm<ActiveCancerTreatmentSchemaType>({
     defaultValues: {
-      cardiovascularDisease: defaultValues?.cardiovascularDisease || "",
+      activeCancerTreatment: defaultValues?.activeCancerTreatment || "",
     },
-    resolver: yupResolver(cardiovascularDiseaseSchema),
+    resolver: yupResolver(activeCancerTreatmentSchema),
   });
 
-  const cardiovascularDisease = watch("cardiovascularDisease");
-
+  const activeCancerTreatment = watch("activeCancerTreatment");
   const options = ["No", "Yes"];
 
   const handleSelect = (value: string) => {
-    setValue("cardiovascularDisease", value, { shouldValidate: true });
-    clearErrors("cardiovascularDisease");
+    setValue("activeCancerTreatment", value, { shouldValidate: true });
+    clearErrors("activeCancerTreatment");
   };
 
-  const onSubmit = (data: CardiovascularDiseaseSchemaType) => {
-    onNext({ ...data, eligible: data.cardiovascularDisease === "Yes" });
+  const onSubmit = (data: ActiveCancerTreatmentSchemaType) => {
+    onNext({ ...data, eligible: data.activeCancerTreatment === "Yes" });
   };
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <form
-        id="cardiovascularDiseaseForm"
+        id="activeCancerTreatmentForm"
         onSubmit={handleSubmit(onSubmit)}
         className="card-common-width-lg mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Do you have a history of uncontrolled cardiovascular disease (e.g., unstable angina)?</h2>
+          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Are you currently under active cancer treatment?</h2>
 
           <Radio.Group
-            value={cardiovascularDisease}
+            value={activeCancerTreatment}
             onChange={handleSelect}
             className="mt-6 w-full"
           >
@@ -70,13 +69,13 @@ const CardiovascularDisease = ({ onNext, onBack, defaultValues }: ICardiovascula
                     labelWrapper: "w-full",
                     label: `
                       block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointer
-                      ${cardiovascularDisease === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
+                      ${activeCancerTreatment === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
                     `,
                   }}
                   label={
                     <div className="relative text-center">
                       <span className="text-foreground font-poppins">{option}</span>
-                      {cardiovascularDisease === option && (
+                      {activeCancerTreatment === option && (
                         <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
@@ -87,7 +86,8 @@ const CardiovascularDisease = ({ onNext, onBack, defaultValues }: ICardiovascula
               ))}
             </div>
           </Radio.Group>
-          {errors.cardiovascularDisease && <Text className="text-red-500 text-sm mt-5 text-center">{errors.cardiovascularDisease.message}</Text>}
+
+          {errors.activeCancerTreatment && <Text className="text-red-500 text-sm mt-5 text-center">{errors.activeCancerTreatment.message}</Text>}
         </div>
 
         <div className="flex justify-center gap-6 pt-4">
@@ -101,7 +101,7 @@ const CardiovascularDisease = ({ onNext, onBack, defaultValues }: ICardiovascula
           <Button
             type="submit"
             className="w-[200px]"
-            form="cardiovascularDiseaseForm"
+            form="activeCancerTreatmentForm"
           >
             Next
           </Button>
@@ -111,4 +111,4 @@ const CardiovascularDisease = ({ onNext, onBack, defaultValues }: ICardiovascula
   );
 };
 
-export default CardiovascularDisease;
+export default ActiveCancerTreatment;
