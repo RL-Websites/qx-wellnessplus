@@ -113,13 +113,13 @@ const Login = () => {
   };
 
   return (
-    <div className="lg:pt-16 md:pt-10 pt-4">
-      <h2 className="heading-text  text-foreground uppercase  text-center">Login</h2>
+    <div className="">
+      <h2 className="lg:text-[70px] md:text-6xl text-4xl text-foreground uppercase  text-center">Login</h2>
       <form
         className="w-full"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div className="card-common card-common-width flex flex-col lg:gap-7 md:gap-5 gap-3">
+        <div className="card-common mt-5 card-common-width flex flex-col lg:gap-7 md:gap-5 gap-3">
           <div className="flex flex-col gap-2.5">
             <p className="font-semibold lg:text-4xl md:text-xl text-base text-foreground font-poppins">Returning Customer</p>
             <p className="text-sm md:text-base lg:text-2xl font-poppins">Log in to confirm your journey</p>
@@ -138,7 +138,6 @@ const Login = () => {
           </Input.Wrapper>
           <Input.Wrapper
             label="Password"
-            mt="12"
             required
             error={errors.password?.message ? errors.password?.message : false}
             classNames={InputErrorMessage}
@@ -155,7 +154,7 @@ const Login = () => {
             label="Remember me"
           />
         </div>
-        <div className=" card-common-width  mx-auto  mt-10">
+        <div className=" card-common-width  mx-auto  mt-[30px]">
           <div className="flex justify-between">
             <Button
               variant="outline"
