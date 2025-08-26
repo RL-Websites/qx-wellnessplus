@@ -1,9 +1,19 @@
 import { user_id } from "@/common/states/user.atom";
 import { Button } from "@mantine/core";
 import { useAtom } from "jotai";
+import { useEffect } from "react";
 
-const ThanksStep = () => {
+const ThanksStep = ({ isActive }: { isActive: boolean }) => {
   const [userId, setUserId] = useAtom(user_id);
+
+  useEffect(() => {
+    if (isActive && userId) {
+      console.log("hello");
+      setTimeout(() => {
+        window.open(`${import.meta.env.VITE_DOSVANA_URL}/oauth/${userId}`, "_blank");
+      }, 10000);
+    }
+  }, [userId]);
 
   const goToDosvanaDashboard = () => {
     window.open(`${import.meta.env.VITE_DOSVANA_URL}/oauth/${userId}`, "_blank");
@@ -19,9 +29,10 @@ const ThanksStep = () => {
       </div>
       <div className="md:col-span-3 md:space-y-12 space-y-3">
         <h2 className="heading-text text-foreground uppercase">Thank You</h2>
-        <p className="lg:text-2xl md:text-xl text-lg font-poppins text-foreground">
-          An agent will contact with you shortly. To access your account please check your email.
-          <span className="font-semibold md:pt-12 pt-5 inline-block">Please wait... It will redirect to your dashboard!</span>
+        <p className="lg:text-2xl md:text-xl text-lg font-poppins text-foreground mt-6">
+          {/* An agent will contact with you shortly. To access your account please check your email. */}
+          <span className="font-semibold md:pt-6 pt-5 inline-block">Please wait...</span> <br />
+          <span className="font-semibold md:pt-4 pt-5 inline-block"> We will redirect to your dashboard shortly!</span>
         </p>
         <Button
           className="w-[206px]"

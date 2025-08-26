@@ -1,19 +1,17 @@
 @font-face {
-  font-family: 'icomoon';
-  src:  url('fonts/icomoon.eot?mfsz4g');
-  src:  url('fonts/icomoon.eot?mfsz4g#iefix') format('embedded-opentype'),
-    url('fonts/icomoon.woff2?mfsz4g') format('woff2'),
-    url('fonts/icomoon.ttf?mfsz4g') format('truetype'),
-    url('fonts/icomoon.woff?mfsz4g') format('woff'),
-    url('fonts/icomoon.svg?mfsz4g#icomoon') format('svg');
+  font-family: "icomoon";
+  src: url("fonts/icomoon.eot?bbkt6y");
+  src: url("fonts/icomoon.eot?bbkt6y#iefix") format("embedded-opentype"), url("fonts/icomoon.woff2?bbkt6y") format("woff2"), url("fonts/icomoon.ttf?bbkt6y") format("truetype"),
+    url("fonts/icomoon.woff?bbkt6y") format("woff"), url("fonts/icomoon.svg?bbkt6y#icomoon") format("svg");
   font-weight: normal;
   font-style: normal;
   font-display: block;
 }
 
-[class^="icon-"], [class*=" icon-"] {
+[class^="icon-"],
+[class*=" icon-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'icomoon' !important;
+  font-family: "icomoon" !important;
   speak: never;
   font-style: normal;
   font-weight: normal;
@@ -49,6 +47,23 @@
 }
 .icon-view-intake-form:before {
   content: "\e958";
+}
+.icon-info-2 .path1:before {
+  content: "\e969";
+  color: rgb(20, 27, 52);
+}
+.icon-info-2 .path2:before {
+  content: "\e96a";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.icon-info-2 .path3:before {
+  content: "\e96b";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.icon-link:before {
+  content: "\e968";
 }
 .icon-patients-new:before {
   content: "\e967";

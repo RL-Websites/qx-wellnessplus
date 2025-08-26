@@ -89,7 +89,7 @@ function ProductDetailsModal({ openModal, onModalClose, medicationDetails }: IPr
               </div>
               <div className="space-y-2">
                 <h6 className="text-fs-sp font-semibold">Medication Type :</h6>
-                <p className="text-fs-md">{medicationDetails?.medicine_type}</p>
+                <p className="text-fs-md">{medicationDetails?.medicine_type == "ODT" ? "Oral" : medicationDetails?.medicine_type}</p>
               </div>
               <div className="space-y-2">
                 <h6 className="text-fs-sp font-semibold">Duration :</h6>

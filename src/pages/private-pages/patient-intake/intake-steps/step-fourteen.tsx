@@ -74,10 +74,7 @@ const StepFourteen = ({ onNext, onBack, defaultValues, isLoading = false }: Step
           clearErrors("diabeticStatus");
         }}
         label="Are you pre-diabetic or diabetic?"
-        error={getErrorMessage(errors?.diabeticStatus)}
         classNames={{
-          root: "sm:!grid !block w-full",
-          error: "sm:!text-end !text-start w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
@@ -100,6 +97,7 @@ const StepFourteen = ({ onNext, onBack, defaultValues, isLoading = false }: Step
             />
           ))}
         </div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.diabeticStatus)}</p>
       </Radio.Group>
 
       {/* Conditional: Drug options styled like StepTwo */}
@@ -148,10 +146,7 @@ const StepFourteen = ({ onNext, onBack, defaultValues, isLoading = false }: Step
           value={hemoglobinValue}
           onChange={(val) => setValue("takeDiabeticHemoglobin", val, { shouldValidate: true })}
           label="What is your hemoglobin A1C?"
-          error={getErrorMessage(errors?.takeDiabeticHemoglobin)}
           classNames={{
-            root: "sm:!grid !block w-full",
-            error: "sm:!text-end !text-start w-full",
             label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           }}
         >
@@ -174,6 +169,7 @@ const StepFourteen = ({ onNext, onBack, defaultValues, isLoading = false }: Step
               />
             ))}
           </div>
+          <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.takeDiabeticHemoglobin)}</p>
         </Radio.Group>
       )}
 

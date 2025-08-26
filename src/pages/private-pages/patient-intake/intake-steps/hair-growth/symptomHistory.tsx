@@ -75,14 +75,12 @@ const SymptomHistory = ({ onNext, onBack, defaultValues }: SymptomHistoryProps) 
           setValue("excessiveShedding", value);
           clearErrors("excessiveShedding");
         }}
-        error={getErrorMessage(errors?.excessiveShedding)}
         classNames={{
-          root: "sm:!grid !block",
-          label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           error: "sm:!text-end !text-start w-full",
         }}
       >
         <div className="grid sm:grid-cols-2 gap-5">{renderOptions(excessiveShedding, "excessiveShedding", ["Yes", "No"])}</div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.excessiveShedding)}</p>
       </Radio.Group>
 
       {/* Q2 */}
@@ -93,14 +91,12 @@ const SymptomHistory = ({ onNext, onBack, defaultValues }: SymptomHistoryProps) 
           setValue("previousTreatments", value);
           clearErrors("previousTreatments");
         }}
-        error={getErrorMessage(errors?.previousTreatments)}
         classNames={{
-          root: "sm:!grid !block",
-          label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           error: "sm:!text-end !text-start w-full",
         }}
       >
         <div className="grid sm:grid-cols-2 gap-5">{renderOptions(previousTreatments, "previousTreatments", ["Yes — effective", "Yes — not effective", "No"])}</div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.previousTreatments)}</p>
       </Radio.Group>
 
       {/* Q3 */}

@@ -49,10 +49,7 @@ const StepSeven = ({ onNext, onBack, defaultValues }: Step7Props) => {
       <Radio.Group
         value={amountOfAlcohol}
         label="How much alcohol do you drink?"
-        error={getErrorMessage(errors?.amountOfAlcohol)}
         classNames={{
-          root: "sm:!grid !block w-full",
-          error: "sm:!text-end !text-start w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
@@ -76,6 +73,7 @@ const StepSeven = ({ onNext, onBack, defaultValues }: Step7Props) => {
             />
           ))}
         </div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.amountOfAlcohol)}</p>
       </Radio.Group>
 
       <div className="flex justify-center gap-6 pt-4">

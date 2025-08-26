@@ -22,10 +22,10 @@ interface StepSixteenProps {
 }
 
 const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepSixteenProps) => {
-  const [sema_previousRxDocument, setSema_previousRxDocument] = useState<string | null>();
-  const [tirz_previousRxDocument, setTirz_previousRxDocument] = useState<string | null>();
-  const [takenPrevSema_previousRxDocument, setTakenPrevSema_previousRxDocument] = useState<string | null>();
-  const [takenPrevTirz_previousRxDocument, setTakenPrevTirz_previousRxDocument] = useState<string | null>();
+  const [sema_previousRxDocument, setSema_previousRxDocument] = useState<any>();
+  const [tirz_previousRxDocument, setTirz_previousRxDocument] = useState<any>();
+  const [takenPrevSema_previousRxDocument, setTakenPrevSema_previousRxDocument] = useState<any>();
+  const [takenPrevTirz_previousRxDocument, setTakenPrevTirz_previousRxDocument] = useState<any>();
 
   const {
     register,
@@ -239,10 +239,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
           setTakenPrevTirz_previousRxDocument(null);
         }}
         label="Have you taken a GLP-1 medication?"
-        error={getErrorMessage(errors?.takenGlpMedication)}
         classNames={{
-          root: "sm:!grid !block w-full",
-          error: "sm:!text-end !text-start w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
@@ -265,6 +262,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
             />
           ))}
         </div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.takenGlpMedication)}</p>
       </Radio.Group>
 
       {/* Yes Path */}
@@ -320,10 +318,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
               setTirz_previousRxDocument(null);
             }}
             label="Which weight loss medication are you currently taking?"
-            error={getErrorMessage(errors?.currentWeightLossMedication)}
             classNames={{
-              root: "sm:!grid !block",
-              error: "sm:!text-end !text-start w-full",
               label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
             }}
           >
@@ -346,6 +341,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 />
               ))}
             </div>
+            <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.currentWeightLossMedication)}</p>
           </Radio.Group>
 
           {/* Semaglutide Section */}
@@ -355,10 +351,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 value={sema_lastWeightLossMedicationDoase}
                 onChange={(value) => handleSelect("sema_lastWeightLossMedicationDoase", value)}
                 label="What was the last dosage you took?"
-                error={getErrorMessage(errors?.sema_lastWeightLossMedicationDoase)}
                 classNames={{
-                  root: "sm:!grid !block",
-                  error: "sm:!text-end !text-start w-full",
                   label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
                 }}
               >
@@ -381,19 +374,22 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     />
                   ))}
                 </div>
+                <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.sema_lastWeightLossMedicationDoase)}</p>
               </Radio.Group>
 
               {sema_lastWeightLossMedicationDoase === "Other" && (
-                <Input.Wrapper
-                  label="Specify dosage"
-                  error={getErrorMessage(errors?.sema_lastWeightLossMedicationDoaseOther)}
-                  classNames={InputErrorMessage}
-                >
-                  <Input
-                    {...register("sema_lastWeightLossMedicationDoaseOther")}
-                    className="border-grey rounded-lg"
-                  />
-                </Input.Wrapper>
+                <div>
+                  <Input.Wrapper
+                    label="Specify dosage"
+                    classNames={InputErrorMessage}
+                  >
+                    <Input
+                      {...register("sema_lastWeightLossMedicationDoaseOther")}
+                      className="border-grey rounded-lg"
+                    />
+                  </Input.Wrapper>
+                  <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.sema_lastWeightLossMedicationDoaseOther)}</p>
+                </div>
               )}
 
               <Radio.Group
@@ -405,10 +401,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                   }
                 }}
                 label="Do you have a PDF of your previous script, or a picture of your current vial?"
-                error={getErrorMessage(errors?.sema_hasPdfForPreviousRx)}
                 classNames={{
-                  root: "sm:!grid !block",
-                  error: "sm:!text-end !text-start w-full",
                   label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
                 }}
               >
@@ -431,6 +424,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     />
                   ))}
                 </div>
+                <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.sema_hasPdfForPreviousRx)}</p>
               </Radio.Group>
 
               {sema_hasPdfForPreviousRx === "Yes" && (
@@ -448,7 +442,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                       multiple={false}
                       className="border-dashed border-gray-300 rounded-lg bg-gray-50 min-h-[220px] flex items-center justify-center"
                     >
-                      <div className="flex flex-col items-center gap-4">
+                      <div className="flex flex-col items-center justify-center h-full pointer-events-none">
                         <i className="icon-document-upload text-[52px] text-grey" />
                         <Text className="font-semibold text-grey">Drag & drop or click to upload</Text>
                         <div className="d-inline-flex leading-none text-sm">or</div>
@@ -456,12 +450,14 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                       </div>
                     </Dropzone>
                   ) : (
-                    <EditableDocumentTag
-                      docName={sema_previousRxDocName || ""}
-                      removable={true}
-                      leftIconClass="icon-pdf"
-                      onRemove={() => removeSemaPreviousRxDocument()}
-                    />
+                    <div className="flex flex-wrap">
+                      <EditableDocumentTag
+                        docName={"sema_previousRxDocName"}
+                        removable={true}
+                        leftIconClass="icon-pdf"
+                        onRemove={() => removeSemaPreviousRxDocument()}
+                      />
+                    </div>
                   )}
                   {errors?.sema_previousRxDocument?.message && <Text className="text-sm text-red-500">{errors.sema_previousRxDocument.message}</Text>}
                 </div>
@@ -476,10 +472,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 value={tirz_lastWeightLossMedicationDoase}
                 onChange={(value) => handleSelect("tirz_lastWeightLossMedicationDoase", value)}
                 label="What was the last dosage you took?"
-                error={getErrorMessage(errors?.tirz_lastWeightLossMedicationDoase)}
                 classNames={{
-                  root: "sm:!grid !block",
-                  error: "sm:!text-end !text-start w-full",
                   label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
                 }}
               >
@@ -502,18 +495,22 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     />
                   ))}
                 </div>
+                <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.tirz_lastWeightLossMedicationDoase)}</p>
               </Radio.Group>
 
               {tirz_lastWeightLossMedicationDoase === "Other" && (
-                <Input.Wrapper
-                  label="Specify dosage"
-                  error={getErrorMessage(errors?.tirz_lastWeightLossMedicationDoaseOther)}
-                >
-                  <Input
-                    {...register("tirz_lastWeightLossMedicationDoaseOther")}
-                    className="border-grey rounded-lg"
-                  />
-                </Input.Wrapper>
+                <div>
+                  <Input.Wrapper
+                    label="Specify dosage"
+                    error={getErrorMessage(errors?.tirz_lastWeightLossMedicationDoaseOther)}
+                  >
+                    <Input
+                      {...register("tirz_lastWeightLossMedicationDoaseOther")}
+                      className="border-grey rounded-lg"
+                    />
+                  </Input.Wrapper>
+                  <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.tirz_lastWeightLossMedicationDoaseOther)}</p>
+                </div>
               )}
 
               <Radio.Group
@@ -525,10 +522,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                   }
                 }}
                 label="Do you have a PDF of your previous script, or a picture of your current vial?"
-                error={getErrorMessage(errors?.tirz_hasPdfForPreviousRx)}
                 classNames={{
-                  root: "sm:!grid !block",
-                  error: "sm:!text-end !text-start w-full",
                   label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
                 }}
               >
@@ -551,6 +545,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     />
                   ))}
                 </div>
+                <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.tirz_hasPdfForPreviousRx)}</p>
               </Radio.Group>
 
               {tirz_hasPdfForPreviousRx === "Yes" && (
@@ -568,7 +563,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                       multiple={false}
                       className="border-dashed border-gray-300 rounded-lg bg-gray-50 min-h-[220px] flex items-center justify-center"
                     >
-                      <div className="flex flex-col items-center gap-4">
+                      <div className="flex flex-col items-center justify-center h-full pointer-events-none">
                         <i className="icon-document-upload text-[52px] text-grey" />
                         <Text className="font-semibold text-grey">Drag & drop or click to upload</Text>
                         <div className="d-inline-flex leading-none text-sm">or</div>
@@ -576,12 +571,14 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                       </div>
                     </Dropzone>
                   ) : (
-                    <EditableDocumentTag
-                      docName={tirz_previousRxDocName || ""}
-                      removable={true}
-                      leftIconClass="icon-pdf"
-                      onRemove={() => removeTirzPreviousRxDocument()}
-                    />
+                    <div className="flex flex-wrap">
+                      <EditableDocumentTag
+                        docName={"tirz_previousRxDocName"}
+                        removable={true}
+                        leftIconClass="icon-pdf"
+                        onRemove={() => removeTirzPreviousRxDocument()}
+                      />
+                    </div>
                   )}
                   {errors?.tirz_previousRxDocument?.message && <Text className="text-sm text-red-500">{errors.tirz_previousRxDocument.message}</Text>}
                 </div>
@@ -594,10 +591,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
             value={watch("howLongTakeGlpMedication")}
             onChange={(value) => handleSelect("howLongTakeGlpMedication", value)}
             label="How long have you been taking the medication consecutively?"
-            error={getErrorMessage(errors?.howLongTakeGlpMedication)}
             classNames={{
-              root: "sm:!grid !block",
-              error: "sm:!text-end !text-start w-full",
               label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
             }}
           >
@@ -620,6 +614,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 />
               ))}
             </div>
+            <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.howLongTakeGlpMedication)}</p>
           </Radio.Group>
 
           {/* Current dose duration */}
@@ -627,10 +622,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
             value={watch("howLongTakeGlpCurrentDosage")}
             onChange={(value) => handleSelect("howLongTakeGlpCurrentDosage", value)}
             label="How long have you been on your current dose?"
-            error={getErrorMessage(errors?.howLongTakeGlpCurrentDosage)}
             classNames={{
-              root: "sm:!grid !block",
-              error: "sm:!text-end !text-start w-full",
               label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
             }}
           >
@@ -653,6 +645,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 />
               ))}
             </div>
+            <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.howLongTakeGlpCurrentDosage)}</p>
           </Radio.Group>
 
           {/* Continue current dose */}
@@ -660,10 +653,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
             value={wouldYouLikeContinueGlpCurrentDosage}
             onChange={(value) => handleSelect("wouldYouLikeContinueGlpCurrentDosage", value)}
             label="Would you like to continue your current dose, move up to the next dose, or titrate down?"
-            error={getErrorMessage(errors?.wouldYouLikeContinueGlpCurrentDosage)}
             classNames={{
-              root: "sm:!grid !block",
-              error: "sm:!text-end !text-start w-full",
               label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
             }}
           >
@@ -686,6 +676,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 />
               ))}
             </div>
+            <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.wouldYouLikeContinueGlpCurrentDosage)}</p>
           </Radio.Group>
 
           {/* Stay current options */}
@@ -694,10 +685,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
               value={watch("stayCurrent_howLongTakeGlpCurrentDosage")}
               onChange={(value) => handleSelect("stayCurrent_howLongTakeGlpCurrentDosage", value)}
               label="How long would you like to stay on your current dose?"
-              error={getErrorMessage(errors?.stayCurrent_howLongTakeGlpCurrentDosage)}
               classNames={{
-                root: "sm:!grid !block",
-                error: "sm:!text-end !text-start w-full",
                 label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
               }}
             >
@@ -720,6 +708,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                   />
                 ))}
               </div>
+              <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.stayCurrent_howLongTakeGlpCurrentDosage)}</p>
             </Radio.Group>
           )}
 
@@ -729,7 +718,6 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
               value={watch("moveUp_wouldLikeToMoveUp")}
               onChange={(value) => handleSelect("moveUp_wouldLikeToMoveUp", value)}
               label="How would you like to move up your dose?"
-              error={getErrorMessage(errors?.moveUp_wouldLikeToMoveUp)}
               classNames={{
                 root: "sm:!grid !block",
                 error: "sm:!text-end !text-start w-full",
@@ -760,6 +748,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                   />
                 ))}
               </div>
+              <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.moveUp_wouldLikeToMoveUp)}</p>
             </Radio.Group>
           )}
 
@@ -768,7 +757,6 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
             value={haveTakenMedicationAsPrescribed}
             onChange={(value) => handleSelect("haveTakenMedicationAsPrescribed", value)}
             label="Have you taken the medication as prescribed?"
-            error={getErrorMessage(errors?.haveTakenMedicationAsPrescribed)}
             classNames={{
               root: "sm:!grid !block",
               error: "sm:!text-end !text-start w-full",
@@ -794,19 +782,20 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 />
               ))}
             </div>
+            <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.haveTakenMedicationAsPrescribed)}</p>
           </Radio.Group>
 
           {/* Deviation explanation */}
           {haveTakenMedicationAsPrescribed === "No" && (
-            <Input.Wrapper
-              label="Please explain how you have deviated from the dosing instructions"
-              error={getErrorMessage(errors?.No_haveDeviated)}
-            >
-              <Input
-                {...register("No_haveDeviated")}
-                className="border-grey rounded-lg"
-              />
-            </Input.Wrapper>
+            <div>
+              <Input.Wrapper label="Please explain how you have deviated from the dosing instructions">
+                <Input
+                  {...register("No_haveDeviated")}
+                  className="border-grey rounded-lg"
+                />
+              </Input.Wrapper>
+              <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.No_haveDeviated)}</p>
+            </div>
           )}
 
           {/* Side effects */}
@@ -897,10 +886,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
             value={watch("glpDrugEffectManageWeight")}
             onChange={(value) => handleSelect("glpDrugEffectManageWeight", value)}
             label="How effective do you feel the medication has been in managing your weight"
-            error={getErrorMessage(errors?.glpDrugEffectManageWeight)}
             classNames={{
-              root: "sm:!grid !block",
-              error: "sm:!text-end !text-start w-full",
               label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
             }}
           >
@@ -923,6 +909,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 />
               ))}
             </div>
+            <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.glpDrugEffectManageWeight)}</p>
           </Radio.Group>
         </>
       )}
@@ -935,10 +922,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
             value={watch("glpHowLongTaken")}
             onChange={(value) => handleSelect("glpHowLongTaken", value)}
             label="How long has it been since you stopped taking your GLP medication"
-            error={getErrorMessage(errors?.glpHowLongTaken)}
             classNames={{
-              root: "sm:!grid !block",
-              error: "sm:!text-end !text-start w-full",
               label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
             }}
           >
@@ -961,32 +945,36 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 />
               ))}
             </div>
+            <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.glpHowLongTaken)}</p>
           </Radio.Group>
 
           {/* Height and Weight */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <Input.Wrapper
-              label="What was your height when you started the GLP-1 medication? (In inches)"
-              error={getErrorMessage(errors?.glpStartingHeight)}
-              classNames={getErrorMessage}
-            >
-              <Input
-                {...register("glpStartingHeight")}
-                className="border-grey rounded-lg"
-              />
-            </Input.Wrapper>
-
-            <Input.Wrapper
-              label="What was your weight when you started the GLP-1 medication? (In Pounds)"
-              error={getErrorMessage(errors?.glpStartingWeight)}
-              classNames={getErrorMessage}
-            >
-              <Input
-                {...register("glpStartingWeight")}
-                placeholder="e.g., 170 lbs"
-                className="border-grey rounded-lg"
-              />
-            </Input.Wrapper>
+            <div>
+              <Input.Wrapper
+                label="What was your height when you started the GLP-1 medication? (In inches)"
+                classNames={getErrorMessage}
+              >
+                <Input
+                  {...register("glpStartingHeight")}
+                  className="border-grey rounded-lg"
+                />
+              </Input.Wrapper>
+              <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.glpStartingHeight)}</p>
+            </div>
+            <div>
+              <Input.Wrapper
+                label="What was your weight when you started the GLP-1 medication? (In Pounds)"
+                classNames={getErrorMessage}
+              >
+                <Input
+                  {...register("glpStartingWeight")}
+                  placeholder="e.g., 170 lbs"
+                  className="border-grey rounded-lg"
+                />
+              </Input.Wrapper>
+              <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.glpStartingWeight)}</p>
+            </div>
           </div>
 
           {/* Previous GLP medication */}
@@ -1009,7 +997,6 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
               setTakenPrevTirz_previousRxDocument(null);
             }}
             label="What GLP medication have you previously taken?"
-            error={getErrorMessage(errors?.takenPrevGlpMedication)}
             classNames={{
               root: "sm:!grid !block",
               error: "sm:!text-end !text-start w-full",
@@ -1035,6 +1022,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 />
               ))}
             </div>
+            <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.takenPrevGlpMedication)}</p>
           </Radio.Group>
 
           {/* Previous Semaglutide Section */}
@@ -1044,10 +1032,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 value={takenPrevSema_lastDosage}
                 onChange={(value) => handleSelect("takenPrevSema_lastDosage", value)}
                 label="What was the last dosage you took?"
-                error={getErrorMessage(errors?.takenPrevSema_lastDosage)}
                 classNames={{
-                  root: "sm:!grid !block",
-                  error: "sm:!text-end !text-start w-full",
                   label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
                 }}
               >
@@ -1070,19 +1055,22 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     />
                   ))}
                 </div>
+                <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.takenPrevSema_lastDosage)}</p>
               </Radio.Group>
 
               {takenPrevSema_lastDosage === "Other" && (
-                <Input.Wrapper
-                  label="Specify dosage"
-                  error={getErrorMessage(errors?.takenPrevSema_lastDosageOther)}
-                  classNames={getErrorMessage}
-                >
-                  <Input
-                    {...register("takenPrevSema_lastDosageOther")}
-                    className="border-grey rounded-lg"
-                  />
-                </Input.Wrapper>
+                <div>
+                  <Input.Wrapper
+                    label="Specify dosage"
+                    classNames={getErrorMessage}
+                  >
+                    <Input
+                      {...register("takenPrevSema_lastDosageOther")}
+                      className="border-grey rounded-lg"
+                    />
+                  </Input.Wrapper>
+                  <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.takenPrevSema_lastDosageOther)}</p>
+                </div>
               )}
 
               <Radio.Group
@@ -1094,10 +1082,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                   }
                 }}
                 label="Do you have a PDF of your previous script, or a picture of your current vial?"
-                error={getErrorMessage(errors?.takenPrevSema_hasPdfForPreviousRx)}
                 classNames={{
-                  root: "sm:!grid !block",
-                  error: "sm:!text-end !text-start w-full",
                   label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
                 }}
               >
@@ -1120,6 +1105,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     />
                   ))}
                 </div>
+                <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.takenPrevSema_hasPdfForPreviousRx)}</p>
               </Radio.Group>
 
               {takenPrevSema_hasPdfForPreviousRx === "Yes" && (
@@ -1137,7 +1123,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                       multiple={false}
                       className="border-dashed border-gray-300 rounded-lg bg-gray-50 min-h-[220px] flex items-center justify-center"
                     >
-                      <div className="flex flex-col items-center gap-4">
+                      <div className="flex flex-col items-center justify-center h-full pointer-events-none">
                         <i className="icon-document-upload text-[52px] text-grey" />
                         <Text className="font-semibold text-grey">Drag & drop or click to upload</Text>
                         <div className="d-inline-flex leading-none text-sm">or</div>
@@ -1145,12 +1131,14 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                       </div>
                     </Dropzone>
                   ) : (
-                    <EditableDocumentTag
-                      docName={takenPrevSema_previousRxDocName || ""}
-                      removable={true}
-                      leftIconClass="icon-pdf"
-                      onRemove={() => removePrevSemaPreviousRxDocument()}
-                    />
+                    <div className="flex flex-wrap">
+                      <EditableDocumentTag
+                        docName={"takenPrevSema_previousRxDocName"}
+                        removable={true}
+                        leftIconClass="icon-pdf"
+                        onRemove={() => removePrevSemaPreviousRxDocument()}
+                      />
+                    </div>
                   )}
                   {errors?.takenPrevSema_previousRxDocument?.message && <Text className="text-sm text-red-500">{errors.takenPrevSema_previousRxDocument.message}</Text>}
                 </div>
@@ -1165,10 +1153,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 value={takenPrevTirz_lastWeightLossMedicationDoase}
                 onChange={(value) => handleSelect("takenPrevTirz_lastWeightLossMedicationDoase", value)}
                 label="What was the last dosage you took?"
-                error={getErrorMessage(errors?.takenPrevTirz_lastWeightLossMedicationDoase)}
                 classNames={{
-                  root: "sm:!grid !block",
-                  error: "sm:!text-end !text-start w-full",
                   label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
                 }}
               >
@@ -1191,18 +1176,19 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     />
                   ))}
                 </div>
+                <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.takenPrevTirz_lastWeightLossMedicationDoase)}</p>
               </Radio.Group>
 
               {takenPrevTirz_lastWeightLossMedicationDoase === "Other" && (
-                <Input.Wrapper
-                  label="Specify dosage"
-                  error={getErrorMessage(errors?.takenPrevTirz_lastWeightLossMedicationDoaseOther)}
-                >
-                  <Input
-                    {...register("takenPrevTirz_lastWeightLossMedicationDoaseOther")}
-                    className="border-grey rounded-lg"
-                  />
-                </Input.Wrapper>
+                <div>
+                  <Input.Wrapper label="Specify dosage">
+                    <Input
+                      {...register("takenPrevTirz_lastWeightLossMedicationDoaseOther")}
+                      className="border-grey rounded-lg"
+                    />
+                  </Input.Wrapper>
+                  <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.takenPrevTirz_lastWeightLossMedicationDoaseOther)}</p>
+                </div>
               )}
 
               <Radio.Group
@@ -1214,10 +1200,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                   }
                 }}
                 label="Do you have a PDF of your previous script, or a picture of your current vial?"
-                error={getErrorMessage(errors?.takenPrevTirz_hasPdfForPreviousRx)}
                 classNames={{
-                  root: "sm:!grid !block",
-                  error: "sm:!text-end !text-start w-full",
                   label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
                 }}
               >
@@ -1240,6 +1223,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     />
                   ))}
                 </div>
+                <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.takenPrevTirz_hasPdfForPreviousRx)}</p>
               </Radio.Group>
 
               {takenPrevTirz_hasPdfForPreviousRx === "Yes" && (
@@ -1257,7 +1241,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                       multiple={false}
                       className="border-dashed border-gray-300 rounded-lg bg-gray-50 min-h-[220px] flex items-center justify-center"
                     >
-                      <div className="flex flex-col items-center gap-4">
+                      <div className="flex flex-col items-center justify-center h-full pointer-events-none">
                         <i className="icon-document-upload text-[52px] text-grey" />
                         <Text className="font-semibold text-grey">Drag & drop or click to upload</Text>
                         <div className="d-inline-flex leading-none text-sm">or</div>
@@ -1265,12 +1249,14 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                       </div>
                     </Dropzone>
                   ) : (
-                    <EditableDocumentTag
-                      docName={takenPrevTirz_previousRxDocName || ""}
-                      removable={true}
-                      leftIconClass="icon-pdf"
-                      onRemove={() => removePrevTirzPreviousRxDocument()}
-                    />
+                    <div className="flex flex-wrap">
+                      <EditableDocumentTag
+                        docName={"takenPrevTirz_previousRxDocName"}
+                        removable={true}
+                        leftIconClass="icon-pdf"
+                        onRemove={() => removePrevTirzPreviousRxDocument()}
+                      />
+                    </div>
                   )}
                   {errors?.takenPrevTirz_previousRxDocument?.message && <Text className="text-sm text-red-500">{errors.takenPrevTirz_previousRxDocument.message}</Text>}
                 </div>
@@ -1299,7 +1285,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         setValue("takenPrevGlp_sideEffect", updatedValues.join(", "), { shouldValidate: true });
                       }}
                       className={`cursor-pointer border rounded-2xl px-6 py-4 flex justify-between items-center transition-all ${
-                        isChecked ? "border-primary bg-white text-black shadow-sm" : "border-gray-300 bg-transparent text-black"
+                        isChecked ? "border-primary bg-white text-black shadow-sm" : "border-foreground bg-transparent text-black"
                       }`}
                     >
                       <span className="text-base font-medium font-poppins">{option}</span>
@@ -1309,7 +1295,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         size="md"
                         radius="md"
                         classNames={{
-                          input: isChecked ? "bg-primary border-primary text-white" : "bg-transparent",
+                          input: isChecked ? "bg-primary border-primary text-white" : "bg-transparent border-foreground",
                         }}
                       />
                     </div>
@@ -1325,10 +1311,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
             value={watch("takenPrevGlp_howEffective")}
             onChange={(value) => handleSelect("takenPrevGlp_howEffective", value)}
             label="How effective do you feel the medication has been in managing your weight?"
-            error={getErrorMessage(errors?.takenPrevGlp_howEffective)}
             classNames={{
-              root: "sm:!grid !block",
-              error: "sm:!text-end !text-start w-full",
               label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
             }}
           >
@@ -1351,6 +1334,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 />
               ))}
             </div>
+            <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.takenPrevGlp_howEffective)}</p>
           </Radio.Group>
         </>
       )}

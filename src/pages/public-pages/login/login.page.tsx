@@ -7,7 +7,8 @@ import useAuthToken from "@/common/hooks/useAuthToken";
 import { cartItemsAtom } from "@/common/states/product.atom";
 import { user_id, userAtom } from "@/common/states/user.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Input, PasswordInput } from "@mantine/core";
+import { Button, Checkbox, Input, PasswordInput } from "@mantine/core";
+import { useWindowScroll } from "@mantine/hooks";
 
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
@@ -42,6 +43,11 @@ const Login = () => {
   const [userId, setUserId] = useAtom(user_id);
   const navigate = useNavigate();
   const location = useLocation();
+  const [, scrollTo] = useWindowScroll();
+
+  useEffect(() => {
+    scrollTo({ y: 0 });
+  }, []);
 
   useEffect(() => {
     if (location.pathname == "/login" && getAccessToken()) {
@@ -115,8 +121,8 @@ const Login = () => {
       >
         <div className="card-common card-common-width flex flex-col lg:gap-7 md:gap-5 gap-3">
           <div className="flex flex-col gap-2.5">
-            <p className="font-semibold lg:text-4xl md:text-xl text-base text-foreground ">Returning Customer</p>
-            <p className="text-sm md:text-base lg:text-2xl font-semibold">Log in to confirm your journey</p>
+            <p className="font-semibold lg:text-4xl md:text-xl text-base text-foreground font-poppins">Returning Customer</p>
+            <p className="text-sm md:text-base lg:text-2xl font-poppins">Log in to confirm your journey</p>
           </div>
 
           <Input.Wrapper
@@ -143,9 +149,22 @@ const Login = () => {
               classNames={InputErrorMessage}
             />
           </Input.Wrapper>
+
+          <Checkbox
+            defaultChecked
+            label="Remember me"
+          />
         </div>
         <div className=" card-common-width  mx-auto  mt-10">
-          <div className="flex justify-center ">
+          <div className="flex justify-between">
+            <Button
+              variant="outline"
+              className="lg:w-[206px]"
+              component={Link}
+              to={`/order-summary`}
+            >
+              back
+            </Button>
             <Button
               size="md"
               type="submit"
@@ -155,21 +174,20 @@ const Login = () => {
               Login
             </Button>
           </div>
-          <div className="mt-5 text-center">
+          <div className="mt-6 flex justify-between">
             <Link
               to="/forgot-password"
-              className="text-primary underline font-medium"
+              className="text-foreground underline"
             >
               Forgot Password
             </Link>
-            <p className="text-xl text-foreground font-semibold mt-3">
-              <span className="font-normal">First-time Visitor? </span>
-
+            <p className="text-xl text-foreground font-semibold">
+              <span className="text-primary font-normal">First-time Visitor? </span>
               <Link
                 to="/registration"
-                className="text-primary underline"
+                className="text-foreground underline font-medium"
               >
-                Register now
+                Create an account
               </Link>
             </p>
           </div>

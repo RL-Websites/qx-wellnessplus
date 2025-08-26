@@ -65,10 +65,7 @@ const TestosteroneStepTwo = ({ onNext, onBack, defaultValues }: Props) => {
           clearErrors("medicationsList");
         }}
         label="Are you currently taking any medications? (List if yes)"
-        error={getErrorMessage(errors.takingMedications)}
         classNames={{
-          root: "sm:!grid !block",
-          error: "sm:!text-end !text-start w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
@@ -91,26 +88,28 @@ const TestosteroneStepTwo = ({ onNext, onBack, defaultValues }: Props) => {
             />
           ))}
         </div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.takingMedications)}</p>
       </Radio.Group>
 
       {showMedicationList && (
-        <Input.Wrapper
-          label="Please list your medications (name — dosage — frequency). If unknown, write “unknown”."
-          withAsterisk
-          error={getErrorMessage(errors.medicationsList)}
-          className="pt-1"
-          classNames={{
-            label: "text-lg sm:text-xl lg:text-2xl pb-2 block",
-            error: "text-red-600 text-sm pt-1",
-          }}
-        >
-          <Input
-            type="text"
-            placeholder="e.g., Metformin — 500mg — daily; Lisinopril — 10mg — daily"
-            {...register("medicationsList")}
-            className="rounded-md border-gray-300 px-3 py-2"
-          />
-        </Input.Wrapper>
+        <div>
+          <Input.Wrapper
+            label="Please list your medications (name — dosage — frequency). If unknown, write “unknown”."
+            withAsterisk
+            className="pt-1"
+            classNames={{
+              label: "text-lg sm:text-xl lg:text-2xl pb-2 block",
+            }}
+          >
+            <Input
+              type="text"
+              placeholder="e.g., Metformin — 500mg — daily; Lisinopril — 10mg — daily"
+              {...register("medicationsList")}
+              className="rounded-md border-gray-300 px-3 py-2"
+            />
+          </Input.Wrapper>
+          <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.medicationsList)}</p>
+        </div>
       )}
 
       {/* Q6 */}
@@ -118,10 +117,7 @@ const TestosteroneStepTwo = ({ onNext, onBack, defaultValues }: Props) => {
         value={useSubstances}
         onChange={(val) => handleSelect("useSubstances", val)}
         label="Do you smoke, drink alcohol, or use recreational drugs?"
-        error={getErrorMessage(errors.useSubstances)}
         classNames={{
-          root: "sm:!grid !block",
-          error: "sm:!text-end !text-start w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
@@ -144,6 +140,7 @@ const TestosteroneStepTwo = ({ onNext, onBack, defaultValues }: Props) => {
             />
           ))}
         </div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.useSubstances)}</p>
       </Radio.Group>
 
       {/* Q7 */}
@@ -151,10 +148,7 @@ const TestosteroneStepTwo = ({ onNext, onBack, defaultValues }: Props) => {
         value={libido}
         onChange={(val) => handleSelect("libido", val)}
         label="How is your sexual desire (libido)?"
-        error={getErrorMessage(errors.libido)}
         classNames={{
-          root: "sm:!grid !block",
-          error: "sm:!text-end !text-start w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
@@ -177,6 +171,7 @@ const TestosteroneStepTwo = ({ onNext, onBack, defaultValues }: Props) => {
             />
           ))}
         </div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.libido)}</p>
       </Radio.Group>
 
       <div className="flex justify-center gap-6 pt-6">

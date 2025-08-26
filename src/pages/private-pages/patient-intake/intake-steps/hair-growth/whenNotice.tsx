@@ -75,14 +75,12 @@ const WhenNotice = ({ onNext, onBack, defaultValues }: WhenNoticeProps) => {
         label="When did you first notice hair loss or thinning?"
         value={firstNotice}
         onChange={(val) => handleSelect("firstNotice", val)}
-        error={getErrorMessage(errors.firstNotice)}
         classNames={{
-          root: "sm:!grid !block",
-          label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           error: "sm:!text-end !text-start w-full",
         }}
       >
         <div className="grid sm:grid-cols-2 gap-5">{renderOptions(firstNotice, "firstNotice", ["Less than 6 months ago", "6-12 months ago", "More than a year ago"])}</div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.firstNotice)}</p>
       </Radio.Group>
 
       {/* Q2 */}
@@ -90,14 +88,12 @@ const WhenNotice = ({ onNext, onBack, defaultValues }: WhenNoticeProps) => {
         label="Is your hair loss:"
         value={hairLossType}
         onChange={(val) => handleSelect("hairLossType", val)}
-        error={getErrorMessage(errors.hairLossType)}
         classNames={{
-          root: "sm:!grid !block",
-          label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           error: "sm:!text-end !text-start w-full",
         }}
       >
         <div className="grid sm:grid-cols-2 gap-5">{renderOptions(hairLossType, "hairLossType", ["Gradual thinning", "Patchy/bald spots", "Sudden shedding"])}</div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.hairLossType)}</p>
       </Radio.Group>
 
       {/* Q3 */}
@@ -105,14 +101,12 @@ const WhenNotice = ({ onNext, onBack, defaultValues }: WhenNoticeProps) => {
         label="Where is the hair loss most noticeable?"
         value={hairLossArea}
         onChange={(val) => handleSelect("hairLossArea", val)}
-        error={getErrorMessage(errors.hairLossArea)}
         classNames={{
-          root: "sm:!grid !block",
-          label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           error: "sm:!text-end !text-start w-full",
         }}
       >
         <div className="grid sm:grid-cols-2 gap-5">{renderOptions(hairLossArea, "hairLossArea", ["Front hairline", "Top of scalp", "Crown/back of head", "All over"])}</div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.hairLossArea)}</p>
       </Radio.Group>
 
       {/* Navigation Buttons */}

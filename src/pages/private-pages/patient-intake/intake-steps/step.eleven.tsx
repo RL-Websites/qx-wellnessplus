@@ -74,10 +74,7 @@ const StepEleven = ({ onNext, onBack, defaultValues }: StepElevenProps) => {
       <Radio.Group
         value={gallbladder}
         label="Do you have a personal history of gallbladder disease?"
-        error={getErrorMessage(errors?.gallbladder)}
         classNames={{
-          root: "sm:!grid !block w-full",
-          error: "sm:!text-end !text-start w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
@@ -101,6 +98,7 @@ const StepEleven = ({ onNext, onBack, defaultValues }: StepElevenProps) => {
             />
           ))}
         </div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.gallbladder)}</p>
       </Radio.Group>
 
       {/* Gallbladder removed */}
@@ -108,10 +106,7 @@ const StepEleven = ({ onNext, onBack, defaultValues }: StepElevenProps) => {
         <Radio.Group
           value={removedGallbladder}
           label="Did you have your gallbladder removed?"
-          error={getErrorMessage(errors?.removedGallbladder)}
           classNames={{
-            root: "sm:!grid !block w-full",
-            error: "sm:!text-end !text-start w-full",
             label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           }}
         >
@@ -135,6 +130,7 @@ const StepEleven = ({ onNext, onBack, defaultValues }: StepElevenProps) => {
               />
             ))}
           </div>
+          <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.removedGallbladder)}</p>
         </Radio.Group>
       )}
 
@@ -143,10 +139,7 @@ const StepEleven = ({ onNext, onBack, defaultValues }: StepElevenProps) => {
         <Radio.Group
           value={whenGallbladderRemoved}
           label="When did you have your gallbladder removed?"
-          error={getErrorMessage(errors?.whenGallbladderRemoved)}
           classNames={{
-            root: "sm:!grid !block w-full",
-            error: "sm:!text-end !text-start w-full",
             label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           }}
         >
@@ -170,6 +163,7 @@ const StepEleven = ({ onNext, onBack, defaultValues }: StepElevenProps) => {
               />
             ))}
           </div>
+          <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.whenGallbladderRemoved)}</p>
         </Radio.Group>
       )}
 

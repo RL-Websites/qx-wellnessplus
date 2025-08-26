@@ -85,14 +85,12 @@ const MedicalHistory = ({ onNext, onBack, defaultValues }: MedicalHistoryProps) 
         label="Do you have a family history of hair loss?"
         value={familyHistory}
         onChange={(val) => handleSelect("familyHistory", val)}
-        error={getErrorMessage(errors.familyHistory)}
         classNames={{
-          root: "sm:!grid !block",
-          label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           error: "sm:!text-end !text-start w-full",
         }}
       >
         <div className="grid sm:grid-cols-2 gap-5">{renderOptions(familyHistory, "familyHistory", ["Yes", "No"])}</div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.familyHistory)}</p>
       </Radio.Group>
 
       {/* Q2 */}
@@ -100,14 +98,12 @@ const MedicalHistory = ({ onNext, onBack, defaultValues }: MedicalHistoryProps) 
         label="Have you had recent stress, illness, or surgery?"
         value={recentStress}
         onChange={(val) => handleSelect("recentStress", val)}
-        error={getErrorMessage(errors.recentStress)}
         classNames={{
-          root: "sm:!grid !block",
-          label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           error: "sm:!text-end !text-start w-full",
         }}
       >
         <div className="grid sm:grid-cols-2 gap-5">{renderOptions(recentStress, "recentStress", ["Yes", "No"])}</div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.recentStress)}</p>
       </Radio.Group>
 
       {/* Q3 */}
@@ -115,16 +111,14 @@ const MedicalHistory = ({ onNext, onBack, defaultValues }: MedicalHistoryProps) 
         label="Do you have any chronic medical conditions?"
         value={chronicCondition}
         onChange={(val) => handleSelect("chronicCondition", val)}
-        error={getErrorMessage(errors.chronicCondition)}
         classNames={{
-          root: "sm:!grid !block",
-          label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           error: "sm:!text-end !text-start w-full",
         }}
       >
         <div className="grid sm:grid-cols-2 gap-5">
           {renderOptions(chronicCondition, "chronicCondition", ["Thyroid disease", "Hormonal imbalance (PCOS, low testosterone, etc.)", "Autoimmune condition", "None"])}
         </div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.chronicCondition)}</p>
       </Radio.Group>
 
       {/* Q4 */}
@@ -132,30 +126,30 @@ const MedicalHistory = ({ onNext, onBack, defaultValues }: MedicalHistoryProps) 
         label="Are you currently taking any medications or supplements?"
         value={takingMeds}
         onChange={(val) => handleSelect("takingMeds", val)}
-        error={getErrorMessage(errors.takingMeds)}
         classNames={{
-          root: "sm:!grid !block",
-          label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           error: "sm:!text-end !text-start w-full",
         }}
       >
         <div className="grid sm:grid-cols-2 gap-5">{renderOptions(takingMeds, "takingMeds", ["Yes", "No"])}</div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.takingMeds)}</p>
       </Radio.Group>
 
       {/* Conditional input */}
       {takingMeds === "Yes" && (
-        <TextInput
-          label="Please specify the medications or supplements you are taking:"
-          placeholder="e.g., Finasteride — 1mg — daily"
-          value={medsDetails}
-          {...register("medsDetails")}
-          onChange={(e) => {
-            setValue("medsDetails", e.currentTarget.value);
-            if (e.currentTarget.value) clearErrors("medsDetails");
-          }}
-          error={getErrorMessage(errors.medsDetails)}
-          className="pt-6"
-        />
+        <div>
+          <TextInput
+            label="Please specify the medications or supplements you are taking:"
+            placeholder="e.g., Finasteride — 1mg — daily"
+            value={medsDetails}
+            {...register("medsDetails")}
+            onChange={(e) => {
+              setValue("medsDetails", e.currentTarget.value);
+              if (e.currentTarget.value) clearErrors("medsDetails");
+            }}
+            className="pt-6"
+          />
+          <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.medsDetails)}</p>
+        </div>
       )}
 
       {/* Action Buttons */}
