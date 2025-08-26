@@ -4,7 +4,7 @@ import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
 import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { selectedGenderAtom } from "@/common/states/gender.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Group, Radio, Text } from "@mantine/core";
+import { Button, Radio, Text } from "@mantine/core";
 import { useAtom } from "jotai";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -68,7 +68,7 @@ export default function GenderSexualHealth({ onNext, onBack, defaultValues }: IG
             onChange={handleSelect}
             className="mt-6"
           >
-            <Group grow>
+            <div className="grid md:grid-cols-2 w-full gap-5">
               {options.map((option) => (
                 <Radio
                   key={option}
@@ -86,7 +86,7 @@ export default function GenderSexualHealth({ onNext, onBack, defaultValues }: IG
                   }
                 />
               ))}
-            </Group>
+            </div>
           </Radio.Group>
           {errors.genderSexualHealth && <Text className="text-red-500 text-sm mt-5 text-center">Please select your gender.</Text>}
         </form>

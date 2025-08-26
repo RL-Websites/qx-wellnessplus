@@ -4,7 +4,7 @@ import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
 import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { selectedGenderAtom } from "@/common/states/gender.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Group, Radio, Text } from "@mantine/core";
+import { Button, Radio, Text } from "@mantine/core";
 import { useAtom } from "jotai";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -79,9 +79,9 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGen
           <Radio.Group
             value={genderHairGrowth}
             onChange={handleSelect}
-            className="mt-6"
+            className="mt-6 w-full"
           >
-            <Group grow>
+            <div className="grid md:grid-cols-2 w-full gap-5">
               {options.map((option) => (
                 <Radio
                   key={option}
@@ -99,7 +99,7 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGen
                   }
                 />
               ))}
-            </Group>
+            </div>
           </Radio.Group>
           {errors.genderHairGrowth && <Text className="text-red-500 text-sm mt-5 text-center">Please select your gender.</Text>}
         </form>
