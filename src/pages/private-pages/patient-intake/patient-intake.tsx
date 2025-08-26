@@ -17,7 +17,11 @@ import FullBodyPhoto from "./intake-steps/FullbodyPhoto";
 import MedicalHistory from "./intake-steps/hair-growth/medicalHistory";
 import SymptomHistory from "./intake-steps/hair-growth/symptomHistory";
 import WhenNotice from "./intake-steps/hair-growth/whenNotice";
+import MedsAllergy from "./intake-steps/prevMedsAllergy";
 import { questions } from "./intake-steps/questions";
+import SexualHealthConcerns from "./intake-steps/sexual-health/sexualHealthConcerns";
+import SexualHealthFinal from "./intake-steps/sexual-health/sexualHealthFinal";
+import SexualHealthRisks from "./intake-steps/sexual-health/sexualHealthRisks";
 import StepEight from "./intake-steps/step-eight";
 import StepFive from "./intake-steps/step-five";
 import StepFour from "./intake-steps/step-four";
@@ -34,9 +38,9 @@ import StepThree from "./intake-steps/step-three";
 import StepTwelve from "./intake-steps/step-twelve";
 import StepTwo from "./intake-steps/step-two";
 import StepEleven from "./intake-steps/step.eleven";
-import TestosteroneStepOne from "./intake-steps/testosterone/testosteroneStepOne";
-import TestosteroneStepThree from "./intake-steps/testosterone/testosteroneStepThree";
-import TestosteroneStepTwo from "./intake-steps/testosterone/testosteroneStepTwo";
+import HormonalHealth from "./intake-steps/testosterone/hormonalHealth";
+import LifestyleAndFertility from "./intake-steps/testosterone/lifeStyleAndFertility";
+import TestosteroneHistory from "./intake-steps/testosterone/testosteroneHistory";
 import ThanksStep from "./intake-steps/thanks-step";
 
 interface CategoryConfig {
@@ -67,6 +71,7 @@ const PatientIntake = () => {
     // Shared / Weight Loss steps
     { component: FullBodyPhoto, categories: ["weightLoss"] },
     { component: StepOne, categories: ["weightLoss"] },
+    { component: MedsAllergy, categories: ["weightLoss"] },
     { component: StepTwo, categories: ["weightLoss"] },
     { component: StepThree, categories: ["weightLoss"] },
     { component: StepFour, categories: ["weightLoss"] },
@@ -83,9 +88,12 @@ const PatientIntake = () => {
     { component: StepFifteen, categories: ["weightLoss"] },
     { component: StepSixteen, categories: ["weightLoss"] },
     { component: StepSeventeen, categories: ["peptides"] },
-    { component: TestosteroneStepOne, categories: ["testosterone"] },
-    { component: TestosteroneStepTwo, categories: ["testosterone"] },
-    { component: TestosteroneStepThree, categories: ["testosterone"] },
+    { component: HormonalHealth, categories: ["testosterone"] },
+    { component: TestosteroneHistory, categories: ["testosterone"] },
+    { component: LifestyleAndFertility, categories: ["testosterone"] },
+    { component: SexualHealthConcerns, categories: ["sexualHealth"] },
+    { component: SexualHealthRisks, categories: ["sexualHealth"] },
+    { component: SexualHealthFinal, categories: ["sexualHealth"] },
     { component: WhenNotice, categories: ["hairGrowth"] },
     { component: MedicalHistory, categories: ["hairGrowth"] },
     { component: SymptomHistory, categories: ["hairGrowth"] },
@@ -105,6 +113,7 @@ const PatientIntake = () => {
     if (medicationCats.some((cat) => ["Single Peptides", "Peptides Blends"].includes(cat))) categories.push("peptides");
     if (medicationCats.some((cat) => ["Testosterone"].includes(cat))) categories.push("testosterone");
     if (medicationCats.some((cat) => ["Hair Growth (Male)", "Hair Growth (Female)"].includes(cat))) categories.push("hairGrowth");
+    if (medicationCats.some((cat) => ["Sexual Health (Male)", "Sexual Health (Female)"].includes(cat))) categories.push("sexualHealth");
     if (medicationCats.some((cat) => ["Weight Loss"].includes(cat))) categories.push("weightLoss");
 
     setActiveCategories(categories);
@@ -120,7 +129,7 @@ const PatientIntake = () => {
     setTotalDynamicSteps(stepsFiltered.length);
   }, [selectedCategory, basicInfo?.patient?.gender]);
 
-  const progress = (activeStep / (totalDynamicSteps + 1)) * 100;
+  const progress = (activeStep / totalDynamicSteps) * 100;
 
   const handleNext = (data: any) => {
     setFormData((prev) => ({ ...prev, ...data }));
@@ -197,8 +206,8 @@ const PatientIntake = () => {
           {activeStep === 1 ? (
             activeCategories.length === 1 && activeCategories[0] === "weightLoss" ? (
               // Only Weight Loss → special first step header
-              <div className=" mb-6">
-                <div className="text-center">
+              <div className="mb-6">
+                <div className="text-center pb-4">
                   <h2 className="heading-text text-foreground uppercase">Let's Get to Know You Better</h2>
                   <p className="text-foreground text-xl font-medium font-poppins pt-2.5">Tell us a little about your current stats so we can tailor your plan.</p>
                 </div>

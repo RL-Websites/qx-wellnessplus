@@ -5,143 +5,135 @@ import { Button, Radio } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
-export const TestosteroneStepThreeSchema = yup.object({
-  priorEdTreatment: yup.string().required("Please select at least one value."),
-  psychStress: yup.string().required("Please select at least one value."),
-  pelvicHistory: yup.string().required("Please select at least one value."),
+export const sexualHealthRiskSchema = yup.object({
+  hasCardioDisease: yup.string().required("Please select at least one value."),
+  experiencedPriapism: yup.string().required("Please select at least one value."),
+  takesNitrates: yup.string().required("Please select at least one value."),
 });
 
-export type TestosteroneStepThreeSchemaType = yup.InferType<typeof TestosteroneStepThreeSchema>;
+export type SexualHealthRiskSchemaType = yup.InferType<typeof sexualHealthRiskSchema>;
 
-interface Props {
-  onNext: (data: TestosteroneStepThreeSchemaType) => void;
+interface SexualHealthRisksProps {
+  onNext: (data: SexualHealthRiskSchemaType) => void;
   onBack: () => void;
-  defaultValues?: Partial<TestosteroneStepThreeSchemaType>;
+  defaultValues?: Partial<SexualHealthRiskSchemaType>;
 }
 
-const TestosteroneStepThree = ({ onNext, onBack, defaultValues }: Props) => {
+const SexualHealthRisks = ({ onNext, onBack, defaultValues }: SexualHealthRisksProps) => {
   const {
     handleSubmit,
-    register,
     setValue,
-    clearErrors,
     watch,
+    clearErrors,
     formState: { errors },
-  } = useForm<TestosteroneStepThreeSchemaType>({
+  } = useForm<SexualHealthRiskSchemaType>({
+    resolver: yupResolver(sexualHealthRiskSchema),
     defaultValues: {
-      priorEdTreatment: defaultValues?.priorEdTreatment || "",
-      psychStress: defaultValues?.psychStress || "",
-      pelvicHistory: defaultValues?.pelvicHistory || "",
+      hasCardioDisease: defaultValues?.hasCardioDisease || "",
+      experiencedPriapism: defaultValues?.experiencedPriapism || "",
+      takesNitrates: defaultValues?.takesNitrates || "",
     },
-    resolver: yupResolver(TestosteroneStepThreeSchema),
   });
 
-  const priorEdTreatment = watch("priorEdTreatment");
-  const psychStress = watch("psychStress");
-  const pelvicHistory = watch("pelvicHistory");
+  const hasCardioDisease = watch("hasCardioDisease");
+  const experiencedPriapism = watch("experiencedPriapism");
+  const takesNitrates = watch("takesNitrates");
 
-  const handleSelect = (field: keyof TestosteroneStepThreeSchemaType, value: string) => {
+  const handleSelect = (field: keyof SexualHealthRiskSchemaType, value: string) => {
     setValue(field, value, { shouldValidate: true });
     clearErrors(field);
   };
 
+  const yesNoOptions = ["Yes", "No"];
+
   return (
     <form
-      id="TestosteroneStepThreeForm"
+      id="sexualHealthRisksForm"
       onSubmit={handleSubmit(onNext)}
       className="max-w-[800px] mx-auto space-y-10 pt-10"
     >
-      {/* Q8 */}
       <Radio.Group
-        value={priorEdTreatment}
-        onChange={(val) => handleSelect("priorEdTreatment", val)}
-        label="Have you ever tried ED medications or treatments before?"
-        classNames={{
-          label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
-        }}
+        value={hasCardioDisease}
+        onChange={(val) => handleSelect("hasCardioDisease", val)}
+        label="Do you have a history of uncontrolled cardiovascular disease (heart attack, stroke, arrhythmia)?"
+        classNames={{ label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2" }}
       >
         <div className="grid sm:grid-cols-2 gap-5">
-          {["Yes — effective", "Yes — not effective", "No"].map((option) => (
+          {yesNoOptions.map((option) => (
             <Radio
               key={option}
               value={option}
-              classNames={getBaseWebRadios(priorEdTreatment, option)}
               label={
                 <div className="relative text-center">
                   <span className="text-foreground font-poppins">{option}</span>
-                  {priorEdTreatment === option && (
+                  {hasCardioDisease === option && (
                     <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                       <i className="icon-tick text-sm/none"></i>
                     </span>
                   )}
                 </div>
               }
+              classNames={getBaseWebRadios(hasCardioDisease, option)}
             />
           ))}
         </div>
-        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.priorEdTreatment)}</p>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.hasCardioDisease)}</p>
       </Radio.Group>
 
-      {/* Q9 */}
       <Radio.Group
-        value={psychStress}
-        onChange={(val) => handleSelect("psychStress", val)}
-        label="Are you experiencing psychological stress, anxiety, or depression?"
-        classNames={{
-          label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
-        }}
+        value={experiencedPriapism}
+        onChange={(val) => handleSelect("experiencedPriapism", val)}
+        label="Have you ever experienced priapism (erection lasting more than 4 hours)?"
+        classNames={{ label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2" }}
       >
         <div className="grid sm:grid-cols-2 gap-5">
-          {["Yes", "No"].map((option) => (
+          {yesNoOptions.map((option) => (
             <Radio
               key={option}
               value={option}
-              classNames={getBaseWebRadios(psychStress, option)}
               label={
                 <div className="relative text-center">
                   <span className="text-foreground font-poppins">{option}</span>
-                  {psychStress === option && (
+                  {experiencedPriapism === option && (
                     <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                       <i className="icon-tick text-sm/none"></i>
                     </span>
                   )}
                 </div>
               }
+              classNames={getBaseWebRadios(experiencedPriapism, option)}
             />
           ))}
         </div>
-        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.psychStress)}</p>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.experiencedPriapism)}</p>
       </Radio.Group>
 
-      {/* Q10 */}
       <Radio.Group
-        value={pelvicHistory}
-        onChange={(val) => handleSelect("pelvicHistory", val)}
-        label="Do you have any history of surgeries or injuries affecting the pelvic area?"
-        classNames={{
-          label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
-        }}
+        value={takesNitrates}
+        onChange={(val) => handleSelect("takesNitrates", val)}
+        label="Do you currently take nitrates or nitroglycerin?"
+        classNames={{ label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2" }}
       >
         <div className="grid sm:grid-cols-2 gap-5">
-          {["Yes", "No"].map((option) => (
+          {yesNoOptions.map((option) => (
             <Radio
               key={option}
               value={option}
-              classNames={getBaseWebRadios(pelvicHistory, option)}
               label={
                 <div className="relative text-center">
                   <span className="text-foreground font-poppins">{option}</span>
-                  {pelvicHistory === option && (
+                  {takesNitrates === option && (
                     <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                       <i className="icon-tick text-sm/none"></i>
                     </span>
                   )}
                 </div>
               }
+              classNames={getBaseWebRadios(takesNitrates, option)}
             />
           ))}
         </div>
-        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.pelvicHistory)}</p>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.takesNitrates)}</p>
       </Radio.Group>
 
       <div className="flex justify-center gap-6 pt-6">
@@ -154,7 +146,7 @@ const TestosteroneStepThree = ({ onNext, onBack, defaultValues }: Props) => {
         </Button>
         <Button
           type="submit"
-          form="TestosteroneStepThreeForm"
+          form="sexualHealthRisksForm"
           className="w-[200px]"
         >
           Next
@@ -164,4 +156,4 @@ const TestosteroneStepThree = ({ onNext, onBack, defaultValues }: Props) => {
   );
 };
 
-export default TestosteroneStepThree;
+export default SexualHealthRisks;
