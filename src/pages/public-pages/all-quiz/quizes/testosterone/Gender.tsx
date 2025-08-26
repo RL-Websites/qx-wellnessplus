@@ -9,56 +9,56 @@ import { useAtom } from "jotai";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
-export const GenderTestosteroneSchema = yup.object({
-  genderWeightLoss: yup.string().required("Please select your gender for testosterone support"),
+export const GenderSexualHealthSchema = yup.object({
+  genderSexualHealth: yup.string().required("Please select your gender for sexual health support"),
 });
 
-export type GenderTestosteroneSchemaType = yup.InferType<typeof GenderTestosteroneSchema>;
+export type GenderSexualHealthSchemaType = yup.InferType<typeof GenderSexualHealthSchema>;
 
-interface IGenderTestosteroneProps {
-  onNext: (data: GenderTestosteroneSchemaType & { eligible?: boolean }) => void;
+interface IGenderSexualHealthProps {
+  onNext: (data: GenderSexualHealthSchemaType & { eligible?: boolean }) => void;
   onBack: () => void;
-  defaultValues?: GenderTestosteroneSchemaType;
+  defaultValues?: GenderSexualHealthSchemaType;
 }
 
-export default function GenderTestosterone({ onNext, onBack, defaultValues }: IGenderTestosteroneProps) {
+export default function GenderSexualHealth({ onNext, onBack, defaultValues }: IGenderSexualHealthProps) {
   const [selectedCategory, setSelectedCategory] = useAtom(selectedCategoryAtom);
   const [selectedGender, setSelectedGender] = useAtom(selectedGenderAtom);
+
   const {
     handleSubmit,
     setValue,
     watch,
     clearErrors,
     formState: { errors },
-  } = useForm<GenderTestosteroneSchemaType>({
+  } = useForm<GenderSexualHealthSchemaType>({
     defaultValues: {
-      genderWeightLoss: defaultValues?.genderWeightLoss || "",
+      genderSexualHealth: defaultValues?.genderSexualHealth || "",
     },
-    resolver: yupResolver(GenderTestosteroneSchema),
+    resolver: yupResolver(GenderSexualHealthSchema),
   });
 
-  const genderWeightLoss = watch("genderWeightLoss");
+  const genderSexualHealth = watch("genderSexualHealth");
   const options = ["Male", "Female"];
 
-  const handleSelect = (value: string) => {
-    if (selectedCategory?.includes("Hair Growth")) {
-      if (value === "Male") {
-        setSelectedCategory(["Hair Growth (Male)"]);
-      }
-      if (value === "Female") {
-        setSelectedCategory(["Hair Growth (Female)"]);
-      }
-    }
-    setValue("genderWeightLoss", value, { shouldValidate: true });
-    clearErrors("genderWeightLoss");
-    setSelectedGender(value);
-  };
-
-  const handleFormSubmit = (data: GenderTestosteroneSchemaType) => {
+  const handleFormSubmit = (data: GenderSexualHealthSchemaType) => {
     onNext({
       ...data,
-      eligible: data.genderWeightLoss === "Female",
+      // You can uncomment below if you need conditional logic
+      // eligible: data.genderSexualHealth === "Female",
     });
+  };
+
+  const handleSelect = (value: string) => {
+    if (value === "Male") {
+      setSelectedCategory(["Sexual Health (Male"]);
+    } else if (value === "Female") {
+      setSelectedCategory(["Sexual Health (Female)"]);
+    }
+
+    setValue("genderSexualHealth", value, { shouldValidate: true });
+    clearErrors("genderSexualHealth");
+    setSelectedGender(value);
   };
 
   return (
@@ -67,12 +67,12 @@ export default function GenderTestosterone({ onNext, onBack, defaultValues }: IG
 
       <div className="card-common-width-lg mx-auto mt-10">
         <form
-          id="genderTestosteroneForm"
+          id="genderSexualHealthForm"
           onSubmit={handleSubmit(handleFormSubmit)}
           className="w-full"
         >
           <Radio.Group
-            value={genderWeightLoss}
+            value={genderSexualHealth}
             onChange={handleSelect}
             className="mt-6 w-full"
           >
@@ -81,11 +81,11 @@ export default function GenderTestosterone({ onNext, onBack, defaultValues }: IG
                 <Radio
                   key={option}
                   value={option}
-                  classNames={getBaseWebRadios(genderWeightLoss, option)}
+                  classNames={getBaseWebRadios(genderSexualHealth, option)}
                   label={
                     <div className="relative text-center">
                       <span className="text-foreground font-poppins">{option}</span>
-                      {genderWeightLoss === option && (
+                      {genderSexualHealth === option && (
                         <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
@@ -96,7 +96,8 @@ export default function GenderTestosterone({ onNext, onBack, defaultValues }: IG
               ))}
             </div>
           </Radio.Group>
-          {errors.genderWeightLoss && <Text className="text-red-500 text-sm mt-5 text-center">Please select your gender.</Text>}
+
+          {errors.genderSexualHealth && <Text className="text-red-500 text-sm mt-5 text-center">{errors.genderSexualHealth.message}</Text>}
         </form>
       </div>
 
@@ -111,7 +112,7 @@ export default function GenderTestosterone({ onNext, onBack, defaultValues }: IG
         <Button
           type="submit"
           className="w-[200px]"
-          form="genderTestosteroneForm"
+          form="genderSexualHealthForm"
         >
           Next
         </Button>

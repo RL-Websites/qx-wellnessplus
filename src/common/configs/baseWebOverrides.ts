@@ -6,17 +6,42 @@ export const BaseWebDatePickerOverrides = {
           style: {
             marginLeft: "20px",
             "z-index": "10",
+            "@media screen and (max-width: 768px)": {
+              left: "-10px",
+            },
           },
         },
       },
     },
   },
+  CalendarContainer: {
+    style: {
+      "@media screen and (max-width: 768px)": {
+        width: "300px",
+        maxWidth: "300px",
+        boxSizing: "border-box",
+      },
+    },
+  },
+  CalendarHeader: {
+    style: {
+      "@media screen and (max-width: 768px)": {
+        margin: "0 auto",
+        width: "300px",
+      },
+    },
+  },
+
   MonthYearSelectButton: {
     style: {
       fontSize: "16px",
       lineHeight: 1.4,
       fontWeight: 700,
       height: "50px",
+      "@media screen and (max-width: 768px)": {
+        fontSize: "14px",
+        height: "40px",
+      },
     },
   },
   MonthYearSelectIconContainer: {
@@ -30,6 +55,10 @@ export const BaseWebDatePickerOverrides = {
         Body: {
           style: {
             "z-index": 10,
+            "@media screen and (max-width: 768px)": {
+              width: "100vw",
+              borderRadius: 0,
+            },
           },
         },
       },
@@ -41,6 +70,11 @@ export const BaseWebDatePickerOverrides = {
       lineHeight: "26px",
       height: "44px",
       width: "50.29px",
+      "@media screen and (max-width: 768px)": {
+        fontSize: "12px",
+        width: "40px",
+        height: "35px",
+      },
     },
   },
   Day: {
@@ -56,6 +90,17 @@ export const BaseWebDatePickerOverrides = {
       ":before": {
         top: "-3px",
       },
+      "@media screen and (max-width: 768px)": {
+        fontSize: "12px",
+        lineHeight: "18px",
+        height: "32px",
+        width: "32px",
+        ":after": {
+          height: "30px",
+          width: "30px",
+          left: "2px",
+        },
+      },
     },
   },
   InputLabel: {
@@ -63,6 +108,9 @@ export const BaseWebDatePickerOverrides = {
       fontSize: "14px",
       color: "var(--dml-color-foreground)",
       fontWeight: 500,
+      "@media screen and (max-width: 768px)": {
+        fontSize: "12px",
+      },
     },
   },
   Input: {

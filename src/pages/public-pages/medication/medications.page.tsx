@@ -125,7 +125,7 @@ const MedicationsPage = () => {
                 <i className="icon-orders text-4xl/none"></i>
                 <span className="text-base text-white rounded-full bg-primary size-5 absolute -top-2.5 -right-3 text-center leading-5">{totalCartCount}</span>
               </div>
-              <span className="text-foreground md:text-xl sm:text-lg text-base font-medium">
+              <span className="text-foreground md:text-xl sm:text-lg text-base md:text-start text-center font-medium">
                 {totalCartCount > 0 && (
                   <div>
                     <span>
