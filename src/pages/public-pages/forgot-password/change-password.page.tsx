@@ -82,10 +82,10 @@ const ChangePasswordPage = () => {
     console.log(data);
   };
   return (
-    <div className="lg:pt-16 md:pt-10 pt-4">
-      <h2 className="heading-text  text-foreground uppercase  text-center">Reset Password</h2>
+    <div className="">
+      <h2 className="lg:text-[70px] md:text-6xl text-4xl text-foreground uppercase text-center">Reset Password</h2>
       <form
-        className="w-full"
+        className="w-full -mt-5"
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="card-common card-common-width">
@@ -101,7 +101,6 @@ const ChangePasswordPage = () => {
           </Input.Wrapper>
           <Input.Wrapper
             label="Confirm password"
-            mt="20"
             required
             error={errors.confirmPassword?.message ? errors.confirmPassword?.message : false}
           >

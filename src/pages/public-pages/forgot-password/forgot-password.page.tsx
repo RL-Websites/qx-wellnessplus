@@ -55,8 +55,8 @@ const ForgetPasswordPage = () => {
   };
 
   return (
-    <div className="lg:pt-16 md:pt-10 pt-4">
-      <h2 className="heading-text  text-foreground uppercase  text-center">Forgot Password</h2>
+    <div className="">
+      <h2 className="lg:text-[70px] md:text-6xl text-4xl text-foreground uppercase text-center">Forgot Password</h2>
       <div className=" card-common-width mx-auto flex flex-col lg:gap-7 md:gap-5 gap-3">
         <div>
           {forgetMutation.isSuccess ? (
@@ -67,13 +67,13 @@ const ForgetPasswordPage = () => {
                 className="w-full "
                 onSubmit={handleSubmit(onSubmit)}
               >
-                <div className="mt-10 w-full border-dashed border border-primary  rounded-lg bg-primary-secondary p-5">
+                <div className="mt-[30px] w-full border-dashed border border-primary  rounded-lg bg-primary-secondary p-5">
                   <p className="text-center text-lg">
                     If you forgot your password an email with a password reset link will be sent to you. Click on the link in that email and you will be taken to a page where you
                     can then create a new password.
                   </p>
                 </div>
-                <div className="card-common">
+                <div className="card-common mt-8">
                   <Input.Wrapper
                     label="Email Address"
                     required
@@ -87,7 +87,7 @@ const ForgetPasswordPage = () => {
                   </Input.Wrapper>
                 </div>
 
-                <div className=" card-common-width  mx-auto  mt-10">
+                <div className=" card-common-width  mx-auto  mt-8">
                   <div className="flex md:justify-between justify-center md:gap-6 gap-3">
                     <Button
                       variant="outline"
