@@ -110,13 +110,6 @@ const QuizPage = () => {
     scrollTo({ y: 0 });
   };
 
-  // const handleBack = () => {
-  //   if (activeStep > 1) {
-  //     setActiveStep((prev) => prev - 1);
-  //   }
-  //   scrollTo({ y: 0 });
-  // };
-
   const handleBack = () => {
     if (activeStep > 1) {
       if (skipInjectionDate && activeStep === 8 + genderOffset) {
@@ -394,22 +387,6 @@ const QuizPage = () => {
               defaultValues={formData}
             />
           )}
-          {/* {activeStep === 4 && (
-            <Priapism
-              onNext={(data) => {
-                const { eligible, ...rest } = data;
-                setFormData((prev) => ({ ...prev, ...rest }));
-
-                if (eligible) {
-                  setEligibleComponent(<InEligibleUser />);
-                } else {
-                  handleNext(rest);
-                }
-              }}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )} */}
           {activeStep === 4 && (
             <Nitroglycerin
               onNext={(data) => {
@@ -453,22 +430,6 @@ const QuizPage = () => {
               defaultValues={formData}
             />
           )}
-          {/* {activeStep === 4 && (
-            <Priapism
-              onNext={(data) => {
-                const { eligible, ...rest } = data;
-                setFormData((prev) => ({ ...prev, ...rest }));
-
-                if (eligible) {
-                  setEligibleComponent(<InEligibleUser />);
-                } else {
-                  handleNext(rest);
-                }
-              }}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )} */}
           {activeStep === 4 && (
             <Nitroglycerin
               onNext={(data) => {
