@@ -405,7 +405,15 @@ const QuizPage = () => {
           )}
           {activeStep === 5 && (
             <Impairment
-              onNext={handleFinalSubmit}
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+                setFormData((prev) => ({ ...prev, ...rest }));
+                if (data.impairment === "Yes") {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleFinalSubmit(data);
+                }
+              }}
               onBack={handleBack}
               defaultValues={formData}
             />
@@ -448,7 +456,15 @@ const QuizPage = () => {
           )}
           {activeStep === 5 && (
             <Impairment
-              onNext={handleFinalSubmit}
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+                setFormData((prev) => ({ ...prev, ...rest }));
+                if (data.impairment === "Yes") {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleFinalSubmit(data);
+                }
+              }}
               onBack={handleBack}
               defaultValues={formData}
             />
