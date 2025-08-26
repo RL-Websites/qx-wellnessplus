@@ -1,8 +1,8 @@
 @font-face {
   font-family: "icomoon";
-  src: url("fonts/icomoon.eot?bbkt6y");
-  src: url("fonts/icomoon.eot?bbkt6y#iefix") format("embedded-opentype"), url("fonts/icomoon.woff2?bbkt6y") format("woff2"), url("fonts/icomoon.ttf?bbkt6y") format("truetype"),
-    url("fonts/icomoon.woff?bbkt6y") format("woff"), url("fonts/icomoon.svg?bbkt6y#icomoon") format("svg");
+  src: url("fonts/icomoon.eot?iem0ob");
+  src: url("fonts/icomoon.eot?iem0ob#iefix") format("embedded-opentype"), url("fonts/icomoon.woff2?iem0ob") format("woff2"), url("fonts/icomoon.ttf?iem0ob") format("truetype"),
+    url("fonts/icomoon.woff?iem0ob") format("woff"), url("fonts/icomoon.svg?iem0ob#icomoon") format("svg");
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -48,19 +48,8 @@
 .icon-view-intake-form:before {
   content: "\e958";
 }
-.icon-info-2 .path1:before {
+.icon-info-2:before {
   content: "\e969";
-  color: rgb(20, 27, 52);
-}
-.icon-info-2 .path2:before {
-  content: "\e96a";
-  margin-left: -1em;
-  color: rgb(255, 255, 255);
-}
-.icon-info-2 .path3:before {
-  content: "\e96b";
-  margin-left: -1em;
-  color: rgb(255, 255, 255);
 }
 .icon-link:before {
   content: "\e968";
