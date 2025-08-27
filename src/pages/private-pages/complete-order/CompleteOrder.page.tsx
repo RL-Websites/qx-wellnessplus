@@ -55,7 +55,9 @@ const CompleteOrderPage = () => {
       selectedCategory.includes("Weight Loss") &&
       selectedCategory.includes("Testosterone") &&
       selectedCategory.includes("Hair Growth (Male)") &&
-      selectedCategory.includes("Hair Growth (Female)")
+      selectedCategory.includes("Hair Growth (Female)") &&
+      selectedCategory.includes("Sexual Health (Male)") &&
+      selectedCategory.includes("Sexual Health (Female)")
     ) {
       setHasOthers(true);
       setHasPeptides(false);

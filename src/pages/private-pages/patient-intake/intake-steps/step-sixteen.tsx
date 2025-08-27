@@ -269,33 +269,18 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
       {takenGlpMedication === "Yes" && (
         <>
           {/* Height and Weight */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div>
-              <Input.Wrapper
-                label="What was your height when you started the GLP-1 medication? (In inches)"
-                classNames={InputErrorMessage}
-              >
-                <Input
-                  {...register("heightWhenStartGlp")}
-                  className="border-grey rounded-lg"
-                />
-              </Input.Wrapper>
-              {errors?.heightWhenStartGlp?.message && <Text className="text-sm text-red-500 mt-2">{errors.heightWhenStartGlp.message}</Text>}
-            </div>
-
-            <div>
-              <Input.Wrapper
-                label="What was your weight when you started the GLP-1 medication? (In pounds)"
-                classNames={InputErrorMessage}
-              >
-                <Input
-                  {...register("weightWhenStartGlp")}
-                  placeholder="e.g., 170 lbs"
-                  className="border-grey rounded-lg"
-                />
-              </Input.Wrapper>
-              {errors?.weightWhenStartGlp?.message && <Text className="text-sm text-red-500 mt-2">{errors.weightWhenStartGlp.message}</Text>}
-            </div>
+          <div>
+            <Input.Wrapper
+              label="What was your weight when you started the GLP-1 medication? (In pounds)"
+              classNames={InputErrorMessage}
+            >
+              <Input
+                {...register("weightWhenStartGlp")}
+                placeholder="e.g., 170 lbs"
+                className="border-grey rounded-lg"
+              />
+            </Input.Wrapper>
+            {errors?.weightWhenStartGlp?.message && <Text className="text-sm text-red-500 mt-2">{errors.weightWhenStartGlp.message}</Text>}
           </div>
 
           {/* Current Weight Loss Medication */}
@@ -949,32 +934,18 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
           </Radio.Group>
 
           {/* Height and Weight */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div>
-              <Input.Wrapper
-                label="What was your height when you started the GLP-1 medication? (In inches)"
-                classNames={getErrorMessage}
-              >
-                <Input
-                  {...register("glpStartingHeight")}
-                  className="border-grey rounded-lg"
-                />
-              </Input.Wrapper>
-              <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.glpStartingHeight)}</p>
-            </div>
-            <div>
-              <Input.Wrapper
-                label="What was your weight when you started the GLP-1 medication? (In Pounds)"
-                classNames={getErrorMessage}
-              >
-                <Input
-                  {...register("glpStartingWeight")}
-                  placeholder="e.g., 170 lbs"
-                  className="border-grey rounded-lg"
-                />
-              </Input.Wrapper>
-              <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.glpStartingWeight)}</p>
-            </div>
+          <div>
+            <Input.Wrapper
+              label="What was your weight when you started the GLP-1 medication? (In Pounds)"
+              classNames={getErrorMessage}
+            >
+              <Input
+                {...register("glpStartingWeight")}
+                placeholder="e.g., 170 lbs"
+                className="border-grey rounded-lg"
+              />
+            </Input.Wrapper>
+            <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.glpStartingWeight)}</p>
           </div>
 
           {/* Previous GLP medication */}

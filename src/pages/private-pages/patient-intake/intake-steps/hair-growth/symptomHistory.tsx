@@ -103,7 +103,7 @@ const SymptomHistory = ({ onNext, onBack, defaultValues }: SymptomHistoryProps) 
       <div>
         <h3 className="sm:text-2xl text-lg font-semibold text-foreground font-poppins mb-6">Are you experiencing other symptoms? (Select all that apply)</h3>
         <div className="grid sm:grid-cols-2 gap-5">
-          {["Scalp itching/flaking", "Hair breakage", "Weight changes, fatigue, or hormonal symptoms", "None"].map((option) => {
+          {["Scalp itching/flaking", "Hair breakage", "Weight changes & fatigue or hormonal symptoms", "None"].map((option) => {
             const isChecked = selectedSymptoms.includes(option);
             return (
               <div
