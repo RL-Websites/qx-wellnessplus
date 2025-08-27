@@ -3,10 +3,10 @@ import * as yup from "yup";
 export const stepSixteenTeenSchema = yup.object({
   takenGlpMedication: yup.string().required("Please answer if you have taken a GLP-1 medication."),
 
-  heightWhenStartGlp: yup.string().when("takenGlpMedication", {
-    is: "Yes",
-    then: (schema) => schema.required("Please enter your height when you started the medication."),
-  }),
+  // heightWhenStartGlp: yup.string().when("takenGlpMedication", {
+  //   is: "Yes",
+  //   then: (schema) => schema.required("Please enter your height when you started the medication."),
+  // }),
 
   weightWhenStartGlp: yup.string().when("takenGlpMedication", {
     is: "Yes",
@@ -117,10 +117,10 @@ export const stepSixteenTeenSchema = yup.object({
     then: (schema) => schema.required("Please specify when you stopped."),
   }),
 
-  glpStartingHeight: yup.string().when("takenGlpMedication", {
-    is: "Not within 30 days, but previously",
-    then: (schema) => schema.required("Please enter your starting height."),
-  }),
+  // glpStartingHeight: yup.string().when("takenGlpMedication", {
+  //   is: "Not within 30 days, but previously",
+  //   then: (schema) => schema.required("Please enter your starting height."),
+  // }),
 
   glpStartingWeight: yup.string().when("takenGlpMedication", {
     is: "Not within 30 days, but previously",

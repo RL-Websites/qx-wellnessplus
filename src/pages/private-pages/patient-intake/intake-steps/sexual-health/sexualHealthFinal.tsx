@@ -48,7 +48,7 @@ const SexualHealthFinal = ({ onNext, onBack, defaultValues, isLoading = false }:
   const lifestyleFactors = watch("lifestyleFactors");
   const lifestyleDetails = watch("lifestyleDetails");
   const sexualHealthGoals = watch("sexualHealthGoals");
-  const selectedGoals = sexualHealthGoals?.split(", ") || [];
+  const selectedGoals = sexualHealthGoals ? sexualHealthGoals.split(", ").filter((g) => g.trim() !== "") : [];
   console.log(selectedGoals);
 
   const handleSelect = (field: keyof SexualHealthFinalSchemaType, value: string) => {
@@ -63,7 +63,7 @@ const SexualHealthFinal = ({ onNext, onBack, defaultValues, isLoading = false }:
     } else {
       updated = [...selectedGoals, goal];
     }
-    setValue("sexualHealthGoals", updated.join(", "), { shouldValidate: true });
+    setValue("sexualHealthGoals", updated.filter(Boolean).join(", "), { shouldValidate: true });
     clearErrors("sexualHealthGoals");
   };
 
