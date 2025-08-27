@@ -3,9 +3,11 @@ import { cartItemsAtom } from "@/common/states/product.atom";
 import { userAtom } from "@/common/states/user.atom";
 import { calculatePrice } from "@/utils/helper.utils";
 import { Button } from "@mantine/core";
+import { useWindowScroll } from "@mantine/hooks";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { NavLink as RdNavLink, useNavigate } from "react-router-dom";
+const [, scrollTo] = useWindowScroll();
 
 const OrderSummary = () => {
   const { getAccessToken } = useAuthToken();
@@ -44,6 +46,10 @@ const OrderSummary = () => {
       navigate("/login");
     }
   };
+
+  useEffect(() => {
+    scrollTo({ y: 0 });
+  }, []);
 
   return (
     <div className="lg:pt-16 md:pt-10 pt-4">
@@ -103,7 +109,7 @@ const OrderSummary = () => {
       <div className="flex justify-between gap-6 pt-4">
         <Button
           variant="outline"
-          className="w-[200px]"
+          className="lg:w-[200px] w-[150px]"
           component={RdNavLink}
           to={`/medications`}
         >
@@ -111,7 +117,7 @@ const OrderSummary = () => {
         </Button>
         <Button
           type="submit"
-          className="w-[200px]"
+          className="lg:w-[200px] w-[150px]"
           form="stepTwoForm"
           onClick={handleNext}
         >

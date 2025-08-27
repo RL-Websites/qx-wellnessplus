@@ -173,14 +173,14 @@ const Login = () => {
               Login
             </Button>
           </div>
-          <div className="mt-6 flex justify-between">
+          <div className="mt-6 flex md:flex-row flex-col gap-2 items-center justify-between">
             <Link
               to="/forgot-password"
-              className="text-foreground underline"
+              className="text-foreground underline md:text-base text-sm"
             >
               Forgot Password
             </Link>
-            <p className="text-xl text-foreground font-semibold">
+            <p className="md:text-lg sm:text-base text-sm text-foreground font-semibold">
               <span className="text-primary font-normal">First-time Visitor? </span>
               <Link
                 to="/registration"
