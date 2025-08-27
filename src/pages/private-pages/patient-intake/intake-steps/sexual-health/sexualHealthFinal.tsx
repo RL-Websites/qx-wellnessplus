@@ -49,6 +49,7 @@ const SexualHealthFinal = ({ onNext, onBack, defaultValues, isLoading = false }:
   const lifestyleDetails = watch("lifestyleDetails");
   const sexualHealthGoals = watch("sexualHealthGoals");
   const selectedGoals = sexualHealthGoals?.split(", ") || [];
+  console.log(selectedGoals);
 
   const handleSelect = (field: keyof SexualHealthFinalSchemaType, value: string) => {
     setValue(field, value, { shouldValidate: true });
