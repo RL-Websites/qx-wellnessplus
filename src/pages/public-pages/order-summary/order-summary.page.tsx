@@ -3,11 +3,9 @@ import { cartItemsAtom } from "@/common/states/product.atom";
 import { userAtom } from "@/common/states/user.atom";
 import { calculatePrice } from "@/utils/helper.utils";
 import { Button } from "@mantine/core";
-import { useWindowScroll } from "@mantine/hooks";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { NavLink as RdNavLink, useNavigate } from "react-router-dom";
-const [, scrollTo] = useWindowScroll();
 
 const OrderSummary = () => {
   const { getAccessToken } = useAuthToken();
@@ -46,10 +44,6 @@ const OrderSummary = () => {
       navigate("/login");
     }
   };
-
-  useEffect(() => {
-    scrollTo({ y: 0 });
-  }, []);
 
   return (
     <div className="lg:pt-16 md:pt-10 pt-4">
