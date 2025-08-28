@@ -21,7 +21,7 @@
     }
 
     &-common {
-      @apply backdrop-blur-[30px] shadow-[0px_16px_16px_0px_#0000000d] bg-[rgba(255,255,255,0.6)] lg:p-10 md:p-8 p-5 mx-auto lg:mt-12 md:mt-8 mt-6 rounded-[20px];
+      @apply backdrop-blur-[30px] shadow-[0px_16px_16px_0px_#0000000d] bg-[rgba(255,255,255,0.6)] lg:px-10 lg:py-[30px] md:px-8 md:py-8 px-5 py-5 mx-auto lg:mt-12 md:mt-8 mt-6 rounded-[20px];
       &-width {
         max-width: 570px;
       }
