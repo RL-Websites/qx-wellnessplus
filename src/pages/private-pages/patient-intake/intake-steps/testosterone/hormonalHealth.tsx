@@ -64,6 +64,7 @@ const HormonalHealth = ({ onNext, onBack, defaultValues, isLoading = false }: Ho
         }}
         label="Have you ever been diagnosed with low testosterone (hypogonadism)?"
         classNames={{
+          root: "w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >

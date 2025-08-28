@@ -78,7 +78,7 @@ const SexualHealthFinal = ({ onNext, onBack, defaultValues, isLoading = false }:
         value={hasLiverKidneyIssues}
         onChange={(val) => handleSelect("hasLiverKidneyIssues", val)}
         label="Do you have any history of liver or kidney disease?"
-        classNames={{ label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2" }}
+        classNames={{ root: "w-full", label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2" }}
       >
         <div className="grid sm:grid-cols-2 gap-5">
           {["Yes", "No"].map((option) => (
@@ -107,7 +107,7 @@ const SexualHealthFinal = ({ onNext, onBack, defaultValues, isLoading = false }:
         value={lifestyleFactors}
         onChange={(val) => handleSelect("lifestyleFactors", val)}
         label="Do you have any lifestyle factors affecting sexual health (smoking, heavy alcohol use, stress, lack of sleep)?"
-        classNames={{ label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2" }}
+        classNames={{ root: "w-full", label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2" }}
       >
         <div className="grid sm:grid-cols-2 gap-5">
           {["Yes", "No"].map((option) => (
@@ -139,7 +139,7 @@ const SexualHealthFinal = ({ onNext, onBack, defaultValues, isLoading = false }:
           value={lifestyleDetails}
           onChange={(e) => handleSelect("lifestyleDetails", e.currentTarget.value)}
           error={getErrorMessage(errors?.lifestyleDetails)}
-          className="pt-6"
+          className="pt-6 w-full"
         />
       )}
 

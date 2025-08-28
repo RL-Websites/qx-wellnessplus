@@ -121,6 +121,7 @@ const StepOne = ({ onNext, onBack, defaultValues }: IStepOneProps) => {
           onChange={(value) => handleSelect("exerciseTimes", value)}
           label="How often do you exercise?"
           classNames={{
+            root: "w-full",
             label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           }}
         >

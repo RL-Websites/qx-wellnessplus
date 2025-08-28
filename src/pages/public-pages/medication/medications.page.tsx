@@ -1,6 +1,6 @@
 import { Button } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import MedicationCard from "@/common/components/MedicationCard";
 import ConfirmProductOrderModal from "./components/ConfirmProductOrderModal";
@@ -25,8 +25,52 @@ const MedicationsPage = () => {
   const [confirmMeds, handleConfirmMeds] = useDisclosure(false);
   const [showDetails, setShowDetailsHandel] = useDisclosure(false);
   const selectedCategory = useAtomValue(selectedCategoryAtom);
+  const cartBarRef = useRef<HTMLDivElement>(null);
+  const [showBottomSpace, setShowBottomSpace] = useState(false);
+  const [cartBarHeight, setCartBarHeight] = useState(0);
 
   const [customerData, setCustomerData] = useAtom(customerAtom);
+
+  const updateCartHeight = () => {
+    if (cartBarRef.current) {
+      setCartBarHeight(cartBarRef.current.offsetHeight);
+    }
+  };
+
+  useEffect(() => {
+    if (!cartBarRef.current) return;
+
+    const observer = new ResizeObserver(() => {
+      updateCartHeight();
+    });
+
+    observer.observe(cartBarRef.current);
+
+    return () => observer.disconnect();
+  }, [cartItems.length]);
+
+  useEffect(() => {
+    window.addEventListener("resize", updateCartHeight);
+    return () => window.removeEventListener("resize", updateCartHeight);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const windowHeight = window.innerHeight;
+      const fullHeight = document.documentElement.scrollHeight;
+
+      const atBottom = scrollTop + windowHeight >= fullHeight - 20;
+
+      setShowBottomSpace((prev) => {
+        if (prev !== atBottom) return atBottom;
+        return prev;
+      });
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const fetchMedicine = () => {
     const params: ICommonParams = {
@@ -99,7 +143,7 @@ const MedicationsPage = () => {
         <div className="rounded-lg bg-green-badge text-center py-2.5 px-6">Doctor consultation & shipping cost included</div>
       </div>
 
-      <div className="grid md:grid-cols-3 sm:grid-cols-2 lg:gap-y-12 lg:gap-x-20 gap-7 py-12">
+      <div className="grid md:grid-cols-3 sm:grid-cols-2 lg:gap-y-12 lg:gap-x-20 gap-7">
         {medicines?.map((item, index) => {
           const isInCart = cartItems.some((cartItem) => cartItem.id === item.id);
 
@@ -118,34 +162,40 @@ const MedicationsPage = () => {
       </div>
 
       {cartItems.length > 0 && (
-        <div className="fixed left-0 bottom-16 w-full animate-fadeInUp">
-          <div className="bg-warning-bg px-10 lg:py-6 py-5 flex md:flex-row flex-col items-center justify-between rounded-2xl md:mx-5 mx-4 md:gap-2 gap-4">
-            <div className="flex md:flex-row flex-col items-center lg:gap-14 md:gap-8 gap-2">
-              <div className="relative">
-                <i className="icon-orders text-4xl/none"></i>
-                <span className="text-base text-white rounded-full bg-primary size-5 absolute -top-2.5 -right-3 text-center leading-5">{totalCartCount}</span>
+        <>
+          <div
+            ref={cartBarRef}
+            className="fixed left-0 bottom-16 w-full animate-fadeInUp"
+          >
+            <div className="bg-warning-bg px-10 lg:py-6 py-5 flex md:flex-row flex-col items-center justify-between rounded-2xl md:mx-5 mx-4 md:gap-2 gap-4">
+              <div className="flex md:flex-row flex-col items-center lg:gap-14 md:gap-8 gap-2">
+                <div className="relative">
+                  <i className="icon-orders text-4xl/none"></i>
+                  <span className="text-base text-white rounded-full bg-primary size-5 absolute -top-2.5 -right-3 text-center leading-5">{totalCartCount}</span>
+                </div>
+                <span className="text-foreground md:text-xl sm:text-lg text-base md:text-start text-center font-medium">
+                  {totalCartCount > 0 && (
+                    <div>
+                      <span>
+                        {totalCartCount} Product{totalCartCount > 1 ? "s" : ""} Have been added to Your cart
+                      </span>
+                    </div>
+                  )}
+                </span>
               </div>
-              <span className="text-foreground md:text-xl sm:text-lg text-base md:text-start text-center font-medium">
-                {totalCartCount > 0 && (
-                  <div>
-                    <span>
-                      {totalCartCount} Product{totalCartCount > 1 ? "s" : ""} Have been added to Your cart
-                    </span>
-                  </div>
-                )}
-              </span>
+              <Button
+                size="sm-2"
+                color="primary"
+                w={263}
+                component={RdNavLink}
+                to={`/order-summary`}
+              >
+                Proceed to checkout
+              </Button>
             </div>
-            <Button
-              size="sm-2"
-              color="primary"
-              w={263}
-              component={RdNavLink}
-              to={`/order-summary`}
-            >
-              Proceed to checkout
-            </Button>
           </div>
-        </div>
+          {showBottomSpace && <div style={{ height: `${cartBarHeight}px` }} />}
+        </>
       )}
 
       <ProductDetailsModal

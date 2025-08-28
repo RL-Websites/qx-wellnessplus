@@ -68,6 +68,7 @@ const LifestyleAndFertility = ({ onNext, onBack, defaultValues }: LifestyleAndFe
         onChange={(val) => handleSelect("takingMedsSH", val)}
         label="Are you currently taking any medications (especially anticoagulants, steroids, or hormone therapy)?"
         classNames={{
+          root: "w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
@@ -100,7 +101,7 @@ const LifestyleAndFertility = ({ onNext, onBack, defaultValues }: LifestyleAndFe
           value={watch("medsListSH")}
           onChange={(e) => handleSelect("medsListSH", e.currentTarget.value)}
           error={getErrorMessage(errors?.medsListSH)}
-          className="pt-4"
+          className="pt-4 w-full"
         />
       )}
 
@@ -110,6 +111,7 @@ const LifestyleAndFertility = ({ onNext, onBack, defaultValues }: LifestyleAndFe
         onChange={(val) => handleSelect("usesSubstances", val)}
         label="Do you consume alcohol or use recreational drugs?"
         classNames={{
+          root: "w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2 pt",
         }}
       >
@@ -142,7 +144,7 @@ const LifestyleAndFertility = ({ onNext, onBack, defaultValues }: LifestyleAndFe
           value={watch("substanceDetails")}
           onChange={(e) => handleSelect("substanceDetails", e.currentTarget.value)}
           error={getErrorMessage(errors?.substanceDetails)}
-          className="pt-4"
+          className="pt-4 w-full"
         />
       )}
 
@@ -152,6 +154,7 @@ const LifestyleAndFertility = ({ onNext, onBack, defaultValues }: LifestyleAndFe
         onChange={(val) => handleSelect("hasChildrenOrPlans", val)}
         label="Do you have children or plan to have children in the future? (Testosterone therapy may affect fertility.)"
         classNames={{
+          root: "w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2 pt",
         }}
       >
