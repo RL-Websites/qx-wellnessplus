@@ -88,10 +88,11 @@ const StepNine = ({ onNext, onBack, defaultValues, isLoading = false }: StepNine
           onChange={(val) => handleSelect(q.name as keyof step9SchemaType, val)}
           label={q.label}
           classNames={{
+            root: "w-full",
             label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           }}
         >
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid sm:grid-cols-2 gap-5">
             {q.options.map((option) => (
               <Radio
                 key={option}

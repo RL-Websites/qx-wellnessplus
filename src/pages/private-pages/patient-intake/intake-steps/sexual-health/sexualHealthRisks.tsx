@@ -56,7 +56,7 @@ const SexualHealthRisks = ({ onNext, onBack, defaultValues }: SexualHealthRisksP
         value={hasCardioDisease}
         onChange={(val) => handleSelect("hasCardioDisease", val)}
         label="Do you have a history of uncontrolled cardiovascular disease (heart attack, stroke, arrhythmia)?"
-        classNames={{ label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2" }}
+        classNames={{ root: "w-full", label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2" }}
       >
         <div className="grid sm:grid-cols-2 gap-5">
           {yesNoOptions.map((option) => (
@@ -84,7 +84,7 @@ const SexualHealthRisks = ({ onNext, onBack, defaultValues }: SexualHealthRisksP
         value={experiencedPriapism}
         onChange={(val) => handleSelect("experiencedPriapism", val)}
         label="Have you ever experienced priapism (erection lasting more than 4 hours)?"
-        classNames={{ label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2" }}
+        classNames={{ root: "w-full", label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2" }}
       >
         <div className="grid sm:grid-cols-2 gap-5">
           {yesNoOptions.map((option) => (
@@ -112,7 +112,7 @@ const SexualHealthRisks = ({ onNext, onBack, defaultValues }: SexualHealthRisksP
         value={takesNitrates}
         onChange={(val) => handleSelect("takesNitrates", val)}
         label="Do you currently take nitrates or nitroglycerin?"
-        classNames={{ label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2" }}
+        classNames={{ root: "w-full", label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2" }}
       >
         <div className="grid sm:grid-cols-2 gap-5">
           {yesNoOptions.map((option) => (

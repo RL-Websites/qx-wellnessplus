@@ -76,6 +76,7 @@ const SymptomHistory = ({ onNext, onBack, defaultValues }: SymptomHistoryProps) 
           clearErrors("excessiveShedding");
         }}
         classNames={{
+          root: "w-full",
           error: "sm:!text-end !text-start w-full",
         }}
       >
@@ -92,6 +93,7 @@ const SymptomHistory = ({ onNext, onBack, defaultValues }: SymptomHistoryProps) 
           clearErrors("previousTreatments");
         }}
         classNames={{
+          root: "w-full",
           error: "sm:!text-end !text-start w-full",
         }}
       >

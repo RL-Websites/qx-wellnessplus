@@ -79,16 +79,6 @@ const CategoryPage = () => {
       <div
         className={`${(category?.length ?? 0) < 3 ? `flex flex-wrap justify-center` : "grid lg:grid-cols-3 sm:grid-cols-2"} lg:gap-y-12 gap-y-10  lg:gap-x-20 md:gap-x-10 gap-x-5`}
       >
-        {/* {category?.map((item, index) => (
-          <CategoryCard
-            key={index}
-            onClick={() => handleCategoryClick(item)}
-            image={categoryImages[item]}
-            title={item}
-            link="/quiz"
-          />
-        ))} */}
-
         {transformedCategories?.map((item, index) => (
           <CategoryCard
             key={index}

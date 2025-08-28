@@ -50,6 +50,7 @@ const StepFive = ({ onNext, onBack, defaultValues }: StepFiveProps) => {
         value={isPregnant}
         label="Are you currently?"
         classNames={{
+          root: "w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >

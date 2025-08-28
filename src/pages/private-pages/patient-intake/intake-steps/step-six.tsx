@@ -73,6 +73,7 @@ const StepSix = ({ onNext, onBack, defaultValues }: StepSixProps) => {
         value={takesDrug}
         label="Do you use recreational drugs?"
         classNames={{
+          root: "w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
@@ -104,6 +105,7 @@ const StepSix = ({ onNext, onBack, defaultValues }: StepSixProps) => {
           value={whatDrugs}
           label="What drugs do you use?"
           classNames={{
+            root: "w-full",
             label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           }}
         >

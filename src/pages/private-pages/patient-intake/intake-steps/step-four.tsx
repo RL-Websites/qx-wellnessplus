@@ -97,6 +97,7 @@ const StepFour = ({ onNext, onBack, defaultValues }: StepFourProps) => {
         }}
         label="Have you been diagnosed with any eating disorders or have a history of disordered eating?"
         classNames={{
+          root: "w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
@@ -132,6 +133,7 @@ const StepFour = ({ onNext, onBack, defaultValues }: StepFourProps) => {
           }}
           label="What are you diagnosed with?"
           classNames={{
+            root: "w-full",
             label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           }}
         >
@@ -187,9 +189,9 @@ const StepFour = ({ onNext, onBack, defaultValues }: StepFourProps) => {
             setValue("pastDiagOther", "");
           }}
           label="What were you diagnosed with?"
-          classNames={{ label: "!text-3xl pt-10 pb-2" }}
+          classNames={{ root: "w-full", label: "!text-3xl pt-10 pb-2" }}
         >
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid sm:grid-cols-2 gap-5">
             {diagnoseOptions.map((option) => (
               <Radio
                 key={option}
@@ -217,9 +219,9 @@ const StepFour = ({ onNext, onBack, defaultValues }: StepFourProps) => {
           value={pastDiagBullmia}
           onChange={(value) => handleSelect("pastDiagBullmia", value)}
           label="How long has it been since you were diagnosed?"
-          classNames={{ label: "!text-3xl pt-10 pb-2" }}
+          classNames={{ root: "w-full", label: "!text-3xl pt-10 pb-2" }}
         >
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid sm:grid-cols-2 gap-5">
             {bullmiaDurationOptions.map((option) => (
               <Radio
                 key={option}
