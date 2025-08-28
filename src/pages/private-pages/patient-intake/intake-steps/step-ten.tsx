@@ -224,6 +224,7 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
           value={thyroidCancerType}
           onChange={(val) => handleSelect("thyroidCancerType", val)}
           classNames={{
+            root: "!w-full",
             label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           }}
         >
@@ -329,6 +330,7 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
           value={follicularReport}
           onChange={(val) => handleSelect("follicularReport", val)}
           classNames={{
+            root: "!w-full",
             label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           }}
         >

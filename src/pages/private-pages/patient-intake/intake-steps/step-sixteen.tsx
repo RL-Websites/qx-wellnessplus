@@ -240,6 +240,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
         }}
         label="Have you taken a GLP-1 medication?"
         classNames={{
+          root: "!w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
@@ -337,6 +338,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 onChange={(value) => handleSelect("sema_lastWeightLossMedicationDoase", value)}
                 label="What was the last dosage you took?"
                 classNames={{
+                  root: "!w-full",
                   label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
                 }}
               >
@@ -458,6 +460,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 onChange={(value) => handleSelect("tirz_lastWeightLossMedicationDoase", value)}
                 label="What was the last dosage you took?"
                 classNames={{
+                  root: "!w-full",
                   label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
                 }}
               >
@@ -488,6 +491,9 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                   <Input.Wrapper
                     label="Specify dosage"
                     error={getErrorMessage(errors?.tirz_lastWeightLossMedicationDoaseOther)}
+                    classNames={{
+                      root: "!w-full",
+                    }}
                   >
                     <Input
                       {...register("tirz_lastWeightLossMedicationDoaseOther")}
@@ -1004,6 +1010,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 onChange={(value) => handleSelect("takenPrevSema_lastDosage", value)}
                 label="What was the last dosage you took?"
                 classNames={{
+                  root: "!w-full",
                   label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
                 }}
               >
@@ -1033,7 +1040,9 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 <div>
                   <Input.Wrapper
                     label="Specify dosage"
-                    classNames={getErrorMessage}
+                    classNames={{
+                      root: "!w-full",
+                    }}
                   >
                     <Input
                       {...register("takenPrevSema_lastDosageOther")}
@@ -1125,6 +1134,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 onChange={(value) => handleSelect("takenPrevTirz_lastWeightLossMedicationDoase", value)}
                 label="What was the last dosage you took?"
                 classNames={{
+                  root: "!w-full",
                   label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
                 }}
               >
@@ -1151,8 +1161,13 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
               </Radio.Group>
 
               {takenPrevTirz_lastWeightLossMedicationDoase === "Other" && (
-                <div>
-                  <Input.Wrapper label="Specify dosage">
+                <div className="w-full">
+                  <Input.Wrapper
+                    label="Specify dosage"
+                    classNames={{
+                      root: "!w-full",
+                    }}
+                  >
                     <Input
                       {...register("takenPrevTirz_lastWeightLossMedicationDoaseOther")}
                       className="border-grey rounded-lg"
