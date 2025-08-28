@@ -75,7 +75,7 @@ const TestosteroneHistory = ({ onNext, onBack, defaultValues, isLoading = false 
         value={takenTestosterone}
         onChange={(val) => handleSelect("takenTestosterone", val)}
         label="Have you taken testosterone therapy before?"
-        classNames={{ label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2" }}
+        classNames={{ root: "w-full", label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2" }}
       >
         <div className="grid sm:grid-cols-2 gap-5">
           {["Yes", "No"].map((option) => (
@@ -142,7 +142,7 @@ const TestosteroneHistory = ({ onNext, onBack, defaultValues, isLoading = false 
         value={hasCancerHistory}
         onChange={(val) => handleSelect("hasCancerHistory", val)}
         label="Do you have a history of prostate cancer, breast cancer, or high PSA levels?"
-        classNames={{ label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2" }}
+        classNames={{ root: "w-full", label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2" }}
       >
         <div className="grid sm:grid-cols-2 gap-5">
           {["Yes", "No"].map((option) => (
@@ -170,7 +170,7 @@ const TestosteroneHistory = ({ onNext, onBack, defaultValues, isLoading = false 
         value={hasCardioHistory}
         onChange={(val) => handleSelect("hasCardioHistory", val)}
         label="Do you currently have or have a history of heart disease, stroke, or blood clotting disorders?"
-        classNames={{ label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2" }}
+        classNames={{ root: "w-full", label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2" }}
       >
         <div className="grid sm:grid-cols-2 gap-5">
           {["Yes", "No"].map((option) => (

@@ -34,6 +34,7 @@ export default function InjectionDate({ onNext, onBack, defaultValues }: IInject
   const [lastDoseOptions, setLastDoseOptions] = useState(["0.25 mg", "0.50 mg", "1 mg", "1.7 mg", "2.4 mg"]);
 
   const maxDate = new Date();
+  maxDate.setDate(maxDate.getDate() - 1);
   const minDate = new Date("1920-01-01");
   const {
     clearErrors,
