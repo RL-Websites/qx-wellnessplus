@@ -65,7 +65,6 @@ const HomeHeader = () => {
             color="primary"
             className="font-semibold lg:text-lg md:text-base text-sm"
             onClick={() => {
-              setCustomerData(null);
               sessionStorage.clear();
               localStorage.clear();
               window.location.href = "/";

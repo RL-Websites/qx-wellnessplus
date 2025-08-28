@@ -50,12 +50,12 @@ export default function InjectionDate({ onNext, onBack, defaultValues }: IInject
   });
 
   useEffect(() => {
-    if (prevGlpDetails?.medType && prevGlpDetails?.medType == "Tirzepatide") {
+    if (prevGlpDetails?.currentMedType && prevGlpDetails?.currentMedType == "Tirzepatide") {
       setLastDoseOptions(["2.5 mg", "5 mg", "7.5 mg", "10 mg", "12.5 mg", "15 mg"]);
     } else {
       setLastDoseOptions(["0.25 mg", "0.50 mg", "1 mg", "1.7 mg", "2.4 mg"]);
     }
-  }, [prevGlpDetails?.medType]);
+  }, [prevGlpDetails?.currentMedType]);
 
   const lastDose = watch("lastDose");
 
