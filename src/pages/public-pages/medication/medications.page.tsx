@@ -6,12 +6,12 @@ import MedicationCard from "@/common/components/MedicationCard";
 import ConfirmProductOrderModal from "./components/ConfirmProductOrderModal";
 import ProductDetailsModal from "./components/ProductDetailsModal";
 
-import { ICommonParams } from "@/common/api/models/interfaces/Common.model";
+import { IGetMedicationListParams } from "@/common/api/models/interfaces/Common.model";
 import { IMedicineListItem } from "@/common/api/models/interfaces/Medication.model";
 import { medicineRepository } from "@/common/api/repositories/medicineRepository";
 import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { customerAtom } from "@/common/states/customer.atom";
-import { cartItemsAtom } from "@/common/states/product.atom";
+import { cartItemsAtom, prevGlpMedDetails } from "@/common/states/product.atom";
 import { useQuery } from "@tanstack/react-query";
 import { useAtom, useAtomValue } from "jotai";
 import { NavLink as RdNavLink } from "react-router-dom";
@@ -25,6 +25,7 @@ const MedicationsPage = () => {
   const [confirmMeds, handleConfirmMeds] = useDisclosure(false);
   const [showDetails, setShowDetailsHandel] = useDisclosure(false);
   const selectedCategory = useAtomValue(selectedCategoryAtom);
+  const prevGlpDetails = useAtomValue(prevGlpMedDetails);
   const cartBarRef = useRef<HTMLDivElement>(null);
   const [showBottomSpace, setShowBottomSpace] = useState(false);
   const [cartBarHeight, setCartBarHeight] = useState(0);
@@ -73,11 +74,12 @@ const MedicationsPage = () => {
   }, []);
 
   const fetchMedicine = () => {
-    const params: ICommonParams = {
+    const params: IGetMedicationListParams = {
       per_page: pageSize,
       customer_slug: customerData?.slug,
       noPaginate: true,
       category: selectedCategory,
+      ...prevGlpDetails,
     };
     return medicineRepository.getAllMedicinesNoPaginate(params);
   };
