@@ -75,6 +75,7 @@ const StepFourteen = ({ onNext, onBack, defaultValues, isLoading = false }: Step
         }}
         label="Are you pre-diabetic or diabetic?"
         classNames={{
+          root: "!w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
@@ -147,6 +148,7 @@ const StepFourteen = ({ onNext, onBack, defaultValues, isLoading = false }: Step
           onChange={(val) => setValue("takeDiabeticHemoglobin", val, { shouldValidate: true })}
           label="What is your hemoglobin A1C?"
           classNames={{
+            root: "!w-full",
             label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           }}
         >
