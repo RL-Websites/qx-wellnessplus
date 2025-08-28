@@ -45,7 +45,7 @@ const GlpOneMedication = ({ onNext, onBack, defaultValues }: GlpOneMedicationPro
   const handleSelect = (field: keyof glpOneMedicationSchemaType, value: string) => {
     setValue(field, value, { shouldValidate: true });
     if (field == "glpOneMedicationDetails") {
-      setPrevGlpDetails((prev) => ({ ...prev, medType: value }));
+      setPrevGlpDetails((prev) => ({ ...prev, currentMedType: value }));
     }
     clearErrors(field);
   };
