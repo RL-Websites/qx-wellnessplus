@@ -50,6 +50,7 @@ const StepSeven = ({ onNext, onBack, defaultValues }: Step7Props) => {
         value={amountOfAlcohol}
         label="How much alcohol do you drink?"
         classNames={{
+          root: "w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
