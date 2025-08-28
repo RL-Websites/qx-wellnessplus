@@ -53,9 +53,9 @@ const MedicationsPage = () => {
     }
   }, [medicineQuery.data?.data?.data]);
 
-  console.log(medicineQuery);
+  // console.log(medicineQuery);
 
-  console.log(medicines);
+  // console.log(medicines);
 
   const handleAddToCart = (item: any) => {
     setPendingAddToCart(item);
