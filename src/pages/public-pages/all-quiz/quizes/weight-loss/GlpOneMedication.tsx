@@ -1,6 +1,8 @@
 import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
+import { prevGlpMedDetails } from "@/common/states/product.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Radio, Text } from "@mantine/core";
+import { useAtom } from "jotai";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -21,6 +23,7 @@ interface GlpOneMedicationProps {
 }
 
 const GlpOneMedication = ({ onNext, onBack, defaultValues }: GlpOneMedicationProps) => {
+  const [prevGlpDetails, setPrevGlpDetails] = useAtom(prevGlpMedDetails);
   const {
     handleSubmit,
     setValue,
@@ -41,6 +44,9 @@ const GlpOneMedication = ({ onNext, onBack, defaultValues }: GlpOneMedicationPro
 
   const handleSelect = (field: keyof glpOneMedicationSchemaType, value: string) => {
     setValue(field, value, { shouldValidate: true });
+    if (field == "glpOneMedicationDetails") {
+      setPrevGlpDetails((prev) => ({ ...prev, medType: value }));
+    }
     clearErrors(field);
   };
 
