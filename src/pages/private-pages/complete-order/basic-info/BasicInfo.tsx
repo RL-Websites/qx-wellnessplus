@@ -4,6 +4,7 @@ import AddressAutoGoogle from "@/common/components/AddressAutoGoogle";
 import { BaseWebDatePickerOverrides } from "@/common/configs/baseWebOverrides";
 import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
 import dmlToast from "@/common/configs/toaster.config";
+import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { selectedGenderAtom } from "@/common/states/gender.atom";
 import { dobAtom } from "@/common/states/user.atom";
 import { formatDate } from "@/utils/date.utils";
@@ -16,7 +17,7 @@ import { BaseProvider, LightTheme } from "baseui";
 import { Datepicker as UberDatePicker } from "baseui/datepicker";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { IMaskInput } from "react-imask";
@@ -45,14 +46,17 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
   const [backFile, setBackFile] = useState<string>();
   const [frontBase64, setFrontBase64] = useState<string | null>(null);
   const [backBase64, setBackBase64] = useState<string | null>(null);
-  const [selectedGender, setSelectedGender] = useAtom(selectedGenderAtom);
+  const [selectedGender] = useAtomValue(selectedGenderAtom);
+  const selectedCategory = useAtomValue(selectedCategoryAtom);
   const [params] = useSearchParams();
   const [globalDob, setGlobalDob] = useAtom(dobAtom);
   const prescriptionUId = params.get("prescription_u_id");
   const navigate = useNavigate();
 
+  const ageLimit = selectedCategory?.includes("Testosterone") ? 22 : 18;
+
   const maxDate = new Date();
-  maxDate.setFullYear(maxDate.getFullYear() - 18);
+  maxDate.setFullYear(maxDate.getFullYear() - ageLimit);
 
   const minDate = new Date("1920-01-01");
 
