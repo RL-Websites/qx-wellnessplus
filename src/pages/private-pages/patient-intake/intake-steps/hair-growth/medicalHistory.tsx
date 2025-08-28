@@ -86,6 +86,7 @@ const MedicalHistory = ({ onNext, onBack, defaultValues }: MedicalHistoryProps) 
         value={familyHistory}
         onChange={(val) => handleSelect("familyHistory", val)}
         classNames={{
+          root: "w-full",
           error: "sm:!text-end !text-start w-full",
         }}
       >
@@ -99,6 +100,7 @@ const MedicalHistory = ({ onNext, onBack, defaultValues }: MedicalHistoryProps) 
         value={recentStress}
         onChange={(val) => handleSelect("recentStress", val)}
         classNames={{
+          root: "w-full",
           error: "sm:!text-end !text-start w-full",
         }}
       >
@@ -112,6 +114,7 @@ const MedicalHistory = ({ onNext, onBack, defaultValues }: MedicalHistoryProps) 
         value={chronicCondition}
         onChange={(val) => handleSelect("chronicCondition", val)}
         classNames={{
+          root: "w-full",
           error: "sm:!text-end !text-start w-full",
         }}
       >
@@ -127,6 +130,7 @@ const MedicalHistory = ({ onNext, onBack, defaultValues }: MedicalHistoryProps) 
         value={takingMeds}
         onChange={(val) => handleSelect("takingMeds", val)}
         classNames={{
+          root: "w-full",
           error: "sm:!text-end !text-start w-full",
         }}
       >
@@ -146,7 +150,7 @@ const MedicalHistory = ({ onNext, onBack, defaultValues }: MedicalHistoryProps) 
               setValue("medsDetails", e.currentTarget.value);
               if (e.currentTarget.value) clearErrors("medsDetails");
             }}
-            className="pt-6"
+            className="pt-6 w-full"
           />
           <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.medsDetails)}</p>
         </div>

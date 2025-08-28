@@ -76,6 +76,7 @@ const WhenNotice = ({ onNext, onBack, defaultValues }: WhenNoticeProps) => {
         value={firstNotice}
         onChange={(val) => handleSelect("firstNotice", val)}
         classNames={{
+          root: "w-full",
           error: "sm:!text-end !text-start w-full",
         }}
       >
@@ -89,6 +90,7 @@ const WhenNotice = ({ onNext, onBack, defaultValues }: WhenNoticeProps) => {
         value={hairLossType}
         onChange={(val) => handleSelect("hairLossType", val)}
         classNames={{
+          root: "w-full",
           error: "sm:!text-end !text-start w-full",
         }}
       >
@@ -102,6 +104,7 @@ const WhenNotice = ({ onNext, onBack, defaultValues }: WhenNoticeProps) => {
         value={hairLossArea}
         onChange={(val) => handleSelect("hairLossArea", val)}
         classNames={{
+          root: "w-full",
           error: "sm:!text-end !text-start w-full",
         }}
       >

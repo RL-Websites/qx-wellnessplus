@@ -191,6 +191,7 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
         value={thyroidCancer}
         onChange={(val) => handleSelect("thyroidCancer", val)}
         classNames={{
+          root: "w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >

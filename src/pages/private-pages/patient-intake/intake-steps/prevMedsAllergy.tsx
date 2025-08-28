@@ -72,6 +72,7 @@ const MedsAllergy = ({ onNext, onBack, defaultValues }: MedsAllergyProps) => {
         }}
         label="Do you have any allergy?"
         classNames={{
+          root: "w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >

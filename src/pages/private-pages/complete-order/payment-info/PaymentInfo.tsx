@@ -220,37 +220,39 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
             <div className="card-title">
               <h3 className="font-poppins font-semibold lg:text-3xl text-2xl">Order Summary</h3>
             </div>
-            {cartItems?.map((item) => (
-              <div
-                className="flex gap-6 mt-6"
-                key={item.id}
-              >
-                <div className="card-thumb w-[129px]">
-                  <Avatar
-                    src={item?.image ? `${import.meta.env.VITE_BASE_PATH}/storage/${item?.image}` : "/images/product-img-placeholder.jpg"}
-                    size={129}
-                    radius={10}
-                  >
-                    <img
-                      src="/images/product-img-placeholder.jpg"
-                      alt="product image"
-                    />
-                  </Avatar>
-                </div>
-                <div className="space-y-2.5">
-                  {/* <h6 className="text-foreground">{`${formData?.medicine_selected?.drug_name} - ${formData?.medicine_selected?.dosage || ""}`}</h6> */}
-                  <h6 className="text-foreground">
-                    {item?.name} {`${item?.strength}${item?.unit}`}
-                  </h6>
-                  <div className="text-gray">
-                    {item?.medicine_type == "ODT" ? "Oral" : item?.medicine_type} | {item?.medication_category}
+            <div className="max-h-[300px] overflow-y-auto">
+              {cartItems?.map((item) => (
+                <div
+                  className="flex gap-6 mt-6"
+                  key={item.id}
+                >
+                  <div className="card-thumb w-[129px]">
+                    <Avatar
+                      src={item?.image ? `${import.meta.env.VITE_BASE_PATH}/storage/${item?.image}` : "/images/product-img-placeholder.jpg"}
+                      size={129}
+                      radius={10}
+                    >
+                      <img
+                        src="/images/product-img-placeholder.jpg"
+                        alt="product image"
+                      />
+                    </Avatar>
                   </div>
-                  {/* TOdo: need to update */}
-                  {/* <div className="text-gray">Duration: 1 month</div> */}
-                  <div className="text-foreground">Price: ${calculatePrice(item)}</div>
+                  <div className="space-y-2.5">
+                    {/* <h6 className="text-foreground">{`${formData?.medicine_selected?.drug_name} - ${formData?.medicine_selected?.dosage || ""}`}</h6> */}
+                    <h6 className="text-foreground">
+                      {item?.name} {`${item?.strength}${item?.unit}`}
+                    </h6>
+                    <div className="text-gray">
+                      {item?.medicine_type == "ODT" ? "Oral" : item?.medicine_type} | {item?.medication_category}
+                    </div>
+                    {/* TOdo: need to update */}
+                    {/* <div className="text-gray">Duration: 1 month</div> */}
+                    <div className="text-foreground">Price: ${calculatePrice(item)}</div>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
 
             <div className="mt-10">
               {/* <h4 className="border border-t-0 border-x-0 border-b-grey-low pb-5 text-xl">Cart Total</h4> */}
