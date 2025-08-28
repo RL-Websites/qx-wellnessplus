@@ -103,7 +103,7 @@ const OrderSummary = () => {
       <div className="flex justify-between gap-6 pt-4">
         <Button
           variant="outline"
-          className="w-[200px]"
+          className="lg:w-[200px] w-[150px]"
           component={RdNavLink}
           to={`/medications`}
         >
@@ -111,7 +111,7 @@ const OrderSummary = () => {
         </Button>
         <Button
           type="submit"
-          className="w-[200px]"
+          className="lg:w-[200px] w-[150px]"
           form="stepTwoForm"
           onClick={handleNext}
         >
