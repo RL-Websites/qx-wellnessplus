@@ -268,7 +268,7 @@ const PatientIntake = () => {
       )}
 
       {/* Thanks Step */}
-      {activeStep === totalDynamicSteps + 1 && <ThanksStep isActive={activeStep === totalDynamicSteps + 1 && totalDynamicSteps > 0 ? true : false} />}
+      {activeStep === totalDynamicSteps + 1 && <ThanksStep isActive={totalDynamicSteps && activeStep == totalDynamicSteps + 1 && totalDynamicSteps > 0 ? true : false} />}
     </>
   );
 };
