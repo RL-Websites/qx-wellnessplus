@@ -14,6 +14,8 @@ import { Dropzone, MIME_TYPES } from "@mantine/dropzone";
 import { IconX } from "@tabler/icons-react";
 import { BaseProvider, LightTheme } from "baseui";
 import { Datepicker as UberDatePicker } from "baseui/datepicker";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -29,6 +31,8 @@ interface BasicInfoPropTypes {
   onNext: (data) => void;
   isSubmitting?: boolean;
 }
+
+dayjs.extend(customParseFormat);
 
 const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTypes) => {
   const engine = new Styletron();
@@ -141,12 +145,17 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
     }
 
     if (!userData?.userable?.dob && !formData?.patient?.dob && globalDob) {
-      // setDob(new Date(globalDob));
-      // console.log(globalDob, formatDate(globalDob));
-      // setValue("dob", [formatDate(globalDob)]);
+      const parsedDate = dayjs(globalDob, "MM-DD-YYYY");
+      if (parsedDate.isValid()) {
+        setDob(parsedDate.toDate());
+        setValue("dob", [parsedDate.format("MM-DD-YYYY")]);
+      }
     } else if (userData?.userable?.dob) {
-      setDob(new Date(userData?.userable?.dob));
-      setValue("dob", [formatDate(tempPatientDetails?.userable?.dob)]);
+      const parsedDate = dayjs(userData?.userable?.dob);
+      if (parsedDate.isValid()) {
+        setDob(parsedDate.toDate());
+        setValue("dob", [parsedDate.format("MM-DD-YYYY")]);
+      }
     }
 
     if (!userData?.userable?.gender && selectedGender) {
@@ -161,7 +170,7 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
   useEffect(() => {
     if (formData?.patient?.address) {
       if (formData?.patient?.dob) {
-        console.log(formData?.patient?.cell_phone);
+        // console.log(formData?.patient?.cell_phone);
         setPhone(formData?.patient?.cell_phone);
 
         setValue("phone", formData?.patient?.cell_phone || "", { shouldValidate: true });
@@ -181,12 +190,22 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
       }
 
       if (!formData?.patient?.dob && globalDob) {
-        // setDob(new Date(globalDob));
-        // console.log(globalDob, new Date(globalDob));
-        // setValue("dob", [formatDate(globalDob)]);
+        const parsedDate = dayjs(globalDob, "MM-DD-YYYY");
+        if (parsedDate.isValid()) {
+          console.log(parsedDate.toDate());
+          // setDob(parsedDate.toDate());
+          // setValue("dob", [parsedDate.format("MM-DD-YYYY")]);
+        }
       } else if (formData?.patient?.dob) {
-        setDob(new Date(formData?.patient?.dob));
-        setValue("dob", [formatDate(formData?.patient?.dob)]);
+        const parsedDate = dayjs(formData.patient.dob, "MM-DD-YYYY");
+        if (parsedDate.isValid()) {
+          console.log(parsedDate.toDate());
+          setDob(parsedDate.toDate());
+          setValue("dob", [parsedDate.format("MM-DD-YYYY")]);
+        }
+      } else {
+        setDob(null);
+        setValue("dob", []);
       }
     }
 
