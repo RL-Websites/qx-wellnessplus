@@ -264,6 +264,7 @@ const PatientIntake = () => {
           onBack={handleBack}
           defaultValues={formData}
           isLoading={shouldSubmit(activeStep) && intakeFormMutation.isPending}
+          isFinalStep={shouldSubmit(activeStep)}
         />
       )}
 

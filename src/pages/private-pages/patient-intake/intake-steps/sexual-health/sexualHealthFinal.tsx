@@ -23,11 +23,12 @@ interface SexualHealthFinalProps {
   onBack: () => void;
   defaultValues?: Partial<SexualHealthFinalSchemaType>;
   isLoading?: boolean;
+  isFinalStep?: string;
 }
 
 const goalOptions = ["Better performance", "Increased libido", "Hormonal balance", "Overall wellness"];
 
-const SexualHealthFinal = ({ onNext, onBack, defaultValues, isLoading = false }: SexualHealthFinalProps) => {
+const SexualHealthFinal = ({ onNext, onBack, defaultValues, isLoading = false, isFinalStep }: SexualHealthFinalProps) => {
   const {
     handleSubmit,
     setValue,
@@ -196,7 +197,7 @@ const SexualHealthFinal = ({ onNext, onBack, defaultValues, isLoading = false }:
           className="w-[200px]"
           loading={isLoading}
         >
-          Submit
+          {isFinalStep ? "Submit" : "Next"}
         </Button>
       </div>
     </form>

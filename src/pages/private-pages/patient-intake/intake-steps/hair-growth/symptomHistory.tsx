@@ -17,9 +17,11 @@ interface SymptomHistoryProps {
   onNext: (data: symptomHistorySchemaType) => void;
   onBack: () => void;
   defaultValues?: symptomHistorySchemaType;
+  isFinalStep?: string;
+  isLoading?: boolean;
 }
 
-const SymptomHistory = ({ onNext, onBack, defaultValues }: SymptomHistoryProps) => {
+const SymptomHistory = ({ onNext, onBack, defaultValues, isFinalStep, isLoading = false }: SymptomHistoryProps) => {
   const {
     register,
     handleSubmit,
@@ -154,8 +156,9 @@ const SymptomHistory = ({ onNext, onBack, defaultValues }: SymptomHistoryProps) 
           type="submit"
           form="symptomHistoryForm"
           className="w-[200px]"
+          loading={isLoading}
         >
-          Next
+          {isFinalStep ? "Submit" : "Next"}
         </Button>
       </div>
     </form>
