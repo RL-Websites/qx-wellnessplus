@@ -23,7 +23,7 @@ export const fullBodyPhotoSchema = yup.object({
       .string()
       .required(({ label }) => `${label} is required`)
       .label("Weight"),
-    full_body_image: yup.mixed().required("Please upload your full body photo."),
+    full_body_image: yup.string().required("Please upload your full body photo."),
   }),
 });
 
@@ -35,7 +35,6 @@ interface FullBodyPhotoProps {
 }
 
 const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
-  const [fullBodyFile, setFullBodyFile] = useState<File | null>(null);
   const [weight, setWeight] = useState<string>("");
   const [heightFeet, setHeightFeet] = useState<string>("");
   const [heightInch, setHeightInch] = useState<string>("");
@@ -68,7 +67,10 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
       setValue("measurement.height_inch", defaultValues.measurement.height_inch);
       setHeightInch(defaultValues.measurement.height_inch || "");
       setValue("measurement.weight", defaultValues.measurement.weight);
+      setWeight(defaultValues.measurement.weight);
       setValue("measurement.full_body_image", defaultValues.measurement.full_body_image);
+      // setFullBodyFile(defaultValues?.measurement?.full_body_image);
+      setFullBodyBase64(defaultValues?.measurement?.full_body_image);
     } else {
       setValue("measurement.height_feet", heightObj?.height_feet?.toString() || "");
       setValue("measurement.height_inch", heightObj?.height_inch?.toString() || "");
@@ -83,7 +85,6 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
     if (files.length > 0) {
       const file = files[0];
       fileToBase64(file, (base64) => {
-        setFullBodyFile(file);
         setFullBodyBase64(base64);
         setValue("measurement.full_body_image", base64);
         clearErrors("measurement.full_body_image");
@@ -92,7 +93,6 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
   };
 
   const removeFile = () => {
-    setFullBodyFile(null);
     setFullBodyBase64(null);
     setValue("measurement.full_body_image", "");
   };
@@ -220,7 +220,7 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
                 inner: "absolute !inset-0 !size-full",
               }}
             >
-              {!fullBodyFile ? (
+              {!fullBodyBase64 ? (
                 <div className="pointer-events-none h-full flex justify-center">
                   <div className="flex flex-col items-center justify-center h-full">
                     <i className="icon-document-upload text-[52px] text-grey"></i>
@@ -237,7 +237,7 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
               ) : (
                 <div className="relative inline-block size-full">
                   <Image
-                    src={URL.createObjectURL(fullBodyFile)}
+                    src={fullBodyBase64}
                     alt="Full Body"
                     className="size-full rounded-md object-scale-down"
                   />
