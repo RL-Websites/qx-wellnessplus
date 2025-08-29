@@ -2,6 +2,7 @@ import { BaseWebDatePickerOverrides } from "@/common/configs/baseWebOverrides";
 import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
 import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
 import { prevGlpMedDetails } from "@/common/states/product.atom";
+import { formatDate } from "@/utils/date.utils";
 import { getErrorMessage } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Input, Radio, Text } from "@mantine/core";
@@ -99,7 +100,7 @@ export default function InjectionDate({ onNext, onBack, defaultValues }: IInject
                       if (data?.date) {
                         setInjectionDate([data.date]);
                         setValue("injection_date", data.date, { shouldValidate: true });
-                        setPrevGlpDetails((prev) => ({ ...prev, lastDoseDate: data.date }));
+                        setPrevGlpDetails((prev) => ({ ...prev, lastDoseDate: formatDate(data.date, "YYYY-MM-DD") }));
                         clearErrors("injection_date");
                       }
                     }}
