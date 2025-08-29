@@ -19,9 +19,10 @@ interface StepSixteenProps {
   onBack: () => void;
   defaultValues?: step16SchemaType;
   isLoading?: boolean;
+  isFinalStep?: string;
 }
 
-const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepSixteenProps) => {
+const StepSixteen = ({ onNext, onBack, defaultValues, isFinalStep, isLoading = false }: StepSixteenProps) => {
   const [sema_previousRxDocument, setSema_previousRxDocument] = useState<any>();
   const [tirz_previousRxDocument, setTirz_previousRxDocument] = useState<any>();
   const [takenPrevSema_previousRxDocument, setTakenPrevSema_previousRxDocument] = useState<any>();
@@ -37,14 +38,16 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
   } = useForm<step16SchemaType>({
     defaultValues: {
       takenGlpMedication: defaultValues?.takenGlpMedication || "",
-      heightWhenStartGlp: defaultValues?.heightWhenStartGlp || "",
+      // heightWhenStartGlp: defaultValues?.heightWhenStartGlp || "",
       weightWhenStartGlp: defaultValues?.weightWhenStartGlp || "",
       currentWeightLossMedication: defaultValues?.currentWeightLossMedication || "",
+      // Semaglutide
       sema_lastWeightLossMedicationDoase: defaultValues?.sema_lastWeightLossMedicationDoase || "",
       sema_lastWeightLossMedicationDoaseOther: defaultValues?.sema_lastWeightLossMedicationDoaseOther || "",
       sema_hasPdfForPreviousRx: defaultValues?.sema_hasPdfForPreviousRx || "",
       sema_previousRxDocument: defaultValues?.sema_previousRxDocument || "",
       sema_previousRxDocName: defaultValues?.sema_previousRxDocName || "",
+      // Tirzepatide
       tirz_lastWeightLossMedicationDoase: defaultValues?.tirz_lastWeightLossMedicationDoase || "",
       tirz_lastWeightLossMedicationDoaseOther: defaultValues?.tirz_lastWeightLossMedicationDoaseOther || "",
       tirz_hasPdfForPreviousRx: defaultValues?.tirz_hasPdfForPreviousRx || "",
@@ -60,7 +63,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
       glpSideEffect: defaultValues?.glpSideEffect || "",
       glpDrugEffectManageWeight: defaultValues?.glpDrugEffectManageWeight || "",
       glpHowLongTaken: defaultValues?.glpHowLongTaken || "",
-      glpStartingHeight: defaultValues?.glpStartingHeight || "",
+      // glpStartingHeight: defaultValues?.glpStartingHeight || "",
       glpStartingWeight: defaultValues?.glpStartingWeight || "",
       takenPrevGlpMedication: defaultValues?.takenPrevGlpMedication || "",
       takenPrevSema_lastDosage: defaultValues?.takenPrevSema_lastDosage || "",
@@ -202,7 +205,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
         onChange={(value) => {
           handleSelect("takenGlpMedication", value);
           // Reset dependent fields when changing this value
-          setValue("heightWhenStartGlp", "");
+          // setValue("heightWhenStartGlp", "");
           setValue("weightWhenStartGlp", "");
           setValue("currentWeightLossMedication", "");
           setValue("sema_lastWeightLossMedicationDoase", "");
@@ -221,7 +224,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
           setValue("haveTakenMedicationAsPrescribed", "");
           setValue("No_haveDeviated", "");
           setValue("glpHowLongTaken", "");
-          setValue("glpStartingHeight", "");
+          // setValue("glpStartingHeight", "");
           setValue("glpStartingWeight", "");
           setValue("takenPrevGlpMedication", "");
           setValue("takenPrevSema_lastDosage", "");
@@ -439,7 +442,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                   ) : (
                     <div className="flex flex-wrap">
                       <EditableDocumentTag
-                        docName={"sema_previousRxDocName"}
+                        docName={sema_previousRxDocName || ""}
                         removable={true}
                         leftIconClass="icon-pdf"
                         onRemove={() => removeSemaPreviousRxDocument()}
@@ -564,7 +567,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                   ) : (
                     <div className="flex flex-wrap">
                       <EditableDocumentTag
-                        docName={"tirz_previousRxDocName"}
+                        docName={tirz_previousRxDocName || ""}
                         removable={true}
                         leftIconClass="icon-pdf"
                         onRemove={() => removeTirzPreviousRxDocument()}
@@ -1113,7 +1116,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                   ) : (
                     <div className="flex flex-wrap">
                       <EditableDocumentTag
-                        docName={"takenPrevSema_previousRxDocName"}
+                        docName={takenPrevSema_previousRxDocName || ""}
                         removable={true}
                         leftIconClass="icon-pdf"
                         onRemove={() => removePrevSemaPreviousRxDocument()}
@@ -1237,7 +1240,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                   ) : (
                     <div className="flex flex-wrap">
                       <EditableDocumentTag
-                        docName={"takenPrevTirz_previousRxDocName"}
+                        docName={takenPrevTirz_previousRxDocName || ""}
                         removable={true}
                         leftIconClass="icon-pdf"
                         onRemove={() => removePrevTirzPreviousRxDocument()}
@@ -1340,7 +1343,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
           form="step16Form"
           loading={isLoading}
         >
-          Next
+          {isFinalStep ? "Submit" : "Next"}
         </Button>
       </div>
     </form>

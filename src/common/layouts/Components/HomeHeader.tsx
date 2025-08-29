@@ -4,12 +4,11 @@ import { cartItemsAtom } from "@/common/states/product.atom";
 import { userAtom } from "@/common/states/user.atom";
 import { Button, Image, NavLink } from "@mantine/core";
 import { useAtom, useAtomValue } from "jotai";
-import { RESET } from "jotai/utils";
 import { useEffect, useState } from "react";
 import { Link, NavLink as RdNavLink, useLocation, useNavigate } from "react-router-dom";
 
 const HomeHeader = () => {
-  const userData = useAtomValue<IUserData | null>(userAtom);
+  const [userData, setUserData] = useAtom<IUserData | null>(userAtom);
   const [customerData, setCustomerData] = useAtom(customerAtom);
   const location = useLocation();
   const cartItems = useAtomValue(cartItemsAtom);
@@ -66,9 +65,12 @@ const HomeHeader = () => {
             color="primary"
             className="font-semibold lg:text-lg md:text-base text-sm"
             onClick={() => {
-              setCustomerData(RESET);
-              sessionStorage.clear();
-              localStorage.clear();
+              setUserData(null);
+              localStorage.removeItem("accessToken");
+              localStorage.removeItem("basicInfoData");
+              localStorage.removeItem("basicInfoData");
+              // we cannot clear full localStorage
+              // localStorage.clear();
               window.location.href = "/";
             }}
           >

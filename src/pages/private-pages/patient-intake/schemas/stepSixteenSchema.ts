@@ -32,7 +32,7 @@ export const stepSixteenTeenSchema = yup.object({
     then: (schema) => schema.required("Please indicate if you have a script or vial picture."),
   }),
   sema_previousRxDocument: yup.mixed().nullable().optional(),
-  sema_previousRxDocName: yup.mixed().nullable().optional(),
+  sema_previousRxDocName: yup.string().nullable().optional(),
   // sema_previousRxDocument: yup.string().when("sema_hasPdfForPreviousRx", {
   //   is: "Yes",
   //   then: (schema) => schema.required("Please upload your script or vial photo."),
@@ -56,7 +56,7 @@ export const stepSixteenTeenSchema = yup.object({
     then: (schema) => schema.required("Please indicate if you have a script or vial picture."),
   }),
   tirz_previousRxDocument: yup.mixed().nullable().optional(),
-  tirz_previousRxDocName: yup.mixed().nullable().optional(),
+  tirz_previousRxDocName: yup.string().nullable().optional(),
   // tirz_previousRxDocument: yup.string().when("tirz_hasPdfForPreviousRx", {
   //   is: "Yes",
   //   then: (schema) => schema.required("Please upload your script or vial photo."),
@@ -146,7 +146,7 @@ export const stepSixteenTeenSchema = yup.object({
     then: (schema) => schema.required("Please indicate if you have your previous script."),
   }),
   takenPrevSema_previousRxDocument: yup.mixed().nullable().optional(),
-  takenPrevSema_previousRxDocName: yup.mixed().nullable().optional(),
+  takenPrevSema_previousRxDocName: yup.string().nullable().optional(),
   // takenPrevSema_previousRxDocument: yup.string().when("takenPrevSema_hasPdfForPreviousRx", {
   //   is: "Yes",
   //   then: (schema) => schema.required("Please upload your previous script or photo."),
@@ -170,7 +170,7 @@ export const stepSixteenTeenSchema = yup.object({
     then: (schema) => schema.required("Please indicate if you have your previous script."),
   }),
   takenPrevTirz_previousRxDocument: yup.mixed().optional().optional(),
-  takenPrevTirz_previousRxDocName: yup.mixed().optional().optional(),
+  takenPrevTirz_previousRxDocName: yup.string().optional().optional(),
   // takenPrevTirz_previousRxDocument: yup.string().when("takenPrevTirz_hasPdfForPreviousRx", {
   //   is: "Yes",
   //   then: (schema) => schema.required("Please upload your previous script or photo."),

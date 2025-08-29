@@ -27,9 +27,10 @@ interface LifestyleAndFertilityProps {
   onNext: (data: LifestyleFertilitySchemaType) => void;
   onBack: () => void;
   defaultValues?: Partial<LifestyleFertilitySchemaType>;
+  isFinalStep?: string;
 }
 
-const LifestyleAndFertility = ({ onNext, onBack, defaultValues }: LifestyleAndFertilityProps) => {
+const LifestyleAndFertility = ({ onNext, onBack, defaultValues, isFinalStep }: LifestyleAndFertilityProps) => {
   const {
     handleSubmit,
     setValue,
@@ -194,7 +195,7 @@ const LifestyleAndFertility = ({ onNext, onBack, defaultValues }: LifestyleAndFe
           form="lifestyleFertilityForm"
           className="w-[200px]"
         >
-          Next
+          {isFinalStep ? "Submit" : "Next"}
         </Button>
       </div>
     </form>

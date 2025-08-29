@@ -207,7 +207,7 @@ const PatientIntake = () => {
             activeCategories.length === 1 && activeCategories[0] === "weightLoss" ? (
               // Only Weight Loss → special first step header
               <div className="mb-6">
-                <div className="text-center pb-4">
+                <div className="text-center pb-12">
                   <h2 className="heading-text text-foreground uppercase">Let's Get to Know You Better</h2>
                   <p className="text-foreground text-xl font-medium font-poppins pt-2.5">Tell us a little about your current stats so we can tailor your plan.</p>
                 </div>
@@ -264,6 +264,7 @@ const PatientIntake = () => {
           onBack={handleBack}
           defaultValues={formData}
           isLoading={shouldSubmit(activeStep) && intakeFormMutation.isPending}
+          isFinalStep={shouldSubmit(activeStep)}
         />
       )}
 
