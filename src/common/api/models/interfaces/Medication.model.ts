@@ -117,7 +117,7 @@ export interface IPriceUpdateListItem {
 }
 
 export interface IPrevGlpMedDetails {
-  lastDoseDate?: Date | undefined;
+  lastDoseDate?: string | undefined;
   lastDose?: string;
   currentMedType?: string;
   preferredMedType?: string;

@@ -21,7 +21,7 @@ export interface IGetPriceHistoryParams extends ICommonParams {
 }
 
 export interface IGetMedicationListParams extends ICommonParams {
-  lastDoseDate?: Date;
+  lastDoseDate?: string;
   lastDose?: string;
   currentMedType?: string;
   preferredMedType?: string;
