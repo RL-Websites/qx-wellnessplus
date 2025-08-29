@@ -113,18 +113,19 @@ const Login = () => {
   };
 
   return (
-    <div className="">
-      <h2 className="lg:text-[70px] md:text-6xl text-4xl text-foreground uppercase  text-center">Login</h2>
+    <div className="grid grid-cols-2">
+      <div className="space-y-[30px]">
+        <h2 className="lg:text-[70px] md:text-6xl text-4xl text-foreground uppercase">Login</h2>
+        <div className="space-y-2.5">
+          <p className="font-semibold lg:text-4xl md:text-xl text-base text-foreground font-poppins">Returning Customer</p>
+          <p className="text-sm md:text-base lg:text-2xl font-poppins">Log in to confirm your journey</p>
+        </div>
+      </div>
       <form
         className="w-full"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div className="card-common mt-5 card-common-width flex flex-col lg:gap-7 md:gap-5 gap-3">
-          <div className="flex flex-col gap-2.5">
-            <p className="font-semibold lg:text-4xl md:text-xl text-base text-foreground font-poppins">Returning Customer</p>
-            <p className="text-sm md:text-base lg:text-2xl font-poppins">Log in to confirm your journey</p>
-          </div>
-
+        <div className="card-common mt-5 card-common-width flex flex-col md:gap-5 gap-3">
           <Input.Wrapper
             label="Email Address"
             required
