@@ -6,12 +6,12 @@ import MedicationCard from "@/common/components/MedicationCard";
 import ConfirmProductOrderModal from "./components/ConfirmProductOrderModal";
 import ProductDetailsModal from "./components/ProductDetailsModal";
 
-import { ICommonParams } from "@/common/api/models/interfaces/Common.model";
+import { IGetMedicationListParams } from "@/common/api/models/interfaces/Common.model";
 import { IMedicineListItem } from "@/common/api/models/interfaces/Medication.model";
 import { medicineRepository } from "@/common/api/repositories/medicineRepository";
 import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { customerAtom } from "@/common/states/customer.atom";
-import { cartItemsAtom } from "@/common/states/product.atom";
+import { cartItemsAtom, prevGlpMedDetails } from "@/common/states/product.atom";
 import { useQuery } from "@tanstack/react-query";
 import { useAtom, useAtomValue } from "jotai";
 import { NavLink as RdNavLink } from "react-router-dom";
@@ -25,15 +25,17 @@ const MedicationsPage = () => {
   const [confirmMeds, handleConfirmMeds] = useDisclosure(false);
   const [showDetails, setShowDetailsHandel] = useDisclosure(false);
   const selectedCategory = useAtomValue(selectedCategoryAtom);
+  const prevGlpDetails = useAtomValue(prevGlpMedDetails);
 
   const [customerData, setCustomerData] = useAtom(customerAtom);
 
   const fetchMedicine = () => {
-    const params: ICommonParams = {
+    const params: IGetMedicationListParams = {
       per_page: pageSize,
       customer_slug: customerData?.slug,
       noPaginate: true,
       category: selectedCategory,
+      ...prevGlpDetails,
     };
     return medicineRepository.getAllMedicinesNoPaginate(params);
   };
@@ -51,9 +53,9 @@ const MedicationsPage = () => {
     }
   }, [medicineQuery.data?.data?.data]);
 
-  console.log(medicineQuery);
+  // console.log(medicineQuery);
 
-  console.log(medicines);
+  // console.log(medicines);
 
   const handleAddToCart = (item: any) => {
     setPendingAddToCart(item);
@@ -99,7 +101,7 @@ const MedicationsPage = () => {
         <div className="rounded-lg bg-green-badge text-center py-2.5 px-6">Doctor consultation & shipping cost included</div>
       </div>
 
-      <div className="grid md:grid-cols-3 sm:grid-cols-2 lg:gap-y-12 lg:gap-x-20 gap-7 py-12">
+      <div className="grid md:grid-cols-3 sm:grid-cols-2 lg:gap-y-12 lg:gap-x-20 gap-7 pt-12 lg:pb-24 pb-[250px]">
         {medicines?.map((item, index) => {
           const isInCart = cartItems.some((cartItem) => cartItem.id === item.id);
 

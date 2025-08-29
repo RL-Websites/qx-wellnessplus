@@ -19,9 +19,10 @@ interface StepSixteenProps {
   onBack: () => void;
   defaultValues?: step16SchemaType;
   isLoading?: boolean;
+  isFinalStep?: string;
 }
 
-const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepSixteenProps) => {
+const StepSixteen = ({ onNext, onBack, defaultValues, isFinalStep, isLoading = false }: StepSixteenProps) => {
   const [sema_previousRxDocument, setSema_previousRxDocument] = useState<any>();
   const [tirz_previousRxDocument, setTirz_previousRxDocument] = useState<any>();
   const [takenPrevSema_previousRxDocument, setTakenPrevSema_previousRxDocument] = useState<any>();
@@ -37,14 +38,16 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
   } = useForm<step16SchemaType>({
     defaultValues: {
       takenGlpMedication: defaultValues?.takenGlpMedication || "",
-      heightWhenStartGlp: defaultValues?.heightWhenStartGlp || "",
+      // heightWhenStartGlp: defaultValues?.heightWhenStartGlp || "",
       weightWhenStartGlp: defaultValues?.weightWhenStartGlp || "",
       currentWeightLossMedication: defaultValues?.currentWeightLossMedication || "",
+      // Semaglutide
       sema_lastWeightLossMedicationDoase: defaultValues?.sema_lastWeightLossMedicationDoase || "",
       sema_lastWeightLossMedicationDoaseOther: defaultValues?.sema_lastWeightLossMedicationDoaseOther || "",
       sema_hasPdfForPreviousRx: defaultValues?.sema_hasPdfForPreviousRx || "",
       sema_previousRxDocument: defaultValues?.sema_previousRxDocument || "",
       sema_previousRxDocName: defaultValues?.sema_previousRxDocName || "",
+      // Tirzepatide
       tirz_lastWeightLossMedicationDoase: defaultValues?.tirz_lastWeightLossMedicationDoase || "",
       tirz_lastWeightLossMedicationDoaseOther: defaultValues?.tirz_lastWeightLossMedicationDoaseOther || "",
       tirz_hasPdfForPreviousRx: defaultValues?.tirz_hasPdfForPreviousRx || "",
@@ -60,7 +63,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
       glpSideEffect: defaultValues?.glpSideEffect || "",
       glpDrugEffectManageWeight: defaultValues?.glpDrugEffectManageWeight || "",
       glpHowLongTaken: defaultValues?.glpHowLongTaken || "",
-      glpStartingHeight: defaultValues?.glpStartingHeight || "",
+      // glpStartingHeight: defaultValues?.glpStartingHeight || "",
       glpStartingWeight: defaultValues?.glpStartingWeight || "",
       takenPrevGlpMedication: defaultValues?.takenPrevGlpMedication || "",
       takenPrevSema_lastDosage: defaultValues?.takenPrevSema_lastDosage || "",
@@ -202,7 +205,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
         onChange={(value) => {
           handleSelect("takenGlpMedication", value);
           // Reset dependent fields when changing this value
-          setValue("heightWhenStartGlp", "");
+          // setValue("heightWhenStartGlp", "");
           setValue("weightWhenStartGlp", "");
           setValue("currentWeightLossMedication", "");
           setValue("sema_lastWeightLossMedicationDoase", "");
@@ -221,7 +224,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
           setValue("haveTakenMedicationAsPrescribed", "");
           setValue("No_haveDeviated", "");
           setValue("glpHowLongTaken", "");
-          setValue("glpStartingHeight", "");
+          // setValue("glpStartingHeight", "");
           setValue("glpStartingWeight", "");
           setValue("takenPrevGlpMedication", "");
           setValue("takenPrevSema_lastDosage", "");
@@ -240,6 +243,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
         }}
         label="Have you taken a GLP-1 medication?"
         classNames={{
+          root: "!w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
@@ -269,33 +273,18 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
       {takenGlpMedication === "Yes" && (
         <>
           {/* Height and Weight */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div>
-              <Input.Wrapper
-                label="What was your height when you started the GLP-1 medication? (In inches)"
-                classNames={InputErrorMessage}
-              >
-                <Input
-                  {...register("heightWhenStartGlp")}
-                  className="border-grey rounded-lg"
-                />
-              </Input.Wrapper>
-              {errors?.heightWhenStartGlp?.message && <Text className="text-sm text-red-500 mt-2">{errors.heightWhenStartGlp.message}</Text>}
-            </div>
-
-            <div>
-              <Input.Wrapper
-                label="What was your weight when you started the GLP-1 medication? (In pounds)"
-                classNames={InputErrorMessage}
-              >
-                <Input
-                  {...register("weightWhenStartGlp")}
-                  placeholder="e.g., 170 lbs"
-                  className="border-grey rounded-lg"
-                />
-              </Input.Wrapper>
-              {errors?.weightWhenStartGlp?.message && <Text className="text-sm text-red-500 mt-2">{errors.weightWhenStartGlp.message}</Text>}
-            </div>
+          <div>
+            <Input.Wrapper
+              label="What was your weight when you started the GLP-1 medication? (In pounds)"
+              classNames={InputErrorMessage}
+            >
+              <Input
+                {...register("weightWhenStartGlp")}
+                placeholder="e.g., 170 lbs"
+                className="border-grey rounded-lg"
+              />
+            </Input.Wrapper>
+            {errors?.weightWhenStartGlp?.message && <Text className="text-sm text-red-500 mt-2">{errors.weightWhenStartGlp.message}</Text>}
           </div>
 
           {/* Current Weight Loss Medication */}
@@ -352,6 +341,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 onChange={(value) => handleSelect("sema_lastWeightLossMedicationDoase", value)}
                 label="What was the last dosage you took?"
                 classNames={{
+                  root: "!w-full",
                   label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
                 }}
               >
@@ -452,7 +442,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                   ) : (
                     <div className="flex flex-wrap">
                       <EditableDocumentTag
-                        docName={"sema_previousRxDocName"}
+                        docName={sema_previousRxDocName || ""}
                         removable={true}
                         leftIconClass="icon-pdf"
                         onRemove={() => removeSemaPreviousRxDocument()}
@@ -473,6 +463,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 onChange={(value) => handleSelect("tirz_lastWeightLossMedicationDoase", value)}
                 label="What was the last dosage you took?"
                 classNames={{
+                  root: "!w-full",
                   label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
                 }}
               >
@@ -503,6 +494,9 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                   <Input.Wrapper
                     label="Specify dosage"
                     error={getErrorMessage(errors?.tirz_lastWeightLossMedicationDoaseOther)}
+                    classNames={{
+                      root: "!w-full",
+                    }}
                   >
                     <Input
                       {...register("tirz_lastWeightLossMedicationDoaseOther")}
@@ -573,7 +567,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                   ) : (
                     <div className="flex flex-wrap">
                       <EditableDocumentTag
-                        docName={"tirz_previousRxDocName"}
+                        docName={tirz_previousRxDocName || ""}
                         removable={true}
                         leftIconClass="icon-pdf"
                         onRemove={() => removeTirzPreviousRxDocument()}
@@ -949,32 +943,18 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
           </Radio.Group>
 
           {/* Height and Weight */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div>
-              <Input.Wrapper
-                label="What was your height when you started the GLP-1 medication? (In inches)"
-                classNames={getErrorMessage}
-              >
-                <Input
-                  {...register("glpStartingHeight")}
-                  className="border-grey rounded-lg"
-                />
-              </Input.Wrapper>
-              <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.glpStartingHeight)}</p>
-            </div>
-            <div>
-              <Input.Wrapper
-                label="What was your weight when you started the GLP-1 medication? (In Pounds)"
-                classNames={getErrorMessage}
-              >
-                <Input
-                  {...register("glpStartingWeight")}
-                  placeholder="e.g., 170 lbs"
-                  className="border-grey rounded-lg"
-                />
-              </Input.Wrapper>
-              <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.glpStartingWeight)}</p>
-            </div>
+          <div>
+            <Input.Wrapper
+              label="What was your weight when you started the GLP-1 medication? (In Pounds)"
+              classNames={getErrorMessage}
+            >
+              <Input
+                {...register("glpStartingWeight")}
+                placeholder="e.g., 170 lbs"
+                className="border-grey rounded-lg"
+              />
+            </Input.Wrapper>
+            <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.glpStartingWeight)}</p>
           </div>
 
           {/* Previous GLP medication */}
@@ -1033,6 +1013,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 onChange={(value) => handleSelect("takenPrevSema_lastDosage", value)}
                 label="What was the last dosage you took?"
                 classNames={{
+                  root: "!w-full",
                   label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
                 }}
               >
@@ -1062,7 +1043,9 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 <div>
                   <Input.Wrapper
                     label="Specify dosage"
-                    classNames={getErrorMessage}
+                    classNames={{
+                      root: "!w-full",
+                    }}
                   >
                     <Input
                       {...register("takenPrevSema_lastDosageOther")}
@@ -1133,7 +1116,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                   ) : (
                     <div className="flex flex-wrap">
                       <EditableDocumentTag
-                        docName={"takenPrevSema_previousRxDocName"}
+                        docName={takenPrevSema_previousRxDocName || ""}
                         removable={true}
                         leftIconClass="icon-pdf"
                         onRemove={() => removePrevSemaPreviousRxDocument()}
@@ -1154,6 +1137,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 onChange={(value) => handleSelect("takenPrevTirz_lastWeightLossMedicationDoase", value)}
                 label="What was the last dosage you took?"
                 classNames={{
+                  root: "!w-full",
                   label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
                 }}
               >
@@ -1180,8 +1164,13 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
               </Radio.Group>
 
               {takenPrevTirz_lastWeightLossMedicationDoase === "Other" && (
-                <div>
-                  <Input.Wrapper label="Specify dosage">
+                <div className="w-full">
+                  <Input.Wrapper
+                    label="Specify dosage"
+                    classNames={{
+                      root: "!w-full",
+                    }}
+                  >
                     <Input
                       {...register("takenPrevTirz_lastWeightLossMedicationDoaseOther")}
                       className="border-grey rounded-lg"
@@ -1251,7 +1240,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                   ) : (
                     <div className="flex flex-wrap">
                       <EditableDocumentTag
-                        docName={"takenPrevTirz_previousRxDocName"}
+                        docName={takenPrevTirz_previousRxDocName || ""}
                         removable={true}
                         leftIconClass="icon-pdf"
                         onRemove={() => removePrevTirzPreviousRxDocument()}
@@ -1354,7 +1343,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
           form="step16Form"
           loading={isLoading}
         >
-          Next
+          {isFinalStep ? "Submit" : "Next"}
         </Button>
       </div>
     </form>

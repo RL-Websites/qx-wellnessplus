@@ -108,10 +108,10 @@ const RegistrationPage = () => {
     <div className="">
       <h2 className="lg:text-[70px] md:text-6xl text-4xl text-foreground uppercase text-center">Registration</h2>
       <form
-        className="w-full -mt-5"
+        className="w-full "
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div className="card-common card-common-width flex flex-col lg:gap-7 md:gap-5 gap-3">
+        <div className="card-common mt-5 card-common-width flex flex-col lg:gap-7 md:gap-5 gap-3">
           <p className="font-semibold lg:text-3xl md:text-xl text-base text-foreground ">Registration Details</p>
           <Input.Wrapper
             label="First Name"
@@ -191,7 +191,7 @@ const RegistrationPage = () => {
               Register Now
             </Button>
           </div>
-          <p className="text-xl text-foreground font-semibold mt-6 text-center">
+          <p className="md:text-lg sm:text-base text-sm text-foreground font-semibold mt-6 text-center">
             <span className="text-primary font-normal font-poppins">Already have an account? </span>
             <Link
               to="/login"

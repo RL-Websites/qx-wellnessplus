@@ -17,9 +17,11 @@ interface SymptomHistoryProps {
   onNext: (data: symptomHistorySchemaType) => void;
   onBack: () => void;
   defaultValues?: symptomHistorySchemaType;
+  isFinalStep?: string;
+  isLoading?: boolean;
 }
 
-const SymptomHistory = ({ onNext, onBack, defaultValues }: SymptomHistoryProps) => {
+const SymptomHistory = ({ onNext, onBack, defaultValues, isFinalStep, isLoading = false }: SymptomHistoryProps) => {
   const {
     register,
     handleSubmit,
@@ -76,6 +78,7 @@ const SymptomHistory = ({ onNext, onBack, defaultValues }: SymptomHistoryProps) 
           clearErrors("excessiveShedding");
         }}
         classNames={{
+          root: "w-full",
           error: "sm:!text-end !text-start w-full",
         }}
       >
@@ -92,6 +95,7 @@ const SymptomHistory = ({ onNext, onBack, defaultValues }: SymptomHistoryProps) 
           clearErrors("previousTreatments");
         }}
         classNames={{
+          root: "w-full",
           error: "sm:!text-end !text-start w-full",
         }}
       >
@@ -103,7 +107,7 @@ const SymptomHistory = ({ onNext, onBack, defaultValues }: SymptomHistoryProps) 
       <div>
         <h3 className="sm:text-2xl text-lg font-semibold text-foreground font-poppins mb-6">Are you experiencing other symptoms? (Select all that apply)</h3>
         <div className="grid sm:grid-cols-2 gap-5">
-          {["Scalp itching/flaking", "Hair breakage", "Weight changes, fatigue, or hormonal symptoms", "None"].map((option) => {
+          {["Scalp itching/flaking", "Hair breakage", "Weight changes & fatigue or hormonal symptoms", "None"].map((option) => {
             const isChecked = selectedSymptoms.includes(option);
             return (
               <div
@@ -152,8 +156,9 @@ const SymptomHistory = ({ onNext, onBack, defaultValues }: SymptomHistoryProps) 
           type="submit"
           form="symptomHistoryForm"
           className="w-[200px]"
+          loading={isLoading}
         >
-          Next
+          {isFinalStep ? "Submit" : "Next"}
         </Button>
       </div>
     </form>

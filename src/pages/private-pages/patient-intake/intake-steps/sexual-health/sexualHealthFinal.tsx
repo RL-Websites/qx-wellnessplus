@@ -23,11 +23,12 @@ interface SexualHealthFinalProps {
   onBack: () => void;
   defaultValues?: Partial<SexualHealthFinalSchemaType>;
   isLoading?: boolean;
+  isFinalStep?: string;
 }
 
 const goalOptions = ["Better performance", "Increased libido", "Hormonal balance", "Overall wellness"];
 
-const SexualHealthFinal = ({ onNext, onBack, defaultValues, isLoading = false }: SexualHealthFinalProps) => {
+const SexualHealthFinal = ({ onNext, onBack, defaultValues, isLoading = false, isFinalStep }: SexualHealthFinalProps) => {
   const {
     handleSubmit,
     setValue,
@@ -48,7 +49,8 @@ const SexualHealthFinal = ({ onNext, onBack, defaultValues, isLoading = false }:
   const lifestyleFactors = watch("lifestyleFactors");
   const lifestyleDetails = watch("lifestyleDetails");
   const sexualHealthGoals = watch("sexualHealthGoals");
-  const selectedGoals = sexualHealthGoals?.split(", ") || [];
+  const selectedGoals = sexualHealthGoals ? sexualHealthGoals.split(", ").filter((g) => g.trim() !== "") : [];
+  console.log(selectedGoals);
 
   const handleSelect = (field: keyof SexualHealthFinalSchemaType, value: string) => {
     setValue(field, value, { shouldValidate: true });
@@ -62,7 +64,7 @@ const SexualHealthFinal = ({ onNext, onBack, defaultValues, isLoading = false }:
     } else {
       updated = [...selectedGoals, goal];
     }
-    setValue("sexualHealthGoals", updated.join(", "), { shouldValidate: true });
+    setValue("sexualHealthGoals", updated.filter(Boolean).join(", "), { shouldValidate: true });
     clearErrors("sexualHealthGoals");
   };
 
@@ -77,7 +79,7 @@ const SexualHealthFinal = ({ onNext, onBack, defaultValues, isLoading = false }:
         value={hasLiverKidneyIssues}
         onChange={(val) => handleSelect("hasLiverKidneyIssues", val)}
         label="Do you have any history of liver or kidney disease?"
-        classNames={{ label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2" }}
+        classNames={{ root: "w-full", label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2" }}
       >
         <div className="grid sm:grid-cols-2 gap-5">
           {["Yes", "No"].map((option) => (
@@ -106,7 +108,7 @@ const SexualHealthFinal = ({ onNext, onBack, defaultValues, isLoading = false }:
         value={lifestyleFactors}
         onChange={(val) => handleSelect("lifestyleFactors", val)}
         label="Do you have any lifestyle factors affecting sexual health (smoking, heavy alcohol use, stress, lack of sleep)?"
-        classNames={{ label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2" }}
+        classNames={{ root: "w-full", label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2" }}
       >
         <div className="grid sm:grid-cols-2 gap-5">
           {["Yes", "No"].map((option) => (
@@ -138,7 +140,7 @@ const SexualHealthFinal = ({ onNext, onBack, defaultValues, isLoading = false }:
           value={lifestyleDetails}
           onChange={(e) => handleSelect("lifestyleDetails", e.currentTarget.value)}
           error={getErrorMessage(errors?.lifestyleDetails)}
-          className="pt-6"
+          className="pt-6 w-full"
         />
       )}
 
@@ -195,7 +197,7 @@ const SexualHealthFinal = ({ onNext, onBack, defaultValues, isLoading = false }:
           className="w-[200px]"
           loading={isLoading}
         >
-          Submit
+          {isFinalStep ? "Submit" : "Next"}
         </Button>
       </div>
     </form>
