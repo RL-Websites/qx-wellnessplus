@@ -2,14 +2,17 @@ import { categoryRepository } from "@/common/api/repositories/categoryRepository
 import CategoryCard from "@/common/components/CategoryCard";
 import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { customerAtom } from "@/common/states/customer.atom";
+import { prevGlpMedDetails } from "@/common/states/product.atom";
 import { useQuery } from "@tanstack/react-query";
 import { useAtom, useSetAtom } from "jotai";
+import { RESET } from "jotai/utils";
 import { useEffect, useState } from "react";
 
 const CategoryPage = () => {
   const [category, setCategory] = useState<any | null>();
   const setSelectedCategory = useSetAtom(selectedCategoryAtom);
   const [customerData, setCustomerData] = useAtom(customerAtom);
+  const setPrevGlpMedDetails = useSetAtom(prevGlpMedDetails);
 
   const categoryListQuery = useQuery({
     queryKey: ["categoryList", customerData?.slug],
@@ -31,6 +34,7 @@ const CategoryPage = () => {
       const newCategory = [categoryName];
       setSelectedCategory(newCategory);
     }
+    setPrevGlpMedDetails(RESET);
   };
 
   const categoryImages = {
