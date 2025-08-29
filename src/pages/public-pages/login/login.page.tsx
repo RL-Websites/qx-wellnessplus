@@ -113,8 +113,8 @@ const Login = () => {
   };
 
   return (
-    <div className="grid grid-cols-2">
-      <div className="space-y-[30px]">
+    <div className="grid lg:grid-cols-2">
+      <div className="lg:space-y-[30px] space-y-4 lg:text-start text-center">
         <h2 className="lg:text-[70px] md:text-6xl text-4xl text-foreground uppercase">Login</h2>
         <div className="space-y-2.5">
           <p className="font-semibold lg:text-4xl md:text-xl text-base text-foreground font-poppins">Returning Customer</p>
