@@ -32,7 +32,7 @@ export default function InjectionDate({ onNext, onBack, defaultValues }: IInject
   const engine = new Styletron();
   const [prevGlpDetails, setPrevGlpDetails] = useAtom(prevGlpMedDetails);
   const [injectionDate, setInjectionDate] = useState<any>(defaultValues?.injection_date ?? null);
-  const [lastDoseOptions, setLastDoseOptions] = useState(["0.25 mg", "0.50 mg", "1 mg", "1.7 mg", "2.4 mg"]);
+  const [lastDoseOptions, setLastDoseOptions] = useState(["0.25 mg", "0.50 mg", "1 mg", "1.7 mg", "2 mg", "2.5 mg"]);
 
   const maxDate = new Date();
   maxDate.setDate(maxDate.getDate() - 1);
@@ -55,7 +55,7 @@ export default function InjectionDate({ onNext, onBack, defaultValues }: IInject
     if (prevGlpDetails?.currentMedType && prevGlpDetails?.currentMedType == "Tirzepatide") {
       setLastDoseOptions(["2.5 mg", "5 mg", "7.5 mg", "10 mg", "12.5 mg", "15 mg"]);
     } else {
-      setLastDoseOptions(["0.25 mg", "0.50 mg", "1 mg", "1.7 mg", "2.4 mg"]);
+      setLastDoseOptions(["0.25 mg", "0.50 mg", "1 mg", "1.7 mg", "2 mg", "2.5 mg"]);
     }
   }, [prevGlpDetails?.currentMedType]);
 
