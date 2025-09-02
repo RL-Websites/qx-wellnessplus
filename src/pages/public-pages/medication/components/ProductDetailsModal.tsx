@@ -55,7 +55,7 @@ function ProductDetailsModal({ openModal, onModalClose, medicationDetails }: IPr
             ></i>
           </div>
           <div className="lg:pt-20 md:pt-10 pt-5">
-            <h2 className="md:text-5xl text-3xl !leading-snug font-poppins  font-bold mb-4  text-foreground">{medicationDetails.name}</h2>
+            <h2 className="md:text-5xl text-3xl !leading-snug font-poppins  font-bold mb-4  text-foreground break-all">{medicationDetails.name}</h2>
             {medicationDetails.cost && <p className="my-6 text-2xl text-gray-600 font-semibold">Cost: {medicationDetails.cost}</p>}
 
             <p className="md:text-[32px] text-xl font-medium text-foreground pb-4">About the Product:</p>
