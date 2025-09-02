@@ -112,6 +112,9 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
   const papillaryReport = watch("papillaryReport");
   const follicularReport = watch("follicularReport");
   const thyroidOtherReport = watch("thyroidOtherReport");
+  const thyroidReportFileName = watch("thyroidReportFileName");
+  const follicularReportFileName = watch("follicularReportFileName");
+  const papillaryReportFileName = watch("papillaryReportFileName");
 
   const showThyroidCancerType = thyroidCancer === "Yes";
   const showPapillaryReport = thyroidCancerType === "Papillary";
@@ -191,6 +194,7 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
         value={thyroidCancer}
         onChange={(val) => handleSelect("thyroidCancer", val)}
         classNames={{
+          root: "w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
@@ -223,6 +227,7 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
           value={thyroidCancerType}
           onChange={(val) => handleSelect("thyroidCancerType", val)}
           classNames={{
+            root: "!w-full",
             label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           }}
         >
@@ -311,7 +316,7 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
           ) : (
             <div className="flex flex-wrap">
               <EditableDocumentTag
-                docName={"papillaryReportFileName"}
+                docName={papillaryReportFileName || ""}
                 removable
                 leftIconClass="icon-pdf"
                 onRemove={() => removeFile(setPapillaryReportFile, "papillaryReportUp", "papillaryReportFileName")}
@@ -328,6 +333,7 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
           value={follicularReport}
           onChange={(val) => handleSelect("follicularReport", val)}
           classNames={{
+            root: "!w-full",
             label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           }}
         >
@@ -380,7 +386,7 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
           ) : (
             <div className="flex flex-wrap">
               <EditableDocumentTag
-                docName={"follicularReportFileName"}
+                docName={follicularReportFileName || ""}
                 removable
                 leftIconClass="icon-pdf"
                 onRemove={() => removeFile(setFollicularReportFile, "follicularReportUp", "follicularReportFileName")}
@@ -398,7 +404,7 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
             withAsterisk
             error={getErrorMessage(errors.thyroidCancerOther)}
             classNames={{
-              root: "sm:!grid !block w-full",
+              root: "sm:!grid !block w-full mb-5",
               error: "sm:!text-end !text-start w-full",
               label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
             }}
@@ -466,12 +472,14 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
                   </div>
                 </Dropzone>
               ) : (
-                <EditableDocumentTag
-                  docName={"thyroidReportFileName"}
-                  removable
-                  leftIconClass="icon-pdf"
-                  onRemove={() => removeFile(setOtherReportFile, "thyroidOtherReportUp", "thyroidReportFileName")}
-                />
+                <div className="flex flex-wrap">
+                  <EditableDocumentTag
+                    docName={thyroidReportFileName || ""}
+                    removable
+                    leftIconClass="icon-pdf"
+                    onRemove={() => removeFile(setOtherReportFile, "thyroidOtherReportUp", "thyroidReportFileName")}
+                  />
+                </div>
               )}
             </div>
           )}

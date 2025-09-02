@@ -115,3 +115,10 @@ export interface IPriceUpdateListItem {
   medication: IMedicationRef;
   created_at: string;
 }
+
+export interface IPrevGlpMedDetails {
+  lastDoseDate?: string | undefined;
+  lastDose?: string;
+  currentMedType?: string;
+  preferredMedType?: string;
+}

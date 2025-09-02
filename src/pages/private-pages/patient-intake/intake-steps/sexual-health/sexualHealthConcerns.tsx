@@ -62,7 +62,7 @@ const SexualHealthConcerns = ({ onNext, onBack, defaultValues }: SexualHealthCon
         value={concernSH}
         onChange={(val) => handleSelect("concernSH", val)}
         label="What sexual health concern are you seeking help with?"
-        classNames={{ label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2" }}
+        classNames={{ root: "w-full", label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2" }}
       >
         <div className="grid sm:grid-cols-2 gap-5">
           {concernOptions.map((option) => (
@@ -93,7 +93,7 @@ const SexualHealthConcerns = ({ onNext, onBack, defaultValues }: SexualHealthCon
           value={watch("otherConcern")}
           onChange={(e) => handleSelect("otherConcern", e.currentTarget.value)}
           error={getErrorMessage(errors?.otherConcern)}
-          className="pt-6"
+          className="pt-6 w-full"
         />
       )}
 
@@ -104,14 +104,14 @@ const SexualHealthConcerns = ({ onNext, onBack, defaultValues }: SexualHealthCon
         value={watch("durationSH")}
         onChange={(e) => handleSelect("durationSH", e.currentTarget.value)}
         error={getErrorMessage(errors?.durationSH)}
-        className="pt-10"
+        className="pt-10 w-full"
       />
 
       <Radio.Group
         value={onSexMeds}
         onChange={(val) => handleSelect("onSexMeds", val)}
         label="Do you currently take any medications for sexual health (e.g., Viagra, Cialis, hormone therapy)?"
-        classNames={{ label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2" }}
+        classNames={{ root: "w-full", label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2" }}
       >
         <div className="grid sm:grid-cols-2 gap-5">
           {yesNoOptions.map((option) => (

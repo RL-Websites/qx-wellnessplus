@@ -1,5 +1,7 @@
+import { prevGlpMedDetails } from "@/common/states/product.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Radio, Text } from "@mantine/core";
+import { useAtom } from "jotai";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -17,6 +19,7 @@ interface IMultipleMedicineProps {
 }
 
 const MultipleMedicine = ({ onNext, onBack, defaultValues }: IMultipleMedicineProps) => {
+  const [prevGlpDetails, setPrevGlpDetails] = useAtom(prevGlpMedDetails);
   const {
     handleSubmit,
     setValue,
@@ -36,6 +39,7 @@ const MultipleMedicine = ({ onNext, onBack, defaultValues }: IMultipleMedicinePr
 
   const handleSelect = (value: string) => {
     setValue("selectedMedicine", value, { shouldValidate: true });
+    setPrevGlpDetails((prev) => ({ ...prev, preferredMedType: value }));
     clearErrors("selectedMedicine");
   };
 

@@ -36,9 +36,10 @@ interface StepSeventeenProps {
   onBack: () => void;
   defaultValues?: Step17SchemaType;
   isLoading?: boolean;
+  isFinalStep?: string;
 }
 
-const StepSeventeen = ({ onNext, onBack, defaultValues, isLoading = false }: StepSeventeenProps) => {
+const StepSeventeen = ({ onNext, onBack, defaultValues, isFinalStep, isLoading = false }: StepSeventeenProps) => {
   const {
     register,
     handleSubmit,
@@ -299,7 +300,7 @@ const StepSeventeen = ({ onNext, onBack, defaultValues, isLoading = false }: Ste
           form="step17Form"
           loading={isLoading}
         >
-          Next
+          {isFinalStep ? "Submit" : "Next"}
         </Button>
       </div>
     </form>

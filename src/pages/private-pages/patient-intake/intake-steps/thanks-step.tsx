@@ -1,19 +1,22 @@
 import { user_id } from "@/common/states/user.atom";
 import { Button } from "@mantine/core";
 import { useAtom } from "jotai";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 const ThanksStep = ({ isActive }: { isActive: boolean }) => {
   const [userId, setUserId] = useAtom(user_id);
+  const openedRef = useRef(false);
 
   useEffect(() => {
-    if (isActive && userId) {
-      console.log("hello");
-      setTimeout(() => {
-        window.open(`${import.meta.env.VITE_DOSVANA_URL}/oauth/${userId}`, "_blank");
-      }, 10000);
-    }
-  }, [userId]);
+    if (!isActive || !userId || openedRef.current) return;
+
+    const url = `${import.meta.env.VITE_DOSVANA_URL}/oauth/${userId}`;
+    const timer = setTimeout(() => {
+      if (openedRef.current) return; // extra guard
+      openedRef.current = true;
+      window.open(url, "_blank", "noopener,noreferrer");
+    }, 10000);
+  }, []);
 
   const goToDosvanaDashboard = () => {
     window.open(`${import.meta.env.VITE_DOSVANA_URL}/oauth/${userId}`, "_blank");

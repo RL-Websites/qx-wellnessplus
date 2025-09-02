@@ -19,3 +19,10 @@ export interface IGetAssignedPartnerParams extends ICommonParams {
 export interface IGetPriceHistoryParams extends ICommonParams {
   customer_id?: string;
 }
+
+export interface IGetMedicationListParams extends ICommonParams {
+  lastDoseDate?: string;
+  lastDose?: string;
+  currentMedType?: string;
+  preferredMedType?: string;
+}
