@@ -29,10 +29,10 @@ const MedicationCard = (medicationProps: IMedicationProps) => {
           </div>
         )}
         {medicationProps?.title && (
-          <h4 className="md:text-2xl sm:text-xl text-lg font-poppins leading-snug font-semibold text-foreground md:h-16 sm:h-8 line-clamp-2">{medicationProps?.title}</h4>
+          <h4 className="md:text-2xl sm:text-xl text-lg font-poppins leading-snug font-semibold text-foreground md:h-16 sm:h-8 line-clamp-2 break-all">{medicationProps?.title}</h4>
         )}
         <div className="flex items-center justify-between">
-          <span className="text-foreground sm:text-base text-sm font-bold">Medication Cost</span>
+          <span className="text-foreground sm:text-base text-sm font-bold">Package Price</span>
           <span className="text-foreground sm:text-base text-sm font-bold">${medicationProps?.cost}</span>
         </div>
       </div>

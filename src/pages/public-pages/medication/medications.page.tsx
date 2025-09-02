@@ -98,7 +98,6 @@ const MedicationsPage = () => {
         <span className="md:text-2xl font-medium text-foreground inline-block">
           Based on your responses, we've personalized these product suggestions for you. Kindly select the one you prefer.
         </span>
-        <div className="rounded-lg bg-green-badge text-center py-2.5 px-6">Doctor consultation & shipping cost included</div>
       </div>
 
       <div className="grid md:grid-cols-3 sm:grid-cols-2 lg:gap-y-12 lg:gap-x-20 gap-7 pt-12 lg:pb-24 pb-[250px]">
