@@ -272,12 +272,11 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
               <table className="w-full text-grey text-2xl font-bold border-t border-grey-low mt-8">
                 <tbody>
                   <tr>
-                    <td className="py-3">Total</td>
+                    <td className="py-3">Total Package Price</td>
                     <td className="py-3 text-right">${totalBillAmount}</td>
                   </tr>
                 </tbody>
               </table>
-              <p className="text-sm italic text-tag-bg-deep">* Doctor Consultation & Shipping included.</p>
             </div>
           </div>
         </div>
@@ -521,7 +520,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
             <NumberInput
               value={billingZipCode}
               {...register("billing.zip_code")}
-              className="w-full"
+              className="w-full border-0"
               label="Zip Code"
               onChange={(value) => {
                 if (value) {
@@ -533,7 +532,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
               readOnly={isSameAsShippingInfo}
               classNames={{
                 wrapper: isSameAsShippingInfo ? "bg-transparent" : "bg-grey-btn rounded-md",
-                input: isSameAsShippingInfo ? "!bg-transparent pl-0" : "",
+                input: isSameAsShippingInfo ? "!bg-transparent pl-0 border-0" : "",
               }}
               error={getErrorMessage(errors?.billing?.zip_code)}
               max={99999}
