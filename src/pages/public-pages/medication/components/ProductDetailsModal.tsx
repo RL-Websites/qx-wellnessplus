@@ -26,6 +26,7 @@ interface IProductDetailsModalProps {
     is_research_only?: number;
     total_price?: string;
     customer_medication?: { price?: string };
+    direction_sig?: string;
   } | null;
 }
 
@@ -55,14 +56,14 @@ function ProductDetailsModal({ openModal, onModalClose, medicationDetails }: IPr
             ></i>
           </div>
           <div className="lg:pt-20 md:pt-10 pt-5">
-            <h2 className="md:text-5xl text-3xl !leading-snug font-poppins  font-bold mb-4  text-foreground">{medicationDetails.name}</h2>
+            <h2 className="md:text-5xl text-3xl !leading-snug font-poppins  font-bold mb-4  text-foreground break-all">{medicationDetails.name}</h2>
             {medicationDetails.cost && <p className="my-6 text-2xl text-gray-600 font-semibold">Cost: {medicationDetails.cost}</p>}
 
             <p className="md:text-[32px] text-xl font-medium text-foreground pb-4">About the Product:</p>
             <div className="grid grid-cols-2 gap-5 border-t border-grey-medium pt-5">
               <div className="space-y-2">
                 <h6 className="text-fs-sp font-semibold">SKU :</h6>
-                <p className="text-fs-md">{medicationDetails?.sku}</p>
+                <p className="text-fs-md break-all">{medicationDetails?.sku}</p>
               </div>
               <div className="space-y-2">
                 <h6 className="text-fs-sp font-semibold">Dose :</h6>
@@ -73,15 +74,19 @@ function ProductDetailsModal({ openModal, onModalClose, medicationDetails }: IPr
               </div>
               <div className="space-y-2">
                 <h6 className="text-fs-sp font-semibold">NDC :</h6>
-                <p className="text-fs-md">{medicationDetails?.ndc}</p>
+                <p className="text-fs-md">{medicationDetails?.ndc || "N/A"}</p>
               </div>
               <div className="space-y-2">
                 <h6 className="text-fs-sp font-semibold">Strength :</h6>
                 <p className="text-fs-md">{medicationDetails?.full_strength || "N/A"}</p>
               </div>
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <h6 className="text-fs-sp font-semibold">Medication Group :</h6>
                 <p className="text-fs-md">{medicationDetails?.medicine_group}</p>
+              </div> */}
+              <div className="space-y-2">
+                <h6 className="text-fs-sp font-semibold">Direction/Sig :</h6>
+                <p className="text-fs-md">{medicationDetails?.direction_sig || "N/A"}</p>
               </div>
               <div className="space-y-2">
                 <h6 className="text-fs-sp font-semibold">Medication Category :</h6>
@@ -104,7 +109,7 @@ function ProductDetailsModal({ openModal, onModalClose, medicationDetails }: IPr
                 <p className="text-fs-md">{medicationDetails?.is_research_only === 1 ? "Yes" : "No"}</p>
               </div>
               <div className="space-y-2">
-                <h6 className="text-fs-sp font-semibold">Package Total :</h6>
+                <h6 className="text-fs-sp font-semibold">Package Price :</h6>
                 <p className="text-fs-md">${medicationDetails?.customer_medication?.price}</p>
               </div>
             </div>

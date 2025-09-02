@@ -95,7 +95,7 @@ const OrderSummary = () => {
             ))}
           </div>
           <div className="flex items-center justify-between border-t border-t-foreground pt-2">
-            <span className="text-foreground font-poppins font-semibold md:text-xl text-lg !border-foreground">Total</span>
+            <span className="text-foreground font-poppins font-semibold md:text-xl text-lg !border-foreground">Total Package Price</span>
             <span className="text-foreground font-poppins font-semibold md:text-xl text-lg !border-foreground">${totalBillAmount}</span>
           </div>
         </div>
