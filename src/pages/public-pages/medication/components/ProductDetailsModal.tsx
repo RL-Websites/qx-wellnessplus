@@ -26,6 +26,7 @@ interface IProductDetailsModalProps {
     is_research_only?: number;
     total_price?: string;
     customer_medication?: { price?: string };
+    direction_sig?: string;
   } | null;
 }
 
@@ -73,15 +74,19 @@ function ProductDetailsModal({ openModal, onModalClose, medicationDetails }: IPr
               </div>
               <div className="space-y-2">
                 <h6 className="text-fs-sp font-semibold">NDC :</h6>
-                <p className="text-fs-md">{medicationDetails?.ndc}</p>
+                <p className="text-fs-md">{medicationDetails?.ndc || "N/A"}</p>
               </div>
               <div className="space-y-2">
                 <h6 className="text-fs-sp font-semibold">Strength :</h6>
                 <p className="text-fs-md">{medicationDetails?.full_strength || "N/A"}</p>
               </div>
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <h6 className="text-fs-sp font-semibold">Medication Group :</h6>
                 <p className="text-fs-md">{medicationDetails?.medicine_group}</p>
+              </div> */}
+              <div className="space-y-2">
+                <h6 className="text-fs-sp font-semibold">Direction/Sig :</h6>
+                <p className="text-fs-md">{medicationDetails?.direction_sig || "N/A"}</p>
               </div>
               <div className="space-y-2">
                 <h6 className="text-fs-sp font-semibold">Medication Category :</h6>
@@ -104,7 +109,7 @@ function ProductDetailsModal({ openModal, onModalClose, medicationDetails }: IPr
                 <p className="text-fs-md">{medicationDetails?.is_research_only === 1 ? "Yes" : "No"}</p>
               </div>
               <div className="space-y-2">
-                <h6 className="text-fs-sp font-semibold">Package Total :</h6>
+                <h6 className="text-fs-sp font-semibold">Package Price :</h6>
                 <p className="text-fs-md">${medicationDetails?.customer_medication?.price}</p>
               </div>
             </div>
