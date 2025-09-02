@@ -249,14 +249,28 @@ const QuizPage = () => {
 
           {selectedGender === "Female" && activeStep === 6 && (
             <WeightLossPregnant
-              onNext={handleNext}
+              onNext={(data) => {
+                setFormData((prev) => ({ ...prev, ...data }));
+                if (data.weightLossPregnant == "Yes") {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(data);
+                }
+              }}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
           {selectedGender === "Female" && activeStep === 7 && (
             <WeightLossBreastFeeding
-              onNext={handleNext}
+              onNext={(data) => {
+                setFormData((prev) => ({ ...prev, ...data }));
+                if (data.breastFeeding == "Yes") {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(data);
+                }
+              }}
               onBack={handleBack}
               defaultValues={formData}
             />
