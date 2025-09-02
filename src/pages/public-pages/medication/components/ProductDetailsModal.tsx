@@ -62,7 +62,7 @@ function ProductDetailsModal({ openModal, onModalClose, medicationDetails }: IPr
             <div className="grid grid-cols-2 gap-5 border-t border-grey-medium pt-5">
               <div className="space-y-2">
                 <h6 className="text-fs-sp font-semibold">SKU :</h6>
-                <p className="text-fs-md">{medicationDetails?.sku}</p>
+                <p className="text-fs-md break-all">{medicationDetails?.sku}</p>
               </div>
               <div className="space-y-2">
                 <h6 className="text-fs-sp font-semibold">Dose :</h6>
