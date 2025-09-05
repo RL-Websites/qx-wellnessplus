@@ -44,12 +44,12 @@ const EndocrineAutoimmuneDisorders = ({ onNext, onBack, defaultValues }: Endocri
         className="max-w-xl mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins">Do you have any known endocrine or autoimmune disorders?</h2>
+          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">Do you have any known endocrine or autoimmune disorders?</h2>
 
           <Radio.Group
             value={selected}
             onChange={(value) => setValue("endocrineAutoimmuneDisorder", value, { shouldValidate: true })}
-            className="mt-6"
+            className="mt-6 animate-content"
           >
             <Grid gutter="md">
               {options.map((option) => (
@@ -88,7 +88,7 @@ const EndocrineAutoimmuneDisorders = ({ onNext, onBack, defaultValues }: Endocri
           {errors.endocrineAutoimmuneDisorder && <div className="text-danger text-sm mt-2 text-center">{errors.endocrineAutoimmuneDisorder.message}</div>}
         </div>
 
-        <div className="flex justify-center gap-6 pt-4">
+        <div className="flex justify-center gap-6 pt-4 animate-btns">
           <Button
             variant="outline"
             className="w-[200px]"

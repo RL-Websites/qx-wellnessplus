@@ -40,12 +40,14 @@ const MultipleEndocrineNeoplasia = ({ onNext, onBack, defaultValues }: MENHistor
         className="max-w-xl mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins">Do you have a personal or family history of Multiple Endocrine Neoplasia (MEN)?</h2>
+          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">
+            Do you have a personal or family history of Multiple Endocrine Neoplasia (MEN)?
+          </h2>
 
           <Radio.Group
             value={selected}
             onChange={(value) => setValue("hasMENHistory", value as MENFormType["hasMENHistory"], { shouldValidate: true })}
-            className="mt-6"
+            className="mt-6 animate-content"
           >
             <Grid gutter="md">
               {options.map((option) => (
@@ -84,7 +86,7 @@ const MultipleEndocrineNeoplasia = ({ onNext, onBack, defaultValues }: MENHistor
           {errors.hasMENHistory && <p className="text-danger text-sm mt-2 text-center">{errors.hasMENHistory.message}</p>}
         </div>
 
-        <div className="flex justify-center gap-6 pt-6">
+        <div className="flex justify-center gap-6 pt-6 animate-btns">
           <Button
             variant="outline"
             className="w-[200px]"

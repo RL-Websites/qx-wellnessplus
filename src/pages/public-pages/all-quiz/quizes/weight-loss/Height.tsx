@@ -57,12 +57,12 @@ const WeightLossHeight = ({ onNext, onBack, defaultValues }: IWeightLossHeightPr
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <div className="card-common-width mx-auto">
-        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">What is your current height?</h2>
+        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground animate-title">What is your current height?</h2>
 
         <form
           id="weightLossHeightForm"
           onSubmit={handleSubmit(handleNext)}
-          className="max-w-xl mx-auto space-y-6 card-common"
+          className="max-w-xl mx-auto space-y-6 card-common animate-content"
         >
           <div className="grid grid-cols-1  gap-5">
             <Input.Wrapper
@@ -102,7 +102,7 @@ const WeightLossHeight = ({ onNext, onBack, defaultValues }: IWeightLossHeightPr
         </form>
       </div>
 
-      <div className="flex justify-center md:gap-6 gap-3 md:pt-8 pt-5">
+      <div className="flex justify-center md:gap-6 gap-3 md:pt-8 pt-5 animate-btns">
         <Button
           variant="outline"
           className="w-[200px]"

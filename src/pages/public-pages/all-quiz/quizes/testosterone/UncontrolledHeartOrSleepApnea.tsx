@@ -49,12 +49,14 @@ const UncontrolledHeartOrSleepApnea = ({ onNext, onBack, defaultValues }: IUncon
         className="card-common-width-lg mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Have you been diagnosed with uncontrolled heart disease or severe sleep apnea?</h2>
+          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground animate-title">
+            Have you been diagnosed with uncontrolled heart disease or severe sleep apnea?
+          </h2>
 
           <Radio.Group
             value={heartOrSleepApnea}
             onChange={handleSelect}
-            className="mt-6 w-full"
+            className="mt-6 w-full animate-content"
           >
             <div className="grid md:grid-cols-2 gap-5 w-full">
               {options.map((option) => (
@@ -89,7 +91,7 @@ const UncontrolledHeartOrSleepApnea = ({ onNext, onBack, defaultValues }: IUncon
           {errors.heartOrSleepApnea && <Text className="text-red-500 text-sm mt-5 text-center">{errors.heartOrSleepApnea.message}</Text>}
         </div>
 
-        <div className="flex justify-center gap-6 pt-4">
+        <div className="flex justify-center gap-6 pt-4 animate-btns">
           <Button
             variant="outline"
             className="w-[200px]"

@@ -66,9 +66,9 @@ export default function GenderWeightLoss({ onNext, onBack, defaultValues }: IGen
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
-      <h2 className="heading-text text-foreground uppercase text-center delay-200 duration-500 animate-fadeInRight">Gender</h2>
+      <h2 className="heading-text text-foreground uppercase text-center animate-title">Gender</h2>
 
-      <div className="card-common-width-lg mx-auto mt-10 delay-700 duration-500 animate-fadeInRight">
+      <div className="card-common-width-lg mx-auto mt-10 animate-content">
         <form
           id="genderWeightLossForm"
           onSubmit={handleSubmit(handleFormSubmit)}
@@ -103,7 +103,7 @@ export default function GenderWeightLoss({ onNext, onBack, defaultValues }: IGen
         </form>
       </div>
 
-      <div className="flex justify-center gap-6 pt-8 delay-[1200] duration-500 animate-fadeInUp">
+      <div className="flex justify-center gap-6 pt-8 animate-btns">
         <Button
           variant="outline"
           className="w-[200px]"

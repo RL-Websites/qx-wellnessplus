@@ -44,7 +44,7 @@ const GallbladderHistory = ({ onNext, onBack, defaultValues }: GallbladderHistor
         className="max-w-xl mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins">Do you have a personal history of gallbladder disease?</h2>
+          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">Do you have a personal history of gallbladder disease?</h2>
 
           {/* Step 1: Yes / No */}
           <Radio.Group
@@ -53,7 +53,7 @@ const GallbladderHistory = ({ onNext, onBack, defaultValues }: GallbladderHistor
               setValue("hasGallbladderHistory", value as "Yes" | "No");
               setValue("gallbladderDetail", "");
             }}
-            className="mt-6"
+            className="mt-6 animate-content"
           >
             <Grid gutter="md">
               {["Yes", "No"].map((option) => (
@@ -92,10 +92,11 @@ const GallbladderHistory = ({ onNext, onBack, defaultValues }: GallbladderHistor
           {/* Step 2: Detail selection if "Yes" */}
           {hasHistory === "Yes" && (
             <div className="mt-6">
-              <h3 className="text-lg font-medium mb-2 text-center">Please specify</h3>
+              <h3 className="text-lg font-medium mb-2 text-center animate-title">Please specify</h3>
               <Radio.Group
                 value={detail}
                 onChange={(value) => setValue("gallbladderDetail", value)}
+                className="animate-content"
               >
                 <Grid gutter="md">
                   {subOptions.map((option) => (
@@ -134,7 +135,7 @@ const GallbladderHistory = ({ onNext, onBack, defaultValues }: GallbladderHistor
           )}
         </div>
 
-        <div className="flex justify-center gap-6 pt-6">
+        <div className="flex justify-center gap-6 pt-6 animate-btns">
           <Button
             variant="outline"
             className="w-[200px]"

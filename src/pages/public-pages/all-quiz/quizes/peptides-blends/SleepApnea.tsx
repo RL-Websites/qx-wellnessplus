@@ -48,7 +48,7 @@ const SleepApnea = ({ onNext, onBack, defaultValues }: SleepApneaProps) => {
         onSubmit={handleSubmit(onSubmit)}
         className="max-w-xl mx-auto space-y-6"
       >
-        <h2 className="text-center text-3xl font-semibold text-foreground font-poppins">Do you have diagnosed sleep apnea?</h2>
+        <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">Do you have diagnosed sleep apnea?</h2>
 
         {/* Main Yes/No */}
         <Radio.Group
@@ -57,7 +57,7 @@ const SleepApnea = ({ onNext, onBack, defaultValues }: SleepApneaProps) => {
             setValue("hasSleepApnea", value as "Yes" | "No", { shouldValidate: true });
             if (value === "No") setValue("apneaType", "");
           }}
-          className="mt-6"
+          className="mt-6 animate-content"
         >
           <Grid gutter="md">
             {["Yes", "No"].map((option) => (
@@ -98,11 +98,12 @@ const SleepApnea = ({ onNext, onBack, defaultValues }: SleepApneaProps) => {
         {/* Follow-up if Yes */}
         {hasSleepApnea === "Yes" && (
           <div className="mt-6">
-            <h3 className="text-lg font-medium mb-2 text-center">Are you using CPAP?</h3>
+            <h3 className="text-lg font-medium mb-2 text-center animate-title">Are you using CPAP?</h3>
 
             <Radio.Group
               value={apneaType}
               onChange={(value) => setValue("apneaType", value as "using CPAP" | "not using CPAP", { shouldValidate: true })}
+              className="animate-content"
             >
               <Grid gutter="md">
                 {["using CPAP", "not using CPAP"].map((option) => (
@@ -142,7 +143,7 @@ const SleepApnea = ({ onNext, onBack, defaultValues }: SleepApneaProps) => {
           </div>
         )}
 
-        <div className="flex justify-center gap-6 pt-6">
+        <div className="flex justify-center gap-6 pt-6 animate-btns">
           <Button
             variant="outline"
             className="w-[200px]"
