@@ -76,13 +76,14 @@ const SymptomHistory = ({ onNext, onBack, defaultValues, isFinalStep, isLoading 
         onChange={(value) => {
           setValue("excessiveShedding", value);
           clearErrors("excessiveShedding");
+          label: "animate-title";
         }}
         classNames={{
           root: "w-full",
           error: "sm:!text-end !text-start w-full",
         }}
       >
-        <div className="grid sm:grid-cols-2 gap-5">{renderOptions(excessiveShedding, "excessiveShedding", ["Yes", "No"])}</div>
+        <div className="grid sm:grid-cols-2 gap-5 animate-content">{renderOptions(excessiveShedding, "excessiveShedding", ["Yes", "No"])}</div>
         <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.excessiveShedding)}</p>
       </Radio.Group>
 
@@ -93,20 +94,21 @@ const SymptomHistory = ({ onNext, onBack, defaultValues, isFinalStep, isLoading 
         onChange={(value) => {
           setValue("previousTreatments", value);
           clearErrors("previousTreatments");
+          label: "animate-title";
         }}
         classNames={{
           root: "w-full",
           error: "sm:!text-end !text-start w-full",
         }}
       >
-        <div className="grid sm:grid-cols-2 gap-5">{renderOptions(previousTreatments, "previousTreatments", ["Yes — effective", "Yes — not effective", "No"])}</div>
+        <div className="grid sm:grid-cols-2 gap-5 animate-content">{renderOptions(previousTreatments, "previousTreatments", ["Yes — effective", "Yes — not effective", "No"])}</div>
         <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.previousTreatments)}</p>
       </Radio.Group>
 
       {/* Q3 */}
       <div>
-        <h3 className="sm:text-2xl text-lg font-semibold text-foreground font-poppins mb-6">Are you experiencing other symptoms? (Select all that apply)</h3>
-        <div className="grid sm:grid-cols-2 gap-5">
+        <h3 className="sm:text-2xl text-lg font-semibold text-foreground font-poppins mb-6 animate-title">Are you experiencing other symptoms? (Select all that apply)</h3>
+        <div className="grid sm:grid-cols-2 gap-5 animate-content">
           {["Scalp itching/flaking", "Hair breakage", "Weight changes & fatigue or hormonal symptoms", "None"].map((option) => {
             const isChecked = selectedSymptoms.includes(option);
             return (
@@ -144,7 +146,7 @@ const SymptomHistory = ({ onNext, onBack, defaultValues, isFinalStep, isLoading 
       </div>
 
       {/* Navigation Buttons */}
-      <div className="flex justify-center gap-6 pt-6">
+      <div className="flex justify-center gap-6 pt-6 animate-btns">
         <Button
           variant="outline"
           className="w-[200px]"

@@ -72,10 +72,10 @@ GLP-1 medication?"
           classNames={{
             root: "sm:!grid !block",
             error: "sm:!text-end !text-start w-full",
-            label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2 text-center",
+            label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2 text-center animate-title",
           }}
         >
-          <div className="grid md:grid-cols-2 gap-5 w-full">
+          <div className="grid md:grid-cols-2 gap-5 w-full animate-content">
             {takesGlpOptions.map((option) => (
               <Radio
                 key={option}
@@ -106,10 +106,10 @@ GLP-1 medication?"
             classNames={{
               root: " !block mt-6 w-full",
               error: "sm:!text-end !text-start w-full",
-              label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2 text-center w-full",
+              label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2 text-center w-full animate-title",
             }}
           >
-            <div className="grid md:grid-cols-2 gap-5 w-full">
+            <div className="grid md:grid-cols-2 gap-5 w-full animate-content">
               {glpDetailsOptions.map((option) => (
                 <Radio
                   key={option}
@@ -132,7 +132,7 @@ GLP-1 medication?"
         )}
         {errors.glpOneMedicationDetails && <Text className="text-red-500 text-sm mt-5 text-center">{errors.glpOneMedicationDetails.message}</Text>}
 
-        <div className="flex justify-center gap-6 pt-4">
+        <div className="flex justify-center gap-6 pt-4 animate-btns">
           <Button
             variant="outline"
             className="w-[200px]"

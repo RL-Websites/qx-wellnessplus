@@ -51,12 +51,12 @@ const MultipleMedicine = ({ onNext, onBack, defaultValues }: IMultipleMedicinePr
         className="card-common-width-lg mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Are you interested in Semaglutide or Tirzepatide?</h2>
+          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground animate-title">Are you interested in Semaglutide or Tirzepatide?</h2>
 
           <Radio.Group
             value={selectedMedicine}
             onChange={handleSelect}
-            className="mt-6 w-full"
+            className="mt-6 w-full animate-content"
           >
             <div className="grid md:grid-cols-2 w-full gap-5">
               {options.map((option) => (
@@ -88,7 +88,7 @@ const MultipleMedicine = ({ onNext, onBack, defaultValues }: IMultipleMedicinePr
             </div>
           </Radio.Group>
           {errors.selectedMedicine && <Text className="text-red-500 text-sm mt-5 text-center">{errors.selectedMedicine.message}</Text>}
-          <div className="space-y-2.5 pt-4">
+          <div className="space-y-2.5 pt-4 animate-content">
             <p className="text-xl text-foreground font-medium font-poppins">
               <span className="font-semibold">Semaglutide:</span> A proven GLP-1 medication that reduces appetite and supports steady weight loss. Often considered a good starting
               option for beginners.
@@ -100,7 +100,7 @@ const MultipleMedicine = ({ onNext, onBack, defaultValues }: IMultipleMedicinePr
           </div>
         </div>
 
-        <div className="flex justify-center gap-6 pt-4">
+        <div className="flex justify-center gap-6 pt-4 animate-btns">
           <Button
             variant="outline"
             className="w-[200px]"

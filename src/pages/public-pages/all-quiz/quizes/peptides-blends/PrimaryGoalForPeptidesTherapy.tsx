@@ -62,7 +62,7 @@ const PrimaryGoalForPeptidesTherapy = ({ onNext, onBack, defaultValues }: IPrima
         className="max-w-xl mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins">What is your primary goal for peptide therapy?</h2>
+          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">What is your primary goal for peptide therapy?</h2>
 
           <Radio.Group
             value={selected}
@@ -71,7 +71,7 @@ const PrimaryGoalForPeptidesTherapy = ({ onNext, onBack, defaultValues }: IPrima
                 shouldValidate: true,
               })
             }
-            className="mt-6"
+            className="mt-6 animate-content"
           >
             <Grid gutter="md">
               {options.map((option) => (
@@ -114,14 +114,14 @@ const PrimaryGoalForPeptidesTherapy = ({ onNext, onBack, defaultValues }: IPrima
               placeholder="Enter your goal"
               {...register("PrimaryGoalForPeptidesTherapyOther")}
               error={errors.PrimaryGoalForPeptidesTherapyOther?.message}
-              className="mt-4"
+              className="mt-4 animate-content"
             />
           )}
 
           {errors.PrimaryGoalForPeptidesTherapy && <div className="text-danger text-sm mt-2 text-center">{errors.PrimaryGoalForPeptidesTherapy.message}</div>}
         </div>
 
-        <div className="flex justify-center gap-6 pt-4">
+        <div className="flex justify-center gap-6 pt-4 animate-btns">
           <Button
             variant="outline"
             className="w-[200px]"

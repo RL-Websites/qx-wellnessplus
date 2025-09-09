@@ -34,12 +34,12 @@ const PeptideTherapyEffectiveness = ({ onNext, onBack, defaultValues }: PeptideT
         className="max-w-xl mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins">How effective do you feel peptide therapy has been for you?</h2>
+          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">How effective do you feel peptide therapy has been for you?</h2>
 
           <Radio.Group
             value={selected}
             onChange={(value) => setValue("therapyEffectiveness", value, { shouldValidate: true })}
-            className="mt-6"
+            className="mt-6 animate-content"
           >
             <Grid gutter="md">
               {options.map((option) => (
@@ -76,7 +76,7 @@ const PeptideTherapyEffectiveness = ({ onNext, onBack, defaultValues }: PeptideT
           </Radio.Group>
         </div>
 
-        <div className="flex justify-center gap-6 pt-4">
+        <div className="flex justify-center gap-6 pt-4 animate-btns">
           <Button
             variant="outline"
             className="w-[200px]"

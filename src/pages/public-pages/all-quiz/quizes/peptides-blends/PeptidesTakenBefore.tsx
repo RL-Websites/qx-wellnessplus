@@ -38,10 +38,10 @@ const PeptidesTakenBefore = ({ onNext, onBack, defaultValues }: PeptidesTakenBef
   });
 
   const selectedValues = watch("peptidesTaken");
-  const showOtherInput = selectedValues.includes("Other");
+  const showOtherInput = selectedValues?.includes("Other");
 
   const toggleValue = (value: string) => {
-    const newValues = selectedValues.includes(value) ? selectedValues.filter((v) => v !== value) : [...selectedValues, value];
+    const newValues = selectedValues?.includes(value) ? selectedValues.filter((v) => v !== value) : [...(selectedValues || ""), value];
 
     setValue("peptidesTaken", newValues, { shouldValidate: true });
 
@@ -61,14 +61,14 @@ const PeptidesTakenBefore = ({ onNext, onBack, defaultValues }: PeptidesTakenBef
         onSubmit={handleSubmit(onSubmit)}
         className="max-w-xl mx-auto space-y-6"
       >
-        <h2 className="text-center text-3xl font-semibold text-foreground font-poppins">If you have taken peptide therapy before, what type(s) have you taken?</h2>
+        <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">If you have taken peptide therapy before, what type(s) have you taken?</h2>
 
         <Grid
           gutter="md"
-          className="mt-6"
+          className="mt-6 animate-content"
         >
           {options.map((option) => {
-            const isChecked = selectedValues.includes(option);
+            const isChecked = selectedValues?.includes(option);
             return (
               <Grid.Col
                 span={12}
@@ -102,12 +102,12 @@ const PeptidesTakenBefore = ({ onNext, onBack, defaultValues }: PeptidesTakenBef
           <TextInput
             {...register("peptidesOther")}
             placeholder="Please specify other peptides"
-            className="mt-4"
+            className="mt-4 animate-content"
             error={errors.peptidesOther?.message}
           />
         )}
 
-        <div className="flex justify-center gap-6 pt-6">
+        <div className="flex justify-center gap-6 pt-6 animate-btns">
           <Button
             variant="outline"
             className="w-[200px]"
