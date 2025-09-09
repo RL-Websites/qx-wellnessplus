@@ -44,12 +44,12 @@ const AlcoholConsumption = ({ onNext, onBack, defaultValues }: AlcoholConsumptio
         className="max-w-xl mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins">How much alcohol do you drink?</h2>
+          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">How much alcohol do you drink?</h2>
 
           <Radio.Group
             value={selected}
             onChange={(value) => setValue("alcohol", value, { shouldValidate: true })}
-            className="mt-6"
+            className="mt-6 animate-content"
           >
             <Grid gutter="md">
               {alcoholOptions.map((option) => (
@@ -88,7 +88,7 @@ const AlcoholConsumption = ({ onNext, onBack, defaultValues }: AlcoholConsumptio
           {errors.alcohol && <div className="text-danger text-sm mt-2 text-center">{errors.alcohol.message}</div>}
         </div>
 
-        <div className="flex justify-center gap-6 pt-4">
+        <div className="flex justify-center gap-6 pt-4 animate-btns">
           <Button
             variant="outline"
             className="w-[200px]"

@@ -51,12 +51,12 @@ const KidneyDisease = ({ onNext, onBack, defaultValues }: IKidneyDiseaseProps) =
         className="card-common-width-lg mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Do you have active pancreatitis or severe liver/kidney disease?</h2>
+          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground animate-title">Do you have active pancreatitis or severe liver/kidney disease?</h2>
 
           <Radio.Group
             value={kidneyDisease}
             onChange={handleSelect}
-            className="mt-6 w-full"
+            className="mt-6 w-full animate-content"
           >
             <div className="grid md:grid-cols-2 w-full gap-5">
               {options.map((option) => (
@@ -82,7 +82,7 @@ const KidneyDisease = ({ onNext, onBack, defaultValues }: IKidneyDiseaseProps) =
           {errors.kidneyDisease && <Text className="text-red-500 text-sm mt-5 text-center">{errors.kidneyDisease.message}</Text>}
         </div>
 
-        <div className="flex justify-center gap-6 pt-4">
+        <div className="flex justify-center gap-6 pt-4 animate-btns">
           <Button
             variant="outline"
             className="w-[200px]"

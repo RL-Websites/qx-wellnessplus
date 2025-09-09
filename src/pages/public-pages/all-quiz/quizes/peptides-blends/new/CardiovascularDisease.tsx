@@ -52,14 +52,14 @@ const CardiovascularDiseasePeptides = ({ onNext, onBack, defaultValues }: ICardi
         className="card-common-width-lg mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">
+          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground animate-title">
             Do you have uncontrolled cardiovascular disease (e.g., unstable angina, recent heart attack)?
           </h2>
 
           <Radio.Group
             value={cardiovascularDiseasePeptides}
             onChange={handleSelect}
-            className="mt-6 w-full"
+            className="mt-6 w-full animate-content"
           >
             <div className="grid md:grid-cols-2 w-full gap-5">
               {options.map((option) => (
@@ -85,7 +85,7 @@ const CardiovascularDiseasePeptides = ({ onNext, onBack, defaultValues }: ICardi
           {errors.cardiovascularDiseasePeptides && <Text className="text-red-500 text-sm mt-5 text-center">{errors.cardiovascularDiseasePeptides.message}</Text>}
         </div>
 
-        <div className="flex justify-center gap-6 pt-4">
+        <div className="flex justify-center gap-6 pt-4 animate-btns">
           <Button
             variant="outline"
             className="w-[200px]"

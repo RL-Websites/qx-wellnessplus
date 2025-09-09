@@ -94,9 +94,14 @@ export default {
           "0%": { opacity: 0, transform: "translateY(20px)" },
           "100%": { opacity: 1, transform: "translateY(0)" },
         },
+        fadeInRight: {
+          "0%": { opacity: 0, transform: "translateX(30px)" },
+          "100%": { opacity: 1, transform: "translateY(0)" },
+        },
       },
       animation: {
         fadeInUp: "fadeInUp 0.4s ease-out",
+        fadeInRight: "fadeInRight 0.4s ease-out",
       },
     },
   },

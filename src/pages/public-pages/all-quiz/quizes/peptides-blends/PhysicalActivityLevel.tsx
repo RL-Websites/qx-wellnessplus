@@ -51,12 +51,12 @@ const PhysicalActivityLevel = ({ onNext, onBack, defaultValues }: IPhysicalActiv
         className="max-w-xl mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins">What is your typical physical activity level?</h2>
+          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">What is your typical physical activity level?</h2>
 
           <Radio.Group
             value={selected}
             onChange={(value) => setValue("activityLevel", value, { shouldValidate: true })}
-            className="mt-6"
+            className="mt-6 animate-content"
           >
             <Grid gutter="md">
               {options.map((option) => (
@@ -97,14 +97,14 @@ const PhysicalActivityLevel = ({ onNext, onBack, defaultValues }: IPhysicalActiv
               {...register("customActivity")}
               placeholder="Describe your activity level"
               error={errors.customActivity?.message}
-              className="mt-4"
+              className="mt-4 animate-content"
             />
           )}
 
           {errors.activityLevel && <div className="text-danger text-sm mt-2 text-center">{errors.activityLevel.message}</div>}
         </div>
 
-        <div className="flex justify-center gap-6 pt-4">
+        <div className="flex justify-center gap-6 pt-4 animate-btns">
           <Button
             variant="outline"
             className="w-[200px]"

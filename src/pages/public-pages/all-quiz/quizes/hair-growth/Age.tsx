@@ -43,7 +43,7 @@ const Age = ({ onNext, onBack, defaultValues }: IAgeProps) => {
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <div className=" card-common-width mx-auto mt-6">
-        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">What is your age?</h2>
+        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground animate-title">What is your age?</h2>
         <form
           id="ageForm"
           onSubmit={handleSubmit(onNext)}

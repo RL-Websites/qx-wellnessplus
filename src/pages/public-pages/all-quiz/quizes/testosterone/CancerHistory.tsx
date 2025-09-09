@@ -49,12 +49,12 @@ const CancerHistory = ({ onNext, onBack, defaultValues }: ICancerHistoryProps) =
         className="card-common-width-lg mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Do you have a history of prostate or breast cancer?</h2>
+          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground animate-title">Do you have a history of prostate or breast cancer?</h2>
 
           <Radio.Group
             value={cancerHistory}
             onChange={handleSelect}
-            className="mt-6 w-full"
+            className="mt-6 w-full animate-content"
           >
             <div className="grid md:grid-cols-2 gap-5 w-full">
               {options.map((option) => (
@@ -89,7 +89,7 @@ const CancerHistory = ({ onNext, onBack, defaultValues }: ICancerHistoryProps) =
           {errors.cancerHistory && <Text className="text-red-500 text-sm mt-5 text-center">{errors.cancerHistory.message}</Text>}
         </div>
 
-        <div className="flex justify-center gap-6 pt-4">
+        <div className="flex justify-center gap-6 pt-4 animate-btns">
           <Button
             variant="outline"
             className="w-[200px]"

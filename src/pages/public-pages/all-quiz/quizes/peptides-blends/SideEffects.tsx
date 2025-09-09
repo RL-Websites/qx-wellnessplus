@@ -76,11 +76,11 @@ const SideEffects = ({ onNext, onBack, defaultValues }: SideEffectsProps) => {
         onSubmit={handleSubmit(onSubmit)}
         className="max-w-xl mx-auto space-y-6"
       >
-        <h2 className="text-center text-3xl font-semibold text-foreground font-poppins">Have you experienced any side effects?</h2>
+        <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">Have you experienced any side effects?</h2>
 
         <Grid
           gutter="md"
-          className="mt-6"
+          className="mt-6 animate-content"
         >
           {options.map((option) => {
             const isChecked = selectedValues.includes(option);
@@ -117,12 +117,12 @@ const SideEffects = ({ onNext, onBack, defaultValues }: SideEffectsProps) => {
           <TextInput
             {...register("sideEffectsOther")}
             placeholder="Please specify other side effects"
-            className="mt-4"
+            className="mt-4 animate-content"
             error={errors.sideEffectsOther?.message}
           />
         )}
 
-        <div className="flex justify-center gap-6 pt-6">
+        <div className="flex justify-center gap-6 pt-6 animate-btns">
           <Button
             variant="outline"
             className="w-[200px]"

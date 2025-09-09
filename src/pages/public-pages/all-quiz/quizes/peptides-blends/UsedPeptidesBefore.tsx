@@ -44,12 +44,12 @@ const UsedPeptidesBefore = ({ onNext, onBack, defaultValues }: IUsedPeptidesBefo
         className="max-w-xl mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins">Have you used peptide therapies before?</h2>
+          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">Have you used peptide therapies before?</h2>
 
           <Radio.Group
             value={selected}
             onChange={(value) => setValue("usedPeptides", value, { shouldValidate: true })}
-            className="mt-6"
+            className="mt-6 animate-content"
           >
             <Grid gutter="md">
               {options.map((option) => (
@@ -88,7 +88,7 @@ const UsedPeptidesBefore = ({ onNext, onBack, defaultValues }: IUsedPeptidesBefo
           {errors.usedPeptides && <div className="text-danger text-sm mt-2 text-center">{errors.usedPeptides.message}</div>}
         </div>
 
-        <div className="flex justify-center gap-6 pt-4">
+        <div className="flex justify-center gap-6 pt-4 animate-btns">
           <Button
             variant="outline"
             className="w-[200px]"

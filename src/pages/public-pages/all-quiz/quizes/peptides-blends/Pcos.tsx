@@ -46,12 +46,12 @@ const Pcos = ({ onNext, onBack, defaultValues }: IPcosProps) => {
       className="max-w-xl mx-auto space-y-6"
     >
       <div>
-        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Do you have a history of polycystic ovary syndrome (PCOS)?</h2>
+        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground animate-title">Do you have a history of polycystic ovary syndrome (PCOS)?</h2>
 
         <Radio.Group
           value={pcos}
           onChange={handleSelect}
-          className="mt-6"
+          className="mt-6 animate-content"
           error={errors?.pcos?.message}
         >
           <Group grow>
@@ -85,7 +85,7 @@ const Pcos = ({ onNext, onBack, defaultValues }: IPcosProps) => {
         </Radio.Group>
       </div>
 
-      <div className="flex justify-center gap-6 pt-4">
+      <div className="flex justify-center gap-6 pt-4 animate-btns">
         <Button
           variant="outline"
           className="w-[200px]"
