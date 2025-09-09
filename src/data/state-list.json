@@ -1,0 +1,452 @@
+[
+  {
+    "ItemId": 2,
+    "StateName": "New York",
+    "ShortName": "NY",
+    "NorthLatLong": "45.0159",
+    "SouthLatLong": "40.496",
+    "EastLatLong": "-71.8562",
+    "WestLatLong": "-79.7624"
+  },
+  {
+    "ItemId": 20,
+    "StateName": "California",
+    "ShortName": "CA",
+    "NorthLatLong": "42.0095",
+    "SouthLatLong": "32.5343",
+    "EastLatLong": "-114.1312",
+    "WestLatLong": "-124.4096"
+  },
+  {
+    "ItemId": 234,
+    "StateName": "Illinois",
+    "ShortName": "IL",
+    "NorthLatLong": "42.5096",
+    "SouthLatLong": "36.9703",
+    "EastLatLong": "-87.4952",
+    "WestLatLong": "-91.5131"
+  },
+  {
+    "ItemId": 287,
+    "StateName": "Texas",
+    "ShortName": "TX",
+    "NorthLatLong": "36.5007",
+    "SouthLatLong": "25.8371",
+    "EastLatLong": "-93.5083",
+    "WestLatLong": "-106.6456"
+  },
+  {
+    "ItemId": 371,
+    "StateName": "Pennsylvania",
+    "ShortName": "PA",
+    "NorthLatLong": "42.2695",
+    "SouthLatLong": "39.7198",
+    "EastLatLong": "-74.6895",
+    "WestLatLong": "-80.5211"
+  },
+  {
+    "ItemId": 385,
+    "StateName": "Arizona",
+    "ShortName": "AZ",
+    "NorthLatLong": "37.0004",
+    "SouthLatLong": "31.332",
+    "EastLatLong": "-109.0452",
+    "WestLatLong": "-114.8184"
+  },
+  {
+    "ItemId": 411,
+    "StateName": "Florida",
+    "ShortName": "FL",
+    "NorthLatLong": "31.0006",
+    "SouthLatLong": "24.3963",
+    "EastLatLong": "-80.0314",
+    "WestLatLong": "-87.6349"
+  },
+  {
+    "ItemId": 484,
+    "StateName": "Indiana",
+    "ShortName": "IN",
+    "NorthLatLong": "41.7611",
+    "SouthLatLong": "37.7717",
+    "EastLatLong": "-84.7846",
+    "WestLatLong": "-88.0998"
+  },
+  {
+    "ItemId": 507,
+    "StateName": "Ohio",
+    "ShortName": "OH",
+    "NorthLatLong": "41.977",
+    "SouthLatLong": "38.4032",
+    "EastLatLong": "-80.5186",
+    "WestLatLong": "-84.8203"
+  },
+  {
+    "ItemId": 542,
+    "StateName": "North Carolina",
+    "ShortName": "NC",
+    "NorthLatLong": "36.588",
+    "SouthLatLong": "33.8423",
+    "EastLatLong": "-75.4606",
+    "WestLatLong": "-84.3219"
+  },
+  {
+    "ItemId": 566,
+    "StateName": "Michigan",
+    "ShortName": "MI",
+    "NorthLatLong": "48.3061",
+    "SouthLatLong": "41.6961",
+    "EastLatLong": "-82.1229",
+    "WestLatLong": "-90.4182"
+  },
+  {
+    "ItemId": 598,
+    "StateName": "Tennessee",
+    "ShortName": "TN",
+    "NorthLatLong": "36.6784",
+    "SouthLatLong": "34.9829",
+    "EastLatLong": "-81.6469",
+    "WestLatLong": "-90.3103"
+  },
+  {
+    "ItemId": 616,
+    "StateName": "Massachusetts",
+    "ShortName": "MA",
+    "NorthLatLong": "42.8868",
+    "SouthLatLong": "41.1863",
+    "EastLatLong": "-69.9286",
+    "WestLatLong": "-73.5081"
+  },
+  {
+    "ItemId": 653,
+    "StateName": "Washington",
+    "ShortName": "WA",
+    "NorthLatLong": "49.0024",
+    "SouthLatLong": "45.5435",
+    "EastLatLong": "-116.9176",
+    "WestLatLong": "-124.8489"
+  },
+  {
+    "ItemId": 682,
+    "StateName": "Colorado",
+    "ShortName": "CO",
+    "NorthLatLong": "41.0034",
+    "SouthLatLong": "36.9931",
+    "EastLatLong": "-102.0416",
+    "WestLatLong": "-109.0452"
+  },
+  {
+    "ItemId": 704,
+    "StateName": "District of Columbia",
+    "ShortName": "DC",
+    "NorthLatLong": "38.9955",
+    "SouthLatLong": "38.7916",
+    "EastLatLong": "-76.9094",
+    "WestLatLong": "-77.1198"
+  },
+  {
+    "ItemId": 706,
+    "StateName": "Maryland",
+    "ShortName": "MD",
+    "NorthLatLong": "39.723",
+    "SouthLatLong": "37.911",
+    "EastLatLong": "-75.0489",
+    "WestLatLong": "-79.4876"
+  },
+  {
+    "ItemId": 714,
+    "StateName": "Kentucky",
+    "ShortName": "KY",
+    "NorthLatLong": "39.1474",
+    "SouthLatLong": "36.4971",
+    "EastLatLong": "-81.9644",
+    "WestLatLong": "-89.5715"
+  },
+  {
+    "ItemId": 720,
+    "StateName": "Oregon",
+    "ShortName": "OR",
+    "NorthLatLong": "46.292",
+    "SouthLatLong": "41.9918",
+    "EastLatLong": "-116.4633",
+    "WestLatLong": "-124.5662"
+  },
+  {
+    "ItemId": 735,
+    "StateName": "Oklahoma",
+    "ShortName": "OK",
+    "NorthLatLong": "37.0021",
+    "SouthLatLong": "33.6151",
+    "EastLatLong": "-94.4312",
+    "WestLatLong": "-103.0025"
+  },
+  {
+    "ItemId": 747,
+    "StateName": "Wisconsin",
+    "ShortName": "WI",
+    "NorthLatLong": "47.3098",
+    "SouthLatLong": "42.4919",
+    "EastLatLong": "-86.805",
+    "WestLatLong": "-92.8894"
+  },
+  {
+    "ItemId": 768,
+    "StateName": "Nevada",
+    "ShortName": "NV",
+    "NorthLatLong": "42.0022",
+    "SouthLatLong": "35.0018",
+    "EastLatLong": "-114.0396",
+    "WestLatLong": "-120.0057"
+  },
+  {
+    "ItemId": 775,
+    "StateName": "New Mexico",
+    "ShortName": "NM",
+    "NorthLatLong": "37.0004",
+    "SouthLatLong": "31.332",
+    "EastLatLong": "-103.0019",
+    "WestLatLong": "-109.0452"
+  },
+  {
+    "ItemId": 783,
+    "StateName": "Missouri",
+    "ShortName": "MO",
+    "NorthLatLong": "40.6136",
+    "SouthLatLong": "35.9958",
+    "EastLatLong": "-89.0984",
+    "WestLatLong": "-95.7747"
+  },
+  {
+    "ItemId": 800,
+    "StateName": "Virginia",
+    "ShortName": "VA",
+    "NorthLatLong": "39.4651",
+    "SouthLatLong": "36.5408",
+    "EastLatLong": "-75.2417",
+    "WestLatLong": "-83.6753"
+  },
+  {
+    "ItemId": 818,
+    "StateName": "Georgia",
+    "ShortName": "GA",
+    "NorthLatLong": "35.0007",
+    "SouthLatLong": "30.3578",
+    "EastLatLong": "-80.8397",
+    "WestLatLong": "-85.6052"
+  },
+  {
+    "ItemId": 835,
+    "StateName": "Nebraska",
+    "ShortName": "NE",
+    "NorthLatLong": "43.0017",
+    "SouthLatLong": "39.999",
+    "EastLatLong": "-95.3081",
+    "WestLatLong": "-104.0535"
+  },
+  {
+    "ItemId": 840,
+    "StateName": "Minnesota",
+    "ShortName": "MN",
+    "NorthLatLong": "49.3844",
+    "SouthLatLong": "43.4994",
+    "EastLatLong": "-89.4918",
+    "WestLatLong": "-97.2392"
+  },
+  {
+    "ItemId": 865,
+    "StateName": "Kansas",
+    "ShortName": "KS",
+    "NorthLatLong": "40.0031",
+    "SouthLatLong": "36.9931",
+    "EastLatLong": "-94.5884",
+    "WestLatLong": "-102.0517"
+  },
+  {
+    "ItemId": 877,
+    "StateName": "Louisiana",
+    "ShortName": "LA",
+    "NorthLatLong": "33.0195",
+    "SouthLatLong": "28.9286",
+    "EastLatLong": "-88.816",
+    "WestLatLong": "-94.0431"
+  },
+  {
+    "ItemId": 887,
+    "StateName": "Hawaii",
+    "ShortName": "HI",
+    "NorthLatLong": "28.4021",
+    "SouthLatLong": "18.8655",
+    "EastLatLong": "-154.8068",
+    "WestLatLong": "-178.3347"
+  },
+  {
+    "ItemId": 889,
+    "StateName": "Alaska",
+    "ShortName": "AK",
+    "NorthLatLong": "71.5388",
+    "SouthLatLong": "51.2097",
+    "EastLatLong": "-129.9795",
+    "WestLatLong": "-179.1489"
+  },
+  {
+    "ItemId": 891,
+    "StateName": "New Jersey",
+    "ShortName": "NJ",
+    "NorthLatLong": "41.3572",
+    "SouthLatLong": "38.929",
+    "EastLatLong": "-73.905",
+    "WestLatLong": "-75.5636"
+  },
+  {
+    "ItemId": 914,
+    "StateName": "Idaho",
+    "ShortName": "ID",
+    "NorthLatLong": "49.0006",
+    "SouthLatLong": "41.9881",
+    "EastLatLong": "-111.0435",
+    "WestLatLong": "-117.243"
+  },
+  {
+    "ItemId": 923,
+    "StateName": "Alabama",
+    "ShortName": "AL",
+    "NorthLatLong": "35.008",
+    "SouthLatLong": "30.144",
+    "EastLatLong": "-84.888",
+    "WestLatLong": "-88.473"
+  },
+  {
+    "ItemId": 936,
+    "StateName": "Iowa",
+    "ShortName": "IA",
+    "NorthLatLong": "43.5008",
+    "SouthLatLong": "40.3754",
+    "EastLatLong": "-90.1401",
+    "WestLatLong": "-96.6395"
+  },
+  {
+    "ItemId": 950,
+    "StateName": "Arkansas",
+    "ShortName": "AR",
+    "NorthLatLong": "36.5019",
+    "SouthLatLong": "33.0041",
+    "EastLatLong": "-89.6444",
+    "WestLatLong": "-94.6179"
+  },
+  {
+    "ItemId": 961,
+    "StateName": "Utah",
+    "ShortName": "UT",
+    "NorthLatLong": "42.0016",
+    "SouthLatLong": "36.9979",
+    "EastLatLong": "-109.0416",
+    "WestLatLong": "-114.053"
+  },
+  {
+    "ItemId": 980,
+    "StateName": "Rhode Island",
+    "ShortName": "RI",
+    "NorthLatLong": "42.0188",
+    "SouthLatLong": "41.1463",
+    "EastLatLong": "-71.1204",
+    "WestLatLong": "-71.882"
+  },
+  {
+    "ItemId": 987,
+    "StateName": "Mississippi",
+    "ShortName": "MS",
+    "NorthLatLong": "34.996",
+    "SouthLatLong": "30.1739",
+    "EastLatLong": "-88.0998",
+    "WestLatLong": "-91.655"
+  },
+  {
+    "ItemId": 994,
+    "StateName": "South Dakota",
+    "ShortName": "SD",
+    "NorthLatLong": "45.9455",
+    "SouthLatLong": "42.4796",
+    "EastLatLong": "-96.4364",
+    "WestLatLong": "-104.0577"
+  },
+  {
+    "ItemId": 997,
+    "StateName": "Connecticut",
+    "ShortName": "CT",
+    "NorthLatLong": "42.0506",
+    "SouthLatLong": "40.9801",
+    "EastLatLong": "-71.7868",
+    "WestLatLong": "-73.7278"
+  },
+  {
+    "ItemId": 1013,
+    "StateName": "South Carolina",
+    "ShortName": "SC",
+    "NorthLatLong": "35.2155",
+    "SouthLatLong": "32.0346",
+    "EastLatLong": "-78.5419",
+    "WestLatLong": "-83.3539"
+  },
+  {
+    "ItemId": 1026,
+    "StateName": "New Hampshire",
+    "ShortName": "NH",
+    "NorthLatLong": "45.3054",
+    "SouthLatLong": "42.696",
+    "EastLatLong": "-70.7033",
+    "WestLatLong": "-72.5573"
+  },
+  {
+    "ItemId": 1030,
+    "StateName": "North Dakota",
+    "ShortName": "ND",
+    "NorthLatLong": "49.0006",
+    "SouthLatLong": "45.9351",
+    "EastLatLong": "-96.5544",
+    "WestLatLong": "-104.0489"
+  },
+  {
+    "ItemId": 1035,
+    "StateName": "Montana",
+    "ShortName": "MT",
+    "NorthLatLong": "49.0006",
+    "SouthLatLong": "44.3582",
+    "EastLatLong": "-104.0475",
+    "WestLatLong": "-116.0491"
+  },
+  {
+    "ItemId": 1040,
+    "StateName": "Delaware",
+    "ShortName": "DE",
+    "NorthLatLong": "39.8395",
+    "SouthLatLong": "38.451",
+    "EastLatLong": "-75.0489",
+    "WestLatLong": "-75.789"
+  },
+  {
+    "ItemId": 1043,
+    "StateName": "Maine",
+    "ShortName": "ME",
+    "NorthLatLong": "47.4598",
+    "SouthLatLong": "42.977",
+    "EastLatLong": "-66.9499",
+    "WestLatLong": "-71.0839"
+  },
+  {
+    "ItemId": 1047,
+    "StateName": "West Virginia",
+    "ShortName": "WV",
+    "NorthLatLong": "40.6388",
+    "SouthLatLong": "37.2027",
+    "EastLatLong": "-77.7195",
+    "WestLatLong": "-82.6447"
+  },
+  {
+    "ItemId": 1050,
+    "StateName": "Vermont",
+    "ShortName": "WV",
+    "NorthLatLong": "40.6388",
+    "SouthLatLong": "37.2027",
+    "EastLatLong": "-77.7195",
+    "WestLatLong": "-82.6447"
+  }
+]
