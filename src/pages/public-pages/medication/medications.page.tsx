@@ -12,12 +12,15 @@ import { medicineRepository } from "@/common/api/repositories/medicineRepository
 import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { customerAtom } from "@/common/states/customer.atom";
 import { cartItemsAtom, prevGlpMedDetails } from "@/common/states/product.atom";
+import { selectedStateAtom } from "@/common/states/state.atom";
+import { stateWiseLabFee } from "@/utils/helper.utils";
 import { useQuery } from "@tanstack/react-query";
 import { useAtom, useAtomValue } from "jotai";
 import { NavLink as RdNavLink } from "react-router-dom";
 
 const MedicationsPage = () => {
   const [medicines, setMedicines] = useState<IMedicineListItem[]>();
+  const selectedState = useAtomValue(selectedStateAtom);
   const [cartItems, setCartItems] = useAtom(cartItemsAtom);
   const [selectedMedication, setSelectedMedication] = useState<any>(null);
   const [pendingAddToCart, setPendingAddToCart] = useState<any>(null);
@@ -111,7 +114,7 @@ const MedicationsPage = () => {
               image={`${import.meta.env.VITE_BASE_PATH}/storage/${item?.image}`}
               title={`${item?.name} ${item.strength ? item.strength + " " + item.unit : ""} `}
               cost={item?.customer_medication?.price}
-              lab_fee={item?.lab_fee}
+              lab_fee={stateWiseLabFee(item, selectedState)}
               onAddToCart={() => handleAddToCart(item)}
               onShowDetails={() => handelDetailsModal(item)}
               disabled={isInCart} // pass this prop to your MedicationCard

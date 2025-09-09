@@ -72,6 +72,10 @@ export interface ICustomerMedicationRef {
   medication_id: number;
   customer_id: number;
   price: string;
+  platform_fee: any;
+  consultancy_fee: any;
+  testosterone_fee: any;
+  price_for_customer: any;
   is_active: number;
   assign_by: null;
   created_at: Date;
