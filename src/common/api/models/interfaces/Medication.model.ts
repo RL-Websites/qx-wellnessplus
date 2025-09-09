@@ -50,6 +50,8 @@ export interface IMedicineListItem {
   service_fee: string;
   shipping_fee: string;
   customer_price?: string;
+  lab_fee?: string;
+  lab_fee_selected_state?: string;
   is_research_only: string;
   image: string;
   total_price?: string;
