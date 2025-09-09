@@ -34,12 +34,14 @@ const Cholesterol = ({ onNext, onBack, defaultValues }: CholesterolProps) => {
         className="max-w-xl mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins">Do you have cholesterol greater than 240 mg/dL or are you on cholesterol medication?</h2>
+          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">
+            Do you have cholesterol greater than 240 mg/dL or are you on cholesterol medication?
+          </h2>
 
           <Radio.Group
             value={selected}
             onChange={(value) => setValue("cholesterolStatus", value, { shouldValidate: true })}
-            className="mt-6"
+            className="mt-6 animate-content"
           >
             <Grid gutter="md">
               {options.map((option) => (
@@ -76,7 +78,7 @@ const Cholesterol = ({ onNext, onBack, defaultValues }: CholesterolProps) => {
           </Radio.Group>
         </div>
 
-        <div className="flex justify-center gap-6 pt-4">
+        <div className="flex justify-center gap-6 pt-4 animate-btns">
           <Button
             variant="outline"
             className="w-[200px]"

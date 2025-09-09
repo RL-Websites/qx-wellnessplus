@@ -1,0 +1,11 @@
+@layer components {
+  .animate-title {
+    @apply delay-200 duration-500 animate-fadeInRight;
+  }
+  .animate-content {
+    @apply delay-700 duration-500 animate-fadeInRight;
+  }
+  .animate-btns {
+    @apply delay-[1200] duration-500 animate-fadeInUp;
+  }
+}

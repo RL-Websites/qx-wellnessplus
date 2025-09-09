@@ -14,6 +14,8 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import FullBodyPhoto from "./intake-steps/FullbodyPhoto";
 
+import AnimatedStep from "@/common/components/AnimatedSteps";
+import { AnimatePresence } from "framer-motion";
 import MedicalHistory from "./intake-steps/hair-growth/medicalHistory";
 import SymptomHistory from "./intake-steps/hair-growth/symptomHistory";
 import WhenNotice from "./intake-steps/hair-growth/whenNotice";
@@ -55,6 +57,7 @@ interface StepConfig {
 
 const PatientIntake = () => {
   const [activeStep, setActiveStep] = useState(1);
+  const [prevStep, setPrevStep] = useState(1);
   const [formData, setFormData] = useState<any>({});
   const [visibleSteps, setVisibleSteps] = useState<number[]>([]);
   const [finalStep, setFinalStep] = useState<number>(18);
@@ -134,6 +137,7 @@ const PatientIntake = () => {
   const handleNext = (data: any) => {
     setFormData((prev) => ({ ...prev, ...data }));
     // const currentIndex = visibleSteps.indexOf(activeStep);
+    setPrevStep(activeStep);
     if (activeStep < totalDynamicSteps + 1) {
       setActiveStep((prev) => prev + 1);
     }
@@ -141,6 +145,7 @@ const PatientIntake = () => {
   };
 
   const handleBack = () => {
+    setPrevStep(activeStep);
     if (activeStep > 1) {
       setActiveStep((prev) => prev - 1);
     }
@@ -201,33 +206,93 @@ const PatientIntake = () => {
   return (
     <>
       {/* Dynamic Header + Progress */}
-      {activeStep <= totalDynamicSteps && (
+      {activeStep <= totalDynamicSteps &&
+        (() => {
+          // Determine header type
+          const isWeightLossFirstStep = activeStep === 1 && activeCategories.length === 1 && activeCategories[0] === "weightLoss";
+          const headerType = isWeightLossFirstStep ? "weightLoss" : "generic";
+          const headerKey = `${headerType}-${activeStep}`;
+
+          return (
+            <div className="mb-6">
+              <AnimatePresence mode="wait">
+                <AnimatedStep
+                  key={headerKey}
+                  direction={activeStep > prevStep ? "right" : "left"} // ✅ handles back/next animations
+                >
+                  {isWeightLossFirstStep ? (
+                    <div className="text-center pb-12">
+                      <h2 className="heading-text text-foreground uppercase">Let's Get to Know You Better</h2>
+                      <p className="text-foreground text-xl font-medium font-poppins pt-2.5">Tell us a little about your current stats so we can tailor your plan.</p>
+                      <div className="max-w-[520px] mx-auto mt-6">
+                        <Progress value={progress} />
+                        <div className="text-center text-base text-foreground font-bold mt-3">
+                          {activeStep <= totalDynamicSteps ? `${activeStep} / ${totalDynamicSteps}` : `${totalDynamicSteps + 1} / ${totalDynamicSteps + 1}`}
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="max-w-[800px] mx-auto pb-12">
+                      <h2 className="heading-text text-center">Intake Form</h2>
+                      <p className="text-foreground text-center text-lg font-medium font-poppins pt-5">
+                        An intake form is a short questionnaire that collects your health details for review by our licensed providers. Please answer all questions as clearly and
+                        accurately as possible. This helps our licensed providers review your information faster and ensures safe, personalized treatment.
+                      </p>
+                      <div className="max-w-[520px] mx-auto mt-6">
+                        <Progress value={progress} />
+                        <div className="text-center text-base text-foreground font-bold mt-3">
+                          {activeStep <= totalDynamicSteps ? `${activeStep} / ${totalDynamicSteps}` : `${totalDynamicSteps + 1} / ${totalDynamicSteps + 1}`}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </AnimatedStep>
+              </AnimatePresence>
+            </div>
+          );
+        })()}
+
+      {/* {activeStep <= totalDynamicSteps && (
         <>
           {activeStep === 1 ? (
             activeCategories.length === 1 && activeCategories[0] === "weightLoss" ? (
               // Only Weight Loss → special first step header
-              <div className="mb-6">
-                <div className="text-center pb-12">
-                  <h2 className="heading-text text-foreground uppercase">Let's Get to Know You Better</h2>
-                  <p className="text-foreground text-xl font-medium font-poppins pt-2.5">Tell us a little about your current stats so we can tailor your plan.</p>
-                </div>
-                <div className="max-w-[520px] mx-auto">
-                  <Progress value={progress} />
-                  <div className="text-center text-base text-foreground font-bold mt-3">
-                    {activeStep <= totalDynamicSteps ? `${activeStep} / ${totalDynamicSteps}` : `${totalDynamicSteps + 1} / ${totalDynamicSteps + 1}`}
+              <AnimatePresence mode="wait">
+                  <AnimatedStep
+                    key={activeStep}
+                    direction={"right"}
+                  >
+                <div className="mb-6">
+                  <div className="text-center pb-12">
+                    <h2 className="heading-text text-foreground uppercase">Let's Get to Know You Better</h2>
+                    <p className="text-foreground text-xl font-medium font-poppins pt-2.5">Tell us a little about your current stats so we can tailor your plan.</p>
+                  </div>
+                  <div className="max-w-[520px] mx-auto">
+                    <Progress value={progress} />
+                    <div className="text-center text-base text-foreground font-bold mt-3">
+                      {activeStep <= totalDynamicSteps ? `${activeStep} / ${totalDynamicSteps}` : `${totalDynamicSteps + 1} / ${totalDynamicSteps + 1}`}
+                    </div>
                   </div>
                 </div>
-              </div>
+              </AnimatedStep>
+              </AnimatePresence>
             ) : (
               // Any other category or multiple categories → generic intake header
               <div className="mb-6">
-                <div className="max-w-[800px] mx-auto pb-12">
-                  <h2 className="heading-text text-center">Intake Form</h2>
-                  <p className="text-foreground text-center text-lg font-medium font-poppins pt-5">
-                    An intake form is a short questionnaire that collects your health details for review by our licensed providers. Please answer all questions as clearly and
-                    accurately as possible. This helps our licensed providers review your information faster and ensures safe, personalized treatment.
-                  </p>
-                </div>
+                <AnimatePresence mode="wait">
+                  <AnimatedStep
+                    key={activeStep}
+                    direction={"right"}
+                  >
+                    <div className="max-w-[800px] mx-auto pb-12">
+                      <h2 className="heading-text text-center">Intake Form</h2>
+                      <p className="text-foreground text-center text-lg font-medium font-poppins pt-5">
+                        An intake form is a short questionnaire that collects your health details for review by our licensed providers. Please answer all questions as clearly and
+                        accurately as possible. This helps our licensed providers review your information faster and ensures safe, personalized treatment.
+                      </p>
+                    </div>
+                  </AnimatedStep>
+                </AnimatePresence>
                 <div className="max-w-[520px] mx-auto">
                   <Progress value={progress} />
                   <div className="text-center text-base text-foreground font-bold mt-3">
@@ -239,13 +304,21 @@ const PatientIntake = () => {
           ) : (
             // All other steps → generic intake header
             <div className="mb-6">
-              <div className="max-w-[800px] mx-auto pb-12">
-                <h2 className="heading-text text-center">Intake Form</h2>
-                <p className="text-foreground text-center text-lg font-medium font-poppins pt-5">
-                  An intake form is a short questionnaire that collects your health details for review by our licensed providers. Please answer all questions as clearly and
-                  accurately as possible. This helps our licensed providers review your information faster and ensures safe, personalized treatment.
-                </p>
-              </div>
+              <AnimatePresence mode="wait">
+                <AnimatedStep
+                  key={activeStep}
+                  direction={"right"}
+                >
+                  <div className="max-w-[800px] mx-auto pb-12">
+                    <h2 className="heading-text text-center">Intake Form</h2>
+                    <p className="text-foreground text-center text-lg font-medium font-poppins pt-5">
+                      An intake form is a short questionnaire that collects your health details for review by our licensed providers. Please answer all questions as clearly and
+                      accurately as possible. This helps our licensed providers review your information faster and ensures safe, personalized treatment.
+                    </p>
+                  </div>
+                </AnimatedStep>
+              </AnimatePresence>
+
               <div className="max-w-[520px] mx-auto">
                 <Progress value={progress} />
                 <div className="text-center text-base text-foreground font-bold mt-3">
@@ -255,10 +328,26 @@ const PatientIntake = () => {
             </div>
           )}
         </>
-      )}
+      )} */}
 
       {/* Render all steps */}
-      {activeStep <= totalDynamicSteps && CurrentStepComponent && (
+      <AnimatePresence mode="wait">
+        {activeStep <= totalDynamicSteps && CurrentStepComponent && (
+          <AnimatedStep
+            key={activeStep}
+            direction={activeStep > prevStep ? "right" : "left"}
+          >
+            <CurrentStepComponent
+              onNext={shouldSubmit(activeStep) ? handleFinalSubmit : handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+              isLoading={shouldSubmit(activeStep) && intakeFormMutation.isPending}
+              isFinalStep={shouldSubmit(activeStep)}
+            />
+          </AnimatedStep>
+        )}
+      </AnimatePresence>
+      {/* {activeStep <= totalDynamicSteps && CurrentStepComponent && (
         <CurrentStepComponent
           onNext={shouldSubmit(activeStep) ? handleFinalSubmit : handleNext}
           onBack={handleBack}
@@ -266,7 +355,7 @@ const PatientIntake = () => {
           isLoading={shouldSubmit(activeStep) && intakeFormMutation.isPending}
           isFinalStep={shouldSubmit(activeStep)}
         />
-      )}
+      )} */}
 
       {/* Thanks Step */}
       {activeStep === totalDynamicSteps + 1 && <ThanksStep isActive={totalDynamicSteps && activeStep == totalDynamicSteps + 1 && totalDynamicSteps > 0 ? true : false} />}

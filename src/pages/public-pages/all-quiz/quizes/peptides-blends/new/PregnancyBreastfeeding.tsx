@@ -52,12 +52,12 @@ const PregnancyBreastfeeding = ({ onNext, onBack, defaultValues }: IPregnancyBre
         className="card-common-width-lg mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Are you pregnant, planning pregnancy, or currently breastfeeding?</h2>
+          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground animate-title">Are you pregnant, planning pregnancy, or currently breastfeeding?</h2>
 
           <Radio.Group
             value={pregnancyBreastfeeding}
             onChange={handleSelect}
-            className="mt-6 w-full"
+            className="mt-6 w-full animate-content"
           >
             <div className="grid md:grid-cols-2 w-full gap-5">
               {options.map((option) => (
@@ -83,7 +83,7 @@ const PregnancyBreastfeeding = ({ onNext, onBack, defaultValues }: IPregnancyBre
           {errors.pregnancyBreastfeeding && <Text className="text-red-500 text-sm mt-5 text-center">{errors.pregnancyBreastfeeding.message}</Text>}
         </div>
 
-        <div className="flex justify-center gap-6 pt-4">
+        <div className="flex justify-center gap-6 pt-4 animate-btns">
           <Button
             variant="outline"
             className="w-[200px]"

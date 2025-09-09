@@ -55,12 +55,12 @@ const CustomerStatus = ({ onNext, onBack, defaultValues }: ICustomerStatusProps)
         className="card-common-width-lg mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Are you new or an existing Dosevana customer?</h2>
+          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground animate-title">Are you new or an existing Dosevana customer?</h2>
 
           <Radio.Group
             value={customerStatus}
             onChange={handleSelect}
-            className="mt-6 w-full"
+            className="mt-6 w-full animate-content"
           >
             <div className="grid md:grid-cols-2 w-full gap-5">
               {options.map((option) => (
@@ -85,7 +85,7 @@ const CustomerStatus = ({ onNext, onBack, defaultValues }: ICustomerStatusProps)
           {errors.customerStatus && <Text className="text-red-500 text-sm mt-5 text-center">{errors.customerStatus.message}</Text>}
         </div>
 
-        <div className="flex justify-center gap-6 pt-4">
+        <div className="flex justify-center gap-6 pt-4 animate-btns">
           <Button
             variant="outline"
             className="w-[200px]"

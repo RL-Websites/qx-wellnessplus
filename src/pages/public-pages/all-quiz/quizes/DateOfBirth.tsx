@@ -57,15 +57,11 @@ export default function DateOfBirth({ onNext, onBack, defaultValues }: IDobProps
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
-      <h2 className="heading-text text-foreground uppercase text-center delay-200 duration-500 animate-fadeInRight">Date of Birth</h2>
+      <h2 className="heading-text text-foreground uppercase text-center animate-title">Date of Birth</h2>
       {selectedCategory?.includes("Testosterone") ? (
-        <p className="text-xl text-foreground font-poppins text-center pt-5 delay-700 duration-500 animate-fadeInRight">
-          For Testosterone Therapy, you must be {ageLimit} years or older.
-        </p>
+        <p className="text-xl text-foreground font-poppins text-center pt-5 animate-content">For Testosterone Therapy, you must be {ageLimit} years or older.</p>
       ) : (
-        <p className="text-xl text-foreground font-poppins text-center pt-5 delay-700 duration-500 animate-fadeInRight">
-          We cannot prescribe any medication if you are under {ageLimit} years old
-        </p>
+        <p className="text-xl text-foreground font-poppins text-center pt-5 animate-content">We cannot prescribe any medication if you are under {ageLimit} years old</p>
       )}
       <div className="card-common card-common-width relative z-10 delay-1000 duration-500 animate-fadeInRight">
         <form
@@ -111,7 +107,7 @@ export default function DateOfBirth({ onNext, onBack, defaultValues }: IDobProps
       <div className="flex justify-center md:gap-6 gap-3 md:pt-8 pt-5 relative z-0">
         <Button
           variant="outline"
-          className="w-[200px] delay-[1200] duration-500 animate-fadeInUp"
+          className="w-[200px] animate-btns"
           component={Link}
           to="/category"
         >
@@ -119,7 +115,7 @@ export default function DateOfBirth({ onNext, onBack, defaultValues }: IDobProps
         </Button>
         <Button
           type="submit"
-          className="w-[200px] delay-[1200] duration-500 animate-fadeInUp"
+          className="w-[200px] animate-btns"
           form="dobForm"
         >
           Next

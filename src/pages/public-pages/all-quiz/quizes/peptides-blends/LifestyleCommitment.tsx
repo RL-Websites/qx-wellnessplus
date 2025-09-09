@@ -44,14 +44,14 @@ const LifestyleCommitment = ({ onNext, onBack, defaultValues }: ILifestyleCommit
         className="max-w-xl mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins">
+          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">
             Are you willing to follow a healthy lifestyle plan during peptide therapy (diet, exercise, sleep)?
           </h2>
 
           <Radio.Group
             value={selected}
             onChange={(value) => setValue("lifestyleCommitment", value, { shouldValidate: true })}
-            className="mt-6"
+            className="mt-6 animate-content"
           >
             <Grid gutter="md">
               {options.map((option) => (
@@ -90,7 +90,7 @@ const LifestyleCommitment = ({ onNext, onBack, defaultValues }: ILifestyleCommit
           {errors.lifestyleCommitment && <div className="text-danger text-sm mt-2 text-center">{errors.lifestyleCommitment.message}</div>}
         </div>
 
-        <div className="flex justify-center gap-6 pt-4">
+        <div className="flex justify-center gap-6 pt-4 animate-btns">
           <Button
             variant="outline"
             className="w-[200px]"

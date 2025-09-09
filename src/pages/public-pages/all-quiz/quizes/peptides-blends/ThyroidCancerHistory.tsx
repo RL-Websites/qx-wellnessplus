@@ -46,7 +46,7 @@ const ThyroidCancerHistory = ({ onNext, onBack, defaultValues }: ThyroidCancerHi
         className="max-w-xl mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins">Do you have a personal or family history of thyroid cancer?</h2>
+          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">Do you have a personal or family history of thyroid cancer?</h2>
 
           {/* Yes / No selection */}
           <Radio.Group
@@ -61,7 +61,7 @@ const ThyroidCancerHistory = ({ onNext, onBack, defaultValues }: ThyroidCancerHi
                 setValue("thyroidCancerOther", "");
               }
             }}
-            className="mt-6"
+            className="mt-6 animate-content"
           >
             <Grid gutter="md">
               {["Yes", "No"].map((option) => (
@@ -100,7 +100,7 @@ const ThyroidCancerHistory = ({ onNext, onBack, defaultValues }: ThyroidCancerHi
           {/* Show sub-options if "Yes" selected */}
           {hasThyroidHistory === "Yes" && (
             <div className="mt-6">
-              <h3 className="text-lg font-medium mt-6 mb-2 text-center">Please select the cancer type</h3>
+              <h3 className="text-lg font-medium mt-6 mb-2 text-center animate-title">Please select the cancer type</h3>
 
               <Radio.Group
                 value={selectedType}
@@ -158,7 +158,7 @@ const ThyroidCancerHistory = ({ onNext, onBack, defaultValues }: ThyroidCancerHi
           )}
         </div>
 
-        <div className="flex justify-center gap-6 pt-6">
+        <div className="flex justify-center gap-6 pt-6 animate-btns">
           <Button
             variant="outline"
             className="w-[200px]"

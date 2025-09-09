@@ -47,12 +47,12 @@ const WeightLossBreastFeeding = ({ onNext, onBack, defaultValues }: IWeightLossB
         className="max-w-xl mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Are you currently breastfeeding?</h2>
+          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground animate-title">Are you currently breastfeeding?</h2>
 
           <Radio.Group
             value={breastFeeding}
             onChange={handleSelect}
-            className="mt-6"
+            className="mt-6 animate-content"
             error={errors?.breastFeeding?.message}
           >
             <Group grow>
@@ -86,7 +86,7 @@ const WeightLossBreastFeeding = ({ onNext, onBack, defaultValues }: IWeightLossB
           </Radio.Group>
         </div>
 
-        <div className="flex justify-center gap-6 pt-4">
+        <div className="flex justify-center gap-6 pt-4 animate-btns">
           <Button
             variant="outline"
             className="w-[200px]"
