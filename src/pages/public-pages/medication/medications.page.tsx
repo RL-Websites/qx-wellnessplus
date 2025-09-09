@@ -26,6 +26,7 @@ const MedicationsPage = () => {
   const [showDetails, setShowDetailsHandel] = useDisclosure(false);
   const selectedCategory = useAtomValue(selectedCategoryAtom);
   const prevGlpDetails = useAtomValue(prevGlpMedDetails);
+  console.log("category", selectedCategory);
 
   const [customerData, setCustomerData] = useAtom(customerAtom);
 
@@ -110,9 +111,11 @@ const MedicationsPage = () => {
               image={`${import.meta.env.VITE_BASE_PATH}/storage/${item?.image}`}
               title={`${item?.name} ${item.strength ? item.strength + " " + item.unit : ""} `}
               cost={item?.customer_medication?.price}
+              lab_fee={item?.lab_fee}
               onAddToCart={() => handleAddToCart(item)}
               onShowDetails={() => handelDetailsModal(item)}
               disabled={isInCart} // pass this prop to your MedicationCard
+              selectedCategory={selectedCategory}
             />
           );
         })}

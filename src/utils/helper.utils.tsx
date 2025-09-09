@@ -108,3 +108,15 @@ export const calculatePrice = (item: IMedicineListItem) => {
 
   return Number(item.customer_price) * Number(item.qty) - fees * (Number(item.qty) - 1);
 };
+export const stateWiseLabFee = (medicine?: IMedicineListItem, patientState?: string) => {
+  const states = ["Alaska", "Connecticut", "Massachusetts", "New Hampshire", "Rhode Island"];
+
+  if (!patientState) Number(medicine?.lab_fee);
+  const isStateMatched = states.some((state) => state.toLowerCase() === patientState?.toLowerCase());
+
+  if (isStateMatched) {
+    return Number(medicine?.lab_fee_selected_state);
+  } else {
+    return Number(medicine?.lab_fee);
+  }
+};
