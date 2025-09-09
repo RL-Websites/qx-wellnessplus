@@ -50,7 +50,7 @@ const PrescriptionMedications = ({ onNext, onBack, defaultValues }: Prescription
         onSubmit={handleSubmit(onSubmit)}
         className="max-w-xl mx-auto space-y-6"
       >
-        <h2 className="text-center text-3xl font-semibold text-foreground font-poppins">Are you currently taking any prescription medications?</h2>
+        <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">Are you currently taking any prescription medications?</h2>
 
         <Radio.Group
           value={medicationType}
@@ -62,7 +62,7 @@ const PrescriptionMedications = ({ onNext, onBack, defaultValues }: Prescription
               setValue("otherMedication", "");
             }
           }}
-          className="mt-6"
+          className="mt-6 animate-content"
         >
           <Grid gutter="md">
             {["Insulin (may be disqualifier depending on therapy)", "Other prescription medications", "None"].map((label, idx) => {
@@ -114,7 +114,7 @@ const PrescriptionMedications = ({ onNext, onBack, defaultValues }: Prescription
 
         {errors.medicationType && <p className="text-danger text-sm mt-2 text-center">{errors.medicationType.message}</p>}
 
-        <div className="flex justify-center gap-6 pt-6">
+        <div className="flex justify-center gap-6 pt-6 animate-btns">
           <Button
             variant="outline"
             className="w-[200px]"

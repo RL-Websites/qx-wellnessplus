@@ -42,7 +42,9 @@ const HormoneTherapy = ({ onNext, onBack, defaultValues }: HormoneTherapyProps) 
         onSubmit={handleSubmit(onSubmit)}
         className="max-w-xl mx-auto space-y-6"
       >
-        <h2 className="text-center text-3xl font-semibold text-foreground font-poppins">Are you currently taking hormone therapy, supplements, or other performance enhancers?</h2>
+        <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">
+          Are you currently taking hormone therapy, supplements, or other performance enhancers?
+        </h2>
 
         <Radio.Group
           value={takingHormoneTherapy}
@@ -51,7 +53,7 @@ const HormoneTherapy = ({ onNext, onBack, defaultValues }: HormoneTherapyProps) 
               shouldValidate: true,
             })
           }
-          className="mt-6"
+          className="mt-6 animate-content"
         >
           <Grid gutter="md">
             {["Yes", "No"].map((option) => (
@@ -89,7 +91,7 @@ const HormoneTherapy = ({ onNext, onBack, defaultValues }: HormoneTherapyProps) 
 
         {errors.takingHormoneTherapy && <p className="text-danger text-sm mt-2 text-center">{errors.takingHormoneTherapy.message}</p>}
 
-        <div className="flex justify-center gap-6 pt-6">
+        <div className="flex justify-center gap-6 pt-6 animate-btns">
           <Button
             variant="outline"
             className="w-[200px]"

@@ -47,12 +47,12 @@ const ScalpInfectionsTwo = ({ onNext, onBack, defaultValues }: IScalpInfectionsT
       className="max-w-xl mx-auto space-y-6"
     >
       <div>
-        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Do you have any untreated scalp infections (e.g., fungal)? </h2>
+        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground animate-title">Do you have any untreated scalp infections (e.g., fungal)? </h2>
 
         <Radio.Group
           value={scalpInfactions}
           onChange={handleSelect}
-          className="mt-6 w-full"
+          className="mt-6 w-full animate-content"
           error={errors?.scalpInfactions?.message}
         >
           <div className="grid md:grid-cols-2 w-full gap-5">
@@ -77,7 +77,7 @@ const ScalpInfectionsTwo = ({ onNext, onBack, defaultValues }: IScalpInfectionsT
         </Radio.Group>
       </div>
 
-      <div className="flex justify-center gap-6 pt-4">
+      <div className="flex justify-center gap-6 pt-4 animate-btns">
         <Button
           variant="outline"
           className="w-[200px]"

@@ -46,12 +46,12 @@ const CustomerStatus = ({ onNext, onBack, defaultValues }: ICustomerStatusProps)
       className="max-w-xl mx-auto space-y-6"
     >
       <div>
-        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Are you new or an existing Wellness Plus customer?</h2>
+        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground animate-title">Are you new or an existing Wellness Plus customer?</h2>
 
         <Radio.Group
           value={customerStatus}
           onChange={handleSelect}
-          className="mt-6"
+          className="mt-6 animate-content"
           error={errors?.customerStatus?.message}
         >
           <Group grow>
@@ -85,7 +85,7 @@ const CustomerStatus = ({ onNext, onBack, defaultValues }: ICustomerStatusProps)
         </Radio.Group>
       </div>
 
-      <div className="flex justify-center gap-6 pt-4">
+      <div className="flex justify-center gap-6 pt-4 animate-btns">
         <Button
           variant="outline"
           className="w-[200px]"

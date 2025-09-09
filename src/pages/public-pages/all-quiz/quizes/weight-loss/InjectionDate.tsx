@@ -75,8 +75,10 @@ export default function InjectionDate({ onNext, onBack, defaultValues }: IInject
         className="w-full"
         onSubmit={handleSubmit(onNext)}
       >
-        <h2 className="text-center lg:!text-3xl md:!text-2xl sm:text-xl text-lg font-poppins font-semibold text-foreground">When was the last time you used your medication?</h2>
-        <div className="card-common card-common-width relative z-10">
+        <h2 className="text-center lg:!text-3xl md:!text-2xl sm:text-xl text-lg font-poppins font-semibold text-foreground animate-title">
+          When was the last time you used your medication?
+        </h2>
+        <div className="card-common card-common-width relative z-10 animate-content">
           <Input.Wrapper
             label="Medication Date"
             error={getErrorMessage(errors.injection_date)}
@@ -122,10 +124,10 @@ export default function InjectionDate({ onNext, onBack, defaultValues }: IInject
           classNames={{
             root: "!block",
             error: "sm:!text-end !text-start w-full",
-            label: "block lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2 text-center font-semibold text-foreground",
+            label: "block lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2 text-center font-semibold text-foreground animate-title",
           }}
         >
-          <div className="grid md:grid-cols-2 gap-5 w-full">
+          <div className="grid md:grid-cols-2 gap-5 w-full animate-content">
             {lastDoseOptions.map((option) => (
               <Radio
                 key={option}
@@ -148,7 +150,7 @@ export default function InjectionDate({ onNext, onBack, defaultValues }: IInject
 
         {errors.lastDose && <Text className="text-red-500 text-sm mt-5 text-center">{errors.lastDose.message}</Text>}
       </form>
-      <div className="flex justify-center md:gap-6 gap-3 md:pt-8 pt-5 relative z-0">
+      <div className="flex justify-center md:gap-6 gap-3 md:pt-8 pt-5 relative z-0 animate-btns">
         <Button
           variant="outline"
           className="w-[200px]"

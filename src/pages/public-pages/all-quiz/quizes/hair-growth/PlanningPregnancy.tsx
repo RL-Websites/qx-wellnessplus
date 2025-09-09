@@ -47,12 +47,12 @@ const PlanningPregnancy = ({ onNext, onBack, defaultValues }: IPlanningPregnancy
       className="max-w-xl mx-auto space-y-6"
     >
       <div>
-        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Are you currently pregnant or planning pregnancy within 3 months?</h2>
+        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground animate-title">Are you currently pregnant or planning pregnancy within 3 months?</h2>
 
         <Radio.Group
           value={planningPregnancy}
           onChange={handleSelect}
-          className="mt-6 w-full"
+          className="mt-6 w-full animate-content"
           error={errors?.planningPregnancy?.message}
         >
           <div className="grid md:grid-cols-2 w-full gap-5">
@@ -77,7 +77,7 @@ const PlanningPregnancy = ({ onNext, onBack, defaultValues }: IPlanningPregnancy
         </Radio.Group>
       </div>
 
-      <div className="flex justify-center gap-6 pt-4">
+      <div className="flex justify-center gap-6 pt-4 animate-btns">
         <Button
           variant="outline"
           className="w-[200px]"

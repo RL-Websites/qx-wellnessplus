@@ -59,9 +59,9 @@ export default function GenderPeptides({ onNext, onBack, defaultValues }: IGende
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
-      <h2 className="heading-text text-foreground uppercase text-center">Gender</h2>
+      <h2 className="heading-text text-foreground uppercase text-center animate-title">Gender</h2>
 
-      <div className="card-common-width-lg mx-auto mt-10">
+      <div className="card-common-width-lg mx-auto mt-10 animate-content">
         <form
           id="genderPeptidesForm"
           onSubmit={handleSubmit(handleFormSubmit)}
@@ -96,7 +96,7 @@ export default function GenderPeptides({ onNext, onBack, defaultValues }: IGende
         </form>
       </div>
 
-      <div className="flex justify-center gap-6 pt-8">
+      <div className="flex justify-center gap-6 pt-8 animate-btns">
         <Button
           variant="outline"
           className="w-[200px]"

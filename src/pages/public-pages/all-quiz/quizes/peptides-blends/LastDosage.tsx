@@ -39,16 +39,16 @@ const LastDosage = ({ onNext, onBack, defaultValues }: LastDosageProps) => {
         onSubmit={handleSubmit(onSubmit)}
         className="max-w-xl mx-auto space-y-6"
       >
-        <h2 className="text-center text-3xl font-semibold text-foreground font-poppins">What was your last dosage?</h2>
+        <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">What was your last dosage?</h2>
 
         <TextInput
           {...register("lastDosage")}
           placeholder="Enter your last dosage (e.g., 2 mg, 10 IU)"
           error={errors.lastDosage?.message}
-          className="mt-6"
+          className="mt-6 animate-content"
         />
 
-        <div className="flex justify-center gap-6 pt-6">
+        <div className="flex justify-center gap-6 pt-6 animate-btns">
           <Button
             variant="outline"
             className="w-[200px]"
