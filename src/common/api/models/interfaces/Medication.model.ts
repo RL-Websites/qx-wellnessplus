@@ -34,8 +34,8 @@ export interface IMedicineCategory {
 }
 
 export interface IMedicineListItem {
-  id: number;
-  client_id: number | null;
+  id?: number;
+  client_id?: number | null;
   name: string;
   sku: string;
   dose: string;
@@ -54,6 +54,7 @@ export interface IMedicineListItem {
   lab_fee_selected_state?: string;
   is_research_only: string;
   image: string;
+  lab_required?: string;
   total_price?: string;
   direction: string | null;
   is_active: number;
@@ -92,7 +93,8 @@ export interface IPartnerMedicineListItem {
   medication_id: number;
   partner_id?: number;
   price: string;
-  medicine: IMedicineListItem;
+  lab_required?: string;
+  medicine?: IMedicineListItem;
   status?: string;
 }
 
