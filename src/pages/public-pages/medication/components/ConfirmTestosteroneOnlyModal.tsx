@@ -1,6 +1,6 @@
 import { IPartnerMedicineListItem } from "@/common/api/models/interfaces/Medication.model";
 import { ActionIcon, Button, CheckIcon, Modal, Radio } from "@mantine/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface IConfirmationModalProps {
   openModal: boolean;
@@ -40,6 +40,11 @@ interface IConfirmationModalProps {
 function ConfirmTestosteroneOnlyModal(modalProps: IConfirmationModalProps) {
   if (!modalProps?.medicationDetails) return null;
   const [labRequired, setLabRequired] = useState<number>(1);
+  useEffect(() => {
+    if (modalProps.openModal) {
+      setLabRequired(1);
+    }
+  }, [modalProps.openModal]);
 
   return (
     <Modal.Root
