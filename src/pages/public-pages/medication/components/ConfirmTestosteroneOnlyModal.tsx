@@ -38,6 +38,7 @@ interface IConfirmationModalProps {
 }
 
 function ConfirmTestosteroneOnlyModal(modalProps: IConfirmationModalProps) {
+  if (!modalProps?.medicationDetails) return null;
   const [labRequired, setLabRequired] = useState<number>(1);
 
   return (

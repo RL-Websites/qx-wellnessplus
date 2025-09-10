@@ -68,6 +68,7 @@ const MedicationsPage = () => {
     if (item.medication_category === "Single Peptides" || item.medication_category === "Peptides Blends") {
       handleConfirmMeds.open();
     } else if (item.medication_category === "Testosterone") {
+      setSelectedMedication(item);
       handleConfirmTestosterone.open();
     } else {
       setCartItems((prev) => [...prev, item]);
@@ -204,7 +205,7 @@ const MedicationsPage = () => {
         openModal={confirmTestosterone}
         onModalClose={handleConfirmTestosterone.close}
         medicationName={tempSelectedMedicine?.medicine?.name + " " + tempSelectedMedicine?.medicine?.strength + "" + tempSelectedMedicine?.medicine?.unit}
-        medicationDetails={selectedMedication}
+        medicationDetails={pendingAddToCart}
         onModalPressYes={(labRequired) => {
           onTestosteroneConfirm(String(labRequired));
         }}
