@@ -235,7 +235,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
         </div>
         <div className="card card-bg mt-10">
           <div className="card-title flex justify-between items-center">
-            <h3 className="font-poppins font-semibold lg:text-3xl text-2xl">Shipping Info</h3>
+            <h3 className="font-poppins font-semibold lg:text-3xl md:text-2xl text-xl">Shipping Info</h3>
             <Checkbox
               checked={isSameAsPatientInfo}
               label="Same as patient info"
@@ -386,7 +386,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
               }}
               readOnly={isSameAsPatientInfo}
               classNames={{
-                wrapper: isSameAsPatientInfo ? "bg-transparent" : "bg-grey-btn rounded-md",
+                wrapper: isSameAsPatientInfo ? "bg-transparent" : " rounded-md",
                 input: isSameAsPatientInfo ? "bg-transparent pl-0" : "",
               }}
               max={99999}
@@ -401,7 +401,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
         </div>
         <div className="card card-bg mt-10">
           <div className="card-title flex justify-between items-center">
-            <h3 className="font-poppins font-semibold lg:text-3xl text-2xl">Billing Info</h3>
+            <h3 className="font-poppins font-semibold lg:text-3xl md:text-2xl text-xl">Billing Info</h3>
             <div className="flex items-center gap-4">
               <Checkbox
                 label="Same as shipping info"
@@ -560,7 +560,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
               }}
               readOnly={isSameAsShippingInfo}
               classNames={{
-                wrapper: isSameAsShippingInfo ? "bg-transparent" : "bg-grey-btn rounded-md",
+                wrapper: isSameAsShippingInfo ? "bg-transparent" : " rounded-md",
                 input: isSameAsShippingInfo ? "!bg-transparent pl-0 border-0" : "",
               }}
               error={getErrorMessage(errors?.billing?.zip_code)}

@@ -4,7 +4,7 @@ interface IMedicationProps {
   image: string;
   title: string;
   cost: string;
-  lab_fee?: string;
+  lab_fee?: number;
   disabled: boolean;
   onAddToCart: () => void;
   onShowDetails: () => void;
@@ -43,7 +43,7 @@ const MedicationCard = (medicationProps: IMedicationProps) => {
               </div>
               <div className="flex flex-col justify-center items-center border-2 border-[#8FCADD] rounded-xl p-2">
                 <span className="text-foreground text-sm">With Lab</span>
-                <span className="text-foreground sm:text-lg text-base font-bold">${(Number(medicationProps?.cost) + Number(medicationProps?.lab_fee)).toFixed(2)}</span>
+                <span className="text-foreground sm:text-lg text-base font-bold"> ${(Number(medicationProps?.cost) + Number(medicationProps?.lab_fee)).toFixed(2)}</span>
               </div>
             </div>
           ) : (

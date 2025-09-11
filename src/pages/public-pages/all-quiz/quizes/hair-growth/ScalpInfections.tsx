@@ -1,6 +1,6 @@
 import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Radio } from "@mantine/core";
+import { Button, Radio, Text } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -44,7 +44,7 @@ const ScalpInfections = ({ onNext, onBack, defaultValues }: IScalpInfectionsProp
     <form
       id="scalpInfectionsForm"
       onSubmit={handleSubmit(onNext)}
-      className="max-w-xl mx-auto space-y-6"
+      className="card-common-width-lg mx-auto space-y-6"
     >
       <div>
         <h2 className="text-center text-3xl font-poppins font-semibold text-foreground animate-title">Do you have a history of scalp infections (e.g., seborrheic dermatitis)?</h2>
@@ -53,7 +53,6 @@ const ScalpInfections = ({ onNext, onBack, defaultValues }: IScalpInfectionsProp
           value={scalpInfactions}
           onChange={handleSelect}
           className="mt-6 w-full animate-content"
-          error={errors?.scalpInfactions?.message}
         >
           <div className="grid md:grid-cols-2 w-full gap-5">
             {options.map((option) => (
@@ -75,6 +74,7 @@ const ScalpInfections = ({ onNext, onBack, defaultValues }: IScalpInfectionsProp
             ))}
           </div>
         </Radio.Group>
+        {errors.scalpInfactions && <Text className="text-red-500 text-sm mt-5 text-center">{errors.scalpInfactions.message}</Text>}
       </div>
 
       <div className="flex justify-center gap-6 pt-4 animate-btns">
