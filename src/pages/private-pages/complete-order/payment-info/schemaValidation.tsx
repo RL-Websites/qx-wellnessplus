@@ -4,6 +4,7 @@ export const shippingBillingSchema = yup.object().shape({
   shipping: yup.object().shape({
     name: yup.string().required("Shipping name is required"),
     address: yup.string().required("Shipping address is required"),
+    address2: yup.string().optional(),
     state: yup.string().required("Shipping state is required"),
     city: yup.string().required("Shipping city is required"),
     zip_code: yup
@@ -15,6 +16,7 @@ export const shippingBillingSchema = yup.object().shape({
   billing: yup.object().shape({
     name: yup.string().required("Billing name is required"),
     address: yup.string().required("Billing address is required"),
+    address2: yup.string().optional(),
     state: yup.string().required("Billing state is required"),
     city: yup.string().required("Billing city is required"),
     zip_code: yup

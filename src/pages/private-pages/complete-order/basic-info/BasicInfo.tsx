@@ -6,11 +6,13 @@ import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
 import dmlToast from "@/common/configs/toaster.config";
 import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { selectedGenderAtom } from "@/common/states/gender.atom";
+import { selectedStateAtom } from "@/common/states/state.atom";
 import { dobAtom } from "@/common/states/user.atom";
+import states from "@/data/state-list.json";
 import { formatDate } from "@/utils/date.utils";
 import { getErrorMessage } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { ActionIcon, Anchor, Button, Group, Image, Input, NumberInput, Radio, Text } from "@mantine/core";
+import { ActionIcon, Anchor, Button, Group, Image, Input, NumberInput, Radio, Select, Text } from "@mantine/core";
 import { Dropzone, MIME_TYPES } from "@mantine/dropzone";
 import { IconX } from "@tabler/icons-react";
 import { BaseProvider, LightTheme } from "baseui";
@@ -39,14 +41,16 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
   const engine = new Styletron();
   const [dob, setDob] = useState<any>(null);
   const [phone, setPhone] = useState<string>();
-  const [gender, setGender] = useState<string>("male");
-  const [zipCode, setZipCode] = useState<any>(null);
+  const [selectedGender, setSelectedGender] = useAtom(selectedGenderAtom);
+  const [gender, setGender] = useState<string>(selectedGender || "male");
+  const [selectedState, setSelectedState] = useAtom(selectedStateAtom);
+  const [stateSearchVal, setStateSearchVal] = useState<string>(selectedState || "");
   const [address, setAddress] = useState<string>("");
+  const [zipCode, setZipCode] = useState<any>(null);
   const [frontFile, setFrontFile] = useState<string>();
   const [backFile, setBackFile] = useState<string>();
   const [frontBase64, setFrontBase64] = useState<string | null>(null);
   const [backBase64, setBackBase64] = useState<string | null>(null);
-  const [selectedGender] = useAtomValue(selectedGenderAtom);
   const selectedCategory = useAtomValue(selectedCategoryAtom);
   const [params] = useSearchParams();
   const [globalDob, setGlobalDob] = useAtom(dobAtom);
@@ -99,10 +103,13 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
     handleSubmit,
     clearErrors,
     setValue,
+    watch,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(basicInfoValidationSchema),
   });
+
+  const state = watch("state");
 
   useEffect(() => {
     const tempPatientDetails = userData;
@@ -121,12 +128,20 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
 
         setAddress(tempPatientDetails?.userable?.address1);
         setValue("address", tempPatientDetails?.userable?.address1);
-        setValue("state", tempPatientDetails?.userable?.state);
+        setValue("address2", tempPatientDetails?.userable?.address2);
+        // setValue("state", tempPatientDetails?.userable?.state, { shouldValidate: true });
+        // setSelectedState(tempPatientDetails?.userable?.state);
+        // setStateSearchVal(tempPatientDetails?.userable?.state);
+        if (tempPatientDetails?.userable?.state) {
+          setSelectedState(tempPatientDetails.userable.state);
+          setStateSearchVal(tempPatientDetails.userable.state);
+          setValue("state", tempPatientDetails.userable.state, { shouldValidate: true });
+        }
         setValue("city", tempPatientDetails?.userable?.city);
-        setZipCode(tempPatientDetails?.userable?.zipcode);
         setValue("zip_code", tempPatientDetails?.userable?.zipcode);
-        setValue("latitude", tempPatientDetails?.userable?.latitude);
-        setValue("longitude", tempPatientDetails?.userable?.longitude);
+        setZipCode(tempPatientDetails?.userable?.zipcode);
+        setValue("latitude", tempPatientDetails?.userable?.latitude ? Number(tempPatientDetails?.userable?.latitude) : null);
+        setValue("longitude", tempPatientDetails?.userable?.longitude ? Number(tempPatientDetails?.userable?.longitude) : null);
         setFrontFile(
           tempPatientDetails?.userable?.driving_license_front ? `${import.meta.env.VITE_BASE_PATH}/storage/${tempPatientDetails?.userable?.driving_license_front}` : undefined
         );
@@ -162,12 +177,13 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
       }
     }
 
-    if (!userData?.userable?.gender && selectedGender) {
+    if (selectedGender) {
       setGender(selectedGender);
       setValue("gender", selectedGender);
     } else if (userData?.userable?.gender) {
-      setGender(userData?.userable?.gender);
-      setValue("gender", userData?.userable?.gender);
+      setGender(userData.userable.gender);
+      setSelectedGender(userData.userable.gender);
+      setValue("gender", userData.userable.gender);
     }
   }, [userData]);
 
@@ -181,12 +197,20 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
 
         setAddress(formData?.patient?.address);
         setValue("address", formData?.patient?.address);
-        setValue("state", formData?.patient?.state);
+        setValue("address2", formData?.patient?.address2);
+        // setValue("state", formData?.patient?.state, { shouldValidate: true });
+        // setSelectedState(formData?.patient?.state);
+        // setStateSearchVal(formData?.patient?.state);
+        if (formData?.patient?.state) {
+          setSelectedState(formData.patient.state);
+          setStateSearchVal(formData.patient.state);
+          setValue("state", formData.patient.state, { shouldValidate: true });
+        }
         setValue("city", formData?.patient?.city);
         setZipCode(formData?.patient?.zip_code);
         setValue("zip_code", formData?.patient?.zip_code);
-        setValue("latitude", formData?.patient?.latitude);
-        setValue("longitude", formData?.patient?.longitude);
+        setValue("latitude", Number(formData?.patient?.latitude));
+        setValue("longitude", Number(formData?.patient?.longitude));
         setFrontFile(formData?.patient?.driving_lic_front || "");
         setBackFile(formData?.patient?.driving_lic_back || "");
         setFrontBase64(formData?.patient?.driving_lic_front || "");
@@ -213,15 +237,18 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
       }
     }
 
-    if (!formData?.patient?.gender && selectedGender) {
-      console.log(selectedGender);
-      setGender(selectedGender);
-      setValue("gender", selectedGender);
-    } else if (formData?.patient?.gender) {
-      setGender(formData?.patient?.gender);
-      setValue("gender", formData?.patient?.gender);
+    if (formData?.patient?.gender) {
+      setGender(formData.patient.gender);
+      setSelectedGender(formData.patient.gender);
+      setValue("gender", formData.patient.gender);
     }
   }, [formData]);
+
+  useEffect(() => {
+    // make sure form knows the current selectedState (or empty string)
+    setValue("state", selectedState || "", { shouldValidate: true });
+    // Note: setValue will update RHF internal value so validation passes on submit
+  }, [selectedState, setValue]);
 
   const onSubmit = async (data: BasicInfoFormFieldsType) => {
     const payload: Partial<IPatientBookingPatientInfoDTO> = {
@@ -235,6 +262,7 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
         // weight: data?.weight,
         // height: data?.height,
         address: data?.address,
+        address2: data?.address2 || "",
         city: data?.city,
         latitude: data?.latitude || 0,
         longitude: data?.longitude || 0,
@@ -329,6 +357,7 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
             onChange={(value) => {
               setValue("gender", value);
               setGender(value);
+              setSelectedGender(value);
               if (value) {
                 clearErrors("gender");
               }
@@ -397,31 +426,64 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
               </StyletronProvider>
             </div>
           </Input.Wrapper>
+          <Select
+            label="State"
+            withAsterisk
+            classNames={{
+              wrapper: "bg-grey-btn rounded-md",
+            }}
+            rightSection={<i className="icon-down-arrow text-sm"></i>}
+            searchable
+            searchValue={stateSearchVal}
+            onSearchChange={setStateSearchVal}
+            value={selectedState}
+            className="w-full"
+            data={states?.map((item) => ({ value: item?.StateName, label: item?.StateName }))}
+            {...register("state")}
+            error={getErrorMessage(errors.state?.message)}
+            onChange={(value, option) => {
+              setValue("state", value || "", { shouldValidate: true });
+              setSelectedState(value || "");
+              if (value) {
+                setStateSearchVal(option.label);
+                clearErrors("state");
+              }
+            }}
+          />
           <Input.Wrapper
-            className="md:col-span-1 col-span-2"
+            className="sm:col-span-1 col-span-2"
             label="Address"
             error={getErrorMessage(errors.address)}
-            classNames={InputErrorMessage}
             withAsterisk
           >
             <AddressAutoGoogle
               {...register("address")}
               address={address}
+              state={state}
               isError={Boolean(errors?.address?.message)}
               onSelect={(address) => {
                 if (address.address) {
                   const onlyAddress = address.address.split(",")[0];
                   setValue("address", onlyAddress, { shouldValidate: true });
-                  setValue("state", address.state, { shouldValidate: true });
                   setValue("city", address.city, { shouldValidate: true });
                   setValue("zip_code", address.zip_code || "", { shouldValidate: true });
-                  setValue("latitude", address?.latitude);
-                  setValue("longitude", address?.longitude);
+                  setValue("latitude", Number(address?.latitude));
+                  setValue("longitude", Number(address?.longitude));
                   setAddress(onlyAddress);
                   setZipCode(parseInt(address.zip_code || ""));
                   clearErrors("address");
                 }
               }}
+            />
+          </Input.Wrapper>
+          <Input.Wrapper
+            className="sm:col-span-1 col-span-2"
+            label="Suite/Apt"
+            error={getErrorMessage(errors.address2)}
+          >
+            <Input
+              {...register("address2")}
+              error={getErrorMessage(errors.address2?.message)}
             />
           </Input.Wrapper>
           <Input.Wrapper
@@ -438,18 +500,6 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
           </Input.Wrapper>
           <Input.Wrapper
             className="md:col-span-1 col-span-2"
-            label="State"
-            withAsterisk
-            error={getErrorMessage(errors.state)}
-            classNames={InputErrorMessage}
-          >
-            <Input
-              {...register("state")}
-              error={getErrorMessage(errors.state?.message)}
-            />
-          </Input.Wrapper>
-          <Input.Wrapper
-            className="md:col-span-1 col-span-2"
             label="City"
             withAsterisk
             error={getErrorMessage(errors.city)}
@@ -461,30 +511,28 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
               type="text"
             />
           </Input.Wrapper>
-          <div className="col-span-2 grid grid-cols-2 gap-5">
-            <NumberInput
-              {...register("zip_code")}
-              className="md:col-span-1 col-span-2"
-              classNames={InputErrorMessage}
-              label="Zip Code"
-              onChange={(value) => {
-                if (value) {
-                  setValue("zip_code", value?.toString());
-                  clearErrors("zip_code");
-                }
-                setZipCode(value);
-              }}
-              value={zipCode}
-              max={99999}
-              min={0}
-              error={getErrorMessage(errors.zip_code)}
-              hideControls
-              clampBehavior="strict"
-              allowNegative={false}
-              allowDecimal={false}
-              withAsterisk
-            />
-          </div>
+          <NumberInput
+            {...register("zip_code")}
+            className="md:col-span-1 col-span-2"
+            classNames={InputErrorMessage}
+            label="Zip Code"
+            onChange={(value) => {
+              if (value) {
+                setValue("zip_code", value?.toString());
+                clearErrors("zip_code");
+              }
+              setZipCode(value);
+            }}
+            value={zipCode}
+            max={99999}
+            min={0}
+            error={getErrorMessage(errors.zip_code)}
+            hideControls
+            clampBehavior="strict"
+            allowNegative={false}
+            allowDecimal={false}
+            withAsterisk
+          />
           <div className="md:col-span-1 col-span-2">
             <h6 className="font-poppins extra-form-text-medium text-foreground mb-2">Upload Driving License (Front Side)</h6>
             <Dropzone

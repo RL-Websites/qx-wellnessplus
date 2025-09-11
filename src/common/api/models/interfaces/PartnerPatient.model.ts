@@ -228,6 +228,9 @@ export interface IPublicPartnerRef {
 }
 
 export interface IPatientBookingPatientInfoDTO {
+  prescription_u_id: any;
+  final_total: any;
+  code: any;
   slug: string;
   cart_total: number;
   is_refill?: boolean;
@@ -263,6 +266,7 @@ export interface IPatientInfoDTO {
   dob: string;
   gender: string;
   address: string;
+  address2: string;
   state: string;
   city: string;
   zip_code: string;

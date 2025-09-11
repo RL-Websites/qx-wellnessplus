@@ -1,9 +1,10 @@
 import useAuthToken from "@/common/hooks/useAuthToken";
 import { cartItemsAtom } from "@/common/states/product.atom";
+import { selectedStateAtom } from "@/common/states/state.atom";
 import { userAtom } from "@/common/states/user.atom";
-import { calculatePrice } from "@/utils/helper.utils";
+import { calculatePrice, stateWiseLabFee } from "@/utils/helper.utils";
 import { Button } from "@mantine/core";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
 import { NavLink as RdNavLink, useNavigate } from "react-router-dom";
 
@@ -12,6 +13,7 @@ const OrderSummary = () => {
   const [userData] = useAtom(userAtom);
   const [cartItems, setCartItems] = useAtom(cartItemsAtom);
   const [totalBillAmount, setTotalBillAmount] = useState<number>(0);
+  const selectedState = useAtomValue(selectedStateAtom);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,6 +22,9 @@ const OrderSummary = () => {
       cartItems.forEach((item) => {
         const price = calculatePrice(item);
         totalBill = totalBill + price;
+        if (item?.lab_required == "1") {
+          totalBill += stateWiseLabFee(item, selectedState || "");
+        }
       });
 
       setTotalBillAmount(totalBill);
@@ -32,7 +37,7 @@ const OrderSummary = () => {
 
   useEffect(() => {
     if (cartItems.length === 0) {
-      navigate("/medications");
+      navigate("/category");
     }
   }, [cartItems, navigate]);
 
@@ -90,7 +95,7 @@ const OrderSummary = () => {
                 <span className="text-foreground text-lg inline-block max-w-[226px]">
                   {item.name} {item.strength ? `${item.strength} ${item.unit}` : ""} x {item.qty}
                 </span>
-                <span className="text-foreground text-lg">${calculatePrice(item)}</span>
+                <span className="text-foreground text-lg">${item?.lab_required == "1" ? calculatePrice(item) + stateWiseLabFee(item, selectedState) : calculatePrice(item)}</span>
               </div>
             ))}
           </div>

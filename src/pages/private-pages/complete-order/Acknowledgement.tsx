@@ -332,11 +332,12 @@ const Acknowledgement = ({ onNext, onBack, defaultValues, patientData, hasPeptid
             <div className="mt-3">
               <h6 className="text-lg !font-medium text-foreground">Digital Signature</h6>
               {getValues("signature") && signatureImage ? (
-                <div className="lg:w-1/2 border-2 border-dashed border-gray-300 rounded-lg p-2 relative mt-3">
-                  <div className="p-5 bg-grey-low inline-flex">
+                <div className="lg:w-1/2 h-[148px] border-2 border-dashed border-gray-300 rounded-lg p-2 relative mt-3">
+                  <div className="p-5 inline-flex size-full">
                     <img
                       src={signatureImage}
                       alt="signature"
+                      className="size-full"
                     />
                   </div>
                   <Button
@@ -393,22 +394,25 @@ const Acknowledgement = ({ onNext, onBack, defaultValues, patientData, hasPeptid
         </div>
       </div>
       <div className="flex justify-between mt-6">
-        <div className="flex gap-3 ms-auto">
-          <Button
-            className="md:w-[200px] w-[150px]"
-            color="grey.4"
-            c="foreground"
-            onClick={onBack}
-          >
-            Back
-          </Button>
-          <Button
-            className="md:w-[200px] w-[150px]"
-            onClick={handleSubmit(onNext)}
-          >
-            Next
-          </Button>
-        </div>
+        <Button
+          color="grey.4"
+          c="foreground"
+          variant="outline"
+          onClick={onBack}
+          classNames={{
+            root: "border-primary",
+            label: "text-primary",
+          }}
+          className="md:w-[200px] w-[150px]"
+        >
+          Back
+        </Button>
+        <Button
+          className="md:w-[200px] w-[150px]"
+          onClick={handleSubmit(onNext)}
+        >
+          Next
+        </Button>
       </div>
     </>
   );

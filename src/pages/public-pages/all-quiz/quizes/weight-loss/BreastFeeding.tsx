@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Group, Radio } from "@mantine/core";
+import { Button, Group, Radio, Text } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -44,7 +44,7 @@ const WeightLossBreastFeeding = ({ onNext, onBack, defaultValues }: IWeightLossB
       <form
         id="weightLossBreastFeedingForm"
         onSubmit={handleSubmit(onNext)}
-        className="max-w-xl mx-auto space-y-6"
+        className="card-common-width-lg mx-auto space-y-6"
       >
         <div>
           <h2 className="text-center text-3xl font-poppins font-semibold text-foreground animate-title">Are you currently breastfeeding?</h2>
@@ -53,7 +53,6 @@ const WeightLossBreastFeeding = ({ onNext, onBack, defaultValues }: IWeightLossB
             value={breastFeeding}
             onChange={handleSelect}
             className="mt-6 animate-content"
-            error={errors?.breastFeeding?.message}
           >
             <Group grow>
               {options.map((option) => (
@@ -84,6 +83,7 @@ const WeightLossBreastFeeding = ({ onNext, onBack, defaultValues }: IWeightLossB
               ))}
             </Group>
           </Radio.Group>
+          {errors.breastFeeding && <Text className="text-red-500 text-sm mt-5 text-center">{errors.breastFeeding.message}</Text>}
         </div>
 
         <div className="flex justify-center gap-6 pt-4 animate-btns">
