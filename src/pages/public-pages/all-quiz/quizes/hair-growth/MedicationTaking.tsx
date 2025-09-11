@@ -53,7 +53,6 @@ const MedicationTaking = ({ onNext, onBack, defaultValues }: IMedicationTakingPr
           value={medicationTaking}
           onChange={handleSelect}
           className="mt-6 w-full animate-content"
-          error={errors?.medicationTaking?.message}
         >
           <div className="grid md:grid-cols-2 w-full gap-5">
             {options.map((option) => (

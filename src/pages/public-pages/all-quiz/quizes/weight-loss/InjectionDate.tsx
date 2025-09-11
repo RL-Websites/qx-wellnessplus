@@ -114,39 +114,41 @@ export default function InjectionDate({ onNext, onBack, defaultValues }: IInject
           </Input.Wrapper>
         </div>
 
-        <Radio.Group
-          value={lastDose}
-          onChange={(value) => {
-            handleSelect("lastDose", value);
-          }}
-          label="What was your last dosage?"
-          className="mt-10 w-full"
-          classNames={{
-            root: "!block",
-            error: "sm:!text-end !text-start w-full",
-            label: "block lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2 text-center font-semibold text-foreground animate-title",
-          }}
-        >
-          <div className="grid md:grid-cols-2 gap-5 w-full animate-content">
-            {lastDoseOptions.map((option) => (
-              <Radio
-                key={option}
-                value={option}
-                classNames={getBaseWebRadios(lastDose, option)}
-                label={
-                  <div className="relative text-center">
-                    <span className="text-foreground font-poppins">{option}</span>
-                    {lastDose === option && (
-                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
-                        <i className="icon-tick text-sm/none"></i>
-                      </span>
-                    )}
-                  </div>
-                }
-              />
-            ))}
-          </div>
-        </Radio.Group>
+        <div className="card-common-width-lg mx-auto mt-10 animate-content">
+          <Radio.Group
+            value={lastDose}
+            onChange={(value) => {
+              handleSelect("lastDose", value);
+            }}
+            label="What was your last dosage?"
+            className="mt-10 w-full"
+            classNames={{
+              root: "!block",
+              error: "sm:!text-end !text-start w-full",
+              label: "block lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2 text-center font-semibold text-foreground animate-title",
+            }}
+          >
+            <div className="grid md:grid-cols-2 gap-5 w-full animate-content">
+              {lastDoseOptions.map((option) => (
+                <Radio
+                  key={option}
+                  value={option}
+                  classNames={getBaseWebRadios(lastDose, option)}
+                  label={
+                    <div className="relative text-center">
+                      <span className="text-foreground font-poppins">{option}</span>
+                      {lastDose === option && (
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
+                          <i className="icon-tick text-sm/none"></i>
+                        </span>
+                      )}
+                    </div>
+                  }
+                />
+              ))}
+            </div>
+          </Radio.Group>
+        </div>
 
         {errors.lastDose && <Text className="text-red-500 text-sm mt-5 text-center">{errors.lastDose.message}</Text>}
       </form>

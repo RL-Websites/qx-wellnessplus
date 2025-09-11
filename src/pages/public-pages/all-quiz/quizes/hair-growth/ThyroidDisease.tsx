@@ -53,7 +53,6 @@ const ThyroidDisease = ({ onNext, onBack, defaultValues }: IThyroidDiseaseProps)
           value={thyroidDisease}
           onChange={handleSelect}
           className="mt-6 w-full animate-content"
-          error={errors?.thyroidDisease?.message}
         >
           <div className="grid md:grid-cols-2 w-full gap-5">
             {options.map((option) => (
