@@ -1,6 +1,6 @@
 import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Radio } from "@mantine/core";
+import { Button, Radio, Text } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -53,7 +53,6 @@ const HairGrowthBreastFeeding = ({ onNext, onBack, defaultValues }: IHairGrowthB
           value={breastFeeding}
           onChange={handleSelect}
           className="mt-6 w-full animate-content"
-          error={errors?.breastFeeding?.message}
         >
           <div className="grid md:grid-cols-2 w-full gap-5">
             {options.map((option) => (
@@ -75,6 +74,7 @@ const HairGrowthBreastFeeding = ({ onNext, onBack, defaultValues }: IHairGrowthB
             ))}
           </div>
         </Radio.Group>
+        {errors.breastFeeding && <Text className="text-red-500 text-sm mt-5 text-center">{errors.breastFeeding.message}</Text>}
       </div>
 
       <div className="flex justify-center gap-6 pt-4 animate-btns">

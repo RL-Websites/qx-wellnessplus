@@ -1,6 +1,6 @@
 import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Radio } from "@mantine/core";
+import { Button, Radio, Text } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -44,7 +44,7 @@ const MedicationTaking = ({ onNext, onBack, defaultValues }: IMedicationTakingPr
     <form
       id="MedicationTaking"
       onSubmit={handleSubmit(onNext)}
-      className="max-w-xl mx-auto space-y-6"
+      className="card-common-width-lg mx-auto space-y-6"
     >
       <div>
         <h2 className="text-center text-3xl font-poppins font-semibold text-foreground animate-title">Are you currently taking medications known to cause hair loss?</h2>
@@ -75,6 +75,7 @@ const MedicationTaking = ({ onNext, onBack, defaultValues }: IMedicationTakingPr
             ))}
           </div>
         </Radio.Group>
+        {errors.medicationTaking && <Text className="text-red-500 text-sm mt-5 text-center">{errors.medicationTaking.message}</Text>}
       </div>
 
       <div className="flex justify-center gap-6 pt-4 animate-btns">

@@ -44,7 +44,7 @@ const WeightLossPregnant = ({ onNext, onBack, defaultValues }: IWeightLossPregna
       <form
         id="weightLossPregnantForm"
         onSubmit={handleSubmit(onNext)}
-        className="max-w-xl mx-auto space-y-6"
+        className="card-common-width-lg mx-auto space-y-6"
       >
         <div>
           <h2 className="text-center text-3xl font-poppins font-semibold text-foreground animate-title">Are you currently pregnant or trying to get pregnant?</h2>
