@@ -575,12 +575,17 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
         </div>
       </form>
 
-      <div className="flex justify-end gap-6 mt-6">
+      <div className="flex justify-between gap-6 mt-6">
         <Button
-          w={256}
           color="grey.4"
           c="foreground"
+          variant="outline"
           onClick={handleBack}
+          classNames={{
+            root: "border-primary",
+            label: "text-primary",
+          }}
+          className="md:w-[200px] w-[150px]"
         >
           Back
         </Button>
