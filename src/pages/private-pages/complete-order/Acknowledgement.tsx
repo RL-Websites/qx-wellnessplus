@@ -394,22 +394,25 @@ const Acknowledgement = ({ onNext, onBack, defaultValues, patientData, hasPeptid
         </div>
       </div>
       <div className="flex justify-between mt-6">
-        <div className="flex gap-3 ms-auto">
-          <Button
-            className="md:w-[200px] w-[150px]"
-            color="grey.4"
-            c="foreground"
-            onClick={onBack}
-          >
-            Back
-          </Button>
-          <Button
-            className="md:w-[200px] w-[150px]"
-            onClick={handleSubmit(onNext)}
-          >
-            Next
-          </Button>
-        </div>
+        <Button
+          color="grey.4"
+          c="foreground"
+          variant="outline"
+          onClick={onBack}
+          classNames={{
+            root: "border-primary",
+            label: "text-primary",
+          }}
+          className="md:w-[200px] w-[150px]"
+        >
+          Back
+        </Button>
+        <Button
+          className="md:w-[200px] w-[150px]"
+          onClick={handleSubmit(onNext)}
+        >
+          Next
+        </Button>
       </div>
     </>
   );

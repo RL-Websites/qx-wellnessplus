@@ -5,9 +5,10 @@ import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
 import dmlToast from "@/common/configs/toaster.config";
 import { customerAtom } from "@/common/states/customer.atom";
 import { cartItemsAtom } from "@/common/states/product.atom";
+import states from "@/data/state-list.json";
 import { calculatePrice, getErrorMessage } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Avatar, Button, Checkbox, Input, NumberInput } from "@mantine/core";
+import { Button, Checkbox, Input, NumberInput, Select } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { StripePaymentElementOptions } from "@stripe/stripe-js";
@@ -41,6 +42,8 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
   const [temptSubmitPayload, setTempSubmitPayload] = useState<any>();
   const [openPaymentConfirmation, handlePaymentConfirmation] = useDisclosure();
   const [capturingPayment, setCapturingPayment] = useState(false);
+  const [shippingStateSearchVal, setShippingStateSearchVal] = useState<string>("");
+  const [billingStateSearchVal, setBillingStateSearchVal] = useState<string>("");
   const [totalBillAmount, setTotalBillAmount] = useState<number>(0);
 
   useEffect(() => {
@@ -63,6 +66,8 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
     setValue("shipping.email", formData?.patient?.email, { shouldValidate: true });
     setValue("shipping.address", address, { shouldValidate: true });
     setAddress(address);
+    setValue("shipping.address2", formData?.patient?.address2, { shouldValidate: true });
+    setShippingStateSearchVal(formData?.patient?.address2);
     setValue("shipping.state", formData?.patient?.state, { shouldValidate: true });
 
     setValue("shipping.city", formData?.patient?.city, { shouldValidate: true });
@@ -81,6 +86,8 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
       setValue("billing.email", watch("shipping.email"), { shouldValidate: true });
       setValue("billing.address", watch("shipping.address"), { shouldValidate: true });
       setBillingAddress(watch("shipping.address") || "");
+      setValue("billing.address2", watch("shipping.address2"), { shouldValidate: true });
+      setBillingStateSearchVal(watch("shipping.address2") || "");
       setValue("billing.state", watch("shipping.state") || "", { shouldValidate: true });
       setValue("billing.city", watch("shipping.city") || "", { shouldValidate: true });
       setValue("billing.zip_code", shippingZipCode || "", { shouldValidate: true });
@@ -107,6 +114,8 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
 
   const stripe = useStripe();
   const elements = useElements();
+  const shippingState = watch("shipping.state");
+  const billingState = watch("billing.state");
 
   const submitFormWithPatientCard = (data) => {
     const medications = cartItems?.map((item) => ({
@@ -115,7 +124,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
     }));
     const payload: IPatientBookingPatientInfoDTO = {
       slug: customerData?.slug || "",
-      cart_total: totalBillAmount || 0,
+      cart_total: formData?.amount.toFixed(2) || 0,
       signature: formData.signature,
       shipping: data.shipping,
       billing: data.billing,
@@ -203,81 +212,25 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
         <div className="py-5 px-10 bg-tag-bg rounded-xl text-center">
           <p className="text-fs-lg text-tag-bg-deep">Please review your information carefully before submitting, as it cannot be modified later.</p>
         </div>
-        <div className="grid lg:grid-cols-7 gap-6 mt-10">
-          <div className="card card-bg lg:col-span-4">
-            <div className="card-title">
-              <h3 className="font-poppins font-semibold lg:text-3xl text-2xl">Payment details</h3>
-            </div>
-            <div className="mt-6">
-              {/* <CardElement options={cardOptions} /> */}
-              <PaymentElement
-                id="payment-element"
-                options={paymentOptions}
-              />
-            </div>
+        <div className="card card-bg mt-10">
+          <div className="card-title with-border">
+            <h6>Order Summary</h6>
           </div>
-          <div className="card  card-bg lg:col-span-3">
-            <div className="card-title">
-              <h3 className="font-poppins font-semibold lg:text-3xl text-2xl">Order Summary</h3>
-            </div>
-            <div className="max-h-[300px] overflow-y-auto">
-              {cartItems?.map((item) => (
-                <div
-                  className="flex gap-6 mt-6"
-                  key={item.id}
-                >
-                  <div className="card-thumb w-[129px]">
-                    <Avatar
-                      src={item?.image ? `${import.meta.env.VITE_BASE_PATH}/storage/${item?.image}` : "/images/product-img-placeholder.jpg"}
-                      size={129}
-                      radius={10}
-                    >
-                      <img
-                        src="/images/product-img-placeholder.jpg"
-                        alt="product image"
-                      />
-                    </Avatar>
-                  </div>
-                  <div className="space-y-2.5">
-                    {/* <h6 className="text-foreground">{`${formData?.medicine_selected?.drug_name} - ${formData?.medicine_selected?.dosage || ""}`}</h6> */}
-                    <h6 className="text-foreground">
-                      {item?.name} {`${item?.strength}${item?.unit}`}
-                    </h6>
-                    <div className="text-gray">
-                      {item?.medicine_type == "ODT" ? "Oral" : item?.medicine_type} | {item?.medication_category}
-                    </div>
-                    {/* TOdo: need to update */}
-                    {/* <div className="text-gray">Duration: 1 month</div> */}
-                    <div className="text-foreground">Price: ${calculatePrice(item)}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-10">
-              {/* <h4 className="border border-t-0 border-x-0 border-b-grey-low pb-5 text-xl">Cart Total</h4> */}
-              {/* <table className="w-full text-grey-medium">
-              <tbody>
-                <tr>
-                  <td className="py-3">Subtotal</td>
-                  <td className="py-3 text-right">$789</td>
-                </tr>
-                <tr>
-                  <td className="py-3">Shipping</td>
-                  <td className="py-3 text-right">$30</td>
-                </tr>
-              </tbody>
-            </table> */}
-
-              <table className="w-full text-grey text-2xl font-bold border-t border-grey-low mt-8">
-                <tbody>
-                  <tr>
-                    <td className="py-3">Total Package Price</td>
-                    <td className="py-3 text-right">${totalBillAmount}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+          <div className="mt-5 sm:flex justify-between">
+            <p className="text-primary text-xl font-bold">Total Payable Amount</p>
+            <p className="text-primary text-xl font-bold">${formData.amount.toFixed(2)}</p>
+          </div>
+        </div>
+        <div className="card card-bg mt-10">
+          <div className="card-title">
+            <h3 className="font-poppins font-semibold lg:text-3xl text-2xl">Payment details</h3>
+          </div>
+          <div className="mt-6">
+            {/* <CardElement options={cardOptions} /> */}
+            <PaymentElement
+              id="payment-element"
+              options={paymentOptions}
+            />
           </div>
         </div>
         <div className="card card-bg mt-10">
@@ -325,6 +278,31 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
               />
             </Input.Wrapper>
 
+            <Select
+              label="State"
+              withAsterisk
+              classNames={{
+                wrapper: "bg-grey-btn rounded-md",
+              }}
+              rightSection={<i className="icon-down-arrow text-sm"></i>}
+              searchable
+              searchValue={shippingStateSearchVal}
+              onSearchChange={setShippingStateSearchVal}
+              value={shippingState}
+              readOnly={isSameAsPatientInfo}
+              className="w-full"
+              data={states?.map((item) => ({ value: item?.StateName, label: item?.StateName }))}
+              {...register("shipping.state")}
+              error={getErrorMessage(errors?.shipping?.state?.message)}
+              onChange={(value, option) => {
+                setValue("shipping.state", value || "");
+                if (value) {
+                  setShippingStateSearchVal(option.label);
+                  clearErrors("shipping.state");
+                }
+              }}
+            />
+
             <Input.Wrapper
               label="Address"
               withAsterisk
@@ -340,7 +318,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
                     const onlyAddress = address.address.split(",")[0];
                     setValue(`shipping.address`, onlyAddress, { shouldValidate: true });
                     setAddress(onlyAddress);
-                    setValue(`shipping.state`, address.state, { shouldValidate: true });
+                    // setValue(`shipping.state`, address.state, { shouldValidate: true });
                     setValue(`shipping.city`, address.city, { shouldValidate: true });
                     setValue("shipping.zip_code", address?.zip_code || "", { shouldValidate: true });
                     setShippingZipCode(address?.zip_code);
@@ -351,7 +329,8 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
                 isDisabled={isSameAsPatientInfo}
               />
             </Input.Wrapper>
-            <Input.Wrapper
+
+            {/* <Input.Wrapper
               className="w-full"
               label="State"
               withAsterisk
@@ -363,6 +342,18 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
                 error={Boolean(errors?.shipping?.state?.message)}
                 readOnly={isSameAsPatientInfo}
                 disabled
+              />
+            </Input.Wrapper> */}
+
+            <Input.Wrapper
+              className="sm:col-span-1 col-span-2"
+              label="Suite/Apt"
+              error={getErrorMessage(errors?.shipping?.address2)}
+            >
+              <Input
+                {...register("shipping.address2")}
+                readOnly={isSameAsPatientInfo}
+                error={getErrorMessage(errors?.shipping?.address2?.message)}
               />
             </Input.Wrapper>
 
@@ -455,6 +446,31 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
               />
             </Input.Wrapper>
 
+            <Select
+              label="State"
+              withAsterisk
+              classNames={{
+                wrapper: "bg-grey-btn rounded-md",
+              }}
+              rightSection={<i className="icon-down-arrow text-sm"></i>}
+              searchable
+              searchValue={billingStateSearchVal}
+              onSearchChange={setBillingStateSearchVal}
+              value={billingState}
+              readOnly={isSameAsShippingInfo}
+              className="w-full"
+              data={states?.map((item) => ({ value: item?.StateName, label: item?.StateName }))}
+              {...register("billing.state")}
+              error={getErrorMessage(errors?.billing?.state?.message)}
+              onChange={(value, option) => {
+                setValue("billing.state", value || "");
+                if (value) {
+                  setBillingStateSearchVal(option.label);
+                  clearErrors("billing.state");
+                }
+              }}
+            />
+
             <Input.Wrapper
               label="Address"
               withAsterisk
@@ -470,7 +486,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
                     const onlyAddress = address.address.split(",")[0];
                     setValue(`billing.address`, onlyAddress, { shouldValidate: true });
                     setBillingAddress(onlyAddress);
-                    setValue(`billing.state`, address.state, { shouldValidate: true });
+                    // setValue(`billing.state`, address.state, { shouldValidate: true });
                     setValue(`billing.city`, address.city, { shouldValidate: true });
                     setValue("billing.zip_code", address?.zip_code || "", { shouldValidate: true });
                     setBillingZipCode(address?.zip_code);
@@ -483,7 +499,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
               />
             </Input.Wrapper>
 
-            <Input.Wrapper
+            {/* <Input.Wrapper
               className="w-full"
               label="State"
               withAsterisk
@@ -499,7 +515,20 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
                 }}
                 disabled
               />
+            </Input.Wrapper> */}
+
+            <Input.Wrapper
+              className="sm:col-span-1 col-span-2"
+              label="Suite/Apt"
+              error={getErrorMessage(errors?.billing?.address2)}
+            >
+              <Input
+                {...register("billing.address2")}
+                readOnly={isSameAsShippingInfo}
+                error={getErrorMessage(errors?.billing?.address2?.message)}
+              />
             </Input.Wrapper>
+
             <Input.Wrapper
               className="w-full"
               label="City"

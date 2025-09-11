@@ -19,6 +19,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { Client as Styletron } from "styletron-engine-monolithic";
 import Acknowledgement from "./Acknowledgement";
 import BasicInfo from "./basic-info/BasicInfo";
+import OrderInfo from "./payment-info/OrderInfo";
 import PaymentInfo from "./payment-info/PaymentInfo";
 
 const CompleteOrderPage = () => {
@@ -38,16 +39,8 @@ const CompleteOrderPage = () => {
   const [params] = useSearchParams();
   const [basicInfo, setBasicInfo] = useAtom(basicInfoAtom);
   const [selectedCategory] = useAtom(selectedCategoryAtom);
-  // const prescriptionUId = params.get("prescription_u_id");
-  // const is_refill = params.get("is_refill");
   const detail_uid = params.get("detail_uid");
   const navigate = useNavigate();
-
-  // const patientDetailsQuery = useQuery({
-  //   queryKey: ["partner-patient-booking-query"],
-  //   queryFn: () => orderApiRepository.publicGetPatientDetails({ u_id: prescriptionUId || "", detail_uid: detail_uid || undefined }),
-  //   enabled: !!prescriptionUId,
-  // });
 
   useEffect(() => {
     if (
@@ -77,9 +70,27 @@ const CompleteOrderPage = () => {
         const price = calculatePrice(item);
         totalBill = totalBill + price;
       });
+    }
+  }, [cartItems, customerData]);
 
+  const nextStep = () => {
+    const tempNextStep = currentStep + 1;
+    setCurrentStep(tempNextStep);
+    scrollTo({ y: 0 });
+  };
+
+  const getPatientData = (orderInfoData: IPatientBookingPatientInfoDTO) => {
+    console.log("Order Info data", orderInfoData);
+    setFormData((prev) => ({
+      ...prev,
+      patient: orderInfoData.patient,
+      code: orderInfoData.code,
+      amount: orderInfoData.final_total,
+      prescription_u_id: orderInfoData.prescription_u_id,
+    }));
+    if (cartItems?.length > 0 && customerData?.payment_type == "stripe") {
       const payload: ICreatePaymentIntentDTO = {
-        amount: totalBill.toString(),
+        amount: orderInfoData.final_total || 0,
       };
       createPaymentIntentMutation.mutate(payload, {
         onSuccess: (res) => {
@@ -91,31 +102,8 @@ const CompleteOrderPage = () => {
         },
       });
     }
-  }, [cartItems, customerData]);
 
-  // useEffect(() => {
-  //   if (patientDetailsQuery?.data?.data?.status_code == 200 && patientDetailsQuery?.data?.data?.data) {
-  //     const tempPatientDetails = patientDetailsQuery?.data?.data?.data;
-  //     // setIsRefill((prevRefill) => (tempPatientDetails?.is_refill ? true : false));
-  //     if (tempPatientDetails?.status && tempPatientDetails?.status == "invited") {
-  //       // do nothing
-  //       if (tempPatientDetails?.customer?.payment_type == "stripe" && tempPatientDetails.total_bill_amount) {
-  //       }
-  //     } else if (tempPatientDetails?.status && tempPatientDetails?.status == "intake_pending") {
-  //       navigate(`../partner-patient-intake?prescription_u_id=${prescriptionUId}`);
-  //     } else if (tempPatientDetails?.status && tempPatientDetails?.status == "pending") {
-  //       navigate(`../partner-patient-password-setup?prescription_u_id=${prescriptionUId}`);
-  //     } else {
-  //       console.log(tempPatientDetails?.status);
-  //     }
-  //     setPatientDetails(patientDetailsQuery?.data?.data?.data);
-  //   }
-  // }, [patientDetailsQuery?.data?.data?.data]);
-
-  const nextStep = () => {
-    const tempNextStep = currentStep + 1;
-    setCurrentStep(tempNextStep);
-    scrollTo({ y: 0 });
+    nextStep();
   };
 
   const prevStep = () => {
@@ -161,8 +149,6 @@ const CompleteOrderPage = () => {
     // navigate(`../partner-patient-intake?prescription_u_id=${prescriptionUId}`);
   };
 
-  // const handleNext = handleSubmit(onSubmit);
-
   const onRefillTypeSelect = (refillType) => {
     setRefillType((prevType) => refillType);
     nextStep();
@@ -192,7 +178,15 @@ const CompleteOrderPage = () => {
           hasPeptides={hasPeptides}
         />
       )}
-      {currentStep == 2 && clientSecret && (
+      {currentStep == 2 && (
+        <OrderInfo
+          handleBack={handleBack}
+          formData={formData}
+          onNext={getPatientData}
+          isSubmitting={patientBookingMutation?.isPending}
+        />
+      )}
+      {currentStep == 3 && clientSecret && (
         <StripeWrapper clientSecret={clientSecret}>
           <PaymentInfo
             handleBack={handleBack}

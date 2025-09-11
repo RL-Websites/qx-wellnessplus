@@ -80,6 +80,9 @@ importers:
       '@tiptap/starter-kit':
         specifier: ^2.11.2
         version: 2.11.2
+      '@types/google.maps':
+        specifier: ^3.58.1
+        version: 3.58.1
       agora-rtc-react:
         specifier: ^2.3.0
         version: 2.3.0(react@18.2.0)
@@ -1246,6 +1249,9 @@ packages:
 
   '@types/estree@1.0.5':
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
+
+  '@types/google.maps@3.58.1':
+    resolution: {integrity: sha512-X9QTSvGJ0nCfMzYOnaVs/k6/4L+7F5uCS+4iUmkLEls6J9S/Phv+m/i3mDeyc49ZBgwab3EFO1HEoBY7k98EGQ==}
 
   '@types/hammerjs@2.0.45':
     resolution: {integrity: sha512-qkcUlZmX6c4J8q45taBKTL3p+LbITgyx7qhlPYOdOHZB7B31K0mXbP5YA7i7SgDeEGuI9MnumiKPEMrxg8j3KQ==}
@@ -4377,6 +4383,8 @@ snapshots:
       '@babel/types': 7.24.5
 
   '@types/estree@1.0.5': {}
+
+  '@types/google.maps@3.58.1': {}
 
   '@types/hammerjs@2.0.45': {}
 

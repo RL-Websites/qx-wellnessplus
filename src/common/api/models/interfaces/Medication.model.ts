@@ -34,6 +34,7 @@ export interface IMedicineCategory {
 }
 
 export interface IMedicineListItem {
+  u_id: number;
   id: number;
   client_id: number | null;
   name: string;
