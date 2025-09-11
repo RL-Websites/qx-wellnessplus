@@ -37,7 +37,7 @@ const OrderSummary = () => {
 
   useEffect(() => {
     if (cartItems.length === 0) {
-      navigate("/medications");
+      navigate("/category");
     }
   }, [cartItems, navigate]);
 
