@@ -28,9 +28,10 @@ interface LifestyleAndFertilityProps {
   onBack: () => void;
   defaultValues?: Partial<LifestyleFertilitySchemaType>;
   isFinalStep?: string;
+  isLoading?: boolean;
 }
 
-const LifestyleAndFertility = ({ onNext, onBack, defaultValues, isFinalStep }: LifestyleAndFertilityProps) => {
+const LifestyleAndFertility = ({ onNext, onBack, defaultValues, isFinalStep, isLoading = false }: LifestyleAndFertilityProps) => {
   const {
     handleSubmit,
     setValue,
@@ -194,6 +195,7 @@ const LifestyleAndFertility = ({ onNext, onBack, defaultValues, isFinalStep }: L
           type="submit"
           form="lifestyleFertilityForm"
           className="w-[200px]"
+          loading={isLoading}
         >
           {isFinalStep ? "Submit" : "Next"}
         </Button>

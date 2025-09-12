@@ -181,9 +181,9 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
     <>
       <form id="payment-form">
         <h1 className="heading-text text-foreground uppercase text-center pb-10">Payment Information</h1>
-        <div className="grid lg:grid-cols-7 gap-6 mt-10">
+        <div className="grid lg:grid-cols-2 gap-6 mt-10">
           {/* Cart Section */}
-          <div className="card card-bg lg:col-span-4">
+          <div className="card card-bg">
             <div className="card-title">
               <h3 className="font-poppins font-semibold lg:text-3xl text-2xl">Cart</h3>
             </div>
@@ -222,7 +222,7 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
           </div>
 
           {/* Order Summary */}
-          <div className="lg:col-span-3 space-y-6">
+          <div className="space-y-6">
             <div className="card card-bg">
               <div className="card-title pb-6">
                 <h4 className="text-foreground text-[30px] font-semibold">Order Summary</h4>
@@ -249,11 +249,11 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
                   )}
                 </tbody>
               </table>
-              <table className="w-full text-grey text-2xl font-bold border-t border-grey-low mt-8">
+              <table className="w-full text-grey text-2xl font-bold border-t border-foreground mt-8">
                 <tbody>
                   <tr>
-                    <td className="py-3">Total Package Price</td>
-                    <td className="py-3 text-right">${finalTotal.toFixed(2)}</td>
+                    <td className="py-3 sm:text-xl text-base text-foreground">Total Package Price</td>
+                    <td className="py-3 sm:text-xl text-base text-foreground text-right">${finalTotal.toFixed(2)}</td>
                   </tr>
                 </tbody>
               </table>
@@ -288,6 +288,7 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
                   )
                 }
                 classNames={{
+                  root: "w-full",
                   section: "!w-auto !mr-3",
                   input: "!pr-20",
                   label: "pb-6",
