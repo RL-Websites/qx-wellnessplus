@@ -285,6 +285,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
                 label: "!text-sm md:!text-base lg:!text-lg",
                 wrapper: isSameAsPatientInfo ? "bg-transparent" : "bg-grey-btn rounded-md",
                 input: isSameAsPatientInfo ? "bg-transparent pl-0" : "",
+                section: isSameAsPatientInfo ? "hidden" : "",
               }}
               rightSection={<i className="icon-down-arrow text-sm"></i>}
               searchable
@@ -392,6 +393,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
               }}
               readOnly={isSameAsPatientInfo}
               classNames={{
+                label: "!text-sm md:!text-base lg:!text-lg",
                 wrapper: isSameAsPatientInfo ? "bg-transparent" : " rounded-md",
                 input: isSameAsPatientInfo ? "bg-transparent pl-0" : "",
               }}
@@ -459,6 +461,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
                 label: "!text-sm md:!text-base lg:!text-lg",
                 wrapper: isSameAsShippingInfo ? "bg-transparent" : "bg-grey-btn rounded-md",
                 input: isSameAsShippingInfo ? "bg-transparent pl-0" : "",
+                section: isSameAsShippingInfo ? "hidden" : "",
               }}
               rightSection={<i className="icon-down-arrow text-sm"></i>}
               searchable
@@ -572,6 +575,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
               }}
               readOnly={isSameAsShippingInfo}
               classNames={{
+                label: "!text-sm md:!text-base lg:!text-lg",
                 wrapper: isSameAsShippingInfo ? "bg-transparent" : " rounded-md",
                 input: isSameAsShippingInfo ? "!bg-transparent pl-0 border-0" : "",
               }}
@@ -589,6 +593,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
 
       <div className="flex justify-between gap-6 mt-6">
         <Button
+          w={256}
           color="grey.4"
           c="foreground"
           variant="outline"
@@ -597,7 +602,6 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
             root: "border-primary",
             label: "text-primary",
           }}
-          className="md:w-[200px] w-[150px]"
         >
           Back
         </Button>
