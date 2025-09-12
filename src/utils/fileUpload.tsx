@@ -28,3 +28,23 @@ export const compressFileToBase64 = (files: File[], callback: (output: string) =
     });
   }
 };
+
+// export const imageUrlToBase64 = async (imageUrl) => {
+//   try {
+//     const response = await fetch(imageUrl);
+//     if (!response.ok) {
+//       throw new Error(`Error fetching the image from server url.`);
+//     }
+//     const blob = await response.blob();
+
+//     return new Promise((resolve, reject) => {
+//       const reader = new FileReader();
+//       reader.onloadend = () => resolve(reader.result);
+//       reader.onerror = reject;
+//       reader.readAsDataURL(blob);
+//     });
+//   } catch (error) {
+//     console.error("Error fetching image as blob:", error);
+//     return null;
+//   }
+// };
