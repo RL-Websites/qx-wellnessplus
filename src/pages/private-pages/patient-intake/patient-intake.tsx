@@ -40,6 +40,7 @@ import StepThree from "./intake-steps/step-three";
 import StepTwelve from "./intake-steps/step-twelve";
 import StepTwo from "./intake-steps/step-two";
 import StepEleven from "./intake-steps/step.eleven";
+import BodyMeasure from "./intake-steps/testosterone/bodyMeasure";
 import HormonalHealth from "./intake-steps/testosterone/hormonalHealth";
 import LifestyleAndFertility from "./intake-steps/testosterone/lifeStyleAndFertility";
 import TestosteroneHistory from "./intake-steps/testosterone/testosteroneHistory";
@@ -90,7 +91,9 @@ const PatientIntake = () => {
     { component: StepFourteen, categories: ["weightLoss"] },
     { component: StepFifteen, categories: ["weightLoss"] },
     { component: StepSixteen, categories: ["weightLoss"] },
+    { component: FullBodyPhoto, categories: ["peptides"] },
     { component: StepSeventeen, categories: ["peptides"] },
+    { component: BodyMeasure, categories: ["testosterone"] },
     { component: HormonalHealth, categories: ["testosterone"] },
     { component: TestosteroneHistory, categories: ["testosterone"] },
     { component: LifestyleAndFertility, categories: ["testosterone"] },
