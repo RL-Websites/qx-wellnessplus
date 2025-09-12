@@ -76,14 +76,14 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
       if (!appliedPromo) {
         setFinalTotal(grossTotal);
       } else {
-        const discountVal = parseFloat(appliedPromo.discount_value ?? "0");
-        const discountType = (appliedPromo.discount_type ?? "flat").toLowerCase();
+        const discountVal = parseFloat(appliedPromo.discount_value || "0");
+        const discountType = (appliedPromo.discount_type || "flat").toLowerCase();
         let calculatedDiscount = 0;
 
         if (discountType === "flat") {
           calculatedDiscount = discountVal;
         } else {
-          calculatedDiscount = (grossTotal * discountVal) / 100;
+          calculatedDiscount = (productTotal * discountVal) / 100;
         }
 
         calculatedDiscount = Math.round(calculatedDiscount * 100) / 100;
@@ -243,8 +243,8 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
 
                   {discount > 0 && (
                     <tr>
-                      <td className="py-3 text-primary">Discount</td>
-                      <td className="py-3 text-right text-primary">- ${discount.toFixed(2)}</td>
+                      <td className="py-3 text-primary font-semibold">Discount</td>
+                      <td className="py-3 text-right text-primary font-semibold">- ${discount.toFixed(2)}</td>
                     </tr>
                   )}
                 </tbody>
