@@ -282,7 +282,8 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
               label="State"
               withAsterisk
               classNames={{
-                wrapper: "bg-grey-btn rounded-md",
+                wrapper: isSameAsPatientInfo ? "bg-transparent" : "bg-grey-btn rounded-md",
+                input: isSameAsPatientInfo ? "bg-transparent pl-0" : "",
               }}
               rightSection={<i className="icon-down-arrow text-sm"></i>}
               searchable
@@ -354,6 +355,9 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
                 {...register("shipping.address2")}
                 readOnly={isSameAsPatientInfo}
                 error={getErrorMessage(errors?.shipping?.address2?.message)}
+                classNames={{
+                  input: isSameAsPatientInfo ? "pl-0" : "",
+                }}
               />
             </Input.Wrapper>
 
@@ -450,7 +454,8 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
               label="State"
               withAsterisk
               classNames={{
-                wrapper: "bg-grey-btn rounded-md",
+                wrapper: isSameAsShippingInfo ? "bg-transparent" : "bg-grey-btn rounded-md",
+                input: isSameAsShippingInfo ? "bg-transparent pl-0" : "",
               }}
               rightSection={<i className="icon-down-arrow text-sm"></i>}
               searchable
@@ -526,6 +531,9 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
                 {...register("billing.address2")}
                 readOnly={isSameAsShippingInfo}
                 error={getErrorMessage(errors?.billing?.address2?.message)}
+                classNames={{
+                  input: isSameAsShippingInfo ? "pl-0" : "",
+                }}
               />
             </Input.Wrapper>
 
