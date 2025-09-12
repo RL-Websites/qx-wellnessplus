@@ -52,7 +52,7 @@ const StepFourteen = ({ onNext, onBack, defaultValues, isLoading = false }: Step
     if (selectedDrugs.includes(value)) {
       updated = selectedDrugs.filter((v) => v !== value);
     } else {
-      updated = [...selectedDrugs, value];
+      updated = selectedDrugs?.length > 0 ? [...selectedDrugs, value] : [value];
     }
     setValue("takeDiabeticDrugName", updated.join(", "), { shouldValidate: true });
     clearErrors("takeDiabeticDrugName");

@@ -228,9 +228,8 @@ export interface IPublicPartnerRef {
 }
 
 export interface IPatientBookingPatientInfoDTO {
-  prescription_u_id: any;
-  final_total: any;
-  code: any;
+  prescription_u_id?: any;
+  code?: any;
   slug: string;
   cart_total: number;
   is_refill?: boolean;

@@ -187,6 +187,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
     // const paymentMethodId = paymentMethod.id;
     if (paymentIntent) {
       const payload: IPatientBookingPatientInfoDTO = {
+        ...formData,
         ...temptSubmitPayload,
         payment: {
           amount: paymentIntent.amount,

@@ -6,7 +6,7 @@ interface IConfirmationModalProps {
   openModal: boolean;
   onModalClose: (closeReason: boolean) => void;
   onModalPressYes: (labRequired: number) => void;
-  onModalPressNo: (qty: number) => void;
+  onModalPressNo: () => void;
   medicationName?: string;
   medicationInfo?: IPartnerMedicineListItem[];
   okBtnLoading: boolean;
@@ -210,10 +210,10 @@ function ConfirmTestosteroneOnlyModal(modalProps: IConfirmationModalProps) {
               classNames={{
                 label: "sm:text-base text-sm",
               }}
-              onClick={() => modalProps.onModalPressNo(labRequired)}
+              onClick={() => modalProps.onModalPressNo()}
               disabled={modalProps.okBtnLoading}
             >
-              Do Not Proceed
+              Cancel
             </Button>
             <Button
               className="w-full"

@@ -209,7 +209,7 @@ const MedicationsPage = () => {
         onModalPressYes={(labRequired) => {
           onTestosteroneConfirm(String(labRequired));
         }}
-        onModalPressNo={handleAgree}
+        onModalPressNo={handleConfirmTestosterone.close}
         medicationInfo={pendingAddToCart ? [pendingAddToCart] : []}
         okBtnLoading={false}
       />

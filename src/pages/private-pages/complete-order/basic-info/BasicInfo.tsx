@@ -275,7 +275,19 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
     onNext(payload);
   };
 
-  const handleNext = handleSubmit(onSubmit);
+  const onError = (error) => {
+    if (error?.phone?.message) {
+      const phoneElement = document.getElementById("phone-input");
+      if (phoneElement) {
+        phoneElement.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+        phoneElement.focus();
+      }
+    }
+  };
+  const handleNext = handleSubmit(onSubmit, onError);
 
   return (
     <>
@@ -331,6 +343,7 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
             />
           </Input.Wrapper>
           <Input.Wrapper
+            id="phone-input"
             label="Phone Number"
             withAsterisk
             className="md:col-span-1 col-span-2"
