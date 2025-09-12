@@ -206,7 +206,7 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
                     </Avatar>
                   </div>
                   <div className="space-y-2.5">
-                    <h6 className="text-foreground">
+                    <h6 className="text-foreground break-all">
                       {item?.name} {`${item?.strength ?? ""}${item?.unit ?? ""}`}
                     </h6>
                     <div className="text-gray">
