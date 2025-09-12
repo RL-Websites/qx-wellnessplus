@@ -376,6 +376,9 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
                 {...register(`shipping.city`)}
                 error={Boolean(errors?.shipping?.city?.message)}
                 readOnly={isSameAsPatientInfo}
+                classNames={{
+                  input: isSameAsPatientInfo ? "pl-0" : "",
+                }}
               />
             </Input.Wrapper>
 

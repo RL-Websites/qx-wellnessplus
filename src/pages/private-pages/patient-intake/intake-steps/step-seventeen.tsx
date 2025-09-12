@@ -112,6 +112,7 @@ const StepSeventeen = ({ onNext, onBack, defaultValues, isFinalStep, isLoading =
         onChange={(val) => handleSelect("peptideTherapyUsed", val)}
         label="Have you used peptide therapies before?"
         classNames={{
+          root: "w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
@@ -236,7 +237,7 @@ const StepSeventeen = ({ onNext, onBack, defaultValues, isFinalStep, isLoading =
           withAsterisk
           error={getErrorMessage(errors.physicActLevel)}
           classNames={{
-            root: "sm:!grid !block",
+            root: "sm:!grid !block w-full",
             error: "sm:!text-end !text-start w-full",
             label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           }}

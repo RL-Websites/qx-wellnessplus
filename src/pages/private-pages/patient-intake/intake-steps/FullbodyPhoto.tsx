@@ -267,7 +267,7 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
         </div>
       </form>
 
-      <div className="flex justify-end mt-6">
+      <div className="flex sm:justify-end justify-center mt-6">
         <Button
           type="submit"
           form="stepFullBodyForm"
