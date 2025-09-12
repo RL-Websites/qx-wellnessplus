@@ -148,10 +148,10 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
         setBackFile(
           tempPatientDetails?.userable?.driving_license_back ? `${import.meta.env.VITE_BASE_PATH}/storage/${tempPatientDetails?.userable?.driving_license_back}` : undefined
         );
-        setFrontBase64(
-          tempPatientDetails?.userable?.driving_license_front ? `${import.meta.env.VITE_BASE_PATH}/storage/${tempPatientDetails?.userable?.driving_license_front}` : ""
-        );
-        setBackBase64(tempPatientDetails?.userable?.driving_license_back ? `${import.meta.env.VITE_BASE_PATH}/storage/${tempPatientDetails?.userable?.driving_license_back}` : "");
+        // setFrontBase64(
+        //   tempPatientDetails?.userable?.driving_license_front ? `${import.meta.env.VITE_BASE_PATH}/storage/${tempPatientDetails?.userable?.driving_license_front}` : ""
+        // );
+        // setBackBase64(tempPatientDetails?.userable?.driving_license_back ? `${import.meta.env.VITE_BASE_PATH}/storage/${tempPatientDetails?.userable?.driving_license_back}` : "");
         setValue(
           "driving_lic_front",
           tempPatientDetails?.userable?.driving_license_front ? `${import.meta.env.VITE_BASE_PATH}/storage/${tempPatientDetails?.userable?.driving_license_front}` : ""
@@ -213,8 +213,8 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
         setValue("longitude", Number(formData?.patient?.longitude));
         setFrontFile(formData?.patient?.driving_lic_front || "");
         setBackFile(formData?.patient?.driving_lic_back || "");
-        setFrontBase64(formData?.patient?.driving_lic_front || "");
-        setBackBase64(formData?.patient?.driving_lic_back || "");
+        // setFrontBase64(formData?.patient?.driving_lic_front || "");
+        // setBackBase64(formData?.patient?.driving_lic_back || "");
       }
 
       if (!formData?.patient?.dob && globalDob) {
