@@ -646,16 +646,14 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
           </div>
         </form>
       </div>
-      <div className="flex justify-between mt-6">
-        <div className="flex gap-3 ms-auto">
-          <Button
-            w={256}
-            onClick={handleNext}
-            loading={isSubmitting}
-          >
-            Next
-          </Button>
-        </div>
+      <div className="flex sm:justify-end justify-center mt-6">
+        <Button
+          w={256}
+          onClick={handleNext}
+          loading={isSubmitting}
+        >
+          Next
+        </Button>
       </div>
     </>
   );

@@ -67,7 +67,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
     setValue("shipping.address", address, { shouldValidate: true });
     setAddress(address);
     setValue("shipping.address2", formData?.patient?.address2, { shouldValidate: true });
-    setShippingStateSearchVal(formData?.patient?.address2);
+    setShippingStateSearchVal(formData?.patient?.state);
     setValue("shipping.state", formData?.patient?.state, { shouldValidate: true });
 
     setValue("shipping.city", formData?.patient?.city, { shouldValidate: true });
@@ -87,7 +87,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
       setValue("billing.address", watch("shipping.address"), { shouldValidate: true });
       setBillingAddress(watch("shipping.address") || "");
       setValue("billing.address2", watch("shipping.address2"), { shouldValidate: true });
-      setBillingStateSearchVal(watch("shipping.address2") || "");
+      setBillingStateSearchVal(watch("shipping.state") || "");
       setValue("billing.state", watch("shipping.state") || "", { shouldValidate: true });
       setValue("billing.city", watch("shipping.city") || "", { shouldValidate: true });
       setValue("billing.zip_code", shippingZipCode || "", { shouldValidate: true });
@@ -283,8 +283,10 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
               label="State"
               withAsterisk
               classNames={{
+                label: "!text-sm md:!text-base lg:!text-lg",
                 wrapper: isSameAsPatientInfo ? "bg-transparent" : "bg-grey-btn rounded-md",
                 input: isSameAsPatientInfo ? "bg-transparent pl-0" : "",
+                section: isSameAsPatientInfo ? "hidden" : "",
               }}
               rightSection={<i className="icon-down-arrow text-sm"></i>}
               searchable
@@ -297,8 +299,8 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
               {...register("shipping.state")}
               error={getErrorMessage(errors?.shipping?.state?.message)}
               onChange={(value, option) => {
-                setValue("shipping.state", value || "");
                 if (value) {
+                  setValue("shipping.state", value || "");
                   setShippingStateSearchVal(option.label);
                   clearErrors("shipping.state");
                 }
@@ -351,6 +353,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
               className="w-full"
               label="Suite/Apt"
               error={getErrorMessage(errors?.shipping?.address2)}
+              classNames={InputErrorMessage}
             >
               <Input
                 {...register("shipping.address2")}
@@ -374,6 +377,9 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
                 {...register(`shipping.city`)}
                 error={Boolean(errors?.shipping?.city?.message)}
                 readOnly={isSameAsPatientInfo}
+                classNames={{
+                  input: isSameAsPatientInfo ? "pl-0" : "",
+                }}
               />
             </Input.Wrapper>
 
@@ -391,6 +397,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
               }}
               readOnly={isSameAsPatientInfo}
               classNames={{
+                label: "!text-sm md:!text-base lg:!text-lg",
                 wrapper: isSameAsPatientInfo ? "bg-transparent" : " rounded-md",
                 input: isSameAsPatientInfo ? "bg-transparent pl-0" : "",
               }}
@@ -455,8 +462,10 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
               label="State"
               withAsterisk
               classNames={{
+                label: "!text-sm md:!text-base lg:!text-lg",
                 wrapper: isSameAsShippingInfo ? "bg-transparent" : "bg-grey-btn rounded-md",
                 input: isSameAsShippingInfo ? "bg-transparent pl-0" : "",
+                section: isSameAsShippingInfo ? "hidden" : "",
               }}
               rightSection={<i className="icon-down-arrow text-sm"></i>}
               searchable
@@ -469,8 +478,8 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
               {...register("billing.state")}
               error={getErrorMessage(errors?.billing?.state?.message)}
               onChange={(value, option) => {
-                setValue("billing.state", value || "");
                 if (value) {
+                  setValue("billing.state", value || "");
                   setBillingStateSearchVal(option.label);
                   clearErrors("billing.state");
                 }
@@ -527,6 +536,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
               className="w-full"
               label="Suite/Apt"
               error={getErrorMessage(errors?.billing?.address2)}
+              classNames={InputErrorMessage}
             >
               <Input
                 {...register("billing.address2")}
@@ -569,6 +579,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
               }}
               readOnly={isSameAsShippingInfo}
               classNames={{
+                label: "!text-sm md:!text-base lg:!text-lg",
                 wrapper: isSameAsShippingInfo ? "bg-transparent" : " rounded-md",
                 input: isSameAsShippingInfo ? "!bg-transparent pl-0 border-0" : "",
               }}
@@ -586,6 +597,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
 
       <div className="flex justify-between gap-6 mt-6">
         <Button
+          w={256}
           color="grey.4"
           c="foreground"
           variant="outline"
@@ -594,7 +606,6 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
             root: "border-primary",
             label: "text-primary",
           }}
-          className="md:w-[200px] w-[150px]"
         >
           Back
         </Button>
