@@ -43,16 +43,16 @@ const StepFourteen = ({ onNext, onBack, defaultValues, isLoading = false }: Step
   });
 
   const diabeticStatus = watch("diabeticStatus");
-  const selectedDrugs = watch("takeDiabeticDrugName")?.split(", ") || [];
+  const selectedDrugs = watch("takeDiabeticDrugName") ? watch("takeDiabeticDrugName")?.split(", ") : [];
   const hemoglobinValue = watch("takeDiabeticHemoglobin");
   const showFollowUps = diabeticStatus === "Yes";
 
   const toggleDrug = (value: string) => {
     let updated: string[];
-    if (selectedDrugs.includes(value)) {
+    if (selectedDrugs?.includes(value)) {
       updated = selectedDrugs.filter((v) => v !== value);
     } else {
-      updated = [...selectedDrugs, value];
+      updated = selectedDrugs?.length && selectedDrugs?.length > 0 ? [...selectedDrugs, value] : [value];
     }
     setValue("takeDiabeticDrugName", updated.join(", "), { shouldValidate: true });
     clearErrors("takeDiabeticDrugName");

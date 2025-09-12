@@ -109,7 +109,7 @@ function ConfirmProductOrderModal(modalProps: IConfirmationModalProps) {
               onClick={modalProps.onModalPressYes}
               disabled={modalProps.okBtnLoading}
             >
-              Do Not Proceed
+              Cancel
             </Button>
             <Button
               color="primary"

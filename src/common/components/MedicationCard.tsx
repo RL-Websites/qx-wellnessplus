@@ -4,9 +4,11 @@ interface IMedicationProps {
   image: string;
   title: string;
   cost: string;
+  lab_fee?: number;
   disabled: boolean;
   onAddToCart: () => void;
   onShowDetails: () => void;
+  selectedCategory?: string[];
 }
 
 const MedicationCard = (medicationProps: IMedicationProps) => {
@@ -31,9 +33,24 @@ const MedicationCard = (medicationProps: IMedicationProps) => {
         {medicationProps?.title && (
           <h4 className="md:text-2xl sm:text-xl text-lg font-poppins leading-snug font-semibold text-foreground md:h-16 sm:h-8 line-clamp-2 break-all">{medicationProps?.title}</h4>
         )}
-        <div className="flex items-center justify-between">
-          <span className="text-foreground sm:text-base text-sm font-bold">Package Price</span>
-          <span className="text-foreground sm:text-base text-sm font-bold">${medicationProps?.cost}</span>
+        <div className="">
+          <p className="text-foreground text-sm  font-bold">Package Price</p>
+          {medicationProps?.selectedCategory?.includes("Testosterone") ? (
+            <div className="grid sm:grid-cols-2 gap-4 mt-3">
+              <div className="flex flex-col justify-center items-center border-2 border-[#8FCADD] rounded-xl p-2">
+                <span className="text-foreground text-sm">Without Lab</span>
+                <span className="text-foreground sm:text-lg text-base font-bold">${medicationProps?.cost}</span>
+              </div>
+              <div className="flex flex-col justify-center items-center border-2 border-[#8FCADD] rounded-xl p-2">
+                <span className="text-foreground text-sm">With Lab</span>
+                <span className="text-foreground sm:text-lg text-base font-bold"> ${(Number(medicationProps?.cost) + Number(medicationProps?.lab_fee)).toFixed(2)}</span>
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-col justify-center items-center border-2 border-[#8FCADD] rounded-xl p-2 mt-3">
+              <span className="text-foreground sm:text-lg text-base font-bold">${medicationProps?.cost}</span>
+            </div>
+          )}
         </div>
       </div>
       <Button

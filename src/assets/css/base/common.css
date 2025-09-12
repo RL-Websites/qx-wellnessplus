@@ -7,3 +7,8 @@
     background-size: 35%;
   }
 }
+@media only screen and (max-width: 576px) {
+  .p-GridCell {
+    margin-bottom: 20px !important;
+  }
+}

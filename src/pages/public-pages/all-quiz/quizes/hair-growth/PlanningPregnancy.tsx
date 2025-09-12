@@ -1,6 +1,6 @@
 import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Radio } from "@mantine/core";
+import { Button, Radio, Text } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -44,7 +44,7 @@ const PlanningPregnancy = ({ onNext, onBack, defaultValues }: IPlanningPregnancy
     <form
       id="planningPregnancyForm"
       onSubmit={handleSubmit(onNext)}
-      className="max-w-xl mx-auto space-y-6"
+      className="card-common-width-lg mx-auto space-y-6"
     >
       <div>
         <h2 className="text-center text-3xl font-poppins font-semibold text-foreground animate-title">Are you currently pregnant or planning pregnancy within 3 months?</h2>
@@ -53,7 +53,6 @@ const PlanningPregnancy = ({ onNext, onBack, defaultValues }: IPlanningPregnancy
           value={planningPregnancy}
           onChange={handleSelect}
           className="mt-6 w-full animate-content"
-          error={errors?.planningPregnancy?.message}
         >
           <div className="grid md:grid-cols-2 w-full gap-5">
             {options.map((option) => (
@@ -75,6 +74,7 @@ const PlanningPregnancy = ({ onNext, onBack, defaultValues }: IPlanningPregnancy
             ))}
           </div>
         </Radio.Group>
+        {errors.planningPregnancy && <Text className="text-red-500 text-sm mt-5 text-center">{errors.planningPregnancy.message}</Text>}
       </div>
 
       <div className="flex justify-center gap-6 pt-4 animate-btns">

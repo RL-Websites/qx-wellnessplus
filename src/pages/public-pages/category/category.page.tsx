@@ -81,7 +81,7 @@ const CategoryPage = () => {
       <h4 className="heading-text text-center text-foreground uppercase">Choose A Treatment</h4>
 
       <div
-        className={`${(category?.length ?? 0) < 3 ? `flex flex-wrap justify-center` : "grid lg:grid-cols-3 sm:grid-cols-2"} lg:gap-y-12 gap-y-10  lg:gap-x-20 md:gap-x-10 gap-x-5`}
+        className={`${(category?.length ?? 0) < 3 ? `flex flex-wrap justify-center` : "grid lg:grid-cols-3 sm:grid-cols-2"} lg:gap-y-12 gap-y-7  lg:gap-x-20 md:gap-x-10 gap-x-5`}
       >
         {transformedCategories?.map((item, index) => (
           <CategoryCard

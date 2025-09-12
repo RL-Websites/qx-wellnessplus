@@ -4,6 +4,7 @@ import authApiRepository from "@/common/api/repositories/authRepository";
 import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
 import dmlToast from "@/common/configs/toaster.config";
 import useAuthToken from "@/common/hooks/useAuthToken";
+import { customerAtom } from "@/common/states/customer.atom";
 import { cartItemsAtom } from "@/common/states/product.atom";
 import { user_id, userAtom } from "@/common/states/user.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -40,6 +41,7 @@ const Login = () => {
   const { getAccessToken, setAccessToken } = useAuthToken();
   const [cartItems] = useAtom(cartItemsAtom);
   const [userData, setUserDataAtom] = useAtom(userAtom);
+  const [customerData, setCustomerData] = useAtom(customerAtom);
   const [userId, setUserId] = useAtom(user_id);
   const navigate = useNavigate();
   const location = useLocation();
@@ -161,9 +163,9 @@ const Login = () => {
               variant="outline"
               className="lg:w-[206px]"
               component={Link}
-              to={`/order-summary`}
+              to={customerData?.slug ? "/order-summary" : "/"}
             >
-              back
+              Back
             </Button>
             <Button
               size="md"
