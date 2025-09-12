@@ -35,7 +35,7 @@ const HormonalHealth = ({ onNext, onBack, defaultValues, isLoading = false }: Ho
   });
 
   const lowTestosterone = watch("lowTestosterone");
-  const selectedSymptoms = watch("symptomsSH")?.split(", ") || [];
+  const selectedSymptoms = watch("symptomsSH") ? watch("symptomsSH")?.split(", ") : [];
 
   const symptomOptions = ["Fatigue", "Low libido", "Mood changes", "Muscle loss"];
 

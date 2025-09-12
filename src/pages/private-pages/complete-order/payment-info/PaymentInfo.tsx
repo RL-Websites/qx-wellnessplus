@@ -190,7 +190,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
         ...formData,
         ...temptSubmitPayload,
         payment: {
-          amount: paymentIntent.amount,
+          amount: formData.amount,
           client_secret: paymentIntent.client_secret || "",
           payment_method_id: paymentIntent.payment_method || "",
           payment_intent_id: paymentIntent.id,
