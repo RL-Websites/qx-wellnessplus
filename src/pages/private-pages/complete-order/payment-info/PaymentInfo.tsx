@@ -234,7 +234,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
           </div>
         </div>
         <div className="card card-bg mt-10">
-          <div className="card-title flex justify-between items-center">
+          <div className="card-title flex flex-wrap justify-between items-center gap-2">
             <h3 className="font-poppins font-semibold lg:text-3xl md:text-2xl text-xl">Shipping Info</h3>
             <Checkbox
               checked={isSameAsPatientInfo}
@@ -242,7 +242,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
               onChange={(event) => handleCheckboxChange(event.currentTarget.checked)}
             />
           </div>
-          <div className="grid md:grid-cols-2 gap-6 pt-10">
+          <div className="md:grid md:grid-cols-2 gap-6 pt-10 md:space-y-0 space-y-6">
             <Input.Wrapper
               classNames={InputErrorMessage}
               label="Name"
@@ -263,7 +263,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
             <Input.Wrapper
               label="Email Address"
               withAsterisk
-              className="col-span-1"
+              className="w-full"
               classNames={InputErrorMessage}
               error={getErrorMessage(errors?.shipping?.email)}
             >
@@ -347,7 +347,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
             </Input.Wrapper> */}
 
             <Input.Wrapper
-              className="sm:col-span-1 col-span-2"
+              className="w-full"
               label="Suite/Apt"
               error={getErrorMessage(errors?.shipping?.address2)}
             >
@@ -404,7 +404,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
           </div>
         </div>
         <div className="card card-bg mt-10">
-          <div className="card-title flex justify-between items-center">
+          <div className="card-title flex flex-wrap justify-between items-center gap-2">
             <h3 className="font-poppins font-semibold lg:text-3xl md:text-2xl text-xl">Billing Info</h3>
             <div className="flex items-center gap-4">
               <Checkbox
@@ -414,7 +414,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
               />
             </div>
           </div>
-          <div className="grid md:grid-cols-2 gap-6 pt-10">
+          <div className="md:grid md:grid-cols-2 gap-6 pt-10 md:space-y-0 space-y-6">
             <Input.Wrapper
               label="Name"
               withAsterisk
@@ -435,7 +435,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
             <Input.Wrapper
               label="Email Address"
               withAsterisk
-              className="col-span-1"
+              className="w-full"
               error={getErrorMessage(errors?.billing?.email)}
               classNames={InputErrorMessage}
             >
@@ -523,7 +523,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
             </Input.Wrapper> */}
 
             <Input.Wrapper
-              className="sm:col-span-1 col-span-2"
+              className="w-full"
               label="Suite/Apt"
               error={getErrorMessage(errors?.billing?.address2)}
             >
