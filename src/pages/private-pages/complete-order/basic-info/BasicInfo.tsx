@@ -396,7 +396,7 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
             label="Date of Birth"
             error={getErrorMessage(errors.dob)}
             withAsterisk
-            className="md:col-span-1 col-span-2 "
+            className="md:col-span-1 col-span-2"
             classNames={InputErrorMessage}
           >
             <div className={`${errors?.dob ? "baseWeb-error" : ""} dml-Input-wrapper dml-Input-Calendar relative`}>
@@ -437,7 +437,7 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
             searchValue={stateSearchVal}
             onSearchChange={setStateSearchVal}
             value={selectedState}
-            className="w-full"
+            className="md:col-span-1 col-span-2 w-full"
             data={states?.map((item) => ({ value: item?.StateName, label: item?.StateName }))}
             {...register("state")}
             error={getErrorMessage(errors.state?.message)}
@@ -451,7 +451,7 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
             }}
           />
           <Input.Wrapper
-            className="sm:col-span-1 col-span-2"
+            className="sm:col-span-1 col-span-2 w-full"
             label="Address"
             error={getErrorMessage(errors.address)}
             withAsterisk
@@ -477,7 +477,7 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
             />
           </Input.Wrapper>
           <Input.Wrapper
-            className="sm:col-span-1 col-span-2"
+            className="sm:col-span-1 col-span-2 w-full"
             label="Suite/Apt"
             error={getErrorMessage(errors.address2)}
           >
