@@ -92,7 +92,7 @@ const OrderSummary = () => {
                 key={item.id}
                 className="flex flex-wrap items-center justify-between"
               >
-                <span className="text-foreground text-lg inline-block max-w-[226px]">
+                <span className="text-foreground text-lg inline-block max-w-[226px] break-all">
                   {item.name} {item.strength ? `${item.strength} ${item.unit}` : ""} x {item.qty}
                 </span>
                 <span className="text-foreground text-lg">${item?.lab_required == "1" ? calculatePrice(item) + stateWiseLabFee(item, selectedState) : calculatePrice(item)}</span>
