@@ -34,12 +34,14 @@ const Cholesterol = ({ onNext, onBack, defaultValues }: CholesterolProps) => {
         className="max-w-xl mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins">Do you have cholesterol greater than 240 mg/dL or are you on cholesterol medication?</h2>
+          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">
+            Do you have cholesterol greater than 240 mg/dL or are you on cholesterol medication?
+          </h2>
 
           <Radio.Group
             value={selected}
             onChange={(value) => setValue("cholesterolStatus", value, { shouldValidate: true })}
-            className="mt-6"
+            className="mt-6 animate-content"
           >
             <Grid gutter="md">
               {options.map((option) => (
@@ -63,7 +65,7 @@ const Cholesterol = ({ onNext, onBack, defaultValues }: CholesterolProps) => {
                       <div className="relative text-center">
                         <span className="text-foreground font-poppins">{option}</span>
                         {selected === option && (
-                          <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                          <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                             <i className="icon-tick text-sm/none"></i>
                           </span>
                         )}
@@ -76,7 +78,7 @@ const Cholesterol = ({ onNext, onBack, defaultValues }: CholesterolProps) => {
           </Radio.Group>
         </div>
 
-        <div className="flex justify-center gap-6 pt-4">
+        <div className="flex justify-center gap-6 pt-4 animate-btns">
           <Button
             variant="outline"
             className="w-[200px]"

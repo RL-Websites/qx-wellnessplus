@@ -43,12 +43,12 @@ const PeptideTherapyDuration = ({ onNext, onBack, defaultValues }: PeptideTherap
         onSubmit={handleSubmit(onSubmit)}
         className="max-w-xl mx-auto space-y-6"
       >
-        <h2 className="text-center text-3xl font-semibold text-foreground font-poppins">How long have you been on your current or previous peptide therapy?</h2>
+        <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">How long have you been on your current or previous peptide therapy?</h2>
 
         <Radio.Group
           value={therapyDuration}
           onChange={(value) => setValue("therapyDuration", value, { shouldValidate: true })}
-          className="mt-6"
+          className="mt-6 animate-content"
         >
           <Grid gutter="md">
             {options.map((option) => (
@@ -72,7 +72,7 @@ const PeptideTherapyDuration = ({ onNext, onBack, defaultValues }: PeptideTherap
                     <div className="relative text-center">
                       <span className="text-foreground font-poppins">{option}</span>
                       {therapyDuration === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -86,7 +86,7 @@ const PeptideTherapyDuration = ({ onNext, onBack, defaultValues }: PeptideTherap
 
         {errors.therapyDuration && <p className="text-danger text-sm mt-2 text-center">{errors.therapyDuration.message}</p>}
 
-        <div className="flex justify-center gap-6 pt-6">
+        <div className="flex justify-center gap-6 pt-6 animate-btns">
           <Button
             variant="outline"
             className="w-[200px]"

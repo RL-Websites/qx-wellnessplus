@@ -1,9 +1,14 @@
 .site {
   &-main-bg {
-    @apply bg-[url(/images/home-bg.png)] min-h-screen bg-cover bg-repeat-y;
+    @apply bg-[url(/images/home-bg.png)] min-h-screen bg-cover bg-repeat;
   }
   &-home-hero {
-    @apply md:bg-[url(/images/home-banner.png)] min-h-screen bg-none bg-no-repeat bg-right;
-    background-size: 38%;
+    @apply md:bg-[url(/images/home-banner.png)] min-h-screen bg-none xl:bg-no-repeat bg-repeat-y bg-right;
+    background-size: 35%;
+  }
+}
+@media only screen and (max-width: 576px) {
+  .p-GridCell {
+    margin-bottom: 20px !important;
   }
 }

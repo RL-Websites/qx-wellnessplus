@@ -1,29 +1,29 @@
 import { IServerErrorResponse } from "@/common/api/models/interfaces/ApiResponse.model";
 import { ILoginRequestPayload } from "@/common/api/models/interfaces/Auth.model";
 import authApiRepository from "@/common/api/repositories/authRepository";
+import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
 import dmlToast from "@/common/configs/toaster.config";
 import useAuthToken from "@/common/hooks/useAuthToken";
+import { customerAtom } from "@/common/states/customer.atom";
 import { cartItemsAtom } from "@/common/states/product.atom";
-import { userAtom } from "@/common/states/user.atom";
+import { user_id, userAtom } from "@/common/states/user.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Input, PasswordInput } from "@mantine/core";
+import { Button, Checkbox, Input, PasswordInput } from "@mantine/core";
+import { useWindowScroll } from "@mantine/hooks";
+
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import * as yup from "yup";
 
 const loginSchema = yup.object({
-  emailAddress: yup
-    .string()
-    .required(({ label }) => `${label} is required.`)
-    .label("Email")
-    .email(),
+  emailAddress: yup.string().required(`Please provide your email address.`).label("Email").email(),
   password: yup
     .string()
-    .required("You need to add a password")
+    .required("Please provide your password")
     .min(8, "Password must have at least 8 characters")
     .matches(/^(?=.*\d).*$/, "Password must contain at least one numerical value")
     .matches(/^((?=.*[a-z]){1}).*$/, "Password must contain at least one lower case alphabetical character")
@@ -41,8 +41,15 @@ const Login = () => {
   const { getAccessToken, setAccessToken } = useAuthToken();
   const [cartItems] = useAtom(cartItemsAtom);
   const [userData, setUserDataAtom] = useAtom(userAtom);
+  const [customerData, setCustomerData] = useAtom(customerAtom);
+  const [userId, setUserId] = useAtom(user_id);
   const navigate = useNavigate();
   const location = useLocation();
+  const [, scrollTo] = useWindowScroll();
+
+  useEffect(() => {
+    scrollTo({ y: 0 });
+  }, []);
 
   useEffect(() => {
     if (location.pathname == "/login" && getAccessToken()) {
@@ -83,6 +90,7 @@ const Login = () => {
     LoginMutation.mutate(payload, {
       onSuccess: (res) => {
         // setUserEmail(data.emailAddress);
+        setUserId(res?.data?.user_id);
         setAccessToken(res?.data.access_token);
 
         getAuthQuery.mutate(undefined, {
@@ -107,22 +115,24 @@ const Login = () => {
   };
 
   return (
-    <div className="lg:pt-16 md:pt-10 pt-4">
-      <h2 className="heading-text  text-foreground uppercase  text-center">Login</h2>
+    <div className="grid lg:grid-cols-2">
+      <div className="lg:space-y-[30px] space-y-4 lg:text-start text-center">
+        <h2 className="lg:text-[70px] md:text-6xl text-4xl text-foreground uppercase">Login</h2>
+        <div className="space-y-2.5">
+          <p className="font-semibold lg:text-4xl md:text-xl text-base text-foreground font-poppins">Returning Customer</p>
+          <p className="text-sm md:text-base lg:text-2xl font-poppins">Log in to confirm your journey</p>
+        </div>
+      </div>
       <form
-        className="w-full "
+        className="w-full"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div className="card-common card-common-width flex flex-col lg:gap-7 md:gap-5 gap-3">
-          <p className="font-semibold lg:text-3xl md:text-xl text-base text-foreground ">Login Details</p>
-
+        <div className="card-common mt-5 card-common-width flex flex-col md:gap-5 gap-3">
           <Input.Wrapper
             label="Email Address"
             required
             error={errors.emailAddress?.message ? errors.emailAddress?.message : false}
-            classNames={{
-              label: "!text-sm md:!text-base lg:!text-lg",
-            }}
+            classNames={InputErrorMessage}
           >
             <Input
               type="email"
@@ -131,28 +141,58 @@ const Login = () => {
           </Input.Wrapper>
           <Input.Wrapper
             label="Password"
-            mt="12"
             required
             error={errors.password?.message ? errors.password?.message : false}
-            classNames={{
-              label: "!text-sm md:!text-base lg:!text-lg",
-            }}
+            classNames={InputErrorMessage}
           >
             <PasswordInput
               visibilityToggleIcon={({ reveal }) => (reveal ? <i className="icon-view text-2xl"></i> : <i className="icon-view-off text-2xl"></i>)}
               {...register("password")}
+              classNames={InputErrorMessage}
             />
           </Input.Wrapper>
+
+          <Checkbox
+            defaultChecked
+            label="Remember me"
+          />
         </div>
-        <div className="text-center mt-10">
-          <Button
-            size="md"
-            type="submit"
-            className="bg-primary text-white rounded-xl lg:w-[206px]"
-            loading={LoginMutation.isPending}
-          >
-            Login
-          </Button>
+        <div className=" card-common-width  mx-auto  mt-[30px]">
+          <div className="flex justify-between">
+            <Button
+              variant="outline"
+              className="lg:w-[206px]"
+              component={Link}
+              to={customerData?.slug ? "/order-summary" : "/"}
+            >
+              Back
+            </Button>
+            <Button
+              size="md"
+              type="submit"
+              className="bg-primary text-white rounded-xl lg:w-[206px]"
+              loading={LoginMutation.isPending}
+            >
+              Login
+            </Button>
+          </div>
+          <div className="mt-6 flex md:flex-row flex-col gap-2 items-center justify-between">
+            <Link
+              to="/forgot-password"
+              className="text-foreground underline md:text-base text-sm"
+            >
+              Forgot Password
+            </Link>
+            <p className="md:text-lg sm:text-base text-sm text-foreground font-semibold">
+              <span className="text-primary font-normal">First-time Visitor? </span>
+              <Link
+                to="/registration"
+                className="text-foreground underline font-medium"
+              >
+                Create an account
+              </Link>
+            </p>
+          </div>
         </div>
       </form>
     </div>

@@ -54,7 +54,7 @@ const MedicationAllergies = ({ onNext, onBack, defaultValues }: MedicationAllerg
         onSubmit={handleSubmit(onSubmit)}
         className="max-w-xl mx-auto space-y-6"
       >
-        <h2 className="text-center text-3xl font-semibold text-foreground font-poppins">Do you have any known allergies to medications?</h2>
+        <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">Do you have any known allergies to medications?</h2>
 
         {/* Yes / No Radio Selection */}
         <Radio.Group
@@ -67,7 +67,7 @@ const MedicationAllergies = ({ onNext, onBack, defaultValues }: MedicationAllerg
               setValue("allergyList", "");
             }
           }}
-          className="mt-6"
+          className="mt-6 animate-content"
         >
           <Grid gutter="md">
             {["Yes", "No"].map((label, idx) => {
@@ -93,7 +93,7 @@ const MedicationAllergies = ({ onNext, onBack, defaultValues }: MedicationAllerg
                       <div className="relative">
                         <span className="text-foreground font-poppins">{label}</span>
                         {hasAllergies === value && (
-                          <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                          <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                             <i className="icon-tick text-sm/none"></i>
                           </span>
                         )}
@@ -110,7 +110,7 @@ const MedicationAllergies = ({ onNext, onBack, defaultValues }: MedicationAllerg
 
         {/* Allergy Text Input if "Yes" */}
         {hasAllergies === "Yes" && (
-          <div>
+          <div className="animate-content">
             <h3 className="text-lg font-medium mt-6 mb-2 text-center">Please Specify</h3>
             <TextInput
               {...register("allergyList")}
@@ -122,7 +122,7 @@ const MedicationAllergies = ({ onNext, onBack, defaultValues }: MedicationAllerg
         )}
 
         {/* Navigation Buttons */}
-        <div className="flex justify-center gap-6 pt-6">
+        <div className="flex justify-center gap-6 pt-6 animate-btns">
           <Button
             variant="outline"
             className="w-[200px]"

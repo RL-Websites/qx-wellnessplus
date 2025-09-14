@@ -49,10 +49,12 @@ const StepFive = ({ onNext, onBack, defaultValues }: StepFiveProps) => {
       <Radio.Group
         value={isPregnant}
         label="Are you currently?"
-        error={getErrorMessage(errors?.isPregnant)}
-        classNames={{ label: "!text-3xl pb-2" }}
+        classNames={{
+          root: "w-full",
+          label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+        }}
       >
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid sm:grid-cols-2 gap-5">
           {options.map((option) => (
             <Radio
               key={option}
@@ -62,7 +64,7 @@ const StepFive = ({ onNext, onBack, defaultValues }: StepFiveProps) => {
                 <div className="relative text-center">
                   <span className="text-foreground font-poppins">{option}</span>
                   {isPregnant === option && (
-                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                       <i className="icon-tick text-sm/none"></i>
                     </span>
                   )}
@@ -72,6 +74,7 @@ const StepFive = ({ onNext, onBack, defaultValues }: StepFiveProps) => {
             />
           ))}
         </div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.isPregnant)}</p>
       </Radio.Group>
 
       <div className="flex justify-center gap-6 pt-4">

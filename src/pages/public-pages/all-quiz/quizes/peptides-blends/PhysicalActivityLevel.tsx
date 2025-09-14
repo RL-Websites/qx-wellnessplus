@@ -51,12 +51,12 @@ const PhysicalActivityLevel = ({ onNext, onBack, defaultValues }: IPhysicalActiv
         className="max-w-xl mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins">What is your typical physical activity level?</h2>
+          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">What is your typical physical activity level?</h2>
 
           <Radio.Group
             value={selected}
             onChange={(value) => setValue("activityLevel", value, { shouldValidate: true })}
-            className="mt-6"
+            className="mt-6 animate-content"
           >
             <Grid gutter="md">
               {options.map((option) => (
@@ -80,7 +80,7 @@ const PhysicalActivityLevel = ({ onNext, onBack, defaultValues }: IPhysicalActiv
                       <div className="relative text-center">
                         <span className="text-foreground font-poppins">{option}</span>
                         {selected === option && (
-                          <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                          <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                             <i className="icon-tick text-sm/none"></i>
                           </span>
                         )}
@@ -97,14 +97,14 @@ const PhysicalActivityLevel = ({ onNext, onBack, defaultValues }: IPhysicalActiv
               {...register("customActivity")}
               placeholder="Describe your activity level"
               error={errors.customActivity?.message}
-              className="mt-4"
+              className="mt-4 animate-content"
             />
           )}
 
           {errors.activityLevel && <div className="text-danger text-sm mt-2 text-center">{errors.activityLevel.message}</div>}
         </div>
 
-        <div className="flex justify-center gap-6 pt-4">
+        <div className="flex justify-center gap-6 pt-4 animate-btns">
           <Button
             variant="outline"
             className="w-[200px]"

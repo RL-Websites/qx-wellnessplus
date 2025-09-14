@@ -84,11 +84,11 @@ const DiseaseList = ({ onNext, onBack, defaultValues }: IDiseaseListProps) => {
         className="max-w-xl mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins">Do you have or have had any of the following?</h2>
+          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">Do you have or have had any of the following?</h2>
 
           <Grid
             gutter="md"
-            className="mt-6"
+            className="mt-6 animate-title"
           >
             {options.map((option) => {
               const isChecked = selectedValues.includes(option);
@@ -122,7 +122,7 @@ const DiseaseList = ({ onNext, onBack, defaultValues }: IDiseaseListProps) => {
           {errors.diseaseList && <div className="text-danger text-sm mt-2 text-center">{errors.diseaseList.message}</div>}
         </div>
 
-        <div className="flex justify-center gap-6 pt-4">
+        <div className="flex justify-center gap-6 pt-4 animate-btns">
           <Button
             variant="outline"
             className="w-[200px]"

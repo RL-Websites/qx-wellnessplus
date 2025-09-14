@@ -1,5 +1,5 @@
 export const getBaseWebRadios = (primaryGoal: string | undefined, option: string) => ({
-  root: "relative w-full",
+  root: "relative !w-full",
   radio: "hidden",
   inner: "hidden",
   labelWrapper: "w-full",

@@ -44,7 +44,7 @@ const GallbladderHistory = ({ onNext, onBack, defaultValues }: GallbladderHistor
         className="max-w-xl mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins">Do you have a personal history of gallbladder disease?</h2>
+          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">Do you have a personal history of gallbladder disease?</h2>
 
           {/* Step 1: Yes / No */}
           <Radio.Group
@@ -53,7 +53,7 @@ const GallbladderHistory = ({ onNext, onBack, defaultValues }: GallbladderHistor
               setValue("hasGallbladderHistory", value as "Yes" | "No");
               setValue("gallbladderDetail", "");
             }}
-            className="mt-6"
+            className="mt-6 animate-content"
           >
             <Grid gutter="md">
               {["Yes", "No"].map((option) => (
@@ -77,7 +77,7 @@ const GallbladderHistory = ({ onNext, onBack, defaultValues }: GallbladderHistor
                       <div className="relative text-center">
                         <span className="text-foreground font-poppins">{option}</span>
                         {hasHistory === option && (
-                          <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                          <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                             <i className="icon-tick text-sm/none"></i>
                           </span>
                         )}
@@ -92,10 +92,11 @@ const GallbladderHistory = ({ onNext, onBack, defaultValues }: GallbladderHistor
           {/* Step 2: Detail selection if "Yes" */}
           {hasHistory === "Yes" && (
             <div className="mt-6">
-              <h3 className="text-lg font-medium mb-2 text-center">Please specify</h3>
+              <h3 className="text-lg font-medium mb-2 text-center animate-title">Please specify</h3>
               <Radio.Group
                 value={detail}
                 onChange={(value) => setValue("gallbladderDetail", value)}
+                className="animate-content"
               >
                 <Grid gutter="md">
                   {subOptions.map((option) => (
@@ -119,7 +120,7 @@ const GallbladderHistory = ({ onNext, onBack, defaultValues }: GallbladderHistor
                           <div className="relative text-center">
                             <span className="text-foreground font-poppins">{option}</span>
                             {detail === option && (
-                              <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                              <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                                 <i className="icon-tick text-sm/none"></i>
                               </span>
                             )}
@@ -134,7 +135,7 @@ const GallbladderHistory = ({ onNext, onBack, defaultValues }: GallbladderHistor
           )}
         </div>
 
-        <div className="flex justify-center gap-6 pt-6">
+        <div className="flex justify-center gap-6 pt-6 animate-btns">
           <Button
             variant="outline"
             className="w-[200px]"

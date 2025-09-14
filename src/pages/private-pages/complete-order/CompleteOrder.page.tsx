@@ -4,6 +4,7 @@ import { ICreatePaymentIntentDTO } from "@/common/api/models/interfaces/Payment.
 import orderApiRepository from "@/common/api/repositories/orderRepository";
 import StripeWrapper from "@/common/components/StripeWrapper";
 import dmlToast from "@/common/configs/toaster.config";
+import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { customerAtom } from "@/common/states/customer.atom";
 import { basicInfoAtom } from "@/common/states/customerBasic.atom";
 import { cartItemsAtom } from "@/common/states/product.atom";
@@ -18,6 +19,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { Client as Styletron } from "styletron-engine-monolithic";
 import Acknowledgement from "./Acknowledgement";
 import BasicInfo from "./basic-info/BasicInfo";
+import OrderInfo from "./payment-info/OrderInfo";
 import PaymentInfo from "./payment-info/PaymentInfo";
 
 const CompleteOrderPage = () => {
@@ -36,16 +38,28 @@ const CompleteOrderPage = () => {
   const [hasOthers, setHasOthers] = useState(true);
   const [params] = useSearchParams();
   const [basicInfo, setBasicInfo] = useAtom(basicInfoAtom);
-  // const prescriptionUId = params.get("prescription_u_id");
-  // const is_refill = params.get("is_refill");
+  const [selectedCategory] = useAtom(selectedCategoryAtom);
   const detail_uid = params.get("detail_uid");
   const navigate = useNavigate();
 
-  // const patientDetailsQuery = useQuery({
-  //   queryKey: ["partner-patient-booking-query"],
-  //   queryFn: () => orderApiRepository.publicGetPatientDetails({ u_id: prescriptionUId || "", detail_uid: detail_uid || undefined }),
-  //   enabled: !!prescriptionUId,
-  // });
+  useEffect(() => {
+    if (
+      selectedCategory &&
+      selectedCategory.includes("Weight Loss") &&
+      selectedCategory.includes("Testosterone") &&
+      selectedCategory.includes("Hair Growth (Male)") &&
+      selectedCategory.includes("Hair Growth (Female)") &&
+      selectedCategory.includes("Sexual Health (Male)") &&
+      selectedCategory.includes("Sexual Health (Female)")
+    ) {
+      setHasOthers(true);
+      setHasPeptides(false);
+    }
+    if (selectedCategory && (selectedCategory?.includes("Peptides Blends") || selectedCategory?.includes("Single Blends"))) {
+      setHasPeptides(true);
+      setHasOthers(false);
+    }
+  }, [selectedCategory]);
 
   const createPaymentIntentMutation = useMutation({ mutationFn: (payload: ICreatePaymentIntentDTO) => orderApiRepository.createPaymentIntent(payload) });
 
@@ -56,9 +70,27 @@ const CompleteOrderPage = () => {
         const price = calculatePrice(item);
         totalBill = totalBill + price;
       });
+    }
+  }, [cartItems, customerData]);
 
+  const nextStep = () => {
+    const tempNextStep = currentStep + 1;
+    setCurrentStep(tempNextStep);
+    scrollTo({ y: 0 });
+  };
+
+  const getPatientData = (orderInfoData: IPatientBookingPatientInfoDTO) => {
+    console.log("Order Info data", orderInfoData);
+    setFormData((prev) => ({
+      ...prev,
+      patient: orderInfoData.patient,
+      code: orderInfoData.code,
+      amount: orderInfoData.final_total,
+      prescription_u_id: orderInfoData.prescription_u_id,
+    }));
+    if (cartItems?.length > 0 && customerData?.payment_type == "stripe") {
       const payload: ICreatePaymentIntentDTO = {
-        amount: totalBill.toString(),
+        amount: orderInfoData.final_total || 0,
       };
       createPaymentIntentMutation.mutate(payload, {
         onSuccess: (res) => {
@@ -70,30 +102,8 @@ const CompleteOrderPage = () => {
         },
       });
     }
-  }, [cartItems, customerData]);
 
-  // useEffect(() => {
-  //   if (patientDetailsQuery?.data?.data?.status_code == 200 && patientDetailsQuery?.data?.data?.data) {
-  //     const tempPatientDetails = patientDetailsQuery?.data?.data?.data;
-  //     // setIsRefill((prevRefill) => (tempPatientDetails?.is_refill ? true : false));
-  //     if (tempPatientDetails?.status && tempPatientDetails?.status == "invited") {
-  //       // do nothing
-  //       if (tempPatientDetails?.customer?.payment_type == "stripe" && tempPatientDetails.total_bill_amount) {
-  //       }
-  //     } else if (tempPatientDetails?.status && tempPatientDetails?.status == "intake_pending") {
-  //       navigate(`../partner-patient-intake?prescription_u_id=${prescriptionUId}`);
-  //     } else if (tempPatientDetails?.status && tempPatientDetails?.status == "pending") {
-  //       navigate(`../partner-patient-password-setup?prescription_u_id=${prescriptionUId}`);
-  //     } else {
-  //       console.log(tempPatientDetails?.status);
-  //     }
-  //     setPatientDetails(patientDetailsQuery?.data?.data?.data);
-  //   }
-  // }, [patientDetailsQuery?.data?.data?.data]);
-
-  const nextStep = () => {
-    const tempNextStep = currentStep + 1;
-    setCurrentStep(tempNextStep);
+    nextStep();
   };
 
   const prevStep = () => {
@@ -139,8 +149,6 @@ const CompleteOrderPage = () => {
     // navigate(`../partner-patient-intake?prescription_u_id=${prescriptionUId}`);
   };
 
-  // const handleNext = handleSubmit(onSubmit);
-
   const onRefillTypeSelect = (refillType) => {
     setRefillType((prevType) => refillType);
     nextStep();
@@ -156,6 +164,7 @@ const CompleteOrderPage = () => {
             setBasicInfo(data);
             nextStep();
           }}
+          formData={formData}
           isSubmitting={patientBookingMutation?.isPending}
         />
       )}
@@ -169,7 +178,15 @@ const CompleteOrderPage = () => {
           hasPeptides={hasPeptides}
         />
       )}
-      {currentStep == 2 && clientSecret && (
+      {currentStep == 2 && (
+        <OrderInfo
+          handleBack={handleBack}
+          formData={formData}
+          onNext={getPatientData}
+          isSubmitting={patientBookingMutation?.isPending}
+        />
+      )}
+      {currentStep == 3 && clientSecret && (
         <StripeWrapper clientSecret={clientSecret}>
           <PaymentInfo
             handleBack={handleBack}

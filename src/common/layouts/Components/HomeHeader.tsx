@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { Link, NavLink as RdNavLink, useLocation, useNavigate } from "react-router-dom";
 
 const HomeHeader = () => {
-  const userData = useAtomValue<IUserData | null>(userAtom);
+  const [userData, setUserData] = useAtom<IUserData | null>(userAtom);
   const [customerData, setCustomerData] = useAtom(customerAtom);
   const location = useLocation();
   const cartItems = useAtomValue(cartItemsAtom);
@@ -65,13 +65,16 @@ const HomeHeader = () => {
             color="primary"
             className="font-semibold lg:text-lg md:text-base text-sm"
             onClick={() => {
-              setCustomerData(null);
-              sessionStorage.clear();
-              localStorage.clear();
+              setUserData(null);
+              localStorage.removeItem("accessToken");
+              localStorage.removeItem("basicInfoData");
+              localStorage.removeItem("basicInfoData");
+              // we cannot clear full localStorage
+              // localStorage.clear();
               window.location.href = "/";
             }}
           >
-            Logout
+            Log out
           </Button>
         ) : isLoginPage ? (
           <Button

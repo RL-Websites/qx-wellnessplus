@@ -1,5 +1,6 @@
+import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Group, Radio } from "@mantine/core";
+import { Button, Radio, Text } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -43,37 +44,27 @@ const PlanningPregnancy = ({ onNext, onBack, defaultValues }: IPlanningPregnancy
     <form
       id="planningPregnancyForm"
       onSubmit={handleSubmit(onNext)}
-      className="max-w-xl mx-auto space-y-6"
+      className="card-common-width-lg mx-auto space-y-6"
     >
       <div>
-        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Are you currently pregnant or planning pregnancy within 3 months?</h2>
+        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground animate-title">Are you currently pregnant or planning pregnancy within 3 months?</h2>
 
         <Radio.Group
           value={planningPregnancy}
           onChange={handleSelect}
-          className="mt-6"
-          error={errors?.planningPregnancy?.message}
+          className="mt-6 w-full animate-content"
         >
-          <Group grow>
+          <div className="grid md:grid-cols-2 w-full gap-5">
             {options.map((option) => (
               <Radio
                 key={option}
                 value={option}
-                classNames={{
-                  root: "relative w-full",
-                  radio: "hidden",
-                  inner: "hidden",
-                  labelWrapper: "w-full",
-                  label: `
-                    block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointer
-                    ${planningPregnancy === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
-                  `,
-                }}
+                classNames={getBaseWebRadios(planningPregnancy, option)}
                 label={
                   <div className="relative text-center">
                     <span className="text-foreground font-poppins">{option}</span>
                     {planningPregnancy === option && (
-                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                         <i className="icon-tick text-sm/none"></i>
                       </span>
                     )}
@@ -81,11 +72,12 @@ const PlanningPregnancy = ({ onNext, onBack, defaultValues }: IPlanningPregnancy
                 }
               />
             ))}
-          </Group>
+          </div>
         </Radio.Group>
+        {errors.planningPregnancy && <Text className="text-red-500 text-sm mt-5 text-center">{errors.planningPregnancy.message}</Text>}
       </div>
 
-      <div className="flex justify-center gap-6 pt-4">
+      <div className="flex justify-center gap-6 pt-4 animate-btns">
         <Button
           variant="outline"
           className="w-[200px]"

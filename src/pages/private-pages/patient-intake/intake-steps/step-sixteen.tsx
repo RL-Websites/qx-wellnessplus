@@ -1,12 +1,12 @@
 import EditableDocumentTag from "@/common/components/EditableDocumentTag";
 import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
+import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
 import dmlToast from "@/common/configs/toaster.config";
 import { compressFileToBase64 } from "@/utils/fileUpload";
 import { getErrorMessage } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Checkbox, Grid, Input, Radio, Text } from "@mantine/core";
+import { Anchor, Button, Checkbox, Grid, Input, Radio, Text } from "@mantine/core";
 import { Dropzone, MIME_TYPES } from "@mantine/dropzone";
-import { IconUpload } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -19,13 +19,14 @@ interface StepSixteenProps {
   onBack: () => void;
   defaultValues?: step16SchemaType;
   isLoading?: boolean;
+  isFinalStep?: string;
 }
 
-const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepSixteenProps) => {
-  const [sema_previousRxDocument, setSema_previousRxDocument] = useState<string | null>();
-  const [tirz_previousRxDocument, setTirz_previousRxDocument] = useState<string | null>();
-  const [takenPrevSema_previousRxDocument, setTakenPrevSema_previousRxDocument] = useState<string | null>();
-  const [takenPrevTirz_previousRxDocument, setTakenPrevTirz_previousRxDocument] = useState<string | null>();
+const StepSixteen = ({ onNext, onBack, defaultValues, isFinalStep, isLoading = false }: StepSixteenProps) => {
+  const [sema_previousRxDocument, setSema_previousRxDocument] = useState<any>();
+  const [tirz_previousRxDocument, setTirz_previousRxDocument] = useState<any>();
+  const [takenPrevSema_previousRxDocument, setTakenPrevSema_previousRxDocument] = useState<any>();
+  const [takenPrevTirz_previousRxDocument, setTakenPrevTirz_previousRxDocument] = useState<any>();
 
   const {
     register,
@@ -37,14 +38,16 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
   } = useForm<step16SchemaType>({
     defaultValues: {
       takenGlpMedication: defaultValues?.takenGlpMedication || "",
-      heightWhenStartGlp: defaultValues?.heightWhenStartGlp || "",
+      // heightWhenStartGlp: defaultValues?.heightWhenStartGlp || "",
       weightWhenStartGlp: defaultValues?.weightWhenStartGlp || "",
       currentWeightLossMedication: defaultValues?.currentWeightLossMedication || "",
+      // Semaglutide
       sema_lastWeightLossMedicationDoase: defaultValues?.sema_lastWeightLossMedicationDoase || "",
       sema_lastWeightLossMedicationDoaseOther: defaultValues?.sema_lastWeightLossMedicationDoaseOther || "",
       sema_hasPdfForPreviousRx: defaultValues?.sema_hasPdfForPreviousRx || "",
       sema_previousRxDocument: defaultValues?.sema_previousRxDocument || "",
       sema_previousRxDocName: defaultValues?.sema_previousRxDocName || "",
+      // Tirzepatide
       tirz_lastWeightLossMedicationDoase: defaultValues?.tirz_lastWeightLossMedicationDoase || "",
       tirz_lastWeightLossMedicationDoaseOther: defaultValues?.tirz_lastWeightLossMedicationDoaseOther || "",
       tirz_hasPdfForPreviousRx: defaultValues?.tirz_hasPdfForPreviousRx || "",
@@ -60,7 +63,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
       glpSideEffect: defaultValues?.glpSideEffect || "",
       glpDrugEffectManageWeight: defaultValues?.glpDrugEffectManageWeight || "",
       glpHowLongTaken: defaultValues?.glpHowLongTaken || "",
-      glpStartingHeight: defaultValues?.glpStartingHeight || "",
+      // glpStartingHeight: defaultValues?.glpStartingHeight || "",
       glpStartingWeight: defaultValues?.glpStartingWeight || "",
       takenPrevGlpMedication: defaultValues?.takenPrevGlpMedication || "",
       takenPrevSema_lastDosage: defaultValues?.takenPrevSema_lastDosage || "",
@@ -202,7 +205,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
         onChange={(value) => {
           handleSelect("takenGlpMedication", value);
           // Reset dependent fields when changing this value
-          setValue("heightWhenStartGlp", "");
+          // setValue("heightWhenStartGlp", "");
           setValue("weightWhenStartGlp", "");
           setValue("currentWeightLossMedication", "");
           setValue("sema_lastWeightLossMedicationDoase", "");
@@ -221,7 +224,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
           setValue("haveTakenMedicationAsPrescribed", "");
           setValue("No_haveDeviated", "");
           setValue("glpHowLongTaken", "");
-          setValue("glpStartingHeight", "");
+          // setValue("glpStartingHeight", "");
           setValue("glpStartingWeight", "");
           setValue("takenPrevGlpMedication", "");
           setValue("takenPrevSema_lastDosage", "");
@@ -239,8 +242,10 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
           setTakenPrevTirz_previousRxDocument(null);
         }}
         label="Have you taken a GLP-1 medication?"
-        error={getErrorMessage(errors?.takenGlpMedication)}
-        classNames={{ label: "!text-3xl pb-2" }}
+        classNames={{
+          root: "!w-full",
+          label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+        }}
       >
         <div className="grid grid-cols-1 gap-5">
           {["Yes", "Not within 30 days, but previously", "I have never taken GLPs"].map((option) => (
@@ -252,7 +257,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 <div className="relative text-center w-full">
                   <span className="text-foreground font-poppins">{option}</span>
                   {takenGlpMedication === option && (
-                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                       <i className="icon-tick text-sm/none"></i>
                     </span>
                   )}
@@ -261,26 +266,17 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
             />
           ))}
         </div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.takenGlpMedication)}</p>
       </Radio.Group>
 
       {/* Yes Path */}
       {takenGlpMedication === "Yes" && (
         <>
           {/* Height and Weight */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <Input.Wrapper
-              label="What was your height when you started the GLP-1 medication? (In inches)"
-              error={getErrorMessage(errors?.heightWhenStartGlp)}
-            >
-              <Input
-                {...register("heightWhenStartGlp")}
-                className="border-grey rounded-lg"
-              />
-            </Input.Wrapper>
-
+          <div>
             <Input.Wrapper
               label="What was your weight when you started the GLP-1 medication? (In pounds)"
-              error={getErrorMessage(errors?.weightWhenStartGlp)}
+              classNames={InputErrorMessage}
             >
               <Input
                 {...register("weightWhenStartGlp")}
@@ -288,6 +284,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 className="border-grey rounded-lg"
               />
             </Input.Wrapper>
+            {errors?.weightWhenStartGlp?.message && <Text className="text-sm text-red-500 mt-2">{errors.weightWhenStartGlp.message}</Text>}
           </div>
 
           {/* Current Weight Loss Medication */}
@@ -310,8 +307,9 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
               setTirz_previousRxDocument(null);
             }}
             label="Which weight loss medication are you currently taking?"
-            error={getErrorMessage(errors?.currentWeightLossMedication)}
-            classNames={{ label: "!text-3xl pb-2" }}
+            classNames={{
+              label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+            }}
           >
             <div className="grid grid-cols-1 gap-5">
               {["Semaglutide (Wegovy, Ozempic, Generic)", "Tirzepatide (Mounjaro, Zepbound, Generic)", "Liraglutide (Saxenda)", "Other Weight Loss Medication"].map((option) => (
@@ -323,7 +321,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     <div className="relative text-center w-full">
                       <span className="text-foreground font-poppins">{option}</span>
                       {currentWeightLossMedication === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -332,6 +330,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 />
               ))}
             </div>
+            <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.currentWeightLossMedication)}</p>
           </Radio.Group>
 
           {/* Semaglutide Section */}
@@ -341,8 +340,10 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 value={sema_lastWeightLossMedicationDoase}
                 onChange={(value) => handleSelect("sema_lastWeightLossMedicationDoase", value)}
                 label="What was the last dosage you took?"
-                error={getErrorMessage(errors?.sema_lastWeightLossMedicationDoase)}
-                classNames={{ label: "!text-3xl pb-2" }}
+                classNames={{
+                  root: "!w-full",
+                  label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+                }}
               >
                 <div className="grid grid-cols-1 gap-5">
                   {["0.25mg weekly", "0.5mg weekly", "0.75mg weekly", "1mg weekly", "1.5mg weekly", "1.7mg weekly", "2mg weekly", "2.5mg weekly", "Other"].map((option) => (
@@ -354,7 +355,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         <div className="relative text-center w-full">
                           <span className="text-foreground font-poppins">{option}</span>
                           {sema_lastWeightLossMedicationDoase === option && (
-                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                               <i className="icon-tick text-sm/none"></i>
                             </span>
                           )}
@@ -363,18 +364,22 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     />
                   ))}
                 </div>
+                <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.sema_lastWeightLossMedicationDoase)}</p>
               </Radio.Group>
 
               {sema_lastWeightLossMedicationDoase === "Other" && (
-                <Input.Wrapper
-                  label="Specify dosage"
-                  error={getErrorMessage(errors?.sema_lastWeightLossMedicationDoaseOther)}
-                >
-                  <Input
-                    {...register("sema_lastWeightLossMedicationDoaseOther")}
-                    className="border-grey rounded-lg"
-                  />
-                </Input.Wrapper>
+                <div>
+                  <Input.Wrapper
+                    label="Specify dosage"
+                    classNames={InputErrorMessage}
+                  >
+                    <Input
+                      {...register("sema_lastWeightLossMedicationDoaseOther")}
+                      className="border-grey rounded-lg"
+                    />
+                  </Input.Wrapper>
+                  <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.sema_lastWeightLossMedicationDoaseOther)}</p>
+                </div>
               )}
 
               <Radio.Group
@@ -386,10 +391,11 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                   }
                 }}
                 label="Do you have a PDF of your previous script, or a picture of your current vial?"
-                error={getErrorMessage(errors?.sema_hasPdfForPreviousRx)}
-                classNames={{ label: "!text-3xl pb-2" }}
+                classNames={{
+                  label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+                }}
               >
-                <div className="grid grid-cols-2 gap-5">
+                <div className="grid sm:grid-cols-2 gap-5">
                   {["Yes", "No"].map((option) => (
                     <Radio
                       key={option}
@@ -399,7 +405,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         <div className="relative text-center w-full">
                           <span className="text-foreground font-poppins">{option}</span>
                           {sema_hasPdfForPreviousRx === option && (
-                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                               <i className="icon-tick text-sm/none"></i>
                             </span>
                           )}
@@ -408,11 +414,12 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     />
                   ))}
                 </div>
+                <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.sema_hasPdfForPreviousRx)}</p>
               </Radio.Group>
 
               {sema_hasPdfForPreviousRx === "Yes" && (
                 <div className="space-y-4">
-                  <Text className="text-foreground font-poppins !text-3xl">Please upload your script or a picture of your current vial.</Text>
+                  <Text className="text-foreground font-semibold font-poppins sm:!text-3xl text-xl">Please upload your script or a picture of your current vial.</Text>
                   {!sema_previousRxDocument ? (
                     <Dropzone
                       onDrop={(files) => handleUpFileForPrevRXOfSema(files)}
@@ -425,21 +432,22 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                       multiple={false}
                       className="border-dashed border-gray-300 rounded-lg bg-gray-50 min-h-[220px] flex items-center justify-center"
                     >
-                      <div className="flex flex-col items-center gap-4">
-                        <IconUpload
-                          size={52}
-                          stroke={1.5}
-                        />
-                        <Text>Drag & drop or click to upload</Text>
+                      <div className="flex flex-col items-center justify-center h-full pointer-events-none">
+                        <i className="icon-document-upload text-[52px] text-grey" />
+                        <Text className="font-semibold text-grey">Drag & drop or click to upload</Text>
+                        <div className="d-inline-flex leading-none text-sm">or</div>
+                        <Anchor className="underline">Browse Files</Anchor>
                       </div>
                     </Dropzone>
                   ) : (
-                    <EditableDocumentTag
-                      docName={sema_previousRxDocName || ""}
-                      removable={true}
-                      leftIconClass="icon-pdf"
-                      onRemove={() => removeSemaPreviousRxDocument()}
-                    />
+                    <div className="flex flex-wrap">
+                      <EditableDocumentTag
+                        docName={sema_previousRxDocName || ""}
+                        removable={true}
+                        leftIconClass="icon-pdf"
+                        onRemove={() => removeSemaPreviousRxDocument()}
+                      />
+                    </div>
                   )}
                   {errors?.sema_previousRxDocument?.message && <Text className="text-sm text-red-500">{errors.sema_previousRxDocument.message}</Text>}
                 </div>
@@ -454,8 +462,10 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 value={tirz_lastWeightLossMedicationDoase}
                 onChange={(value) => handleSelect("tirz_lastWeightLossMedicationDoase", value)}
                 label="What was the last dosage you took?"
-                error={getErrorMessage(errors?.tirz_lastWeightLossMedicationDoase)}
-                classNames={{ label: "!text-3xl pb-2" }}
+                classNames={{
+                  root: "!w-full",
+                  label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+                }}
               >
                 <div className="grid grid-cols-1 gap-5">
                   {["2.5mg weekly", "5mg weekly", "7.5mg weekly", "10mg weekly", "12.5mg weekly", "15mg weekly", "Other"].map((option) => (
@@ -467,7 +477,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         <div className="relative text-center w-full">
                           <span className="text-foreground font-poppins">{option}</span>
                           {tirz_lastWeightLossMedicationDoase === option && (
-                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                               <i className="icon-tick text-sm/none"></i>
                             </span>
                           )}
@@ -476,18 +486,25 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     />
                   ))}
                 </div>
+                <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.tirz_lastWeightLossMedicationDoase)}</p>
               </Radio.Group>
 
               {tirz_lastWeightLossMedicationDoase === "Other" && (
-                <Input.Wrapper
-                  label="Specify dosage"
-                  error={getErrorMessage(errors?.tirz_lastWeightLossMedicationDoaseOther)}
-                >
-                  <Input
-                    {...register("tirz_lastWeightLossMedicationDoaseOther")}
-                    className="border-grey rounded-lg"
-                  />
-                </Input.Wrapper>
+                <div>
+                  <Input.Wrapper
+                    label="Specify dosage"
+                    error={getErrorMessage(errors?.tirz_lastWeightLossMedicationDoaseOther)}
+                    classNames={{
+                      root: "!w-full",
+                    }}
+                  >
+                    <Input
+                      {...register("tirz_lastWeightLossMedicationDoaseOther")}
+                      className="border-grey rounded-lg"
+                    />
+                  </Input.Wrapper>
+                  <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.tirz_lastWeightLossMedicationDoaseOther)}</p>
+                </div>
               )}
 
               <Radio.Group
@@ -499,10 +516,11 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                   }
                 }}
                 label="Do you have a PDF of your previous script, or a picture of your current vial?"
-                error={getErrorMessage(errors?.tirz_hasPdfForPreviousRx)}
-                classNames={{ label: "!text-3xl pb-2" }}
+                classNames={{
+                  label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+                }}
               >
-                <div className="grid grid-cols-2 gap-5">
+                <div className="grid sm:grid-cols-2 gap-5">
                   {["Yes", "No"].map((option) => (
                     <Radio
                       key={option}
@@ -512,7 +530,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         <div className="relative text-center w-full">
                           <span className="text-foreground font-poppins">{option}</span>
                           {tirz_hasPdfForPreviousRx === option && (
-                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                               <i className="icon-tick text-sm/none"></i>
                             </span>
                           )}
@@ -521,11 +539,12 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     />
                   ))}
                 </div>
+                <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.tirz_hasPdfForPreviousRx)}</p>
               </Radio.Group>
 
               {tirz_hasPdfForPreviousRx === "Yes" && (
                 <div className="space-y-4">
-                  <Text className="text-foreground font-poppins !text-3xl">Please upload your script or a picture of your current vial.</Text>
+                  <Text className="text-foreground font-semibold font-poppins sm:!text-3xl text-xl">Please upload your script or a picture of your current vial.</Text>
                   {!tirz_previousRxDocument ? (
                     <Dropzone
                       onDrop={(files) => handleUpFileForPrevRXOfTirz(files)}
@@ -538,21 +557,22 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                       multiple={false}
                       className="border-dashed border-gray-300 rounded-lg bg-gray-50 min-h-[220px] flex items-center justify-center"
                     >
-                      <div className="flex flex-col items-center gap-4">
-                        <IconUpload
-                          size={52}
-                          stroke={1.5}
-                        />
-                        <Text>Drag & drop or click to upload</Text>
+                      <div className="flex flex-col items-center justify-center h-full pointer-events-none">
+                        <i className="icon-document-upload text-[52px] text-grey" />
+                        <Text className="font-semibold text-grey">Drag & drop or click to upload</Text>
+                        <div className="d-inline-flex leading-none text-sm">or</div>
+                        <Anchor className="underline">Browse Files</Anchor>
                       </div>
                     </Dropzone>
                   ) : (
-                    <EditableDocumentTag
-                      docName={tirz_previousRxDocName || ""}
-                      removable={true}
-                      leftIconClass="icon-pdf"
-                      onRemove={() => removeTirzPreviousRxDocument()}
-                    />
+                    <div className="flex flex-wrap">
+                      <EditableDocumentTag
+                        docName={tirz_previousRxDocName || ""}
+                        removable={true}
+                        leftIconClass="icon-pdf"
+                        onRemove={() => removeTirzPreviousRxDocument()}
+                      />
+                    </div>
                   )}
                   {errors?.tirz_previousRxDocument?.message && <Text className="text-sm text-red-500">{errors.tirz_previousRxDocument.message}</Text>}
                 </div>
@@ -565,8 +585,9 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
             value={watch("howLongTakeGlpMedication")}
             onChange={(value) => handleSelect("howLongTakeGlpMedication", value)}
             label="How long have you been taking the medication consecutively?"
-            error={getErrorMessage(errors?.howLongTakeGlpMedication)}
-            classNames={{ label: "!text-3xl pb-2" }}
+            classNames={{
+              label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+            }}
           >
             <div className="grid grid-cols-1 gap-5">
               {["One Month", "Two Months", "Three Months", "Four Months", "Five Months", "Six Months", "More than Six Months"].map((option) => (
@@ -578,7 +599,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     <div className="relative text-center w-full">
                       <span className="text-foreground font-poppins">{option}</span>
                       {watch("howLongTakeGlpMedication") === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -587,6 +608,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 />
               ))}
             </div>
+            <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.howLongTakeGlpMedication)}</p>
           </Radio.Group>
 
           {/* Current dose duration */}
@@ -594,8 +616,9 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
             value={watch("howLongTakeGlpCurrentDosage")}
             onChange={(value) => handleSelect("howLongTakeGlpCurrentDosage", value)}
             label="How long have you been on your current dose?"
-            error={getErrorMessage(errors?.howLongTakeGlpCurrentDosage)}
-            classNames={{ label: "!text-3xl pb-2" }}
+            classNames={{
+              label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+            }}
           >
             <div className="grid grid-cols-1 gap-5">
               {["Less than one month", "One Month", "Two Months", "Three Months", "Four Months", "Five Months", "Six Months", "More than Six Months"].map((option) => (
@@ -607,7 +630,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     <div className="relative text-center w-full">
                       <span className="text-foreground font-poppins">{option}</span>
                       {watch("howLongTakeGlpCurrentDosage") === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -616,6 +639,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 />
               ))}
             </div>
+            <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.howLongTakeGlpCurrentDosage)}</p>
           </Radio.Group>
 
           {/* Continue current dose */}
@@ -623,8 +647,9 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
             value={wouldYouLikeContinueGlpCurrentDosage}
             onChange={(value) => handleSelect("wouldYouLikeContinueGlpCurrentDosage", value)}
             label="Would you like to continue your current dose, move up to the next dose, or titrate down?"
-            error={getErrorMessage(errors?.wouldYouLikeContinueGlpCurrentDosage)}
-            classNames={{ label: "!text-3xl pb-2" }}
+            classNames={{
+              label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+            }}
           >
             <div className="grid grid-cols-1 gap-5">
               {["Stay on current dose", "Move up", "Titrate down"].map((option) => (
@@ -636,7 +661,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     <div className="relative text-center w-full">
                       <span className="text-foreground font-poppins">{option}</span>
                       {wouldYouLikeContinueGlpCurrentDosage === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -645,6 +670,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 />
               ))}
             </div>
+            <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.wouldYouLikeContinueGlpCurrentDosage)}</p>
           </Radio.Group>
 
           {/* Stay current options */}
@@ -653,8 +679,9 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
               value={watch("stayCurrent_howLongTakeGlpCurrentDosage")}
               onChange={(value) => handleSelect("stayCurrent_howLongTakeGlpCurrentDosage", value)}
               label="How long would you like to stay on your current dose?"
-              error={getErrorMessage(errors?.stayCurrent_howLongTakeGlpCurrentDosage)}
-              classNames={{ label: "!text-3xl pb-2" }}
+              classNames={{
+                label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+              }}
             >
               <div className="grid grid-cols-1 gap-5">
                 {["One month, then titrate up the next two months", "Two months, then titrate up the third month", "All three months"].map((option) => (
@@ -666,7 +693,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                       <div className="relative text-center w-full">
                         <span className="text-foreground font-poppins">{option}</span>
                         {watch("stayCurrent_howLongTakeGlpCurrentDosage") === option && (
-                          <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                          <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                             <i className="icon-tick text-sm/none"></i>
                           </span>
                         )}
@@ -675,6 +702,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                   />
                 ))}
               </div>
+              <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.stayCurrent_howLongTakeGlpCurrentDosage)}</p>
             </Radio.Group>
           )}
 
@@ -684,8 +712,11 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
               value={watch("moveUp_wouldLikeToMoveUp")}
               onChange={(value) => handleSelect("moveUp_wouldLikeToMoveUp", value)}
               label="How would you like to move up your dose?"
-              error={getErrorMessage(errors?.moveUp_wouldLikeToMoveUp)}
-              classNames={{ label: "!text-3xl pb-2" }}
+              classNames={{
+                root: "sm:!grid !block",
+                error: "sm:!text-end !text-start w-full",
+                label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+              }}
             >
               <div className="grid grid-cols-1 gap-5">
                 {[
@@ -702,7 +733,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                       <div className="relative text-center w-full">
                         <span className="text-foreground font-poppins">{option}</span>
                         {watch("moveUp_wouldLikeToMoveUp") === option && (
-                          <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                          <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                             <i className="icon-tick text-sm/none"></i>
                           </span>
                         )}
@@ -711,6 +742,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                   />
                 ))}
               </div>
+              <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.moveUp_wouldLikeToMoveUp)}</p>
             </Radio.Group>
           )}
 
@@ -719,10 +751,13 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
             value={haveTakenMedicationAsPrescribed}
             onChange={(value) => handleSelect("haveTakenMedicationAsPrescribed", value)}
             label="Have you taken the medication as prescribed?"
-            error={getErrorMessage(errors?.haveTakenMedicationAsPrescribed)}
-            classNames={{ label: "!text-3xl pb-2" }}
+            classNames={{
+              root: "sm:!grid !block",
+              error: "sm:!text-end !text-start w-full",
+              label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+            }}
           >
-            <div className="grid grid-cols-2 gap-5">
+            <div className="grid sm:grid-cols-2 gap-5">
               {["Yes", "No"].map((option) => (
                 <Radio
                   key={option}
@@ -732,7 +767,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     <div className="relative text-center w-full">
                       <span className="text-foreground font-poppins">{option}</span>
                       {haveTakenMedicationAsPrescribed === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -741,24 +776,25 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 />
               ))}
             </div>
+            <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.haveTakenMedicationAsPrescribed)}</p>
           </Radio.Group>
 
           {/* Deviation explanation */}
           {haveTakenMedicationAsPrescribed === "No" && (
-            <Input.Wrapper
-              label="Please explain how you have deviated from the dosing instructions"
-              error={getErrorMessage(errors?.No_haveDeviated)}
-            >
-              <Input
-                {...register("No_haveDeviated")}
-                className="border-grey rounded-lg"
-              />
-            </Input.Wrapper>
+            <div>
+              <Input.Wrapper label="Please explain how you have deviated from the dosing instructions">
+                <Input
+                  {...register("No_haveDeviated")}
+                  className="border-grey rounded-lg"
+                />
+              </Input.Wrapper>
+              <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.No_haveDeviated)}</p>
+            </div>
           )}
 
           {/* Side effects */}
           <div className="space-y-4">
-            <Text className="text-foreground font-poppins !text-3xl">Have you experienced any of the following side effects?</Text>
+            <Text className="text-foreground font-semibold font-poppins sm:!text-3xl text-xl">Have you experienced any of the following side effects?</Text>
             <Grid
               gutter="md"
               className="mt-4"
@@ -767,7 +803,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 const isChecked = glpSideEffect ? glpSideEffect.split(", ").includes(option) : false;
                 return (
                   <Grid.Col
-                    span={6}
+                    span={{ sm: 6 }}
                     key={option}
                   >
                     <div
@@ -777,7 +813,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         setValue("glpSideEffect", updatedValues.join(", "), { shouldValidate: true });
                       }}
                       className={`cursor-pointer border rounded-2xl px-6 py-4 flex justify-between items-center transition-all ${
-                        isChecked ? "border-primary bg-white text-black shadow-sm" : "border-gray-300 bg-transparent text-black"
+                        isChecked ? "border-primary bg-white text-black shadow-sm" : "border-foreground bg-transparent text-black"
                       }`}
                     >
                       <span className="text-base font-medium font-poppins">{option}</span>
@@ -787,7 +823,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         size="md"
                         radius="md"
                         classNames={{
-                          input: isChecked ? "bg-primary border-primary text-white" : "bg-transparent",
+                          input: isChecked ? "bg-primary border-primary text-white" : "bg-transparent border-foreground",
                         }}
                       />
                     </div>
@@ -799,7 +835,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
           </div>
 
           <div className="space-y-4">
-            <Text className="text-foreground font-poppins !text-3xl">Did you experience any of the following side effects?</Text>
+            <Text className="text-foreground font-semibold font-poppins sm:!text-3xl text-xl">Did you experience any of the following side effects?</Text>
             <Grid
               gutter="md"
               className="mt-4"
@@ -808,7 +844,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 const isChecked = takenPrevGlp_sideEffect ? takenPrevGlp_sideEffect.split(", ").includes(option) : false;
                 return (
                   <Grid.Col
-                    span={6}
+                    span={{ sm: 6 }}
                     key={option}
                   >
                     <div
@@ -818,7 +854,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         setValue("takenPrevGlp_sideEffect", updatedValues.join(", "), { shouldValidate: true });
                       }}
                       className={`cursor-pointer border rounded-2xl px-6 py-4 flex justify-between items-center transition-all ${
-                        isChecked ? "border-primary bg-white text-black shadow-sm" : "border-gray-300 bg-transparent text-black"
+                        isChecked ? "border-primary bg-white text-black shadow-sm" : "border-foreground bg-transparent text-black"
                       }`}
                     >
                       <span className="text-base font-medium font-poppins">{option}</span>
@@ -828,7 +864,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         size="md"
                         radius="md"
                         classNames={{
-                          input: isChecked ? "bg-primary border-primary text-white" : "bg-transparent",
+                          input: isChecked ? "bg-primary border-primary text-white" : "bg-transparent border-foreground",
                         }}
                       />
                     </div>
@@ -844,8 +880,9 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
             value={watch("glpDrugEffectManageWeight")}
             onChange={(value) => handleSelect("glpDrugEffectManageWeight", value)}
             label="How effective do you feel the medication has been in managing your weight"
-            error={getErrorMessage(errors?.glpDrugEffectManageWeight)}
-            classNames={{ label: "!text-3xl pb-2" }}
+            classNames={{
+              label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+            }}
           >
             <div className="grid grid-cols-1 gap-5">
               {["Very Effective", "Somewhat Effective", "Not Effective"].map((option) => (
@@ -857,7 +894,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     <div className="relative text-center w-full">
                       <span className="text-foreground font-poppins">{option}</span>
                       {watch("glpDrugEffectManageWeight") === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -866,6 +903,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 />
               ))}
             </div>
+            <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.glpDrugEffectManageWeight)}</p>
           </Radio.Group>
         </>
       )}
@@ -878,8 +916,9 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
             value={watch("glpHowLongTaken")}
             onChange={(value) => handleSelect("glpHowLongTaken", value)}
             label="How long has it been since you stopped taking your GLP medication"
-            error={getErrorMessage(errors?.glpHowLongTaken)}
-            classNames={{ label: "!text-3xl pb-2" }}
+            classNames={{
+              label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+            }}
           >
             <div className="grid grid-cols-1 gap-5">
               {["2-5 months", "6-9 months", "10-11 months", "12+ months"].map((option) => (
@@ -891,7 +930,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     <div className="relative text-center w-full">
                       <span className="text-foreground font-poppins">{option}</span>
                       {watch("glpHowLongTaken") === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -900,23 +939,14 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 />
               ))}
             </div>
+            <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.glpHowLongTaken)}</p>
           </Radio.Group>
 
           {/* Height and Weight */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <Input.Wrapper
-              label="What was your height when you started the GLP-1 medication? (In inches)"
-              error={getErrorMessage(errors?.glpStartingHeight)}
-            >
-              <Input
-                {...register("glpStartingHeight")}
-                className="border-grey rounded-lg"
-              />
-            </Input.Wrapper>
-
+          <div>
             <Input.Wrapper
               label="What was your weight when you started the GLP-1 medication? (In Pounds)"
-              error={getErrorMessage(errors?.glpStartingWeight)}
+              classNames={getErrorMessage}
             >
               <Input
                 {...register("glpStartingWeight")}
@@ -924,6 +954,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 className="border-grey rounded-lg"
               />
             </Input.Wrapper>
+            <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.glpStartingWeight)}</p>
           </div>
 
           {/* Previous GLP medication */}
@@ -946,8 +977,11 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
               setTakenPrevTirz_previousRxDocument(null);
             }}
             label="What GLP medication have you previously taken?"
-            error={getErrorMessage(errors?.takenPrevGlpMedication)}
-            classNames={{ label: "!text-3xl pb-2" }}
+            classNames={{
+              root: "sm:!grid !block",
+              error: "sm:!text-end !text-start w-full",
+              label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+            }}
           >
             <div className="grid grid-cols-1 gap-5">
               {["Semaglutide (Wegovy, Ozempic, Generic)", "Tirzepatide (Mounjaro, Zepbound, Generic)", "Liraglutide (Saxenda)", "Other Weight Loss Medication"].map((option) => (
@@ -959,7 +993,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     <div className="relative text-center w-full">
                       <span className="text-foreground font-poppins">{option}</span>
                       {takenPrevGlpMedication === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -968,6 +1002,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 />
               ))}
             </div>
+            <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.takenPrevGlpMedication)}</p>
           </Radio.Group>
 
           {/* Previous Semaglutide Section */}
@@ -977,8 +1012,10 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 value={takenPrevSema_lastDosage}
                 onChange={(value) => handleSelect("takenPrevSema_lastDosage", value)}
                 label="What was the last dosage you took?"
-                error={getErrorMessage(errors?.takenPrevSema_lastDosage)}
-                classNames={{ label: "!text-3xl pb-2" }}
+                classNames={{
+                  root: "!w-full",
+                  label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+                }}
               >
                 <div className="grid grid-cols-1 gap-5">
                   {["0.25mg weekly", "0.5mg weekly", "0.75mg weekly", "1mg weekly", "1.5mg weekly", "1.7mg weekly", "2mg weekly", "2.5mg weekly", "Other"].map((option) => (
@@ -990,7 +1027,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         <div className="relative text-center w-full">
                           <span className="text-foreground font-poppins">{option}</span>
                           {takenPrevSema_lastDosage === option && (
-                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                               <i className="icon-tick text-sm/none"></i>
                             </span>
                           )}
@@ -999,18 +1036,24 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     />
                   ))}
                 </div>
+                <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.takenPrevSema_lastDosage)}</p>
               </Radio.Group>
 
               {takenPrevSema_lastDosage === "Other" && (
-                <Input.Wrapper
-                  label="Specify dosage"
-                  error={getErrorMessage(errors?.takenPrevSema_lastDosageOther)}
-                >
-                  <Input
-                    {...register("takenPrevSema_lastDosageOther")}
-                    className="border-grey rounded-lg"
-                  />
-                </Input.Wrapper>
+                <div>
+                  <Input.Wrapper
+                    label="Specify dosage"
+                    classNames={{
+                      root: "!w-full",
+                    }}
+                  >
+                    <Input
+                      {...register("takenPrevSema_lastDosageOther")}
+                      className="border-grey rounded-lg"
+                    />
+                  </Input.Wrapper>
+                  <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.takenPrevSema_lastDosageOther)}</p>
+                </div>
               )}
 
               <Radio.Group
@@ -1022,10 +1065,11 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                   }
                 }}
                 label="Do you have a PDF of your previous script, or a picture of your current vial?"
-                error={getErrorMessage(errors?.takenPrevSema_hasPdfForPreviousRx)}
-                classNames={{ label: "!text-3xl pb-2" }}
+                classNames={{
+                  label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+                }}
               >
-                <div className="grid grid-cols-2 gap-5">
+                <div className="grid sm:grid-cols-2 gap-5">
                   {["Yes", "No"].map((option) => (
                     <Radio
                       key={option}
@@ -1035,7 +1079,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         <div className="relative text-center w-full">
                           <span className="text-foreground font-poppins">{option}</span>
                           {takenPrevSema_hasPdfForPreviousRx === option && (
-                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                               <i className="icon-tick text-sm/none"></i>
                             </span>
                           )}
@@ -1044,11 +1088,12 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     />
                   ))}
                 </div>
+                <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.takenPrevSema_hasPdfForPreviousRx)}</p>
               </Radio.Group>
 
               {takenPrevSema_hasPdfForPreviousRx === "Yes" && (
                 <div className="space-y-4">
-                  <Text className="text-foreground font-poppins !text-3xl">Please upload your script or a picture of your current vial.</Text>
+                  <Text className="text-foreground font-semibold font-poppins sm:!text-3xl text-xl">Please upload your script or a picture of your current vial.</Text>
                   {!takenPrevSema_previousRxDocument ? (
                     <Dropzone
                       onDrop={(files) => handleUpFileForPrevRXOfPrevSema(files)}
@@ -1061,21 +1106,22 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                       multiple={false}
                       className="border-dashed border-gray-300 rounded-lg bg-gray-50 min-h-[220px] flex items-center justify-center"
                     >
-                      <div className="flex flex-col items-center gap-4">
-                        <IconUpload
-                          size={52}
-                          stroke={1.5}
-                        />
-                        <Text>Drag & drop or click to upload</Text>
+                      <div className="flex flex-col items-center justify-center h-full pointer-events-none">
+                        <i className="icon-document-upload text-[52px] text-grey" />
+                        <Text className="font-semibold text-grey">Drag & drop or click to upload</Text>
+                        <div className="d-inline-flex leading-none text-sm">or</div>
+                        <Anchor className="underline">Browse Files</Anchor>
                       </div>
                     </Dropzone>
                   ) : (
-                    <EditableDocumentTag
-                      docName={takenPrevSema_previousRxDocName || ""}
-                      removable={true}
-                      leftIconClass="icon-pdf"
-                      onRemove={() => removePrevSemaPreviousRxDocument()}
-                    />
+                    <div className="flex flex-wrap">
+                      <EditableDocumentTag
+                        docName={takenPrevSema_previousRxDocName || ""}
+                        removable={true}
+                        leftIconClass="icon-pdf"
+                        onRemove={() => removePrevSemaPreviousRxDocument()}
+                      />
+                    </div>
                   )}
                   {errors?.takenPrevSema_previousRxDocument?.message && <Text className="text-sm text-red-500">{errors.takenPrevSema_previousRxDocument.message}</Text>}
                 </div>
@@ -1090,8 +1136,10 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 value={takenPrevTirz_lastWeightLossMedicationDoase}
                 onChange={(value) => handleSelect("takenPrevTirz_lastWeightLossMedicationDoase", value)}
                 label="What was the last dosage you took?"
-                error={getErrorMessage(errors?.takenPrevTirz_lastWeightLossMedicationDoase)}
-                classNames={{ label: "!text-3xl pb-2" }}
+                classNames={{
+                  root: "!w-full",
+                  label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+                }}
               >
                 <div className="grid grid-cols-1 gap-5">
                   {["2.5mg weekly", "5mg weekly", "7.5mg weekly", "10mg weekly", "12.5mg weekly", "15mg weekly", "Other"].map((option) => (
@@ -1103,7 +1151,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         <div className="relative text-center w-full">
                           <span className="text-foreground font-poppins">{option}</span>
                           {takenPrevTirz_lastWeightLossMedicationDoase === option && (
-                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                               <i className="icon-tick text-sm/none"></i>
                             </span>
                           )}
@@ -1112,18 +1160,24 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     />
                   ))}
                 </div>
+                <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.takenPrevTirz_lastWeightLossMedicationDoase)}</p>
               </Radio.Group>
 
               {takenPrevTirz_lastWeightLossMedicationDoase === "Other" && (
-                <Input.Wrapper
-                  label="Specify dosage"
-                  error={getErrorMessage(errors?.takenPrevTirz_lastWeightLossMedicationDoaseOther)}
-                >
-                  <Input
-                    {...register("takenPrevTirz_lastWeightLossMedicationDoaseOther")}
-                    className="border-grey rounded-lg"
-                  />
-                </Input.Wrapper>
+                <div className="w-full">
+                  <Input.Wrapper
+                    label="Specify dosage"
+                    classNames={{
+                      root: "!w-full",
+                    }}
+                  >
+                    <Input
+                      {...register("takenPrevTirz_lastWeightLossMedicationDoaseOther")}
+                      className="border-grey rounded-lg"
+                    />
+                  </Input.Wrapper>
+                  <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.takenPrevTirz_lastWeightLossMedicationDoaseOther)}</p>
+                </div>
               )}
 
               <Radio.Group
@@ -1135,10 +1189,11 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                   }
                 }}
                 label="Do you have a PDF of your previous script, or a picture of your current vial?"
-                error={getErrorMessage(errors?.takenPrevTirz_hasPdfForPreviousRx)}
-                classNames={{ label: "!text-3xl pb-2" }}
+                classNames={{
+                  label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+                }}
               >
-                <div className="grid grid-cols-2 gap-5">
+                <div className="grid sm:grid-cols-2 gap-5">
                   {["Yes", "No"].map((option) => (
                     <Radio
                       key={option}
@@ -1148,7 +1203,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         <div className="relative text-center w-full">
                           <span className="text-foreground font-poppins">{option}</span>
                           {takenPrevTirz_hasPdfForPreviousRx === option && (
-                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                               <i className="icon-tick text-sm/none"></i>
                             </span>
                           )}
@@ -1157,11 +1212,12 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     />
                   ))}
                 </div>
+                <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.takenPrevTirz_hasPdfForPreviousRx)}</p>
               </Radio.Group>
 
               {takenPrevTirz_hasPdfForPreviousRx === "Yes" && (
                 <div className="space-y-4">
-                  <Text className="text-foreground font-poppins !text-3xl">Please upload your script or a picture of your current vial.</Text>
+                  <Text className="text-foreground font-semibold font-poppins sm:!text-3xl text-xl">Please upload your script or a picture of your current vial.</Text>
                   {!takenPrevTirz_previousRxDocument ? (
                     <Dropzone
                       onDrop={(files) => handleUpFileForPrevRXOfPrevTirz(files)}
@@ -1174,21 +1230,22 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                       multiple={false}
                       className="border-dashed border-gray-300 rounded-lg bg-gray-50 min-h-[220px] flex items-center justify-center"
                     >
-                      <div className="flex flex-col items-center gap-4">
-                        <IconUpload
-                          size={52}
-                          stroke={1.5}
-                        />
-                        <Text>Drag & drop or click to upload</Text>
+                      <div className="flex flex-col items-center justify-center h-full pointer-events-none">
+                        <i className="icon-document-upload text-[52px] text-grey" />
+                        <Text className="font-semibold text-grey">Drag & drop or click to upload</Text>
+                        <div className="d-inline-flex leading-none text-sm">or</div>
+                        <Anchor className="underline">Browse Files</Anchor>
                       </div>
                     </Dropzone>
                   ) : (
-                    <EditableDocumentTag
-                      docName={takenPrevTirz_previousRxDocName || ""}
-                      removable={true}
-                      leftIconClass="icon-pdf"
-                      onRemove={() => removePrevTirzPreviousRxDocument()}
-                    />
+                    <div className="flex flex-wrap">
+                      <EditableDocumentTag
+                        docName={takenPrevTirz_previousRxDocName || ""}
+                        removable={true}
+                        leftIconClass="icon-pdf"
+                        onRemove={() => removePrevTirzPreviousRxDocument()}
+                      />
+                    </div>
                   )}
                   {errors?.takenPrevTirz_previousRxDocument?.message && <Text className="text-sm text-red-500">{errors.takenPrevTirz_previousRxDocument.message}</Text>}
                 </div>
@@ -1198,7 +1255,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
 
           {/* Previous side effects */}
           <div className="space-y-4">
-            <Text className="text-foreground font-poppins !text-3xl">Did you experience any of the following side effects?</Text>
+            <Text className="text-foreground font-semibold font-poppins sm:!text-3xl text-xl">Did you experience any of the following side effects?</Text>
             <Grid
               gutter="md"
               className="mt-4"
@@ -1217,7 +1274,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         setValue("takenPrevGlp_sideEffect", updatedValues.join(", "), { shouldValidate: true });
                       }}
                       className={`cursor-pointer border rounded-2xl px-6 py-4 flex justify-between items-center transition-all ${
-                        isChecked ? "border-primary bg-white text-black shadow-sm" : "border-gray-300 bg-transparent text-black"
+                        isChecked ? "border-primary bg-white text-black shadow-sm" : "border-foreground bg-transparent text-black"
                       }`}
                     >
                       <span className="text-base font-medium font-poppins">{option}</span>
@@ -1227,7 +1284,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                         size="md"
                         radius="md"
                         classNames={{
-                          input: isChecked ? "bg-primary border-primary text-white" : "bg-transparent",
+                          input: isChecked ? "bg-primary border-primary text-white" : "bg-transparent border-foreground",
                         }}
                       />
                     </div>
@@ -1243,8 +1300,9 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
             value={watch("takenPrevGlp_howEffective")}
             onChange={(value) => handleSelect("takenPrevGlp_howEffective", value)}
             label="How effective do you feel the medication has been in managing your weight?"
-            error={getErrorMessage(errors?.takenPrevGlp_howEffective)}
-            classNames={{ label: "!text-3xl pb-2" }}
+            classNames={{
+              label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+            }}
           >
             <div className="grid grid-cols-1 gap-5">
               {["Very Effective", "Somewhat Effective", "Not Effective"].map((option) => (
@@ -1256,7 +1314,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                     <div className="relative text-center w-full">
                       <span className="text-foreground font-poppins">{option}</span>
                       {watch("takenPrevGlp_howEffective") === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -1265,6 +1323,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
                 />
               ))}
             </div>
+            <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.takenPrevGlp_howEffective)}</p>
           </Radio.Group>
         </>
       )}
@@ -1284,7 +1343,7 @@ const StepSixteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepS
           form="step16Form"
           loading={isLoading}
         >
-          Next
+          {isFinalStep ? "Submit" : "Next"}
         </Button>
       </div>
     </form>

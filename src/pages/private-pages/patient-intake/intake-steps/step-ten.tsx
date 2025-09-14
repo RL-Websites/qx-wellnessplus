@@ -4,7 +4,7 @@ import dmlToast from "@/common/configs/toaster.config";
 import { compressFileToBase64 } from "@/utils/fileUpload";
 import { getErrorMessage } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Input, Radio } from "@mantine/core";
+import { Anchor, Button, Input, Radio, Text } from "@mantine/core";
 import { Dropzone, MIME_TYPES } from "@mantine/dropzone";
 import { IconUpload } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
@@ -21,26 +21,30 @@ export const step10Schema = yup.object({
     is: "Papillary",
     then: (schema) => schema.required("Please mention if you have the report."),
   }),
-  papillaryReportUp: yup.string().when("papillaryReport", {
-    is: "Yes",
-    then: (schema) => schema.required("Please upload your pathology report."),
-  }),
-  papillaryReportFileName: yup.string().when("papillaryReport", {
-    is: "Yes",
-    then: (schema) => schema.required("Please upload your pathology report."),
-  }),
+  papillaryReportUp: yup.mixed().nullable().optional(),
+  papillaryReportFileName: yup.string().nullable().optional(),
+  // papillaryReportUp: yup.string().when("papillaryReport", {
+  //   is: "Yes",
+  //   then: (schema) => schema.required("Please upload your pathology report."),
+  // }),
+  // papillaryReportFileName: yup.string().when("papillaryReport", {
+  //   is: "Yes",
+  //   then: (schema) => schema.required("Please upload your pathology report."),
+  // }),
   follicularReport: yup.string().when("thyroidCancerType", {
     is: "Follicular",
     then: (schema) => schema.required("Please mention if you have the report."),
   }),
-  follicularReportUp: yup.string().when("follicularReport", {
-    is: "Yes",
-    then: (schema) => schema.required("Please upload your pathology report."),
-  }),
-  follicularReportFileName: yup.string().when("follicularReport", {
-    is: "Yes",
-    then: (schema) => schema.required("Please upload your pathology report."),
-  }),
+  follicularReportUp: yup.mixed().nullable().optional(),
+  follicularReportFileName: yup.string().nullable().optional(),
+  // follicularReportUp: yup.string().when("follicularReport", {
+  //   is: "Yes",
+  //   then: (schema) => schema.required("Please upload your pathology report."),
+  // }),
+  // follicularReportFileName: yup.string().when("follicularReport", {
+  //   is: "Yes",
+  //   then: (schema) => schema.required("Please upload your pathology report."),
+  // }),
   thyroidCancerOther: yup.string().when("thyroidCancerType", {
     is: "Other",
     then: (schema) => schema.required("Please mention what type of thyroid cancer do you have."),
@@ -68,8 +72,8 @@ interface StepTenProps {
 }
 
 const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
-  const [papillaryReportFile, setPapillaryReportFile] = useState<string | null>(null);
-  const [follicularReportFile, setFollicularReportFile] = useState<string | null>(null);
+  const [papillaryReportFile, setPapillaryReportFile] = useState<any>(null);
+  const [follicularReportFile, setFollicularReportFile] = useState<any>(null);
   const [otherReportFile, setOtherReportFile] = useState<string | null>(null);
 
   const {
@@ -108,6 +112,9 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
   const papillaryReport = watch("papillaryReport");
   const follicularReport = watch("follicularReport");
   const thyroidOtherReport = watch("thyroidOtherReport");
+  const thyroidReportFileName = watch("thyroidReportFileName");
+  const follicularReportFileName = watch("follicularReportFileName");
+  const papillaryReportFileName = watch("papillaryReportFileName");
 
   const showThyroidCancerType = thyroidCancer === "Yes";
   const showPapillaryReport = thyroidCancerType === "Papillary";
@@ -186,10 +193,12 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
         label="Do you have a personal or family history of thyroid cancer?"
         value={thyroidCancer}
         onChange={(val) => handleSelect("thyroidCancer", val)}
-        error={getErrorMessage(errors.thyroidCancer)}
-        classNames={{ label: "!text-3xl pb-2" }}
+        classNames={{
+          root: "w-full",
+          label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+        }}
       >
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid sm:grid-cols-2 gap-5">
           {radioOptions.map((option) => (
             <Radio
               key={option}
@@ -199,7 +208,7 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
                 <div className="relative text-center">
                   <span className="text-foreground font-poppins">{option}</span>
                   {thyroidCancer === option && (
-                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                       <i className="icon-tick text-sm/none"></i>
                     </span>
                   )}
@@ -208,6 +217,7 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
             />
           ))}
         </div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.thyroidCancer)}</p>
       </Radio.Group>
 
       {/* Thyroid Cancer Type */}
@@ -216,10 +226,12 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
           label="What type of thyroid cancer?"
           value={thyroidCancerType}
           onChange={(val) => handleSelect("thyroidCancerType", val)}
-          error={getErrorMessage(errors.thyroidCancerType)}
-          classNames={{ label: "!text-3xl pt-10 pb-2" }}
+          classNames={{
+            root: "!w-full",
+            label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+          }}
         >
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid sm:grid-cols-2 gap-5">
             {thyroidTypes.map((option) => (
               <Radio
                 key={option}
@@ -229,7 +241,7 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
                   <div className="relative text-center">
                     <span className="text-foreground font-poppins">{option}</span>
                     {thyroidCancerType === option && (
-                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                         <i className="icon-tick text-sm/none"></i>
                       </span>
                     )}
@@ -238,19 +250,24 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
               />
             ))}
           </div>
+          <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.thyroidCancerType)}</p>
         </Radio.Group>
       )}
 
       {/* Papillary Report */}
       {showPapillaryReport && (
         <Radio.Group
-          label="Do you have your pathology report?"
+          label="Do you have any recent lab reports?"
+          description="Note: While this step is optional, providing your recent lab report can help our licensed prescribers better understand your health status and may allow them to recommend the most accurate treatment plan for you."
           value={papillaryReport}
           onChange={(val) => handleSelect("papillaryReport", val)}
-          error={getErrorMessage(errors.papillaryReport)}
-          classNames={{ label: "!text-3xl pt-8 pb-2" }}
+          classNames={{
+            root: "!block",
+            description: "text-sm text-foreground",
+            label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+          }}
         >
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid sm:grid-cols-2 gap-5">
             {radioOptions.map((option) => (
               <Radio
                 key={option}
@@ -260,7 +277,7 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
                   <div className="relative text-center">
                     <span className="text-foreground font-poppins">{option}</span>
                     {papillaryReport === option && (
-                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                         <i className="icon-tick text-sm/none"></i>
                       </span>
                     )}
@@ -269,11 +286,12 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
               />
             ))}
           </div>
+          <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.papillaryReport)}</p>
         </Radio.Group>
       )}
 
       {showPapillaryReportUp && (
-        <div className="pt-6">
+        <div className="">
           <h6 className="extra-form-text-medium text-foreground mb-2">Please upload your Papillary pathology report</h6>
           {!papillaryReportFile ? (
             <Dropzone
@@ -289,20 +307,21 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
               }}
             >
               <div className="flex flex-col items-center justify-center h-full pointer-events-none">
-                <IconUpload
-                  style={{ width: 52, height: 52 }}
-                  stroke={1.5}
-                />
-                <span>Drag & drop or click to upload</span>
+                <i className="icon-document-upload text-[52px] text-grey" />
+                <Text className="font-semibold text-grey">Drag & drop or click to upload</Text>
+                <div className="d-inline-flex leading-none text-sm">or</div>
+                <Anchor className="underline">Browse Files</Anchor>
               </div>
             </Dropzone>
           ) : (
-            <EditableDocumentTag
-              docName={"papillaryReportFileName"}
-              removable
-              leftIconClass="icon-pdf"
-              onRemove={() => removeFile(setPapillaryReportFile, "papillaryReportUp", "papillaryReportFileName")}
-            />
+            <div className="flex flex-wrap">
+              <EditableDocumentTag
+                docName={papillaryReportFileName || ""}
+                removable
+                leftIconClass="icon-pdf"
+                onRemove={() => removeFile(setPapillaryReportFile, "papillaryReportUp", "papillaryReportFileName")}
+              />
+            </div>
           )}
         </div>
       )}
@@ -310,11 +329,13 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
       {/* Follicular Report */}
       {showFollicularReport && (
         <Radio.Group
-          label="Do you have your pathology report?"
+          label="Do you have accurate lab report?"
           value={follicularReport}
           onChange={(val) => handleSelect("follicularReport", val)}
-          error={getErrorMessage(errors.follicularReport)}
-          classNames={{ label: "!text-3xl pt-8 pb-2" }}
+          classNames={{
+            root: "!w-full",
+            label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+          }}
         >
           <div className="grid grid-cols-2 gap-5">
             {radioOptions.map((option) => (
@@ -326,7 +347,7 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
                   <div className="relative text-center">
                     <span className="text-foreground font-poppins">{option}</span>
                     {follicularReport === option && (
-                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                         <i className="icon-tick text-sm/none"></i>
                       </span>
                     )}
@@ -335,6 +356,7 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
               />
             ))}
           </div>
+          <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.follicularReport)}</p>
         </Radio.Group>
       )}
 
@@ -355,20 +377,21 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
               }}
             >
               <div className="flex flex-col items-center justify-center h-full pointer-events-none">
-                <IconUpload
-                  style={{ width: 52, height: 52 }}
-                  stroke={1.5}
-                />
-                <span>Drag & drop or click to upload</span>
+                <i className="icon-document-upload text-[52px] text-grey" />
+                <Text className="font-semibold text-grey">Drag & drop or click to upload</Text>
+                <div className="d-inline-flex leading-none text-sm">or</div>
+                <Anchor className="underline">Browse Files</Anchor>
               </div>
             </Dropzone>
           ) : (
-            <EditableDocumentTag
-              docName={"follicularReportFileName"}
-              removable
-              leftIconClass="icon-pdf"
-              onRemove={() => removeFile(setFollicularReportFile, "follicularReportUp", "follicularReportFileName")}
-            />
+            <div className="flex flex-wrap">
+              <EditableDocumentTag
+                docName={follicularReportFileName || ""}
+                removable
+                leftIconClass="icon-pdf"
+                onRemove={() => removeFile(setFollicularReportFile, "follicularReportUp", "follicularReportFileName")}
+              />
+            </div>
           )}
         </div>
       )}
@@ -380,6 +403,11 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
             label="Please specify what type of thyroid cancer?"
             withAsterisk
             error={getErrorMessage(errors.thyroidCancerOther)}
+            classNames={{
+              root: "sm:!grid !block w-full mb-5",
+              error: "sm:!text-end !text-start w-full",
+              label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+            }}
           >
             <Input
               type="text"
@@ -392,7 +420,11 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
             value={thyroidOtherReport}
             onChange={(val) => handleSelect("thyroidOtherReport", val)}
             error={getErrorMessage(errors.thyroidOtherReport)}
-            classNames={{ label: "!text-3xl pt-8 pb-2" }}
+            classNames={{
+              root: "sm:!grid !block w-full",
+              error: "sm:!text-end !text-start w-full",
+              label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+            }}
           >
             <div className="grid grid-cols-2 gap-5">
               {radioOptions.map((option) => (
@@ -404,7 +436,7 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
                     <div className="relative text-center">
                       <span className="text-foreground font-poppins">{option}</span>
                       {thyroidOtherReport === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -440,12 +472,14 @@ const StepTen = ({ onNext, onBack, defaultValues }: StepTenProps) => {
                   </div>
                 </Dropzone>
               ) : (
-                <EditableDocumentTag
-                  docName={"thyroidReportFileName"}
-                  removable
-                  leftIconClass="icon-pdf"
-                  onRemove={() => removeFile(setOtherReportFile, "thyroidOtherReportUp", "thyroidReportFileName")}
-                />
+                <div className="flex flex-wrap">
+                  <EditableDocumentTag
+                    docName={thyroidReportFileName || ""}
+                    removable
+                    leftIconClass="icon-pdf"
+                    onRemove={() => removeFile(setOtherReportFile, "thyroidOtherReportUp", "thyroidReportFileName")}
+                  />
+                </div>
               )}
             </div>
           )}

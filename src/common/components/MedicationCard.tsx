@@ -1,35 +1,56 @@
 import { Button } from "@mantine/core";
-import ThumbBg from "./ThumbBg";
 
 interface IMedicationProps {
   image: string;
   title: string;
   cost: string;
+  lab_fee?: number;
   disabled: boolean;
   onAddToCart: () => void;
   onShowDetails: () => void;
+  selectedCategory?: string[];
 }
 
 const MedicationCard = (medicationProps: IMedicationProps) => {
   return (
-    <div className="space-y-6">
+    <div className="md:space-y-6 sm:space-y-4 space-y-3">
       <div
-        className="space-y-4"
+        className="md:space-y-4 sm:space-y-3 space-y-2"
         onClick={medicationProps?.onShowDetails}
       >
         {medicationProps.image && (
-          <ThumbBg>
+          <div className="rounded-[20px] flex justify-center overflow-hidden bg-[url(/images/thumb-bg.png)] bg-no-repeat bg-cover relative">
             <img
               src={medicationProps?.image}
               alt=""
-              className="max-w-full h-[250px] mx-auto"
+              className="max-w-full min-h-[326px] mx-auto"
             />
-          </ThumbBg>
+            <span className="absolute size-8 top-4 right-4 rounded-full cursor-pointer">
+              <i className="icon-info-2 text-4xl/none text-white"></i>
+            </span>
+          </div>
         )}
-        {medicationProps?.title && <h4 className="text-2xl font-poppins leading-snug font-semibold text-foreground h-16 line-clamp-2">{medicationProps?.title}</h4>}
-        <div className="flex items-center justify-between">
-          <span className="text-foreground text-base font-bold">Medication Cost</span>
-          <span className="text-foreground text-base font-bold">${medicationProps?.cost}</span>
+        {medicationProps?.title && (
+          <h4 className="md:text-2xl sm:text-xl text-lg font-poppins leading-snug font-semibold text-foreground md:h-16 sm:h-8 line-clamp-2 break-all">{medicationProps?.title}</h4>
+        )}
+        <div className="">
+          <p className="text-foreground text-sm  font-bold">Package Price</p>
+          {medicationProps?.selectedCategory?.includes("Testosterone") ? (
+            <div className="grid sm:grid-cols-2 gap-4 mt-3">
+              <div className="flex flex-col justify-center items-center border-2 border-[#8FCADD] rounded-xl p-2">
+                <span className="text-foreground text-sm">Without Lab</span>
+                <span className="text-foreground sm:text-lg text-base font-bold">${medicationProps?.cost}</span>
+              </div>
+              <div className="flex flex-col justify-center items-center border-2 border-[#8FCADD] rounded-xl p-2">
+                <span className="text-foreground text-sm">With Lab</span>
+                <span className="text-foreground sm:text-lg text-base font-bold"> ${(Number(medicationProps?.cost) + Number(medicationProps?.lab_fee)).toFixed(2)}</span>
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-col justify-center items-center border-2 border-[#8FCADD] rounded-xl p-2 mt-3">
+              <span className="text-foreground sm:text-lg text-base font-bold">${medicationProps?.cost}</span>
+            </div>
+          )}
         </div>
       </div>
       <Button

@@ -17,6 +17,7 @@ export const basicInfoValidationSchema = yup.object({
   phone: yup
     .string()
     .required(({ label }) => `${label} is required`)
+    .transform((value) => (value ? value.replace(/\D/g, "") : ""))
     .length(10, "Phone number must be 10 digits long")
     .label("Phone number"),
   gender: yup
@@ -29,8 +30,12 @@ export const basicInfoValidationSchema = yup.object({
     .required("Please provide your date of birth"),
   // weight: yup.string().required("Weight is required"),
   // height: yup.string().required("Height is required"),
-  address: yup.string().required("Address is required").min(5, "Address must be at least 5 characters long"),
   country: yup.string().label("Country"),
+  address: yup
+    .string()
+    .required(({ label }) => `${label} is required`)
+    .label("Address"),
+  address2: yup.string().optional(),
   state: yup.string().required("Please select a state").label("State"),
   city: yup.string().required("Please select a city").label("City"),
   zip_code: yup

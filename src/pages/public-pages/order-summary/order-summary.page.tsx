@@ -1,9 +1,10 @@
 import useAuthToken from "@/common/hooks/useAuthToken";
 import { cartItemsAtom } from "@/common/states/product.atom";
+import { selectedStateAtom } from "@/common/states/state.atom";
 import { userAtom } from "@/common/states/user.atom";
-import { calculatePrice } from "@/utils/helper.utils";
+import { calculatePrice, stateWiseLabFee } from "@/utils/helper.utils";
 import { Button } from "@mantine/core";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
 import { NavLink as RdNavLink, useNavigate } from "react-router-dom";
 
@@ -12,6 +13,7 @@ const OrderSummary = () => {
   const [userData] = useAtom(userAtom);
   const [cartItems, setCartItems] = useAtom(cartItemsAtom);
   const [totalBillAmount, setTotalBillAmount] = useState<number>(0);
+  const selectedState = useAtomValue(selectedStateAtom);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,6 +22,9 @@ const OrderSummary = () => {
       cartItems.forEach((item) => {
         const price = calculatePrice(item);
         totalBill = totalBill + price;
+        if (item?.lab_required == "1") {
+          totalBill += stateWiseLabFee(item, selectedState || "");
+        }
       });
 
       setTotalBillAmount(totalBill);
@@ -32,11 +37,12 @@ const OrderSummary = () => {
 
   useEffect(() => {
     if (cartItems.length === 0) {
-      navigate("/medications");
+      navigate("/category");
     }
   }, [cartItems, navigate]);
 
   const handleNext = () => {
+    console.log(userData, getAccessToken());
     if (userData && getAccessToken()) {
       navigate("/complete-order");
     } else {
@@ -57,15 +63,17 @@ const OrderSummary = () => {
               >
                 <img
                   src={item.image ? `${import.meta.env.VITE_BASE_PATH}/storage/${item.image}` : "/placeholder.png"}
-                  className="size-32"
+                  className="size-32 rounded-lg"
                   alt={item.name}
                 />
                 <div className="lg:w-[calc(100%_-_154px)]">
-                  <h6 className="text-xl font-semibold text-foreground font-poppins max-w-[300px]">{item.name}</h6>
+                  <h6 className="text-xl font-semibold text-foreground font-poppins max-w-[300px]">
+                    {item.name} {item.strength ? `${item.strength} ${item.unit}` : ""}
+                  </h6>
                   <div className="flex items-center gap-2.5 pt-2.5 font-poppins">
                     <span className="text-lg text-foreground">{item.medication_category}</span>
                     <span className="text-lg text-foreground">|</span>
-                    <span className="text-lg text-foreground">{item.medicine_type}</span>
+                    <span className="text-lg text-foreground">{item.medicine_type == "ODT" ? "Oral" : item.medicine_type}</span>
                   </div>
                 </div>
                 <i
@@ -84,15 +92,15 @@ const OrderSummary = () => {
                 key={item.id}
                 className="flex flex-wrap items-center justify-between"
               >
-                <span className="text-foreground text-lg inline-block max-w-[226px]">
-                  {item.name} x {item.qty}
+                <span className="text-foreground text-lg inline-block max-w-[226px] break-all">
+                  {item.name} {item.strength ? `${item.strength} ${item.unit}` : ""} x {item.qty}
                 </span>
-                <span className="text-foreground text-lg">${calculatePrice(item)}</span>
+                <span className="text-foreground text-lg">${item?.lab_required == "1" ? calculatePrice(item) + stateWiseLabFee(item, selectedState) : calculatePrice(item)}</span>
               </div>
             ))}
           </div>
           <div className="flex items-center justify-between border-t border-t-foreground pt-2">
-            <span className="text-foreground font-poppins font-semibold md:text-xl text-lg !border-foreground">Total</span>
+            <span className="text-foreground font-poppins font-semibold md:text-xl text-lg !border-foreground">Total Package Price</span>
             <span className="text-foreground font-poppins font-semibold md:text-xl text-lg !border-foreground">${totalBillAmount}</span>
           </div>
         </div>
@@ -100,7 +108,7 @@ const OrderSummary = () => {
       <div className="flex justify-between gap-6 pt-4">
         <Button
           variant="outline"
-          className="w-[200px]"
+          className="lg:w-[200px] w-[150px]"
           component={RdNavLink}
           to={`/medications`}
         >
@@ -108,7 +116,7 @@ const OrderSummary = () => {
         </Button>
         <Button
           type="submit"
-          className="w-[200px]"
+          className="lg:w-[200px] w-[150px]"
           form="stepTwoForm"
           onClick={handleNext}
         >

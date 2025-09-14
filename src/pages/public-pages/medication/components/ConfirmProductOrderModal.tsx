@@ -12,7 +12,7 @@ interface IConfirmationModalProps {
 }
 
 function ConfirmProductOrderModal(modalProps: IConfirmationModalProps) {
-  const [selectedQty, setSelectedQty] = useState<number>(2);
+  const [selectedQty, setSelectedQty] = useState<number>(1);
 
   return (
     <Modal.Root
@@ -109,7 +109,7 @@ function ConfirmProductOrderModal(modalProps: IConfirmationModalProps) {
               onClick={modalProps.onModalPressYes}
               disabled={modalProps.okBtnLoading}
             >
-              Do Not Proceed
+              Cancel
             </Button>
             <Button
               color="primary"

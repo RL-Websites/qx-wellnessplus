@@ -1,10 +1,11 @@
 import { IServerErrorResponse } from "@/common/api/models/interfaces/ApiResponse.model";
 import { IRegistrationRequestPayload } from "@/common/api/models/interfaces/Auth.model";
 import authApiRepository from "@/common/api/repositories/authRepository";
+import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
 import dmlToast from "@/common/configs/toaster.config";
 import useAuthToken from "@/common/hooks/useAuthToken";
 import { cartItemsAtom } from "@/common/states/product.atom";
-import { userAtom } from "@/common/states/user.atom";
+import { user_id, userAtom } from "@/common/states/user.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Input, PasswordInput } from "@mantine/core";
 import { useMutation } from "@tanstack/react-query";
@@ -12,7 +13,7 @@ import { AxiosError } from "axios";
 import { useAtom } from "jotai";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 
 const registrationSchema = yup.object({
@@ -50,6 +51,7 @@ const RegistrationPage = () => {
   const { setAccessToken, getAccessToken } = useAuthToken();
   const [cartItems, setCartItems] = useAtom(cartItemsAtom);
   const [userData, setUserDataAtom] = useAtom(userAtom);
+  const [userId, setUserId] = useAtom(user_id);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -85,6 +87,7 @@ const RegistrationPage = () => {
       onSuccess: (res) => {
         setAccessToken(res?.data.access_token);
         setUserDataAtom(res?.data?.user);
+        setUserId(res?.data?.user_id);
         if (cartItems?.length > 0) {
           navigate("/complete-order");
         } else {
@@ -102,21 +105,19 @@ const RegistrationPage = () => {
   };
 
   return (
-    <div className="lg:pt-16 md:pt-10 pt-4">
-      <h2 className="heading-text  text-foreground uppercase  text-center">Registration</h2>
+    <div className="">
+      <h2 className="lg:text-[70px] md:text-6xl text-4xl text-foreground uppercase text-center">Registration</h2>
       <form
         className="w-full "
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div className="card-common card-common-width flex flex-col lg:gap-7 md:gap-5 gap-3">
+        <div className="card-common mt-5 card-common-width flex flex-col lg:gap-7 md:gap-5 gap-3">
           <p className="font-semibold lg:text-3xl md:text-xl text-base text-foreground ">Registration Details</p>
           <Input.Wrapper
             label="First Name"
             required
             error={errors.firstName?.message ? errors.firstName?.message : false}
-            classNames={{
-              label: "!text-sm md:!text-base lg:!text-lg",
-            }}
+            classNames={InputErrorMessage}
           >
             <Input
               type="text"
@@ -127,9 +128,7 @@ const RegistrationPage = () => {
             label="Last Name"
             required
             error={errors.lastName?.message ? errors.lastName?.message : false}
-            classNames={{
-              label: "!text-sm md:!text-base lg:!text-lg",
-            }}
+            classNames={InputErrorMessage}
           >
             <Input
               type="text"
@@ -140,9 +139,7 @@ const RegistrationPage = () => {
             label="Email Address"
             required
             error={errors.emailAddress?.message ? errors.emailAddress?.message : false}
-            classNames={{
-              label: "!text-sm md:!text-base lg:!text-lg",
-            }}
+            classNames={InputErrorMessage}
           >
             <Input
               type="email"
@@ -151,42 +148,58 @@ const RegistrationPage = () => {
           </Input.Wrapper>
           <Input.Wrapper
             label="Password"
-            mt="12"
             required
             error={errors.password?.message ? errors.password?.message : false}
-            classNames={{
-              label: "!text-sm !md:text-base !lg:text-lg",
-            }}
+            classNames={InputErrorMessage}
           >
             <PasswordInput
               visibilityToggleIcon={({ reveal }) => (reveal ? <i className="icon-view text-2xl"></i> : <i className="icon-view-off text-2xl"></i>)}
               {...register("password")}
+              classNames={InputErrorMessage}
             />
           </Input.Wrapper>
           <Input.Wrapper
             label="Confirm password"
-            mt="12"
             required
             error={errors.confirmPassword?.message ? errors.confirmPassword?.message : false}
-            classNames={{
-              label: "!text-sm !md:text-base !lg:text-lg",
-            }}
+            classNames={InputErrorMessage}
           >
             <PasswordInput
               visibilityToggleIcon={({ reveal }) => (reveal ? <i className="icon-view text-2xl"></i> : <i className="icon-view-off text-2xl"></i>)}
               {...register("confirmPassword")}
+              classNames={InputErrorMessage}
             />
           </Input.Wrapper>
         </div>
-        <div className="text-center mt-10">
-          <Button
-            size="md"
-            type="submit"
-            className="bg-primary text-white rounded-xl lg:w-[206px]"
-            loading={RegistrationMutation.isPending}
-          >
-            Register Now
-          </Button>
+        <div className="card-common-width  mx-auto mt-10">
+          <div className="flex justify-between">
+            <Button
+              size="md"
+              className="lg:w-[206px]"
+              variant="outline"
+              component={Link}
+              to={`/login`}
+            >
+              Back
+            </Button>
+            <Button
+              size="md"
+              type="submit"
+              className="bg-primary text-white rounded-xl lg:w-[206px]"
+              loading={RegistrationMutation.isPending}
+            >
+              Register Now
+            </Button>
+          </div>
+          <p className="md:text-lg sm:text-base text-sm text-foreground font-semibold mt-6 text-center">
+            <span className="text-primary font-normal font-poppins">Already have an account? </span>
+            <Link
+              to="/login"
+              className="text-foreground underline"
+            >
+              Please Login
+            </Link>
+          </p>
         </div>
       </form>
     </div>

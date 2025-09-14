@@ -1,3 +1,4 @@
+import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Input } from "@mantine/core";
 import { useForm } from "react-hook-form";
@@ -40,20 +41,18 @@ const WeightLossGoal = ({ onNext, onBack, defaultValues }: IWeightLossGoalProps)
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <div className="card-common-width mx-auto">
-        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">What is your weight loss goal?</h2>
+        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground animate-title">What is your ideal target weight?</h2>
         <form
           id="weightLossGoalForm"
           onSubmit={handleSubmit(onNext)}
-          className="max-w-xl mx-auto space-y-6 card-common"
+          className="mcard-common-width-lg mx-auto space-y-6 card-common animate-content"
         >
           <div>
             <Input.Wrapper
-              label="Weight Loss Goal"
+              label="Weight Loss Goal (lbs)"
               required
               error={errors.weightlossgoal?.message ? errors.weightlossgoal?.message : false}
-              classNames={{
-                label: "!text-sm md:!text-base lg:!text-lg",
-              }}
+              classNames={InputErrorMessage}
             >
               <Input
                 type="text"
@@ -63,7 +62,7 @@ const WeightLossGoal = ({ onNext, onBack, defaultValues }: IWeightLossGoalProps)
           </div>
         </form>
       </div>
-      <div className="flex justify-center gap-6 pt-8">
+      <div className="flex justify-center md:gap-6 gap-3 md:pt-8 pt-5 animate-btns">
         <Button
           variant="outline"
           className="w-[200px]"

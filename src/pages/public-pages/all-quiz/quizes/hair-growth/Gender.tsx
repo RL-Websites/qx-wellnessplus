@@ -2,8 +2,9 @@
 
 import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
 import { selectedCategoryAtom } from "@/common/states/category.atom";
+import { selectedGenderAtom } from "@/common/states/gender.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Group, Radio, Text } from "@mantine/core";
+import { Button, Radio, Text } from "@mantine/core";
 import { useAtom } from "jotai";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -23,6 +24,7 @@ interface IGenderHairGrowthProps {
 
 export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGenderHairGrowthProps) {
   const [selectedCategory, setSelectedCategory] = useAtom(selectedCategoryAtom);
+  const [selectedGender, setSelectedGender] = useAtom(selectedGenderAtom);
   const {
     handleSubmit,
     setValue,
@@ -48,6 +50,7 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGen
 
     setValue("genderHairGrowth", value, { shouldValidate: true });
     clearErrors("genderHairGrowth");
+    setSelectedGender(value);
   };
 
   // const handleSelect = (value: string) => {
@@ -65,9 +68,9 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGen
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
-      <h2 className="heading-text text-foreground uppercase text-center">Gender</h2>
+      <h2 className="heading-text text-foreground uppercase text-center animate-title">Gender</h2>
 
-      <div className="card-common-width mx-auto mt-10">
+      <div className="card-common-width-lg mx-auto mt-10 animate-content">
         <form
           id="genderHairGrowthForm"
           onSubmit={handleSubmit(onNext)}
@@ -76,9 +79,9 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGen
           <Radio.Group
             value={genderHairGrowth}
             onChange={handleSelect}
-            className="mt-6"
+            className="mt-6 w-full"
           >
-            <Group grow>
+            <div className="grid md:grid-cols-2 w-full gap-5">
               {options.map((option) => (
                 <Radio
                   key={option}
@@ -88,7 +91,7 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGen
                     <div className="relative text-center">
                       <span className="text-foreground font-poppins">{option}</span>
                       {genderHairGrowth === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -96,13 +99,13 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGen
                   }
                 />
               ))}
-            </Group>
+            </div>
           </Radio.Group>
-          {errors.genderHairGrowth && <Text className="text-red-500 text-sm mt-5 text-center">{errors.genderHairGrowth.message}</Text>}
+          {errors.genderHairGrowth && <Text className="text-red-500 text-sm mt-5 text-center">Please select your gender.</Text>}
         </form>
       </div>
 
-      <div className="flex justify-center gap-6 pt-8">
+      <div className="flex justify-center md:gap-6 gap-3 md:pt-8 pt-5 animate-btns">
         <Button
           variant="outline"
           className="w-[200px]"

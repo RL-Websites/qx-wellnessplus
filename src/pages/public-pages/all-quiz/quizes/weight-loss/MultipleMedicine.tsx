@@ -1,5 +1,7 @@
+import { prevGlpMedDetails } from "@/common/states/product.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Group, Radio, Text } from "@mantine/core";
+import { Button, Radio, Text } from "@mantine/core";
+import { useAtom } from "jotai";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -17,6 +19,7 @@ interface IMultipleMedicineProps {
 }
 
 const MultipleMedicine = ({ onNext, onBack, defaultValues }: IMultipleMedicineProps) => {
+  const [prevGlpDetails, setPrevGlpDetails] = useAtom(prevGlpMedDetails);
   const {
     handleSubmit,
     setValue,
@@ -36,6 +39,7 @@ const MultipleMedicine = ({ onNext, onBack, defaultValues }: IMultipleMedicinePr
 
   const handleSelect = (value: string) => {
     setValue("selectedMedicine", value, { shouldValidate: true });
+    setPrevGlpDetails((prev) => ({ ...prev, preferredMedType: value }));
     clearErrors("selectedMedicine");
   };
 
@@ -44,17 +48,17 @@ const MultipleMedicine = ({ onNext, onBack, defaultValues }: IMultipleMedicinePr
       <form
         id="multipleMedicineForm"
         onSubmit={handleSubmit(onNext)}
-        className="max-w-xl mx-auto space-y-6"
+        className="card-common-width-lg mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Are you interested in Semaglutide or Tirzepatide?</h2>
+          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground animate-title">Are you interested in Semaglutide or Tirzepatide?</h2>
 
           <Radio.Group
             value={selectedMedicine}
             onChange={handleSelect}
-            className="mt-6"
+            className="mt-6 w-full animate-content"
           >
-            <Group grow>
+            <div className="grid md:grid-cols-2 w-full gap-5">
               {options.map((option) => (
                 <Radio
                   key={option}
@@ -73,7 +77,7 @@ const MultipleMedicine = ({ onNext, onBack, defaultValues }: IMultipleMedicinePr
                     <div className="relative text-center">
                       <span className="text-foreground font-poppins">{option}</span>
                       {selectedMedicine === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -81,12 +85,22 @@ const MultipleMedicine = ({ onNext, onBack, defaultValues }: IMultipleMedicinePr
                   }
                 />
               ))}
-            </Group>
+            </div>
           </Radio.Group>
           {errors.selectedMedicine && <Text className="text-red-500 text-sm mt-5 text-center">{errors.selectedMedicine.message}</Text>}
+          <div className="space-y-2.5 pt-4 animate-content">
+            <p className="text-xl text-foreground font-medium font-poppins">
+              <span className="font-semibold">Semaglutide:</span> A proven GLP-1 medication that reduces appetite and supports steady weight loss. Often considered a good starting
+              option for beginners.
+            </p>
+            <p className="text-xl text-foreground font-medium font-poppins">
+              <span className="font-semibold">Tirzepatide:</span> A newer dual-action (GLP-1 + GIP) medication that can lead to stronger results. Typically seen as an advanced
+              option for patients seeking greater weight loss.
+            </p>
+          </div>
         </div>
 
-        <div className="flex justify-center gap-6 pt-4">
+        <div className="flex justify-center gap-6 pt-4 animate-btns">
           <Button
             variant="outline"
             className="w-[200px]"

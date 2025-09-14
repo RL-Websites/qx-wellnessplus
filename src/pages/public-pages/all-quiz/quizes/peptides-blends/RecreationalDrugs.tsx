@@ -61,7 +61,7 @@ const RecreationalDrugs = ({ onNext, onBack, defaultValues }: IRecreationalDrugs
         className="max-w-xl mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins">Do you use recreational drugs?</h2>
+          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">Do you use recreational drugs?</h2>
 
           {/* Step 1: Yes / No */}
           <Radio.Group
@@ -71,7 +71,7 @@ const RecreationalDrugs = ({ onNext, onBack, defaultValues }: IRecreationalDrugs
               setValue("drugType", ""); // Reset sub-selection
               setValue("customDrug", ""); // Reset custom input
             }}
-            className="mt-6"
+            className="mt-6 animate-content"
           >
             <Grid gutter="md">
               {initialOptions.map((option) => (
@@ -95,7 +95,7 @@ const RecreationalDrugs = ({ onNext, onBack, defaultValues }: IRecreationalDrugs
                       <div className="relative text-center">
                         <span className="text-foreground font-poppins">{option}</span>
                         {usesDrugs === option && (
-                          <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                          <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                             <i className="icon-tick text-sm/none"></i>
                           </span>
                         )}
@@ -113,7 +113,7 @@ const RecreationalDrugs = ({ onNext, onBack, defaultValues }: IRecreationalDrugs
         {/* Step 2: Substance detail if "Yes" selected */}
         {usesDrugs === "Yes" && (
           <div>
-            <h3 className="text-lg font-medium mt-6 mb-2 text-center">Which substances?</h3>
+            <h3 className="text-lg font-medium mt-6 mb-2 text-center animate-title">Which substances?</h3>
 
             <Radio.Group
               value={drugType}
@@ -121,6 +121,7 @@ const RecreationalDrugs = ({ onNext, onBack, defaultValues }: IRecreationalDrugs
                 setValue("drugType", value, { shouldValidate: true });
                 if (value !== "Other") setValue("customDrug", "");
               }}
+              className="animate-content"
             >
               <Grid gutter="md">
                 {followupOptions.map((option) => (
@@ -144,7 +145,7 @@ const RecreationalDrugs = ({ onNext, onBack, defaultValues }: IRecreationalDrugs
                         <div className="relative text-center">
                           <span className="text-foreground font-poppins">{option}</span>
                           {drugType === option && (
-                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                               <i className="icon-tick text-sm/none"></i>
                             </span>
                           )}
@@ -163,13 +164,13 @@ const RecreationalDrugs = ({ onNext, onBack, defaultValues }: IRecreationalDrugs
                 {...register("customDrug")}
                 placeholder="Please specify the substance"
                 error={errors.customDrug?.message}
-                className="mt-4"
+                className="mt-4 animate-content"
               />
             )}
           </div>
         )}
 
-        <div className="flex justify-center gap-6 pt-4">
+        <div className="flex justify-center gap-6 pt-4 animate-btns">
           <Button
             variant="outline"
             className="w-[200px]"

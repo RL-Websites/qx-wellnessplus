@@ -1,5 +1,6 @@
+import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Group, Radio } from "@mantine/core";
+import { Button, Radio, Text } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -11,7 +12,7 @@ export const chemotherapySchema = yup.object({
 export type chemotherapySchemaType = yup.InferType<typeof chemotherapySchema>;
 
 interface IChemotherapyProps {
-  onNext: (data: chemotherapySchemaType) => void;
+  onNext: (data: chemotherapySchemaType & { eligible?: boolean }) => void;
   onBack: () => void;
   defaultValues?: chemotherapySchemaType;
 }
@@ -43,37 +44,27 @@ const Chemotherapy = ({ onNext, onBack, defaultValues }: IChemotherapyProps) => 
     <form
       id="chemotherapyForm"
       onSubmit={handleSubmit(onNext)}
-      className="max-w-xl mx-auto space-y-6"
+      className="card-common-width-lg mx-auto space-y-6"
     >
       <div>
-        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Have you undergone chemotherapy or radiation in the last 6 months?</h2>
+        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground animate-title">Have you undergone chemotherapy or radiation in the last 6 months?</h2>
 
         <Radio.Group
           value={chemotherapy}
           onChange={handleSelect}
-          className="mt-6"
-          error={errors?.chemotherapy?.message}
+          className="mt-6 w-full animate-content"
         >
-          <Group grow>
+          <div className="grid md:grid-cols-2 w-full gap-5">
             {options.map((option) => (
               <Radio
                 key={option}
                 value={option}
-                classNames={{
-                  root: "relative w-full",
-                  radio: "hidden",
-                  inner: "hidden",
-                  labelWrapper: "w-full",
-                  label: `
-                    block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointer
-                    ${chemotherapy === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
-                  `,
-                }}
+                classNames={getBaseWebRadios(chemotherapy, option)}
                 label={
                   <div className="relative text-center">
                     <span className="text-foreground font-poppins">{option}</span>
                     {chemotherapy === option && (
-                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                         <i className="icon-tick text-sm/none"></i>
                       </span>
                     )}
@@ -81,11 +72,12 @@ const Chemotherapy = ({ onNext, onBack, defaultValues }: IChemotherapyProps) => 
                 }
               />
             ))}
-          </Group>
+          </div>
         </Radio.Group>
+        {errors.chemotherapy && <Text className="text-red-500 text-sm mt-5 text-center">{errors.chemotherapy.message}</Text>}
       </div>
 
-      <div className="flex justify-center gap-6 pt-4">
+      <div className="flex justify-center gap-6 pt-4 animate-btns">
         <Button
           variant="outline"
           className="w-[200px]"

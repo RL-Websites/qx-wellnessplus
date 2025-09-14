@@ -1,6 +1,14 @@
 export const questions = [
   { name: "primaryGoal", label: "What is your primary goal for weight loss?" },
   { name: "amountOfWeightLoss", label: "How much weight would you like to lose?" },
+  { name: "hasAllergy", label: "Do you have any allergy?" },
+  { name: "nameAllergy", label: "Please list any allergies you have (example: Sneezing, Runny Nose, Skin Rash, Difficulty Breathing and etc.):" },
+  { name: "prescribed", label: "Do you take any prescribed medications?" },
+  {
+    name: "medicines",
+    label:
+      "Please specify what medications have you taken?  (Example: [medication name] - [dosage] - [duration], [medication name] - [dosage] - [duration]. If unknown, write 'unknown')",
+  },
   { name: "exerciseTimes", label: "How often do you exercise?" },
   { name: "doesDiet", label: "Are you willing to follow a weight loss dietary plan/reduce calories and exercise?" },
   { name: "agreeGlpExercise", label: "I acknowledge that GLP medications are most effective when used in conjunction with exercise." },
@@ -40,11 +48,7 @@ export const questions = [
   { name: "gallstones", label: "Did you have your gallbladder removed due to pancreatitis from gallstones?" },
   { name: "removedGallbladderGallstones", label: "When did you have your gallbladder removed?" },
   { name: "endocrineNeoplasia", label: "Do you have a personal or family history of multiple endocrine neoplasia?" },
-  {
-    name: "agreeToPhoneConsult",
-    label:
-      "Depending on state regulations, your provider may reach out to you to perform a consultation over the phone. Otherwise, your provider will review your intake forms and approve your script if all criteria are met",
-  },
+
   { name: "diabeticStatus", label: "Are you pre-diabetic or diabetic?" },
   { name: "takeDiabeticDrugName", label: "Are you currently taking any of the following medications? Select all that apply. (Select Multiple)" },
   { name: "takeDiabeticHemoglobin", label: "What is your hemoglobin A1C?" },
@@ -92,4 +96,54 @@ export const questions = [
   { name: "endocrineAutoimmune", label: "Do you have any known endocrine or autoimmune disorders?" },
   { name: "hormoneTherapySupple", label: "Are you currently taking hormone therapy, supplements, or other performance enhancers?" },
   { name: "physicActLevel", label: "What is your typical physical activity level?" },
+  { name: "peptideHealthHistory", label: "Health History (Needed for Peptide Treatments) (Please select all that apply):" },
+
+  { name: "whenNotice", label: "When did you first notice hair loss or thinning?" },
+  { name: "hairLossType", label: "Is your hair loss:" },
+  { name: "hairLossArea", label: "Where is the hair loss most noticeable?" },
+  { name: "familyHistory", label: "Do you have a family history of hair loss?" },
+  { name: "recentStress", label: "Have you had recent stress, illness, or surgery?" },
+  { name: "chronicCondition", label: "Do you have any chronic medical conditions?" },
+  { name: "takingMeds", label: "Are you currently taking any medications or supplements?" },
+  { name: "medsDetails", label: "Please specify the medications or supplements you are taking:" },
+  { name: "excessiveShedding", label: "Do you notice excessive hair shedding while combing/washing?" },
+  { name: "previousTreatments", label: "Have you tried hair loss treatments before?" },
+  { name: "otherSymptoms", label: "Are you experiencing other symptoms?" },
+
+  { name: "concernSH", label: "What sexual health concern are you seeking help with?" },
+  { name: "otherConcern", label: "Please specify your concern:" },
+  { name: "durationSH", label: "How long have you been experiencing this issue? (in months)" },
+  { name: "onSexMeds", label: "Do you currently take any medications for sexual health (e.g., Viagra, Cialis, hormone therapy)?" },
+
+  { name: "hasCardioDisease", label: "Do you have a history of uncontrolled cardiovascular disease (heart attack, stroke, arrhythmia)?" },
+  { name: "experiencedPriapism", label: "Have you ever experienced priapism (erection lasting more than 4 hours)?" },
+  { name: "takesNitrates", label: "Do you currently take nitrates or nitroglycerin?" },
+
+  { name: "hasLiverKidneyIssues", label: "Do you have any history of liver or kidney disease?" },
+  { name: "lifestyleFactors", label: "Do you have any lifestyle factors affecting sexual health (smoking, heavy alcohol use, stress, lack of sleep)?" },
+  { name: "lifestyleDetails", label: "Please describe the lifestyle factors affecting your sexual health:" },
+  { name: "sexualHealthGoals", label: "What are your goals for sexual health treatment?" },
+
+  { name: "lowTestosterone", label: "Have you ever been diagnosed with low testosterone (hypogonadism)?" },
+  { name: "symptomsSH", label: "Are you currently experiencing any of the following symptoms?" },
+
+  { name: "takingMedsSH", label: "Are you currently taking any medications (especially anticoagulants, steroids, or hormone therapy)?" },
+  { name: "medsListSH", label: "If yes, please list them:" },
+
+  { name: "usesSubstances", label: "Do you consume alcohol or use recreational drugs?" },
+  { name: "substanceDetails", label: "If yes, please provide details:" },
+
+  { name: "hasChildrenOrPlans", label: "Do you have children or plan to have children in the future?" },
+
+  { name: "takenTestosterone", label: "Have you taken testosterone therapy before?" },
+  { name: "testosteroneForms", label: "If yes, what form (injections, gels, patches, oral)?" },
+
+  { name: "hasCancerHistory", label: "Do you have a history of prostate cancer, breast cancer, or high PSA levels?" },
+  { name: "hasCardioHistory", label: "Do you currently have or have a history of heart disease, stroke, or blood clotting disorders?" },
+
+  {
+    name: "agreeToPhoneConsult",
+    label:
+      "Depending on state regulations, your provider may reach out to you to perform a consultation over the phone. Otherwise, your provider will review your intake forms and approve your script if all criteria are met",
+  },
 ];

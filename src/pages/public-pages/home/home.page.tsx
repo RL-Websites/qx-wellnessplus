@@ -40,32 +40,51 @@ const HomePage = () => {
     <div className="site-main-bg">
       <div className="site-home-hero ">
         <div className="container mx-auto">
-          <div className="header grid md:grid-cols-2  items-center justify-between ">
-            <div className="flex flex-col gap-7 lg:py-16 py-10">
-              <div className="logo flex items-center gap-2">
-                <NavLink
-                  to={userData?.userable_type ? "/" : "/"}
-                  component={RdNavLink}
-                  className={`p-0 bg-transparent hover:bg-transparent h-8 w-auto border-r border-r-grey-low`}
-                  classNames={{
-                    label: "flex items-center gap-4",
-                  }}
-                  label={
-                    <>
-                      {customerData?.logo ? (
-                        <Image
-                          src={customerData?.logo ? `${import.meta.env.VITE_BASE_PATH}/storage/${customerData?.logo}` : ""}
-                          alt={customerData?.name || ""}
-                          className="lg:w-16 md:w-12 w-10"
-                        />
-                      ) : (
-                        ""
-                      )}
-                      <span className="text-foreground font-impact md:text-[28px] text-2xl">{customerData?.name}</span>
-                    </>
-                  }
-                />
+          <div className="header grid md:grid-cols-2 grid-cols-1  items-center justify-between ">
+            <div className="flex flex-col w-full gap-7 lg:py-16 py-10">
+              <div>
+                <div className="logo flex items-center justify-between gap-2">
+                  <NavLink
+                    to={userData?.userable_type ? "/" : "/"}
+                    component={RdNavLink}
+                    className={`p-0 bg-transparent hover:bg-transparent h-8 w-auto border-r border-r-grey-low`}
+                    classNames={{
+                      label: "flex items-center gap-4",
+                    }}
+                    label={
+                      <>
+                        {customerData?.logo ? (
+                          <Image
+                            src={customerData?.logo ? `${import.meta.env.VITE_BASE_PATH}/storage/${customerData?.logo}` : ""}
+                            alt={customerData?.name || ""}
+                            className="lg:w-16 md:w-12 w-10"
+                          />
+                        ) : (
+                          ""
+                        )}
+                        <span className="text-foreground font-impact md:text-[28px] text-2xl">{customerData?.name}</span>
+                      </>
+                    }
+                  />
+                  {userData && (
+                    <Button
+                      variant="outline"
+                      size="sm-3"
+                      color="primary"
+                      className="font-semibold lg:text-lg md:text-base text-sm"
+                      onClick={() => {
+                        setCustomerData(null);
+                        sessionStorage.clear();
+                        localStorage.clear();
+                        window.location.href = "/";
+                      }}
+                    >
+                      Logout
+                    </Button>
+                  )}
+                </div>
               </div>
+
               <h1 className="heading-xxxl text-foreground uppercase lg:mt-12 md:mt-8 mt-5 md:text-start text-center">Thanks for stopping by</h1>
 
               <p className="lg:text-[30px] md:text-2xl text-base font-semibold text-primary capitalize md:text-start text-center">Your Wellness Journey Starts Here</p>
@@ -79,7 +98,7 @@ const HomePage = () => {
               >
                 Start Your Journey Now
               </Button>
-              <p className="sm:text-lg text-base text-foreground font-medium">
+              <p className="sm:text-lg text-base text-foreground font-medium md:text-start text-center">
                 Are you an existing customer?{" "}
                 <Link
                   className="text-primary font-semibold underline"

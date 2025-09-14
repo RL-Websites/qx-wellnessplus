@@ -2,8 +2,9 @@ import { IPublicPartnerPrescriptionDetails } from "@/common/api/models/interface
 import { formatDate } from "@/utils/date.utils";
 import { getFullName } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button } from "@mantine/core";
-import { useRef, useState } from "react";
+import { Button, Text } from "@mantine/core";
+import { useDebouncedCallback } from "@mantine/hooks";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import SignatureCanvas from "react-signature-canvas";
 import * as yup from "yup";
@@ -22,15 +23,16 @@ const stepLastSchema = yup.object({
 const Acknowledgement = ({ onNext, onBack, defaultValues, patientData, hasPeptides, hasOthers }: PropTypes) => {
   const [today, setToday] = useState(new Date());
   const sigCanvas = useRef<SignatureCanvas | null>(null);
+  const [signatureImage, setSignatureImage] = useState("");
   const {
     handleSubmit,
     setValue,
     clearErrors,
+    getValues,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(stepLastSchema),
     defaultValues: {
-      // agreeTerms: defaultValues?.agreeTerms || undefined,
       signature: defaultValues?.signature,
     },
   });
@@ -38,174 +40,161 @@ const Acknowledgement = ({ onNext, onBack, defaultValues, patientData, hasPeptid
   const clearSignature = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     sigCanvas.current?.clear();
-    // setSignature("");
+    setSignatureImage("");
     setValue("signature", "");
-    // setValue("signature", "");
-    // setError("signature", { message: "Signature is required" });
   };
+
+  const setSigImg = useDebouncedCallback((base64Data) => {
+    setSignatureImage(base64Data);
+  }, 1600);
 
   const saveSignature = () => {
     const base64Data = sigCanvas.current.toDataURL("image/png");
     setValue("signature", base64Data, { shouldValidate: true });
-    // setSignature(base64Data);
+    // setSignatureImage(base64Data);
+    setSigImg(base64Data);
     clearErrors("signature");
   };
+
+  useEffect(() => {
+    if (defaultValues?.signature) {
+      setSignatureImage(defaultValues?.signature);
+      setValue("signature", defaultValues?.signature, { shouldValidate: true });
+    }
+  }, [defaultValues]);
   return (
     <>
-      <h1 className="text-center text-foreground text-[90px]/none uppercase">Acknowledgement</h1>
+      <h1 className="heading-text text-foreground uppercase text-center">Acknowledgement</h1>
       <div className="card-common bg-white">
         <div className="card-body">
           <div className="space-y-7">
             {hasOthers ? (
               <>
-                <h6 className="text-lg !font-medium text-foreground">HEALTH & WELLNESS PLATFORM TERMS AND CONDITIONS</h6>
+                <h6 className="text-lg !font-medium text-foreground">DOSEVANA LLC TERMS & CONDITIONS</h6>
 
                 <p className="text-medium text-lg">
-                  This document governs your use of the platform and services provided by this Health & Wellness Company (the "Company", “We”, “Us”, or “Our”). By accessing,
-                  registering for, or using any services or content provided through our platform, including telehealth, wellness programs, skincare, weight loss solutions, or
-                  other related services (the “Services”), you agree to be bound by these Terms and Conditions (the “Agreement”).
+                  These Terms and Conditions (“Agreement”) govern your use of the Dosevana LLC platform and services (“Services”). By registering, purchasing, or using any Service,
+                  including telehealth consultations, prescription weight loss treatments, wellness programs, or related products, you agree to the terms outlined below. Please
+                  read carefully.
                 </p>
 
                 <div>
                   <h6 className="text-lg !font-medium text-foreground">Emergency Disclaimer</h6>
-                  <h6 className="text-lg !font-medium text-foreground">NOT FOR EMERGENCY USE</h6>
+                  <h6 className="text-lg !font-medium text-foreground">NOT FOR EMERGENCIES</h6>
                 </div>
                 <p className="text-medium text-lg">
-                  The Services are not intended for emergency medical situations. If you are experiencing a medical emergency, call 911 or your local emergency number immediately.
+                  Dosevana LLC is not designed for emergency medical care. If you experience a medical emergency, immediately call 911 or your local emergency number.
                 </p>
 
                 <h6 className="text-lg !font-medium text-foreground">Acceptance of Terms</h6>
-
                 <p className="text-medium text-lg">
-                  By clicking "I Agree", creating an account, or using the Services, you confirm that you have read, understood, and accepted this Agreement. If you are accepting
-                  on behalf of another individual (e.g., as a parent or legal guardian), you certify that you are authorized to do so.
+                  By clicking “I Agree,” creating an account, or using our Services, you confirm that you have read, understood, and accepted these Terms. If acting on behalf of
+                  another individual (e.g., a minor as a legal guardian), you confirm you are legally authorized to do so.
                 </p>
-                <h6 className="text-lg !font-medium text-foreground">Binding Arbitration Agreement</h6>
 
-                <p className="text-medium text-lg">
-                  You agree that any disputes with the Company, its agents, affiliates, or healthcare providers will be resolved through binding, individual arbitration and not via
-                  jury trial or class action, as described below under “Arbitration and Dispute Resolution”.
-                </p>
-                <h6 className="text-lg !font-medium text-foreground">Changes to These Terms</h6>
-
-                <p className="text-medium text-lg">
-                  We reserve the right to modify or update this Agreement at any time, with or without notice, as required by law or business necessity. Continued use of the
-                  Services after changes are posted constitutes your acceptance.
-                </p>
-                <h6 className="text-lg !font-medium text-foreground">Use by Minors</h6>
-
-                <p className="text-medium text-lg">
-                  The Services are not intended for users under 18 years of age. Individuals under 18 may only use the platform under the direct supervision of a parent or legal
-                  guardian.
-                </p>
-                <h6 className="text-lg !font-medium text-foreground">Use by Minors</h6>
-
-                <p className="text-medium text-lg">
-                  The Services are not intended for users under 18 years of age. Individuals under 18 may only use the platform under the direct supervision of a parent or legal
-                  guardian.
-                </p>
-                <h6 className="text-lg !font-medium text-foreground">Services Overview</h6>
-
+                <h6 className="text-lg !font-medium text-foreground">Services Provided</h6>
                 <div className="text-medium text-lg">
-                  We facilitate access to certain health and wellness products and services, including but not limited to:
+                  Dosevana LLC facilitates access to health and wellness solutions, including but not limited to:
                   <ul className="!list-disc list-inside">
-                    <li>Telehealth consultations</li>
-                    <li>Prescription medications via licensed pharmacies</li>
-                    <li>Skincare and weight loss products</li>
-                    <li>Diagnostic testing via partner labs</li>
+                    <li>Telehealth consultations with licensed healthcare providers</li>
+                    <li>Prescription medications dispensed by licensed partner pharmacies</li>
+                    <li>Weight loss and wellness programs (e.g., GLP-1 therapies)</li>
+                    <li>Diagnostic and laboratory services via partner labs</li>
                   </ul>
-                  Some services may be provided by independent third-party providers (the “Providers”), pharmacies (“Pharmacies”), and laboratories (“Labs”).
+                  Some Services may be delivered by independent third-party providers, pharmacies, or labs (collectively, “Providers”).
                 </div>
 
-                <h6 className="text-lg !font-medium text-foreground">No Medical Relationship with Company</h6>
-
-                <p className="text-medium text-lg">
-                  The Company itself does not practice medicine or provide clinical services. All clinical care is provided by third-party licensed medical professionals. You
-                  acknowledge that you are not establishing a patient-provider relationship with the Company, but may do so with a licensed Provider via the platform.
-                </p>
-                <h6 className="text-lg !font-medium text-foreground">No Pharmacy Relationship with Company</h6>
-
-                <p className="text-medium text-lg">
-                  We are not a pharmacy and do not control pharmacy operations. Any medications prescribed will be filled by independent Pharmacies. You may be required to complete
-                  a medical intake and establish medical necessity before a prescription is issued or filled.
-                </p>
-                <h6 className="text-lg !font-medium text-foreground">Consent to Telehealth</h6>
-
-                <p className="text-medium text-lg">
-                  You consent to receive healthcare via telehealth, which uses electronic communications to deliver medical care remotely. Telehealth is not suitable for all
-                  medical conditions. You accept the risks and limitations associated with this form of care.
-                </p>
-                <h6 className="text-lg !font-medium text-foreground">Consent to Communications</h6>
-
-                <p className="text-medium text-lg">
-                  You agree to receive communications related to your health and services via SMS, email, phone, or other messaging channels. These communications may include
-                  appointment reminders, treatment updates, or marketing content.
-                </p>
-                <h6 className="text-lg !font-medium text-foreground">Consent to Cash-Based Services</h6>
-
-                <p className="text-medium text-lg">
-                  The Company does not participate in Medicare, Medicaid, or other government insurance programs. All services are provided on a self-pay basis. You are fully
-                  responsible for payment and agree not to submit claims to any third-party payer for reimbursement.
-                </p>
-                <h6 className="text-lg !font-medium text-foreground">Subscription Billing</h6>
-
-                <p className="text-medium text-lg">
-                  Certain services may be billed on a recurring subscription basis. Your credit/debit card will be charged automatically unless you cancel in accordance with our
-                  cancellation policy. Any medication already shipped or dispensed will be billed in full.
-                </p>
-
-                <h6 className="text-lg !font-medium text-foreground">Three-Month Program Terms (if applicable)</h6>
-
+                <h6 className="text-lg !font-medium text-foreground">Role of Dosevana LLC</h6>
                 <div className="text-medium text-lg">
-                  If enrolled in a 3-month program:
                   <ul className="!list-disc list-inside">
-                    <li>Medication is dispensed monthly or all at once based on medical review.</li>
-                    <li>You are financially responsible for the full cost of medications shipped.</li>
-                    <li>Failure to pay will result in cancellation and referral to collections.</li>
+                    <li>
+                      <strong>No Medical Practice by Dosevana LLC:</strong> Dosevana LLC itself does not provide medical care. All medical services are delivered by licensed
+                      independent Providers.
+                    </li>
+                    <li>
+                      <strong>No Pharmacy Operations:</strong> Dosevana LLC is not a pharmacy. Prescriptions, if approved, are filled by partner pharmacies.
+                    </li>
+                    <li>
+                      <strong>Patient-Provider Relationship:</strong> Your medical relationship is solely with the licensed Provider you consult through our platform.
+                    </li>
+                  </ul>
+                </div>
+
+                <h6 className="text-lg !font-medium text-foreground">Eligibility & Use by Minors</h6>
+                <p className="text-medium text-lg">
+                  Services are available only to individuals 18 years and older. Minors are not eligible unless explicitly authorized by a parent or legal guardian and approved by
+                  a Provider.
+                </p>
+
+                <h6 className="text-lg !font-medium text-foreground">Telehealth Consent</h6>
+                <p className="text-medium text-lg">
+                  By using Dosevana, you consent to receive medical care via telehealth. You understand that telehealth has limitations compared to in-person care, not all
+                  conditions can be treated remotely, and Providers may determine whether telehealth is appropriate for you.
+                </p>
+
+                <h6 className="text-lg !font-medium text-foreground">Consent to Communications</h6>
+                <p className="text-medium text-lg">
+                  You agree to receive communications from Dosevana LLC via email, SMS, or phone, including but not limited to appointment updates, prescription and shipping
+                  notifications, billing updates and reminders, and marketing/promotional messages (with opt-out options available).
+                </p>
+
+                <h6 className="text-lg !font-medium text-foreground">Cash-Pay Model</h6>
+                <p className="text-medium text-lg">
+                  Dosevana LLC does not accept Medicare, Medicaid, or other insurance. All Services are self-pay only. You agree not to submit any claims to third-party payers.
+                </p>
+
+                <h6 className="text-lg !font-medium text-foreground">Billing & Subscription Terms</h6>
+                <div className="text-medium text-lg">
+                  <ul className="!list-disc list-inside">
+                    <li>
+                      <strong>One-Time and Recurring Fees:</strong> Some Services require an onboarding fee plus a recurring subscription.
+                    </li>
+                    <li>
+                      <strong>Automatic Billing:</strong> Your payment method will be charged automatically on a recurring basis unless canceled.
+                    </li>
+                    <li>
+                      <strong>Three-Month Programs:</strong>
+                      <ul className="list-disc list-inside ml-6">
+                        <li>Medications may be dispensed monthly or in full, depending on Provider review.</li>
+                        <li>You are financially responsible for all dispensed medications.</li>
+                        <li>Non-Payment: Failure to pay may result in cancellation, referral to collections, and denial of future services.</li>
+                      </ul>
+                    </li>
                   </ul>
                 </div>
 
                 <h6 className="text-lg !font-medium text-foreground">Prescription Requirements</h6>
-
                 <p className="text-medium text-lg">
-                  Prescription products will only be dispensed upon completion of a medical intake, consultation with a licensed provider, and confirmation of medical necessity.
-                  Payment does not guarantee a prescription.
+                  A prescription is issued only if medically necessary, determined by a licensed Provider. Payment does not guarantee a prescription. Providers may deny or
+                  discontinue treatment if deemed unsafe.
                 </p>
 
-                <h6 className="text-lg !font-medium text-foreground">Risk Acknowledgment</h6>
-
+                <h6 className="text-lg !font-medium text-foreground">Risk Disclosure</h6>
                 <p className="text-medium text-lg">
-                  You agree to read all product information and disclosures provided by the Company, Providers, or pharmacies, including information published by the FDA. Use of
-                  any treatment is at your own risk.
+                  You acknowledge that every treatment carries potential risks and side effects. You will review all product information, including FDA disclosures, and you accept
+                  sole responsibility for the use of prescribed medications and services.
                 </p>
 
-                <h6 className="text-lg !font-medium text-foreground">Arbitration and Dispute Resolution</h6>
-
+                <h6 className="text-lg !font-medium text-foreground">Dispute Resolution & Arbitration</h6>
                 <p className="text-medium text-lg">
-                  Disputes will first be addressed through mediation administered by the American Arbitration Association. If unresolved, binding arbitration will follow, and
-                  judgment may be entered in any court with jurisdiction. Class actions and group arbitration are waived.
+                  Any dispute will first be addressed through good faith mediation. If unresolved, disputes will be resolved by binding arbitration administered by the American
+                  Arbitration Association (AAA). You waive any right to jury trial or participation in class actions.
                 </p>
 
                 <h6 className="text-lg !font-medium text-foreground">Indemnification</h6>
-
                 <p className="text-medium text-lg">
-                  You agree to indemnify and hold harmless the Company and its affiliates from any claims, liabilities, losses, or expenses arising from your use of the Services or
-                  violation of this Agreement.
+                  You agree to indemnify and hold harmless Dosevana LLC, its affiliates, Providers, and partners from any claims, damages, or liabilities arising from your use of
+                  the Services or violation of this Agreement.
                 </p>
 
                 <h6 className="text-lg !font-medium text-foreground">Severability</h6>
-
-                <p className="text-medium text-lg">If any part of this Agreement is deemed invalid or unenforceable, the remainder will remain in full force and effect.</p>
+                <p className="text-medium text-lg">If any provision of this Agreement is found invalid, the remaining provisions remain enforceable.</p>
 
                 <h6 className="text-lg !font-medium text-foreground">Assignment</h6>
-
-                <p className="text-medium text-lg">You may not transfer or assign your rights under this Agreement. The Company may assign this Agreement at its discretion.</p>
+                <p className="text-medium text-lg">You may not transfer your rights under this Agreement. Dosevana LLC may assign this Agreement to affiliates or successors.</p>
 
                 <h6 className="text-lg !font-medium text-foreground">Governing Law</h6>
-
-                <p className="text-medium text-lg pb-8">
-                  You may not transfer or assign your rights under this Agreement. The Company may assign this Agreement at its discretion.
-                </p>
+                <p className="text-medium text-lg pb-8">This Agreement is governed by the laws of the State of Texas, USA, without regard to conflict of law principles.</p>
               </>
             ) : (
               <></>
@@ -213,106 +202,101 @@ const Acknowledgement = ({ onNext, onBack, defaultValues, patientData, hasPeptid
 
             {hasPeptides ? (
               <>
-                <h6 className="text-lg !font-medium text-foreground">WellnessPlus - Research Peptide Purchase: Waiver and Acknowledgment</h6>
+                <h6 className="text-lg !font-medium text-foreground">DOSEVANA LLC – RESEARCH PEPTIDE PURCHASE: WAIVER & ACKNOWLEDGMENT</h6>
 
-                <h6 className="text-lg !font-medium text-foreground">
-                  PLEASE READ THIS DOCUMENT CAREFULLY AND IN ITS ENTIRETY BEFORE PROCEEDING WITH YOUR PURCHASE. THIS IS A LEGALLY BINDING AGREEMENT.
-                </h6>
                 <p className="text-medium text-lg">
-                  By clicking "I Agree" or by proceeding with your purchase, you, the "Purchaser," acknowledge that you have read, understood, and agree to be bound by all terms
-                  and conditions set forth in this Waiver and Acknowledgment.
+                  PLEASE READ THIS AGREEMENT CAREFULLY BEFORE PROCEEDING. This Waiver and Acknowledgment (“Agreement”) is a legally binding document between you (“Purchaser”) and
+                  Dosevana LLC (“the Company”). By clicking “I Agree” or proceeding with your purchase, you confirm that you have read, understood, and agree to all terms below.
                 </p>
 
-                <h6 className="text-lg !font-medium text-foreground">1. Nature of Product - Research Use Only:</h6>
+                <h6 className="text-lg !font-medium text-foreground">1. Nature of Products – Research Use Only</h6>
+                <div className="text-medium text-lg">
+                  All peptide products sold by Dosevana LLC are research-grade materials intended exclusively for laboratory research purposes and in vitro use only. They are NOT
+                  approved by the U.S. Food and Drug Administration (FDA) for:
+                  <ul className="!list-disc list-inside">
+                    <li>Human consumption</li>
+                    <li>Animal consumption</li>
+                    <li>Medical treatment</li>
+                    <li>Diagnostic purposes</li>
+                    <li>Dietary supplementation</li>
+                  </ul>
+                  These products are not medications and should not be used to treat, cure, prevent, or diagnose any disease or medical condition.
+                </div>
+
+                <h6 className="text-lg !font-medium text-foreground">2. Professional Oversight Acknowledgment</h6>
                 <p className="text-medium text-lg">
-                  The product(s) you are purchasing from [Your Website Name] (hereinafter "the Company") are{" "}
-                  <strong>research-grade peptides intended EXCLUSIVELY FOR LABORATORY RESEARCH PURPOSES AND IN VITRO (NON-HUMAN/NON-ANIMAL) USE ONLY.</strong> These products are{" "}
-                  <strong>NOT</strong> approved by the Food and Drug Administration (FDA) for human or animal consumption, therapeutic use, diagnostic use, or any other
-                  application. They are NOT drugs, medications, or dietary supplements.
-                </p>
-                <h6 className="text-lg !font-medium text-foreground">2. Doctor Use – Professional Oversight Acknowledgment:</h6>
-                <p className="text-medium text-lg">
-                  You acknowledge and affirm that the phrase "doctor use" in the product description indicates that these peptides are intended for use under the direct supervision
-                  and guidance of a qualified and licensed medical professional for research purposes within a controlled, professional setting. This terminology does not imply
-                  that the product is a medication for human treatment, but rather underscores the need for expert handling and understanding of its properties.{" "}
-                  <strong>
-                    You are solely responsible for ensuring that any individual who handles or utilizes these products possesses the necessary medical or scientific qualifications
-                    and licenses.
-                  </strong>
+                  References to “doctor use” or “clinical handling” in product descriptions mean that peptides are to be handled in controlled, professional environments by
+                  qualified individuals with proper medical or scientific training. This language does not imply approval for human treatment. You agree to ensure that anyone
+                  handling these materials is appropriately licensed and qualified.
                 </p>
 
-                <h6 className="text-lg !font-medium text-foreground">3. No Medical Advice; No Therapeutic Claims:</h6>
+                <h6 className="text-lg !font-medium text-foreground">3. No Medical Advice or Therapeutic Claims</h6>
+                <div className="text-medium text-lg">
+                  <ul className="!list-disc list-inside">
+                    <li>Dosevana LLC does not provide medical advice, diagnosis, or treatment in relation to research peptides.</li>
+                    <li>Any information on our website—including articles, product descriptions, or testimonials—is for informational and educational purposes only.</li>
+                    <li>No claims are made about the safety, effectiveness, or suitability of these products for human or animal use.</li>
+                  </ul>
+                </div>
+
+                <h6 className="text-lg !font-medium text-foreground">4. Assumption of Risk</h6>
                 <p className="text-medium text-lg">
-                  The Company, its owners, employees, and affiliates <strong>DO NOT</strong> provide medical advice, diagnosis, or treatment. Any information provided on this
-                  website, including product descriptions, articles, or testimonials, is for informational purposes only and is <strong>NOT</strong> intended as a substitute for
-                  professional medical advice, diagnosis, or treatment.{" "}
-                  <strong>
-                    No claims are made or implied regarding the safety, efficacy, or suitability of these products for human or animal use, nor for the treatment, prevention, or
-                    cure of any disease or medical condition.
-                  </strong>
+                  You acknowledge that handling and storing research peptides carries inherent risks, including but not limited to unknown side effects, adverse reactions, and
+                  potential hazards requiring specialized handling and disposal. By purchasing, you voluntarily assume full responsibility for all risks associated with possession,
+                  handling, and any use of the products.
                 </p>
 
-                <h6 className="text-lg !font-medium text-foreground">4. Assumption of Risk:</h6>
+                <h6 className="text-lg !font-medium text-foreground">5. Indemnification</h6>
                 <p className="text-medium text-lg">
-                  You understand and acknowledge that the use of research-grade chemicals and peptides carries inherent risks, including but not limited to, potential for adverse
-                  reactions, unknown effects, and the need for specialized handling and disposal. You voluntarily and knowingly assume all risks associated with the possession,
-                  handling, and use of the purchased product(s), including any and all risks of injury, illness, or damage, whether foreseen or unforeseen, arising from or related
-                  to the product(s).
+                  You agree to indemnify, defend, and hold harmless Dosevana, its affiliates, officers, employees, partners, and distributors from any and all claims, damages,
+                  liabilities, or expenses arising from:
+                </p>
+                <div className="text-medium text-lg">
+                  <ul className="!list-disc list-inside">
+                    <li>Your purchase, possession, handling, or use of peptides.</li>
+                    <li>Any violation of this Agreement.</li>
+                    <li>Failure to comply with applicable laws or safety protocols.</li>
+                    <li>Third-party claims related to your actions.</li>
+                  </ul>
+                </div>
+
+                <h6 className="text-lg !font-medium text-foreground">6. Release of Liability</h6>
+                <p className="text-medium text-lg">
+                  You irrevocably release and discharge Dosevana LLC and its affiliates from all liability—whether known or unknown—arising from or related to your purchase,
+                  possession, or handling of peptides.
                 </p>
 
-                <h6 className="text-lg !font-medium text-foreground">5. Indemnification and Hold Harmless:</h6>
+                <h6 className="text-lg !font-medium text-foreground">7. Legal Compliance</h6>
+                <div className="text-medium text-lg">
+                  You represent and warrant that:
+                  <ul className="!list-disc list-inside">
+                    <li>You are at least 18 years of age (or the legal age of majority in your jurisdiction).</li>
+                    <li>You will comply with all applicable federal, state, and local laws regarding purchase, handling, and research use of peptides.</li>
+                    <li>You are solely responsible for ensuring lawful use of these products.</li>
+                  </ul>
+                </div>
+
+                <h6 className="text-lg !font-medium text-foreground">8. No Unauthorized Resale or Distribution</h6>
                 <p className="text-medium text-lg">
-                  To the fullest extent permitted by law, you agree to indemnify, defend, and hold harmless the Company, its officers, directors, employees, agents, distributors,
-                  and affiliates from and against any and all claims, liabilities, damages, losses, costs, and expenses (including reasonable attorneys' fees) arising out of or in
-                  any way connected with: a. Your purchase, possession, handling, or use of the product(s). b. Your breach of any of the terms and conditions of this Waiver and
-                  Acknowledgment. c. Your failure to comply with any applicable laws, regulations, or industry standards related to the research and handling of the product(s). d.
-                  Any third-party claims alleging injury, damage, or loss resulting from your actions or omissions related to the product(s).
+                  You agree not to resell, distribute, or transfer these products for any purpose other than legitimate laboratory research. Any resale for human or animal use is
+                  strictly prohibited.
                 </p>
 
-                <h6 className="text-lg !font-medium text-foreground">6. Release of Liability:</h6>
+                <h6 className="text-lg !font-medium text-foreground">9. Severability</h6>
+                <p className="text-medium text-lg">If any portion of this Agreement is deemed unenforceable, the remaining provisions will remain valid and binding.</p>
+
+                <h6 className="text-lg !font-medium text-foreground">10. Governing Law</h6>
                 <p className="text-medium text-lg">
-                  You hereby irrevocably and unconditionally release, waive, and forever discharge the Company, its officers, directors, employees, agents, distributors, and
-                  affiliates from any and all claims, demands, liabilities, actions, causes of action, and expenses of any nature whatsoever, whether in law or equity, known or
-                  unknown, foreseen or unforeseen, which you now have or may hereafter have, arising from or in any way related to your purchase, possession, handling, or use of
-                  the product(s).
+                  This Agreement is governed by the laws of the State of Texas, USA, without regard to conflict of law principles. Any disputes must be resolved in the courts of
+                  Texas, to which you consent to jurisdiction.
                 </p>
 
-                <h6 className="text-lg !font-medium text-foreground">7. Compliance with Laws and Regulations:</h6>
-                <p className="text-medium text-lg">
-                  You represent and warrant that you are at least 18 years of age (or the age of majority in your jurisdiction) and that you will comply with all applicable local,
-                  state, federal, and international laws, regulations, and ordinances regarding the purchase, possession, handling, and use of these research products. You are
-                  solely responsible for ensuring that your activities involving these products are conducted in a legal and safe manner.
+                <h6 className="text-lg !font-medium text-foreground">11. Entire Agreement</h6>
+                <p className="text-medium text-lg pb-8">
+                  This Waiver & Acknowledgment, together with Dosevana’s Terms of Service and Privacy Policy, constitutes the entire agreement governing your purchase.
                 </p>
 
-                <h6 className="text-lg !font-medium text-foreground">8. No Resale for Unauthorized Purposes:</h6>
-                <p className="text-medium text-lg">
-                  You agree that you will <strong>NOT</strong> resell, distribute, or transfer these products to any third party for purposes other than legitimate, authorized
-                  laboratory research, and specifically NOT for human consumption, therapeutic use, or any other use not expressly permitted by law and this agreement.
-                </p>
-
-                <h6 className="text-lg !font-medium text-foreground">9. Severability:</h6>
-                <p className="text-medium text-lg">
-                  If any provision of this Waiver and Acknowledgment is found to be invalid, illegal, or unenforceable, the remaining provisions shall remain in full force and
-                  effect.
-                </p>
-
-                <h6 className="text-lg !font-medium text-foreground">10. Governing Law and Jurisdiction:</h6>
-                <p className="text-medium text-lg">
-                  This Waiver and Acknowledgment shall be governed by and construed in accordance with the laws of the State of [Your State, e.g., Delaware], without regard to its
-                  conflict of laws principles. Any dispute arising out of or relating to this Waiver and Acknowledgment or your purchase shall be exclusively brought in the federal
-                  or state courts located in [Your County/City, e.g., Wilmington, Delaware], and you hereby consent to the personal jurisdiction of such courts.
-                </p>
-
-                <h6 className="text-lg !font-medium text-foreground">11. Entire Agreement:</h6>
-                <p className="text-medium text-lg">
-                  This Waiver and Acknowledgment, together with the Company's Terms of Service and Privacy Policy, constitutes the entire agreement between you and the Company
-                  regarding your purchase of these research peptides and supersedes all prior or contemporaneous understandings and agreements, whether written or oral.
-                </p>
-
-                <h6 className="text-lg !font-medium text-foreground">
-                  BY CLICKING "I AGREE" BELOW, YOU ARE CONFIRMING THAT YOU HAVE READ, UNDERSTOOD, AND VOLUNTARILY AGREE TO ALL OF THE TERMS AND CONDITIONS SET FORTH IN THIS WAIVER
-                  AND ACKNOWLEDGMENT.
-                </h6>
+                <h6 className="text-lg !font-medium text-foreground">BY CLICKING “I AGREE,” YOU CONFIRM THAT YOU HAVE READ, UNDERSTOOD, AND VOLUNTARILY ACCEPT ALL TERMS.</h6>
               </>
             ) : (
               ""
@@ -323,24 +307,56 @@ const Acknowledgement = ({ onNext, onBack, defaultValues, patientData, hasPeptid
 
             <div className="text-medium text-lg space-y-7">
               <div>
-                By proceeding with this purchase, I confirm that I have read, understood, and agree to the Terms & Conditions governing the use of GLP-1 medications and related
-                products offered by Thrivewell.
+                By proceeding with this purchase, I confirm that I have read, understood, and agree to the Terms & Conditions governing the use of all treatments and related
+                products offered by <strong>Dosevana LLC</strong>, including GLP-1 medications, peptides, testosterone therapy, hair growth solutions, and sexual health products.
               </div>
               <div>
                 I acknowledge that:
                 <ul className="!list-disc list-inside">
-                  <li>I have completed the required medical quiz and intake form truthfully to the best of my knowledge.</li>
-                  <li>I understand that my treatment is subject to provider review and may be declined based on medical eligibility.</li>
-                  <li>I agree that these products are not a replacement for professional medical advice and will be used under appropriate guidance.</li>
+                  <>
+                    <li>I have completed the required medical quiz and intake form truthfully and accurately to the best of my knowledge.</li>
+                    <li>
+                      I understand that my eligibility for treatment is subject to review and approval by a licensed provider, and my order may be declined if I do not meet medical
+                      requirements.
+                    </li>
+                    <li>
+                      I agree that these products and treatments are not substitutes for comprehensive medical advice and will only be used under appropriate medical supervision
+                      and guidance.
+                    </li>
+                    <li>I accept that treatment outcomes may vary based on individual health factors, and no specific results are guaranteed.</li>
+                  </>
                 </ul>
               </div>
             </div>
 
             <div className="mt-3">
               <h6 className="text-lg !font-medium text-foreground">Digital Signature</h6>
-              <div className="lg:w-1/2 border-2 border-dashed border-gray-300 rounded-lg p-2 relative mt-3">
+              {getValues("signature") && signatureImage ? (
+                <div className="lg:w-1/2 h-[148px] border-2 border-dashed border-gray-300 rounded-lg p-2 relative mt-3">
+                  <div className="p-5 inline-flex size-full">
+                    <img
+                      src={signatureImage}
+                      alt="signature"
+                      className="size-full"
+                    />
+                  </div>
+                  <Button
+                    onClick={clearSignature}
+                    variant="transparent"
+                    className="absolute bottom-2 right-2 text-blue-600 text-sm underline"
+                  >
+                    Change Signature
+                  </Button>
+                </div>
+              ) : (
+                <></>
+              )}
+
+              <div className={`lg:w-1/2 border-2 border-dashed border-gray-300 rounded-lg p-2 relative mt-3 ${getValues("signature") && signatureImage ? "hidden" : ""}`}>
                 <SignatureCanvas
-                  ref={sigCanvas}
+                  ref={(ref) => {
+                    if (ref) sigCanvas.current = ref;
+                  }}
                   penColor="#175BCC"
                   maxWidth={1.5}
                   onEnd={() => saveSignature()}
@@ -357,6 +373,16 @@ const Acknowledgement = ({ onNext, onBack, defaultValues, patientData, hasPeptid
                   Clear Signature
                 </Button>
               </div>
+              {errors?.signature?.message && (
+                <Text
+                  c="red"
+                  size="sm"
+                  className="mt-2"
+                >
+                  {errors?.signature?.message?.toString() || ""}
+                </Text>
+              )}
+
               <p className="text-lg mt-3">
                 Full Name: <span className="text-foreground">{getFullName(patientData?.patient?.first_name, patientData?.patient?.last_name)}</span>
               </p>
@@ -368,14 +394,25 @@ const Acknowledgement = ({ onNext, onBack, defaultValues, patientData, hasPeptid
         </div>
       </div>
       <div className="flex justify-between mt-6">
-        <div className="flex gap-3 ms-auto">
-          <Button
-            w={256}
-            onClick={handleSubmit(onNext)}
-          >
-            Next
-          </Button>
-        </div>
+        <Button
+          color="grey.4"
+          c="foreground"
+          variant="outline"
+          onClick={onBack}
+          classNames={{
+            root: "border-primary",
+            label: "text-primary",
+          }}
+          className="md:w-[200px] w-[150px]"
+        >
+          Back
+        </Button>
+        <Button
+          className="md:w-[200px] w-[150px]"
+          onClick={handleSubmit(onNext)}
+        >
+          Next
+        </Button>
       </div>
     </>
   );

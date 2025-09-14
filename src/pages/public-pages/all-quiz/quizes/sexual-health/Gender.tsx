@@ -1,0 +1,113 @@
+"use client";
+
+import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
+import { selectedCategoryAtom } from "@/common/states/category.atom";
+import { selectedGenderAtom } from "@/common/states/gender.atom";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Button, Radio, Text } from "@mantine/core";
+import { useAtom } from "jotai";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+
+export const GenderSexualHealthSchema = yup.object({
+  genderSexualHealth: yup.string().required("Please select your gender for sexual health"),
+});
+
+export type GenderSexualHealthSchemaType = yup.InferType<typeof GenderSexualHealthSchema>;
+
+interface IGenderSexualHealthProps {
+  onNext: (data: GenderSexualHealthSchemaType) => void;
+  onBack: () => void;
+  defaultValues?: GenderSexualHealthSchemaType;
+}
+
+export default function GenderSexualHealth({ onNext, onBack, defaultValues }: IGenderSexualHealthProps) {
+  const [selectedCategory, setSelectedCategory] = useAtom(selectedCategoryAtom);
+  const [selectedGender, setSelectedGender] = useAtom(selectedGenderAtom);
+
+  const {
+    handleSubmit,
+    setValue,
+    watch,
+    clearErrors,
+    formState: { errors },
+  } = useForm<GenderSexualHealthSchemaType>({
+    defaultValues: {
+      genderSexualHealth: defaultValues?.genderSexualHealth || "",
+    },
+    resolver: yupResolver(GenderSexualHealthSchema),
+  });
+
+  const genderSexualHealth = watch("genderSexualHealth");
+  const options = ["Male", "Female"];
+
+  const handleSelect = (value: string) => {
+    if (value === "Male") {
+      setSelectedCategory(["Sexual Health (Male)"]);
+    } else if (value === "Female") {
+      setSelectedCategory(["Sexual Health (Female)"]);
+    }
+
+    setValue("genderSexualHealth", value, { shouldValidate: true });
+    clearErrors("genderSexualHealth");
+    setSelectedGender(value);
+  };
+
+  return (
+    <div className="px-4 pt-4 md:pt-10 lg:pt-16">
+      <h2 className="heading-text text-foreground uppercase text-center animate-title">Gender</h2>
+
+      <div className="card-common-width-lg mx-auto mt-10 animate-content">
+        <form
+          id="genderSexualHealthForm"
+          onSubmit={handleSubmit(onNext)}
+          className="w-full"
+        >
+          <Radio.Group
+            value={genderSexualHealth}
+            onChange={handleSelect}
+            className="mt-6 w-full"
+          >
+            <div className="grid md:grid-cols-2 w-full gap-5">
+              {options.map((option) => (
+                <Radio
+                  key={option}
+                  value={option}
+                  classNames={getBaseWebRadios(genderSexualHealth, option)}
+                  label={
+                    <div className="relative text-center">
+                      <span className="text-foreground font-poppins">{option}</span>
+                      {genderSexualHealth === option && (
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
+                          <i className="icon-tick text-sm/none"></i>
+                        </span>
+                      )}
+                    </div>
+                  }
+                />
+              ))}
+            </div>
+          </Radio.Group>
+          {errors.genderSexualHealth && <Text className="text-red-500 text-sm mt-5 text-center">Please select your gender.</Text>}
+        </form>
+      </div>
+
+      <div className="flex justify-center md:gap-6 gap-3 md:pt-8 pt-5 animate-btns">
+        <Button
+          variant="outline"
+          className="w-[200px]"
+          onClick={onBack}
+        >
+          Back
+        </Button>
+        <Button
+          type="submit"
+          className="w-[200px]"
+          form="genderSexualHealthForm"
+        >
+          Next
+        </Button>
+      </div>
+    </div>
+  );
+}

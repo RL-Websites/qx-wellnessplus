@@ -16,9 +16,10 @@ interface StepFifteenProps {
   onNext: (data: step15SchemaType) => void;
   onBack: () => void;
   defaultValues?: step15SchemaType;
+  isLoading?: boolean;
 }
 
-const StepFifteen = ({ onNext, onBack, defaultValues }: StepFifteenProps) => {
+const StepFifteen = ({ onNext, onBack, defaultValues, isLoading = false }: StepFifteenProps) => {
   const {
     handleSubmit,
     setValue,
@@ -51,10 +52,12 @@ const StepFifteen = ({ onNext, onBack, defaultValues }: StepFifteenProps) => {
         value={cpapWithDiagonSedSleep}
         onChange={(val) => handleSelect("cpapWithDiagonSedSleep", val)}
         label="Are you on CPAP with diagnosed Sleep Apnea?"
-        error={getErrorMessage(errors?.cpapWithDiagonSedSleep)}
-        classNames={{ label: "!text-3xl pb-2" }}
+        classNames={{
+          root: "!block",
+          label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+        }}
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="grid md:grid-cols-2 gap-5">
           {["Yes", "No", "I am not using a CPAP, but I have been diagnosed with Sleep Apnea"].map((option) => (
             <Radio
               key={option}
@@ -64,7 +67,7 @@ const StepFifteen = ({ onNext, onBack, defaultValues }: StepFifteenProps) => {
                 <div className="relative text-center">
                   <span className="text-foreground font-poppins">{option}</span>
                   {cpapWithDiagonSedSleep === option && (
-                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                       <i className="icon-tick text-sm/none"></i>
                     </span>
                   )}
@@ -73,16 +76,19 @@ const StepFifteen = ({ onNext, onBack, defaultValues }: StepFifteenProps) => {
             />
           ))}
         </div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.cpapWithDiagonSedSleep)}</p>
       </Radio.Group>
 
       <Radio.Group
         value={haveBariantricSurgery}
         onChange={(val) => handleSelect("haveBariantricSurgery", val)}
         label="Have you had bariatric surgery within the last 12 months?"
-        error={getErrorMessage(errors?.haveBariantricSurgery)}
-        classNames={{ label: "!text-3xl pb-2" }}
+        classNames={{
+          root: "!block",
+          label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+        }}
       >
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid sm:grid-cols-2 gap-5">
           {["Yes", "No"].map((option) => (
             <Radio
               key={option}
@@ -92,7 +98,7 @@ const StepFifteen = ({ onNext, onBack, defaultValues }: StepFifteenProps) => {
                 <div className="relative text-center">
                   <span className="text-foreground font-poppins">{option}</span>
                   {haveBariantricSurgery === option && (
-                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                       <i className="icon-tick text-sm/none"></i>
                     </span>
                   )}
@@ -101,6 +107,7 @@ const StepFifteen = ({ onNext, onBack, defaultValues }: StepFifteenProps) => {
             />
           ))}
         </div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.haveBariantricSurgery)}</p>
       </Radio.Group>
       <div className="flex justify-center gap-6 pt-4">
         <Button
@@ -114,6 +121,7 @@ const StepFifteen = ({ onNext, onBack, defaultValues }: StepFifteenProps) => {
           type="submit"
           className="w-[200px]"
           form="step15Form"
+          loading={isLoading}
         >
           Next
         </Button>

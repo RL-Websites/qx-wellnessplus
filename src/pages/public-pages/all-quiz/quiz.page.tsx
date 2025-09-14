@@ -1,6 +1,6 @@
 import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { useWindowScroll } from "@mantine/hooks";
-import { useAtomValue } from "jotai"; // ✅ useAtomValue for reading
+import { useAtom, useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
 import DateOfBirth from "./quizes/DateOfBirth";
 
@@ -16,40 +16,32 @@ import ScalpInfections from "./quizes/hair-growth/ScalpInfections";
 import { useNavigate } from "react-router-dom";
 import InEligibleUser from "../ineligible-user/ineligible-user.page";
 
-import BodyMetrics from "./quizes/common/BodyMetrics";
-import GenderSelection from "./quizes/common/GenderSelection";
-import PregnancyStatus from "./quizes/common/PregnancyStatus";
-import GenderHairGrowth from "./quizes/Gender";
+import { selectedGenderAtom } from "@/common/states/gender.atom";
+import { weightAtom } from "@/common/states/height.atom";
+import { dobAtom } from "@/common/states/user.atom";
+import { formatDate } from "@/utils/date.utils";
+import CurrentState from "./quizes/CurrentState";
+import GenderHairGrowth from "./quizes/hair-growth/Gender";
 import ScalpInfectionsTwo from "./quizes/hair-growth/ScalpInfectionsTwo";
 import ThyroidDisease from "./quizes/hair-growth/ThyroidDisease";
-import AlcoholConsumption from "./quizes/peptides-blends/AlcoholConsumption";
-import Cholesterol from "./quizes/peptides-blends/Cholesterol";
-import EndocrineAutoimmuneDisorders from "./quizes/peptides-blends/EndocrineAutoimmuneDisorders";
-import ExerciseFrequency from "./quizes/peptides-blends/ExerciseFrequency";
-import GallbladderHistory from "./quizes/peptides-blends/GallbladderHistory";
-import HealthHistory from "./quizes/peptides-blends/HealthHistory";
-import HormoneSensitiveCancer from "./quizes/peptides-blends/HormoneSensitiveCancer";
-import HormoneTherapy from "./quizes/peptides-blends/HormoneTherapy";
-import HypertensionMedication from "./quizes/peptides-blends/HypertensionMedication";
-import LastDosage from "./quizes/peptides-blends/LastDosage";
-import LifestyleCommitment from "./quizes/peptides-blends/LifestyleCommitment";
-import MedicalConditions from "./quizes/peptides-blends/MedicalConditions";
-import MedicationAllergies from "./quizes/peptides-blends/MedicationAllergies";
-import PeptidesTakenBefore from "./quizes/peptides-blends/PeptidesTakenBefore";
-import PeptideTherapyDuration from "./quizes/peptides-blends/PeptideTherapyDuration";
-import PeptideTherapyEffectiveness from "./quizes/peptides-blends/PeptideTherapyEffectiveness";
-import PhysicalActivityLevel from "./quizes/peptides-blends/PhysicalActivityLevel";
-import PrescriptionMedications from "./quizes/peptides-blends/PrescriptionMedications";
-import PrimaryGoalForPeptidesTherapy from "./quizes/peptides-blends/PrimaryGoalForPeptidesTherapy";
-import RecreationalDrugs from "./quizes/peptides-blends/RecreationalDrugs";
-import SideEffects from "./quizes/peptides-blends/SideEffects";
-import SleepApnea from "./quizes/peptides-blends/SleepApnea";
-import ThyroidCancerHistory from "./quizes/peptides-blends/ThyroidCancerHistory";
-import UsedPeptidesBefore from "./quizes/peptides-blends/UsedPeptidesBefore";
-import ScalpInfectionsTestosterone from "./quizes/testosterone/ScalpInfections";
+import Cancers from "./quizes/peptides-blends/new/Cancers";
+import CardiovascularDiseasePeptides from "./quizes/peptides-blends/new/CardiovascularDisease";
+import GenderPeptides from "./quizes/peptides-blends/new/Gender";
+import HSCancers from "./quizes/peptides-blends/new/HSCancers";
+import KidneyDisease from "./quizes/peptides-blends/new/KidneyDisease";
+import PregnancyBreastfeeding from "./quizes/peptides-blends/new/PregnancyBreastfeeding";
+import ThyroidLiverKidneyDisease from "./quizes/peptides-blends/new/ThyroidLiverKidneyDisease";
+import CardiovascularDisease from "./quizes/sexual-health/CardiovascularDisease";
+import GenderSexualHealth from "./quizes/sexual-health/Gender";
+import Impairment from "./quizes/sexual-health/Impairment";
+import Nitroglycerin from "./quizes/sexual-health/Nitroglycerin";
+import ActiveCancerTreatment from "./quizes/testosterone/ActiveCancerTreatment";
+import CancerHistory from "./quizes/testosterone/CancerHistory";
+import UncontrolledHeartOrSleepApnea from "./quizes/testosterone/UncontrolledHeartOrSleepApnea";
 import WeightLossBreastFeeding from "./quizes/weight-loss/BreastFeeding";
 import CustomerStatus from "./quizes/weight-loss/CustomerStatus";
 import DiseaseList from "./quizes/weight-loss/DiseaseList";
+import GenderWeightLoss from "./quizes/weight-loss/Gender";
 import GlpOneMedication from "./quizes/weight-loss/GlpOneMedication";
 import WeightLossHeight from "./quizes/weight-loss/Height";
 import InjectionDate from "./quizes/weight-loss/InjectionDate";
@@ -65,37 +57,45 @@ const QuizPage = () => {
   const [totalStep, setTotalStep] = useState(20);
   const [, scrollTo] = useWindowScroll();
   const selectedCategory = useAtomValue(selectedCategoryAtom);
+  const [selectedGender, setSelectedGender] = useAtom(selectedGenderAtom);
   const [eligibleComponent, setEligibleComponent] = useState<React.ReactNode | null>(null);
+  const [isHairGrowthMale, setHairGrowthMale] = useState(false);
+  const [isHairGrowthFemale, setHairGrowthFemale] = useState(false);
+  const [sexualHealthMale, setSexualHealthMale] = useState(false);
+  const [sexualHealthFemale, setSexualHealthFemale] = useState(false);
+  const [skipInjectionDate, setSkipInjectionDate] = useState(false);
+  const [globalWeight, setGlobalWeight] = useAtom(weightAtom);
+  const [globalDob, setGlobalDob] = useAtom(dobAtom);
 
   const navigate = useNavigate();
 
-  // const lastStepByCategory = (category: string[]) => {
-  //   switch (category[0]) {
-  //     case "Hair Growth":
-  //       return 7;
-  //     case "Hair Growth (male)":
-  //       return 7;
-  //     case "Hair Growth (female)":
-  //       return 7;
-  //     case "Testosterone":
-  //       return 4;
-  //     case "Weight Loss":
-  //       return 3;
-  //     case "Peptides Blends":
-  //       return 5;
-  //     case "Single Peptides":
-  //       return 5;
-  //     default:
-  //       return defaultLastStep;
-  //   }
-  // };
+  const lastStepByCategory = (category: string[]) => {
+    switch (category[0]) {
+      case "Hair Growth":
+        return 7;
+      case "Hair Growth (male)":
+        return 7;
+      case "Hair Growth (female)":
+        return 7;
+      case "Testosterone":
+        return 4;
+      case "Weight Loss":
+        return 3;
+      case "Peptides Blends":
+        return 5;
+      case "Single Peptides":
+        return 5;
+      default:
+        return defaultLastStep;
+    }
+  };
 
-  // const defaultLastStep = 2;
+  const defaultLastStep = 2;
 
-  // useEffect(() => {
-  //   const step = lastStepByCategory(selectedCategory || []);
-  //   setLastStep(step);
-  // }, [selectedCategory]);
+  useEffect(() => {
+    const step = lastStepByCategory(selectedCategory || []);
+    setLastStep(step);
+  }, [selectedCategory]);
 
   const handleFinalSubmit = (data: any) => {
     const tempData = { ...formData, ...data };
@@ -113,8 +113,13 @@ const QuizPage = () => {
 
   const handleBack = () => {
     if (activeStep > 1) {
-      setActiveStep((prev) => prev - 1);
+      if (skipInjectionDate && activeStep === 8 + genderOffset) {
+        setActiveStep((prev) => prev - 2);
+      } else {
+        setActiveStep((prev) => prev - 1);
+      }
     }
+
     scrollTo({ y: 0 });
   };
 
@@ -132,6 +137,22 @@ const QuizPage = () => {
     if (selectedCategory && (selectedCategory?.includes("Peptides Blends") || selectedCategory?.includes("Single Blends"))) {
       setTotalStep(30);
     }
+    if (selectedCategory && selectedCategory.includes("Hair Growth (Male)")) {
+      setHairGrowthMale(true);
+      setHairGrowthFemale(false);
+    }
+    if (selectedCategory && selectedCategory.includes("Hair Growth (Female)")) {
+      setHairGrowthFemale(true);
+      setHairGrowthMale(false);
+    }
+    if (selectedCategory && selectedCategory.includes("Sexual Health (Male)")) {
+      setSexualHealthMale(true);
+      setSexualHealthFemale(false);
+    }
+    if (selectedCategory && selectedCategory.includes("Sexual Health (Female)")) {
+      setSexualHealthFemale(true);
+      setSexualHealthMale(false);
+    }
   }, [selectedCategory]);
 
   useEffect(() => {
@@ -144,12 +165,15 @@ const QuizPage = () => {
     <>
       {activeStep === 1 && (
         <DateOfBirth
-          onNext={handleNext}
+          onNext={(data) => {
+            setGlobalDob(formatDate(data?.date_of_birth, "MM-DD-YYYY"));
+            handleNext(data);
+          }}
           onBack={handleBack}
           defaultValues={formData}
         />
       )}
-      {selectedCategory?.includes("Hair Growth") && (
+      {(selectedCategory?.includes("Hair Growth") || selectedCategory?.includes("Hair Growth (Male)") || selectedCategory?.includes("Hair Growth (Female)")) && (
         <>
           {activeStep === 2 && (
             <GenderHairGrowth
@@ -161,8 +185,27 @@ const QuizPage = () => {
         </>
       )}
 
+      {(selectedCategory?.includes("Sexual Health") || selectedCategory?.includes("Sexual Health (Male)") || selectedCategory?.includes("Sexual Health (Female)")) && (
+        <>
+          {activeStep === 2 && (
+            <GenderSexualHealth
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+        </>
+      )}
+
       {selectedCategory?.includes("Weight Loss") && (
         <>
+          {activeStep === 2 && (
+            <GenderWeightLoss
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
           {activeStep === 3 && (
             <CustomerStatus
               onNext={(data) => {
@@ -180,7 +223,10 @@ const QuizPage = () => {
 
           {activeStep === 4 && (
             <WeightLossWeight
-              onNext={handleNext}
+              onNext={(data) => {
+                setGlobalWeight(data?.weightlossweight);
+                handleNext(data);
+              }}
               onBack={handleBack}
               defaultValues={formData}
             />
@@ -202,16 +248,30 @@ const QuizPage = () => {
             />
           )}
 
-          {formData.genderWeightLoss === "Female" && activeStep === 6 && (
+          {selectedGender === "Female" && activeStep === 6 && (
             <WeightLossPregnant
-              onNext={handleNext}
+              onNext={(data) => {
+                setFormData((prev) => ({ ...prev, ...data }));
+                if (data.weightLossPregnant == "Yes") {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(data);
+                }
+              }}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
-          {formData.genderWeightLoss === "Female" && activeStep === 7 && (
+          {selectedGender === "Female" && activeStep === 7 && (
             <WeightLossBreastFeeding
-              onNext={handleNext}
+              onNext={(data) => {
+                setFormData((prev) => ({ ...prev, ...data }));
+                if (data.breastFeeding == "Yes") {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(data);
+                }
+              }}
               onBack={handleBack}
               defaultValues={formData}
             />
@@ -219,13 +279,21 @@ const QuizPage = () => {
 
           {activeStep === 6 + genderOffset && (
             <GlpOneMedication
-              onNext={handleNext}
+              onNext={(data) => {
+                handleNext(data);
+                if (data.takesGlpOneMedication === "No") {
+                  setSkipInjectionDate(true);
+                  setActiveStep((prev) => prev + 1);
+                } else {
+                  setSkipInjectionDate(false);
+                }
+              }}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
 
-          {activeStep === 7 + genderOffset && (
+          {!skipInjectionDate && activeStep === 7 + genderOffset && (
             <InjectionDate
               onNext={handleNext}
               onBack={handleBack}
@@ -253,13 +321,21 @@ const QuizPage = () => {
             <DiseaseList
               onNext={(data) => {
                 const { eligible, ...rest } = data;
+                console.log(eligible);
                 setFormData((prev) => ({ ...prev, ...rest }));
                 if (eligible) {
-                  handleFinalSubmit(rest);
+                  handleNext(rest);
                 } else {
                   setEligibleComponent(<InEligibleUser />);
                 }
               }}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {activeStep === 11 + genderOffset && (
+            <CurrentState
+              onNext={(data) => handleFinalSubmit(data)}
               onBack={handleBack}
               defaultValues={formData}
             />
@@ -269,87 +345,333 @@ const QuizPage = () => {
 
       {selectedCategory?.includes("Testosterone") && (
         <>
+          {activeStep === 2 && (
+            <CancerHistory
+              onNext={(data) => {
+                setFormData((prev) => ({ ...prev, ...data }));
+                if (data.cancerHistory === "Yes") {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(data);
+                }
+              }}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
           {activeStep === 3 && (
-            <ScalpInfectionsTestosterone
-              onNext={handleFinalSubmit}
+            <UncontrolledHeartOrSleepApnea
+              onNext={(data) => {
+                setFormData((prev) => ({ ...prev, ...data }));
+                if (data.heartOrSleepApnea === "Yes") {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(data);
+                }
+              }}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {activeStep === 4 && (
+            <ActiveCancerTreatment
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+                setFormData((prev) => ({ ...prev, ...rest }));
+                if (data.activeCancerTreatment === "Yes") {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(data);
+                }
+              }}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {activeStep === 5 && (
+            <CurrentState
+              onNext={(data) => handleFinalSubmit(data)}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
         </>
       )}
-      {selectedCategory?.includes("Hair Growth (Male)") && (
+
+      {sexualHealthMale && (
+        <>
+          {activeStep === 3 && (
+            <CardiovascularDisease
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+                setFormData((prev) => ({ ...prev, ...rest }));
+
+                if (eligible) {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(rest);
+                }
+              }}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {activeStep === 4 && (
+            <Nitroglycerin
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+                setFormData((prev) => ({ ...prev, ...rest }));
+
+                if (eligible) {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(rest);
+                }
+              }}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {activeStep === 5 && (
+            <Impairment
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+                setFormData((prev) => ({ ...prev, ...rest }));
+                if (data.impairment === "Yes") {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(data);
+                }
+              }}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {activeStep === 6 && (
+            <CurrentState
+              onNext={(data) => handleFinalSubmit(data)}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+        </>
+      )}
+      {sexualHealthFemale && (
+        <>
+          {activeStep === 3 && (
+            <CardiovascularDisease
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+                setFormData((prev) => ({ ...prev, ...rest }));
+
+                if (eligible) {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(rest);
+                }
+              }}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {activeStep === 4 && (
+            <Nitroglycerin
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+                setFormData((prev) => ({ ...prev, ...rest }));
+
+                if (eligible) {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(rest);
+                }
+              }}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {activeStep === 5 && (
+            <Impairment
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+                setFormData((prev) => ({ ...prev, ...rest }));
+                if (data.impairment === "Yes") {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(data);
+                }
+              }}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {activeStep === 6 && (
+            <CurrentState
+              onNext={(data) => handleFinalSubmit(data)}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+        </>
+      )}
+      {isHairGrowthMale && (
         <>
           {activeStep === 3 && (
             <ScalpInfections
-              onNext={handleNext}
+              onNext={(data) => {
+                setFormData((prev) => ({ ...prev, ...data }));
+                if (data.scalpInfactions === "Yes") {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(data);
+                }
+              }}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
           {activeStep === 4 && (
             <AlopeciaAreata
-              onNext={handleNext}
+              onNext={(data) => {
+                setFormData((prev) => ({ ...prev, ...data }));
+                if (data.alopeciaAreata === "Yes") {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(data);
+                }
+              }}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
           {activeStep === 5 && (
             <MedicationTaking
-              onNext={handleNext}
+              onNext={(data) => {
+                setFormData((prev) => ({ ...prev, ...data }));
+                if (data.medicationTaking === "Yes") {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(data);
+                }
+              }}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
           {activeStep === 6 && (
             <ThyroidDisease
-              onNext={handleNext}
+              onNext={(data) => {
+                setFormData((prev) => ({ ...prev, ...data }));
+                if (data.thyroidDisease === "Yes") {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(data);
+                }
+              }}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
           {activeStep === 7 && (
             <Chemotherapy
-              onNext={handleFinalSubmit}
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+                setFormData((prev) => ({ ...prev, ...rest }));
+                if (data.chemotherapy === "Yes") {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(data);
+                }
+              }}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {activeStep === 8 && (
+            <CurrentState
+              onNext={(data) => handleFinalSubmit(data)}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
         </>
       )}
-      {selectedCategory?.includes("Hair Growth (Female)") && (
+      {isHairGrowthFemale && (
         <>
           {activeStep === 3 && (
             <PlanningPregnancy
-              onNext={handleNext}
+              onNext={(data) => {
+                setFormData((prev) => ({ ...prev, ...data }));
+                if (data.planningPregnancy === "Yes") {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(data);
+                }
+              }}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
           {activeStep === 4 && (
             <BreastFeeding
-              onNext={handleNext}
+              onNext={(data) => {
+                setFormData((prev) => ({ ...prev, ...data }));
+                if (data.breastFeeding === "Yes") {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(data);
+                }
+              }}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
           {activeStep === 5 && (
             <Pcos
-              onNext={handleNext}
+              onNext={(data) => {
+                setFormData((prev) => ({ ...prev, ...data }));
+                if (data.pcos === "Yes") {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(data);
+                }
+              }}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
           {activeStep === 6 && (
             <ScalpInfectionsTwo
-              onNext={handleNext}
+              onNext={(data) => {
+                setFormData((prev) => ({ ...prev, ...data }));
+                if (data.scalpInfactions === "Yes") {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(data);
+                }
+              }}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
           {activeStep === 7 && (
             <HairTreatment
-              onNext={handleFinalSubmit}
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+                setFormData((prev) => ({ ...prev, ...rest }));
+                if (data.hairTreatment === "Yes") {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(data);
+                }
+              }}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {activeStep === 8 && (
+            <CurrentState
+              onNext={(data) => handleFinalSubmit(data)}
               onBack={handleBack}
               defaultValues={formData}
             />
@@ -360,265 +682,127 @@ const QuizPage = () => {
       {(selectedCategory?.includes("Peptides Blends") || selectedCategory?.includes("Single Blends")) && (
         <>
           {activeStep === 2 && (
-            <GenderSelection
+            <GenderPeptides
               onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {selectedGender === "Male" && activeStep === 3 && (
+            <HSCancers
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+                setFormData((prev) => ({ ...prev, ...rest }));
+
+                if (eligible) {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(rest);
+                }
+              }}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {selectedGender === "Male" && activeStep === 4 && (
+            <CardiovascularDiseasePeptides
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+                setFormData((prev) => ({ ...prev, ...rest }));
+
+                if (eligible) {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(rest);
+                }
+              }}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
 
-          {activeStep === 3 && (
-            <CustomerStatus
-              onNext={handleNext}
+          {selectedGender === "Male" && activeStep === 5 && (
+            <KidneyDisease
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+
+                setFormData((prev) => ({ ...prev, ...rest }));
+                if (eligible) {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(rest);
+                }
+              }}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
 
-          {activeStep === 4 && (
-            <PrimaryGoalForPeptidesTherapy
-              onNext={handleNext}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-          {activeStep === 5 && (
-            <ExerciseFrequency
-              onNext={handleNext}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-          {activeStep === 6 && (
-            <LifestyleCommitment
-              onNext={handleNext}
+          {selectedGender === "Male" && activeStep === 6 && (
+            <CurrentState
+              onNext={(data) => handleFinalSubmit(data)}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
 
-          {activeStep === 7 && (
-            <PhysicalActivityLevel
-              onNext={handleNext}
+          {/* Female Gender */}
+          {selectedGender === "Female" && activeStep === 3 && (
+            <PregnancyBreastfeeding
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+                setFormData((prev) => ({ ...prev, ...rest }));
+
+                if (eligible) {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(rest);
+                }
+              }}
+              onBack={handleBack}
+              defaultValues={formData}
+            />
+          )}
+          {selectedGender === "Female" && activeStep === 4 && (
+            <Cancers
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
+                setFormData((prev) => ({ ...prev, ...rest }));
+
+                if (eligible) {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(rest);
+                }
+              }}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
 
-          {activeStep === 8 && (
-            <UsedPeptidesBefore
-              onNext={handleNext}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
+          {selectedGender === "Female" && activeStep === 5 && (
+            <ThyroidLiverKidneyDisease
+              onNext={(data) => {
+                const { eligible, ...rest } = data;
 
-          {activeStep === 9 && (
-            <RecreationalDrugs
-              onNext={handleNext}
+                setFormData((prev) => ({ ...prev, ...rest }));
+                if (eligible) {
+                  setEligibleComponent(<InEligibleUser />);
+                } else {
+                  handleNext(rest);
+                }
+              }}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
-
-          {activeStep === 10 && (
-            <AlcoholConsumption
-              onNext={handleNext}
+          {selectedGender === "Female" && activeStep === 6 && (
+            <CurrentState
+              onNext={(data) => handleFinalSubmit(data)}
               onBack={handleBack}
               defaultValues={formData}
             />
           )}
-
-          {activeStep === 11 && (
-            <HormoneSensitiveCancer
-              onNext={handleNext}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-
-          {activeStep === 12 && (
-            <EndocrineAutoimmuneDisorders
-              onNext={handleNext}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-
-          {activeStep === 13 && (
-            <HealthHistory
-              onNext={handleNext}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-
-          {activeStep === 14 && (
-            <MedicalConditions
-              onNext={handleNext}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-
-          {activeStep === 15 && (
-            <Cholesterol
-              onNext={handleNext}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-
-          {activeStep === 16 && (
-            <HypertensionMedication
-              onNext={handleNext}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-
-          {activeStep === 17 && (
-            <ThyroidDisease
-              onNext={handleNext}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-
-          {activeStep === 18 && (
-            <ThyroidCancerHistory
-              onNext={handleNext}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-
-          {activeStep === 19 && (
-            <GallbladderHistory
-              onNext={handleNext}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-
-          {activeStep === 20 && (
-            <>
-              {formData?.gender === "Male" && (
-                <PregnancyStatus
-                  onNext={handleNext}
-                  onBack={handleBack}
-                  defaultValues={formData}
-                />
-                // <MultipleEndocrineNeoplasia
-                //   onNext={handleNext}
-                //   onBack={handleBack}
-                //   defaultValues={formData}
-                // />
-              )}
-              {formData?.gender === "Female" && (
-                <PlanningPregnancy
-                  onNext={handleNext}
-                  onBack={handleBack}
-                  defaultValues={formData}
-                />
-              )}
-            </>
-          )}
-
-          {activeStep === 21 && (
-            <SleepApnea
-              onNext={handleNext}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-
-          {activeStep === 22 && (
-            <HormoneTherapy
-              onNext={handleNext}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-
-          {activeStep === 23 && (
-            <PrescriptionMedications
-              onNext={handleNext}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-
-          {activeStep === 24 && (
-            <MedicationAllergies
-              onNext={handleNext}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-
-          {activeStep === 25 && (
-            <PeptidesTakenBefore
-              onNext={handleNext}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-
-          {activeStep === 26 && (
-            <LastDosage
-              onNext={handleNext}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-
-          {activeStep === 27 && (
-            <PeptideTherapyDuration
-              onNext={handleNext}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-
-          {activeStep === 28 && (
-            <SideEffects
-              onNext={handleNext}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-
-          {activeStep === 29 && (
-            <PeptideTherapyEffectiveness
-              onNext={handleNext}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-
-          {activeStep === 30 && (
-            <BodyMetrics
-              onNext={handleFinalSubmit}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-
-          {/* {activeStep === 3 && (
-            <CustomerStatus
-              onNext={handleNext}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )}
-          {activeStep === 4 && (
-            <Pcos
-              onNext={handleFinalSubmit}
-              onBack={handleBack}
-              defaultValues={formData}
-            />
-          )} */}
         </>
       )}
     </>

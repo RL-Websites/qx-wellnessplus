@@ -41,11 +41,11 @@ const AgeWeightLoss = ({ onNext, onBack, defaultValues }: IAgeWeightLossProps) =
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <div className=" card-common-width mx-auto ">
-        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">What is your age for weight loss?</h2>
+        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground animate-title">What is your age for weight loss?</h2>
         <form
           id="ageWeightLossForm"
           onSubmit={handleSubmit(onNext)}
-          className="max-w-xl mx-auto space-y-6 card-common"
+          className="max-w-xl mx-auto space-y-6 card-common animate-content"
         >
           <div>
             <Input.Wrapper
@@ -64,7 +64,7 @@ const AgeWeightLoss = ({ onNext, onBack, defaultValues }: IAgeWeightLossProps) =
           </div>
         </form>
       </div>
-      <div className="flex justify-center gap-6 pt-8">
+      <div className="flex justify-center md:gap-6 gap-3 md:pt-8 pt-5 delay-[1400] duration-500 animate-fadeInUp">
         <Button
           variant="outline"
           className="w-[200px]"

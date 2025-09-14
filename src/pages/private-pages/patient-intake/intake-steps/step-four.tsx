@@ -96,8 +96,10 @@ const StepFour = ({ onNext, onBack, defaultValues }: StepFourProps) => {
           setValue("pastDiagOther", "");
         }}
         label="Have you been diagnosed with any eating disorders or have a history of disordered eating?"
-        error={getErrorMessage(errors?.anyEatingDisorder)}
-        classNames={{ label: "!text-3xl pb-2" }}
+        classNames={{
+          root: "w-full",
+          label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+        }}
       >
         <div className="grid grid-cols-1 gap-5">
           {anyEatingOptions.map((option) => (
@@ -109,7 +111,7 @@ const StepFour = ({ onNext, onBack, defaultValues }: StepFourProps) => {
                 <div className="relative text-center">
                   <span className="text-foreground font-poppins">{option}</span>
                   {anyEatingDisorder === option && (
-                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                       <i className="icon-tick text-sm/none"></i>
                     </span>
                   )}
@@ -118,6 +120,7 @@ const StepFour = ({ onNext, onBack, defaultValues }: StepFourProps) => {
             />
           ))}
         </div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.anyEatingDisorder)}</p>
       </Radio.Group>
 
       {/* Current Diagnose */}
@@ -129,10 +132,12 @@ const StepFour = ({ onNext, onBack, defaultValues }: StepFourProps) => {
             setValue("currentDiagOther", "");
           }}
           label="What are you diagnosed with?"
-          error={getErrorMessage(errors?.currentDiagnose)}
-          classNames={{ label: "!text-3xl pt-10 pb-2" }}
+          classNames={{
+            root: "w-full",
+            label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+          }}
         >
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid sm:grid-cols-2 gap-5">
             {diagnoseOptions.map((option) => (
               <Radio
                 key={option}
@@ -142,7 +147,7 @@ const StepFour = ({ onNext, onBack, defaultValues }: StepFourProps) => {
                   <div className="relative text-center">
                     <span className="text-foreground font-poppins">{option}</span>
                     {currentDiagnose === option && (
-                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                         <i className="icon-tick text-sm/none"></i>
                       </span>
                     )}
@@ -151,21 +156,27 @@ const StepFour = ({ onNext, onBack, defaultValues }: StepFourProps) => {
               />
             ))}
           </div>
+          <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.currentDiagnose)}</p>
         </Radio.Group>
       )}
 
       {showCurrentDiagOther && (
-        <Input.Wrapper
-          label="Please Specify what are you diagnosed with?"
-          withAsterisk
-          className="pt-8"
-          error={getErrorMessage(errors.currentDiagOther)}
-        >
-          <Input
-            type="text"
-            {...register("currentDiagOther")}
-          />
-        </Input.Wrapper>
+        <div>
+          <Input.Wrapper
+            label="Please Specify what are you diagnosed with?"
+            withAsterisk
+            className="pt-8"
+            classNames={{
+              label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+            }}
+          >
+            <Input
+              type="text"
+              {...register("currentDiagOther")}
+            />
+          </Input.Wrapper>
+          <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.currentDiagOther)}</p>
+        </div>
       )}
 
       {/* Past Diagnose */}
@@ -178,10 +189,9 @@ const StepFour = ({ onNext, onBack, defaultValues }: StepFourProps) => {
             setValue("pastDiagOther", "");
           }}
           label="What were you diagnosed with?"
-          error={getErrorMessage(errors?.pastDiagnose)}
-          classNames={{ label: "!text-3xl pt-10 pb-2" }}
+          classNames={{ root: "w-full", label: "!text-3xl pt-10 pb-2" }}
         >
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid sm:grid-cols-2 gap-5">
             {diagnoseOptions.map((option) => (
               <Radio
                 key={option}
@@ -191,7 +201,7 @@ const StepFour = ({ onNext, onBack, defaultValues }: StepFourProps) => {
                   <div className="relative text-center">
                     <span className="text-foreground font-poppins">{option}</span>
                     {pastDiagnose === option && (
-                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                         <i className="icon-tick text-sm/none"></i>
                       </span>
                     )}
@@ -200,6 +210,7 @@ const StepFour = ({ onNext, onBack, defaultValues }: StepFourProps) => {
               />
             ))}
           </div>
+          <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.pastDiagnose)}</p>
         </Radio.Group>
       )}
 
@@ -208,10 +219,9 @@ const StepFour = ({ onNext, onBack, defaultValues }: StepFourProps) => {
           value={pastDiagBullmia}
           onChange={(value) => handleSelect("pastDiagBullmia", value)}
           label="How long has it been since you were diagnosed?"
-          error={getErrorMessage(errors?.pastDiagBullmia)}
-          classNames={{ label: "!text-3xl pt-10 pb-2" }}
+          classNames={{ root: "w-full", label: "!text-3xl pt-10 pb-2" }}
         >
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid sm:grid-cols-2 gap-5">
             {bullmiaDurationOptions.map((option) => (
               <Radio
                 key={option}
@@ -221,7 +231,7 @@ const StepFour = ({ onNext, onBack, defaultValues }: StepFourProps) => {
                   <div className="relative text-center">
                     <span className="text-foreground font-poppins">{option}</span>
                     {pastDiagBullmia === option && (
-                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                         <i className="icon-tick text-sm/none"></i>
                       </span>
                     )}
@@ -230,21 +240,26 @@ const StepFour = ({ onNext, onBack, defaultValues }: StepFourProps) => {
               />
             ))}
           </div>
+          <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.pastDiagBullmia)}</p>
         </Radio.Group>
       )}
 
       {showPastDiagOther && (
-        <Input.Wrapper
-          label="Please specify what were you diagnosed with?"
-          withAsterisk
-          className="pt-8"
-          error={getErrorMessage(errors.pastDiagOther)}
-        >
-          <Input
-            type="text"
-            {...register("pastDiagOther")}
-          />
-        </Input.Wrapper>
+        <div>
+          <Input.Wrapper
+            label="Please specify what were you diagnosed with?"
+            withAsterisk
+            classNames={{
+              label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+            }}
+          >
+            <Input
+              type="text"
+              {...register("pastDiagOther")}
+            />
+          </Input.Wrapper>
+          <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.pastDiagOther)}</p>
+        </div>
       )}
 
       <div className="flex justify-center gap-6 pt-4">

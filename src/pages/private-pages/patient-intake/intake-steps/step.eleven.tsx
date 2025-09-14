@@ -74,10 +74,11 @@ const StepEleven = ({ onNext, onBack, defaultValues }: StepElevenProps) => {
       <Radio.Group
         value={gallbladder}
         label="Do you have a personal history of gallbladder disease?"
-        error={getErrorMessage(errors?.gallbladder)}
-        classNames={{ label: "!text-3xl pb-2" }}
+        classNames={{
+          label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+        }}
       >
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid sm:grid-cols-2 gap-5">
           {yesNoOptions.map((option) => (
             <Radio
               key={option}
@@ -87,7 +88,7 @@ const StepEleven = ({ onNext, onBack, defaultValues }: StepElevenProps) => {
                 <div className="relative text-center">
                   <span className="text-foreground font-poppins">{option}</span>
                   {gallbladder === option && (
-                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                    <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                       <i className="icon-tick text-sm/none"></i>
                     </span>
                   )}
@@ -97,6 +98,7 @@ const StepEleven = ({ onNext, onBack, defaultValues }: StepElevenProps) => {
             />
           ))}
         </div>
+        <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.gallbladder)}</p>
       </Radio.Group>
 
       {/* Gallbladder removed */}
@@ -104,10 +106,11 @@ const StepEleven = ({ onNext, onBack, defaultValues }: StepElevenProps) => {
         <Radio.Group
           value={removedGallbladder}
           label="Did you have your gallbladder removed?"
-          error={getErrorMessage(errors?.removedGallbladder)}
-          classNames={{ label: "!text-2xl pb-2" }}
+          classNames={{
+            label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+          }}
         >
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid sm:grid-cols-2 gap-5">
             {yesNoOptions.map((option) => (
               <Radio
                 key={option}
@@ -117,7 +120,7 @@ const StepEleven = ({ onNext, onBack, defaultValues }: StepElevenProps) => {
                   <div className="relative text-center">
                     <span className="text-foreground font-poppins">{option}</span>
                     {removedGallbladder === option && (
-                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                         <i className="icon-tick text-sm/none"></i>
                       </span>
                     )}
@@ -127,6 +130,7 @@ const StepEleven = ({ onNext, onBack, defaultValues }: StepElevenProps) => {
               />
             ))}
           </div>
+          <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.removedGallbladder)}</p>
         </Radio.Group>
       )}
 
@@ -135,10 +139,11 @@ const StepEleven = ({ onNext, onBack, defaultValues }: StepElevenProps) => {
         <Radio.Group
           value={whenGallbladderRemoved}
           label="When did you have your gallbladder removed?"
-          error={getErrorMessage(errors?.whenGallbladderRemoved)}
-          classNames={{ label: "!text-2xl pb-2" }}
+          classNames={{
+            label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+          }}
         >
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid sm:grid-cols-2 gap-5">
             {removedTimeOptions.map((option) => (
               <Radio
                 key={option}
@@ -148,7 +153,7 @@ const StepEleven = ({ onNext, onBack, defaultValues }: StepElevenProps) => {
                   <div className="relative text-center">
                     <span className="text-foreground font-poppins">{option}</span>
                     {whenGallbladderRemoved === option && (
-                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                         <i className="icon-tick text-sm/none"></i>
                       </span>
                     )}
@@ -158,6 +163,7 @@ const StepEleven = ({ onNext, onBack, defaultValues }: StepElevenProps) => {
               />
             ))}
           </div>
+          <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.whenGallbladderRemoved)}</p>
         </Radio.Group>
       )}
 

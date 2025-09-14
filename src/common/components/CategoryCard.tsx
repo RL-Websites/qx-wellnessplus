@@ -20,13 +20,13 @@ const CategoryCard = (cardProps: ICardProps) => {
           <img
             src={cardProps.image}
             alt=""
-            className="max-w-full max-h-full"
+            className="max-w-full xl:h-[260px] lg:h-[230px] h-[200px]"
           />
         </ThumbBg>
       ) : (
         ""
       )}
-      <div className="card-title ">{cardProps?.title ? <h4 className="font-poppins font-medium text-3xl">{cardProps?.title}</h4> : ""}</div>
+      <div className="card-title ">{cardProps?.title ? <h4 className="font-poppins font-medium lg:text-3xl md:text-2xl sm:text-xl text-base">{cardProps?.title}</h4> : ""}</div>
     </Link>
   );
 };

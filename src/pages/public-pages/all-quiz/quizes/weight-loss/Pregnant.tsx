@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Group, Radio } from "@mantine/core";
+import { Button, Group, Radio, Text } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -44,16 +44,15 @@ const WeightLossPregnant = ({ onNext, onBack, defaultValues }: IWeightLossPregna
       <form
         id="weightLossPregnantForm"
         onSubmit={handleSubmit(onNext)}
-        className="max-w-xl mx-auto space-y-6"
+        className="card-common-width-lg mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground">Are you currently pregnant or trying to get pregnant?</h2>
+          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground animate-title">Are you currently pregnant or trying to get pregnant?</h2>
 
           <Radio.Group
             value={weightLossPregnant}
             onChange={handleSelect}
-            className="mt-6"
-            error={errors?.weightLossPregnant?.message}
+            className="mt-6 animate-content"
           >
             <Group grow>
               {options.map((option) => (
@@ -74,7 +73,7 @@ const WeightLossPregnant = ({ onNext, onBack, defaultValues }: IWeightLossPregna
                     <div className="relative text-center">
                       <span className="text-foreground font-poppins">{option}</span>
                       {weightLossPregnant === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
                       )}
@@ -84,9 +83,10 @@ const WeightLossPregnant = ({ onNext, onBack, defaultValues }: IWeightLossPregna
               ))}
             </Group>
           </Radio.Group>
+          {errors.weightLossPregnant && <Text className="text-red-500 text-sm mt-5 text-center">{errors.weightLossPregnant.message}</Text>}
         </div>
 
-        <div className="flex justify-center gap-6 pt-4">
+        <div className="flex justify-center gap-6 pt-4 animate-btns">
           <Button
             variant="outline"
             className="w-[200px]"

@@ -87,10 +87,12 @@ const StepNine = ({ onNext, onBack, defaultValues, isLoading = false }: StepNine
           value={q.value}
           onChange={(val) => handleSelect(q.name as keyof step9SchemaType, val)}
           label={q.label}
-          error={getErrorMessage(errors[q.name as keyof step9SchemaType])}
-          classNames={{ label: "!text-3xl pb-2" }}
+          classNames={{
+            root: "w-full",
+            label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+          }}
         >
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid sm:grid-cols-2 gap-5">
             {q.options.map((option) => (
               <Radio
                 key={option}
@@ -100,7 +102,7 @@ const StepNine = ({ onNext, onBack, defaultValues, isLoading = false }: StepNine
                   <div className="relative text-center">
                     <span className="text-foreground font-poppins">{option}</span>
                     {q.value === option && (
-                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 right-3 -translate-y-1/2">
+                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                         <i className="icon-tick text-sm/none"></i>
                       </span>
                     )}
@@ -109,6 +111,7 @@ const StepNine = ({ onNext, onBack, defaultValues, isLoading = false }: StepNine
               />
             ))}
           </div>
+          <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors[q.name as keyof step9SchemaType])}</p>
         </Radio.Group>
       ))}
 
