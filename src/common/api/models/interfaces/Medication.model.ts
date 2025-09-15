@@ -34,6 +34,7 @@ export interface IMedicineCategory {
 }
 
 export interface IMedicineListItem {
+  u_id: number;
   id: number;
   client_id: number | null;
   name: string;
@@ -50,8 +51,11 @@ export interface IMedicineListItem {
   service_fee: string;
   shipping_fee: string;
   customer_price?: string;
+  lab_fee?: string;
+  lab_fee_selected_state?: string;
   is_research_only: string;
   image: string;
+  lab_required?: string;
   total_price?: string;
   direction: string | null;
   is_active: number;
@@ -70,6 +74,10 @@ export interface ICustomerMedicationRef {
   medication_id: number;
   customer_id: number;
   price: string;
+  platform_fee: any;
+  consultancy_fee: any;
+  testosterone_fee: any;
+  price_for_customer: any;
   is_active: number;
   assign_by: null;
   created_at: Date;
@@ -86,7 +94,8 @@ export interface IPartnerMedicineListItem {
   medication_id: number;
   partner_id?: number;
   price: string;
-  medicine: IMedicineListItem;
+  lab_required?: string;
+  medicine?: IMedicineListItem;
   status?: string;
 }
 

@@ -64,14 +64,14 @@ const StepSeventeen = ({ onNext, onBack, defaultValues, isFinalStep, isLoading =
   const hormoneSensitiveCancers = watch("hormoneSensitiveCancers");
   const endocrineAutoimmune = watch("endocrineAutoimmune");
   const hormoneTherapySupple = watch("hormoneTherapySupple");
-  const selectedHistory = watch("peptideHealthHistory")?.split(", ") || [];
+  const selectedHistory = watch("peptideHealthHistory") ? watch("peptideHealthHistory")?.split(", ") : [];
 
   const toggleHistory = (value: string) => {
     let updated: string[];
     if (selectedHistory.includes(value)) {
       updated = selectedHistory.filter((v) => v !== value);
     } else {
-      updated = [...selectedHistory, value];
+      updated = selectedHistory?.length ? [...selectedHistory, value] : [value];
     }
     setValue("peptideHealthHistory", updated.join(", "), { shouldValidate: true });
     clearErrors("peptideHealthHistory");
@@ -112,6 +112,7 @@ const StepSeventeen = ({ onNext, onBack, defaultValues, isFinalStep, isLoading =
         onChange={(val) => handleSelect("peptideTherapyUsed", val)}
         label="Have you used peptide therapies before?"
         classNames={{
+          root: "w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
@@ -236,7 +237,7 @@ const StepSeventeen = ({ onNext, onBack, defaultValues, isFinalStep, isLoading =
           withAsterisk
           error={getErrorMessage(errors.physicActLevel)}
           classNames={{
-            root: "sm:!grid !block",
+            root: "sm:!grid !block w-full",
             error: "sm:!text-end !text-start w-full",
             label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           }}

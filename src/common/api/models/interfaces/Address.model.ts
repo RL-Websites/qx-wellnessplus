@@ -30,8 +30,13 @@ export interface IAddress2 {
 export interface IAutoCompleteAddrOutput {
   address: string;
   state: string;
+  state_short?: string;
   city: string;
   zip_code?: string;
-  latitude: number;
-  longitude: number;
+  street_number?: string;
+  route?: string;
+  area_2?: string;
+  country?: string;
+  latitude?: string;
+  longitude?: string;
 }

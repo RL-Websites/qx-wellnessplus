@@ -104,7 +104,21 @@ export const trimPrice = (price: string) => {
 };
 
 export const calculatePrice = (item: IMedicineListItem) => {
-  const fees = Number(item.doctor_fee) + Number(item.shipping_fee) + Number(item.service_fee);
+  const fees =
+    Number(item.medication_category == "Testosterone" ? item.customer_medication.testosterone_fee : item.customer_medication.consultancy_fee) +
+    Number(item.customer_medication.platform_fee);
 
   return Number(item.customer_price) * Number(item.qty) - fees * (Number(item.qty) - 1);
+};
+export const stateWiseLabFee = (medicine?: IMedicineListItem, patientState?: string) => {
+  const states = ["Alaska", "Connecticut", "Massachusetts", "New Hampshire", "Rhode Island"];
+
+  if (!patientState) Number(medicine?.lab_fee);
+  const isStateMatched = states.some((state) => state.toLowerCase() === patientState?.toLowerCase());
+
+  if (isStateMatched) {
+    return Number(medicine?.lab_fee_selected_state);
+  } else {
+    return Number(medicine?.lab_fee);
+  }
 };

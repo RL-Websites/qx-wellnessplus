@@ -30,7 +30,7 @@ const ThanksStep = ({ isActive }: { isActive: boolean }) => {
           className="mx-auto md:max-w-auto max-w-[200px]"
         />
       </div>
-      <div className="md:col-span-3 md:space-y-12 space-y-3">
+      <div className="md:col-span-3 md:space-y-12 space-y-3 md:text-left text-center">
         <h2 className="heading-text text-foreground uppercase">Thank You</h2>
         <p className="lg:text-2xl md:text-xl text-lg font-poppins text-foreground mt-6">
           {/* An agent will contact with you shortly. To access your account please check your email. */}

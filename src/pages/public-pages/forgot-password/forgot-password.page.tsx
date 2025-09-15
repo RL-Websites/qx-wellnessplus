@@ -67,7 +67,7 @@ const ForgetPasswordPage = () => {
                 className="w-full "
                 onSubmit={handleSubmit(onSubmit)}
               >
-                <div className="mt-[30px] w-full border-dashed border border-primary  rounded-lg bg-primary-secondary p-5">
+                <div className="mt-[30px] w-full border-dashed border border-primary  rounded-lg bg-primary-secondary md:p-5 p-4">
                   <p className="text-center text-lg">
                     If you forgot your password an email with a password reset link will be sent to you. Click on the link in that email and you will be taken to a page where you
                     can then create a new password.

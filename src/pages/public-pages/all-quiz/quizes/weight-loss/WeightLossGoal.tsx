@@ -45,7 +45,7 @@ const WeightLossGoal = ({ onNext, onBack, defaultValues }: IWeightLossGoalProps)
         <form
           id="weightLossGoalForm"
           onSubmit={handleSubmit(onNext)}
-          className="max-w-xl mx-auto space-y-6 card-common animate-content"
+          className="mcard-common-width-lg mx-auto space-y-6 card-common animate-content"
         >
           <div>
             <Input.Wrapper

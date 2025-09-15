@@ -149,6 +149,6 @@ interface UserInterface {
 }
 
 export interface ICreatePaymentIntentDTO {
-  amount: string;
+  amount: number;
   prescription_id?: number;
 }

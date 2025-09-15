@@ -35,7 +35,7 @@ const HormonalHealth = ({ onNext, onBack, defaultValues, isLoading = false }: Ho
   });
 
   const lowTestosterone = watch("lowTestosterone");
-  const selectedSymptoms = watch("symptomsSH")?.split(", ") || [];
+  const selectedSymptoms = watch("symptomsSH") ? watch("symptomsSH")?.split(", ") : [];
 
   const symptomOptions = ["Fatigue", "Low libido", "Mood changes", "Muscle loss"];
 
@@ -44,7 +44,7 @@ const HormonalHealth = ({ onNext, onBack, defaultValues, isLoading = false }: Ho
     if (selectedSymptoms.includes(value)) {
       updated = selectedSymptoms.filter((v) => v !== value);
     } else {
-      updated = [...selectedSymptoms, value];
+      updated = selectedSymptoms?.length > 0 ? [...selectedSymptoms, value] : [value];
     }
     setValue("symptomsSH", updated.join(", "), { shouldValidate: true });
     clearErrors("symptomsSH");
