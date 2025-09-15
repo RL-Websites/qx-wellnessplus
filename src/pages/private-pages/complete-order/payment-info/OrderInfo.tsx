@@ -175,6 +175,15 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
     onNext(payload);
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      if (event?.currentTarget?.value) {
+        handleApplyPromo({ promo_code: event?.currentTarget?.value });
+      }
+      event.preventDefault();
+    }
+  };
+
   const handleNext = handleSubmit(submitFormWithPatientCard);
 
   return (
@@ -266,6 +275,7 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
                 label="Apply Promo Code"
                 placeholder="Enter promo code"
                 {...register("promo_code")}
+                onKeyDown={handleKeyDown}
                 rightSection={
                   appliedPromo ? (
                     <div
