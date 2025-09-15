@@ -121,6 +121,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
     const medications = cartItems?.map((item) => ({
       qty_ordered: item.qty,
       customer_medication_id: item.customer_medication.id, // customerMedication er medication_id
+      labRequired: item.lab_required ? item.lab_required : null,
     }));
     const payload: IPatientBookingPatientInfoDTO = {
       slug: customerData?.slug || "",
