@@ -6,6 +6,7 @@ import dmlToast from "@/common/configs/toaster.config";
 import useAuthToken from "@/common/hooks/useAuthToken";
 import { customerAtom } from "@/common/states/customer.atom";
 import { cartItemsAtom } from "@/common/states/product.atom";
+import { redirectUrlAtom } from "@/common/states/redirect.atom";
 import { user_id, userAtom } from "@/common/states/user.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Checkbox, Input, PasswordInput } from "@mantine/core";
@@ -13,10 +14,10 @@ import { useWindowScroll } from "@mantine/hooks";
 
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { useAtom } from "jotai";
-import { useEffect, useState } from "react";
+import { useAtom, useAtomValue } from "jotai";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 
 const loginSchema = yup.object({
@@ -35,9 +36,6 @@ const loginSchema = yup.object({
 type loginSchemaType = yup.InferType<typeof loginSchema>;
 
 const Login = () => {
-  const [isTyping, setIsTyping] = useState(false);
-  const [queryParams, setQueryParams] = useSearchParams();
-  const [doctorDetails, setDoctorDetails] = useState<any>({});
   const { getAccessToken, setAccessToken } = useAuthToken();
   const [cartItems] = useAtom(cartItemsAtom);
   const [userData, setUserDataAtom] = useAtom(userAtom);
@@ -46,6 +44,7 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [, scrollTo] = useWindowScroll();
+  const redirectUrl = useAtomValue(redirectUrlAtom);
 
   useEffect(() => {
     scrollTo({ y: 0 });
@@ -96,10 +95,15 @@ const Login = () => {
         getAuthQuery.mutate(undefined, {
           onSettled: () => {
             localStorage.removeItem("otpExpired");
-            if (cartItems?.length > 0) {
-              navigate("/order-summary");
+            if (redirectUrl) {
+              const targetUrl = decodeURIComponent(redirectUrl);
+              navigate(targetUrl, { replace: true });
             } else {
-              navigate("/category");
+              if (cartItems?.length > 0) {
+                navigate("/order-summary");
+              } else {
+                navigate("/category");
+              }
             }
           },
         });
