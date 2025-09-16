@@ -222,7 +222,7 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
                       {item?.medicine_type == "ODT" ? "Oral" : item?.medicine_type} | {item?.medication_category}
                     </div>
                     <div className="text-foreground">
-                      Price: ${item?.lab_required == "1" ? (Number(calculatePrice(item)) + stateWiseLabFee(item, selectedState)).toFixed(2) : calculatePrice(item)}
+                      Price: ${item?.lab_required == "1" ? (Number(calculatePrice(item)) + stateWiseLabFee(item, selectedState)).toFixed(2) : calculatePrice(item).toFixed(2)}
                     </div>
                   </div>
                 </div>
