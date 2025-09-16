@@ -21,6 +21,7 @@ import SymptomHistory from "./intake-steps/hair-growth/symptomHistory";
 import WhenNotice from "./intake-steps/hair-growth/whenNotice";
 import MedsAllergy from "./intake-steps/prevMedsAllergy";
 import { questions } from "./intake-steps/questions";
+import SelfIntroDuce from "./intake-steps/selfIntroDuce";
 import SexualHealthConcerns from "./intake-steps/sexual-health/sexualHealthConcerns";
 import SexualHealthFinal from "./intake-steps/sexual-health/sexualHealthFinal";
 import SexualHealthRisks from "./intake-steps/sexual-health/sexualHealthRisks";
@@ -91,18 +92,23 @@ const PatientIntake = () => {
     { component: StepFourteen, categories: ["weightLoss"] },
     { component: StepFifteen, categories: ["weightLoss"] },
     { component: StepSixteen, categories: ["weightLoss"] },
+    { component: SelfIntroDuce, categories: ["weightLoss"] },
     { component: FullBodyPhoto, categories: ["peptides"] },
     { component: StepSeventeen, categories: ["peptides"] },
+    { component: SelfIntroDuce, categories: ["peptides"] },
     { component: BodyMeasure, categories: ["testosterone"] },
     { component: HormonalHealth, categories: ["testosterone"] },
     { component: TestosteroneHistory, categories: ["testosterone"] },
     { component: LifestyleAndFertility, categories: ["testosterone"] },
+    { component: SelfIntroDuce, categories: ["testosterone"] },
     { component: SexualHealthConcerns, categories: ["sexualHealth"] },
     { component: SexualHealthRisks, categories: ["sexualHealth"] },
     { component: SexualHealthFinal, categories: ["sexualHealth"] },
+    { component: SelfIntroDuce, categories: ["sexualHealth"] },
     { component: WhenNotice, categories: ["hairGrowth"] },
     { component: MedicalHistory, categories: ["hairGrowth"] },
     { component: SymptomHistory, categories: ["hairGrowth"] },
+    { component: SelfIntroDuce, categories: ["hairGrowth"] },
 
     // TODO: add Testosterone-specific steps
     // { component: StepX, categories: ["Testosterone"] },
