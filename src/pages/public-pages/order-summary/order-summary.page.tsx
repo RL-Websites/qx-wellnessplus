@@ -95,13 +95,15 @@ const OrderSummary = () => {
                 <span className="text-foreground text-lg inline-block max-w-[226px] break-all">
                   {item.name} {item.strength ? `${item.strength} ${item.unit}` : ""} x {item.qty}
                 </span>
-                <span className="text-foreground text-lg">${item?.lab_required == "1" ? calculatePrice(item) + stateWiseLabFee(item, selectedState) : calculatePrice(item)}</span>
+                <span className="text-foreground text-lg">
+                  ${item?.lab_required == "1" ? (calculatePrice(item) + stateWiseLabFee(item, selectedState)).toFixed(2) : calculatePrice(item).toFixed(2)}
+                </span>
               </div>
             ))}
           </div>
           <div className="flex items-center justify-between border-t border-t-foreground pt-2">
             <span className="text-foreground font-poppins font-semibold md:text-xl text-lg !border-foreground">Total Package Price</span>
-            <span className="text-foreground font-poppins font-semibold md:text-xl text-lg !border-foreground">${totalBillAmount}</span>
+            <span className="text-foreground font-poppins font-semibold md:text-xl text-lg !border-foreground">${totalBillAmount.toFixed(2)}</span>
           </div>
         </div>
       </div>
