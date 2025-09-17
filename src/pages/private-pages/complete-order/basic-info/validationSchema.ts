@@ -35,7 +35,7 @@ export const basicInfoValidationSchema = yup.object({
     .string()
     .required(({ label }) => `${label} is required`)
     .label("Address"),
-  address2: yup.string().optional(),
+  address2: yup.string().nullable().optional(),
   state: yup.string().required("Please select a state").label("State"),
   city: yup.string().required("Please select a city").label("City"),
   zip_code: yup
