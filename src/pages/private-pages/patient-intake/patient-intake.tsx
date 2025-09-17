@@ -120,7 +120,6 @@ const PatientIntake = () => {
     // TODO: add Hair Growth-specific steps
     // { component: StepZ, categories: ["Hair Growth"] },
   ];
-  console.log(basicInfo);
   const patientDetailsQuery = useQuery({
     queryKey: ["partner-patient-booking-query", prescriptionUId],
     queryFn: () => patientApiRepository.publicGetPatientDetails({ u_id: prescriptionUId || "" }),
@@ -399,7 +398,7 @@ const PatientIntake = () => {
       )} */}
 
       {/* Thanks Step */}
-      {activeStep === totalDynamicSteps + 1 && !patientDetailsQuery.isLoading ? (
+      {activeStep === totalDynamicSteps + 1 && activeStep != 1 && !patientDetailsQuery.isLoading ? (
         <ThanksStep isActive={totalDynamicSteps && activeStep == totalDynamicSteps + 1 && totalDynamicSteps > 0 ? true : false} />
       ) : (
         ""
