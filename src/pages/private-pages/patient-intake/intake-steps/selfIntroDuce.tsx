@@ -46,7 +46,7 @@ const SelfIntroDuce: React.FC<SelfIntroProps> = ({ onNext, onBack, defaultValues
       >
         <h4 className="text-xl text-foreground font-semibold">Here's your first message to your doctor. Please introduce yourself and feel free to:</h4>
 
-        <ul className="list-item list-inside text-base text-foreground font-medium">
+        <ul className="list-inside list-disc text-base text-foreground font-medium">
           <li>Ask any questions you have</li>
           <li>List any medical problem you have which were not discussed above</li>
           <li>Include anything else you would like the doctor to know</li>
@@ -62,8 +62,7 @@ const SelfIntroDuce: React.FC<SelfIntroProps> = ({ onNext, onBack, defaultValues
                 resize="vertical"
                 autosize
                 placeholder="Write something..."
-                minRows={2}
-                maxRows={8}
+                minRows={5}
                 aria-invalid={!!errors.selfIntro}
                 aria-describedby={errors.selfIntro ? "selfIntro-error" : undefined}
               />
