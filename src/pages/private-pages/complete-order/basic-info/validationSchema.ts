@@ -1,4 +1,6 @@
+import dayjs from "dayjs";
 import * as yup from "yup";
+
 export const basicInfoValidationSchema = yup.object({
   first_name: yup
     .string()
@@ -27,9 +29,14 @@ export const basicInfoValidationSchema = yup.object({
   dob: yup
     .array(yup.string().nonNullable(() => "Please provide a valid date of format MM/DD/YYYY."))
     .typeError("Please provide a valid date of format MM/DD/YYYY.")
-    .required("Please provide your date of birth"),
-  // weight: yup.string().required("Weight is required"),
-  // height: yup.string().required("Height is required"),
+    .required("Please provide your date of birth")
+    .test("is18plus", "You must be at least 18 years old", (value) => {
+      const today = new Date();
+      const selectedDate = value[0];
+      const year = dayjs(selectedDate).get("year");
+      // console.log(today.getFullYear(), year);
+      return today.getFullYear() - year >= 18;
+    }),
   country: yup.string().label("Country"),
   address: yup
     .string()
