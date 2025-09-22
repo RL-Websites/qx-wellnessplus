@@ -57,7 +57,13 @@ const MedicationsPage = () => {
       const medList = medicineQuery.data?.data?.data?.map((item) => ({ ...item, qty: 1 }));
       setMedicines(medList || []);
     }
-  }, [medicineQuery.data?.data?.data]);
+  }, [medicineQuery.data]);
+
+  useEffect(() => {
+    if (medicineQuery?.isError && medicineQuery?.error?.response?.data?.status_code == 404) {
+      setMedicines([]);
+    }
+  }, [medicineQuery.isFetched]);
 
   // console.log(medicineQuery);
 
@@ -156,6 +162,7 @@ const MedicationsPage = () => {
         })}
       </div>
 
+      <h5 className="text-center text-primary">No medication found for the specified category.</h5>
       {cartItems.length > 0 && (
         <div className="fixed left-0 bottom-16 w-full animate-fadeInUp">
           <div className="bg-warning-bg px-10 lg:py-6 py-5 flex md:flex-row flex-col items-center justify-between rounded-2xl md:mx-5 mx-4 md:gap-2 gap-4">
