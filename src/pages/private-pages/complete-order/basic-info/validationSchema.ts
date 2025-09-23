@@ -31,11 +31,27 @@ export const basicInfoValidationSchema = yup.object({
     .typeError("Please provide a valid date of format MM/DD/YYYY.")
     .required("Please provide your date of birth")
     .test("is18plus", "You must be at least 18 years old", (value) => {
-      const today = new Date();
+      // const today = new Date();
+      // const selectedDate = value[0];
+      // const year = dayjs(selectedDate).get("year");
+      // // console.log(today.getFullYear(), year);
+      // return today.getFullYear() - year >= 18;
+
+      // 2. Add a "guard clause" to handle the initial empty state.
+      // The .required() rule will handle the error message for empty values.
+      // This test should only run if there IS a value.
+      if (!value || value.length === 0) {
+        return true;
+      }
+
       const selectedDate = value[0];
-      const year = dayjs(selectedDate).get("year");
-      // console.log(today.getFullYear(), year);
-      return today.getFullYear() - year >= 18;
+      if (!selectedDate) {
+        return true;
+      }
+
+      // 3. Use dayjs.diff() for an accurate age calculation.
+      const age = dayjs().diff(dayjs(selectedDate), "year");
+      return age >= 18;
     }),
   country: yup.string().label("Country"),
   address: yup
