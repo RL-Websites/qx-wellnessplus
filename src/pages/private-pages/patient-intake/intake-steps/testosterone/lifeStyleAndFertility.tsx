@@ -1,7 +1,7 @@
 import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
 import { getErrorMessage } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Radio, TextInput } from "@mantine/core";
+import { Button, Radio, Textarea, TextInput } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -35,6 +35,7 @@ const LifestyleAndFertility = ({ onNext, onBack, defaultValues, isFinalStep, isL
   const {
     handleSubmit,
     setValue,
+    register,
     clearErrors,
     watch,
     formState: { errors },
@@ -49,9 +50,12 @@ const LifestyleAndFertility = ({ onNext, onBack, defaultValues, isFinalStep, isL
     },
   });
 
+  const MAX_CHARS = 500;
+
   const takingMedsSH = watch("takingMedsSH");
   const usesSubstances = watch("usesSubstances");
   const hasChildrenOrPlans = watch("hasChildrenOrPlans");
+  const medicineList = watch("medsListSH") ?? "";
 
   const handleSelect = (field: keyof LifestyleFertilitySchemaType, value: string) => {
     setValue(field, value, { shouldValidate: true });
@@ -97,14 +101,33 @@ const LifestyleAndFertility = ({ onNext, onBack, defaultValues, isFinalStep, isL
       </Radio.Group>
 
       {takingMedsSH === "Yes" && (
-        <TextInput
-          label="Please list the medications you are taking:"
-          placeholder="e.g. Aspirin, Prednisone"
-          value={watch("medsListSH")}
-          onChange={(e) => handleSelect("medsListSH", e.currentTarget.value)}
-          error={getErrorMessage(errors?.medsListSH)}
-          className="pt-4 w-full"
-        />
+        <div className="">
+          <Textarea
+            {...register("medsListSH")}
+            label="Please list the medications you are taking:"
+            resize="vertical"
+            autosize
+            placeholder="Write something..."
+            minRows={5}
+            aria-invalid={!!errors.medsListSH}
+            aria-describedby={errors.medsListSH ? "selfIntro-error" : undefined}
+          />
+
+          <div className="flex items-center justify-between pt-3">
+            <p className={errors.medsListSH ? "text-red-500" : "text-gray-500"}>
+              {medicineList.length} / {MAX_CHARS}
+            </p>
+
+            {errors.medsListSH ? (
+              <p
+                id="selfIntro-error"
+                className="text-red-500"
+              >
+                {errors.medsListSH.message}
+              </p>
+            ) : null}
+          </div>
+        </div>
       )}
 
       {/* Q9 */}

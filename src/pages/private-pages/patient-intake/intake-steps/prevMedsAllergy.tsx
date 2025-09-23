@@ -1,7 +1,7 @@
 import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
 import { getErrorMessage } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Input, Radio } from "@mantine/core";
+import { Button, Input, Radio, Textarea } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -27,6 +27,7 @@ interface MedsAllergyProps {
 }
 
 const MedsAllergy = ({ onNext, onBack, defaultValues }: MedsAllergyProps) => {
+  const MAX_CHARS = 500;
   const {
     handleSubmit,
     setValue,
@@ -46,6 +47,7 @@ const MedsAllergy = ({ onNext, onBack, defaultValues }: MedsAllergyProps) => {
 
   const hasAllergy = watch("hasAllergy");
   const prescribed = watch("prescribed");
+  const allergyMedicineList = watch("nameAllergy") ?? "";
 
   const showAllergyNames = hasAllergy === "Yes";
   const showMedicineNames = prescribed === "Yes";
@@ -99,22 +101,32 @@ const MedsAllergy = ({ onNext, onBack, defaultValues }: MedsAllergyProps) => {
       </Radio.Group>
 
       {showAllergyNames && (
-        <div>
-          <Input.Wrapper
-            label="Please list any allergies you have (example: Sneezing, Runny Nose, Skin Rash, Difficulty Breathing, etc.):"
-            withAsterisk
-            className="pt-8"
-            error={getErrorMessage(errors.nameAllergy)}
-            classNames={{
-              label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
-            }}
-          >
-            <Input
-              type="text"
-              {...register("nameAllergy")}
-            />
-          </Input.Wrapper>
-          <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.nameAllergy)}</p>
+        <div className="pt-8">
+          <Textarea
+            {...register("nameAllergy")}
+            label="Please list any allergies you have (example: Sneezing, Runny Nose, Skin Rash, Difficulty Breathing and etc.):"
+            resize="vertical"
+            autosize
+            placeholder="Write something..."
+            minRows={5}
+            aria-invalid={!!errors.nameAllergy}
+            aria-describedby={errors.nameAllergy ? "selfIntro-error" : undefined}
+          />
+
+          <div className="flex items-center justify-between pt-3">
+            <p className={errors.nameAllergy ? "text-red-500" : "text-gray-500"}>
+              {allergyMedicineList.length} / {MAX_CHARS}
+            </p>
+
+            {errors.nameAllergy ? (
+              <p
+                id="selfIntro-error"
+                className="text-red-500"
+              >
+                {errors.nameAllergy.message}
+              </p>
+            ) : null}
+          </div>
         </div>
       )}
 
