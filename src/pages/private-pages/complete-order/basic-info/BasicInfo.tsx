@@ -227,7 +227,6 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
       } else if (formData?.patient?.dob) {
         const parsedDate = dayjs(formData.patient.dob, "MM-DD-YYYY");
         if (parsedDate.isValid()) {
-          console.log(parsedDate.toDate());
           setDob(parsedDate.toDate());
           setValue("dob", [parsedDate.format("MM-DD-YYYY")]);
         }
@@ -284,6 +283,17 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
           block: "center",
         });
         phoneElement.focus();
+      }
+    }
+    if (error?.dob?.message) {
+      const dobElement = document.querySelector('[aria-labelledby="dob-input"]') as HTMLElement;
+
+      if (dobElement) {
+        dobElement.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+        dobElement.focus();
       }
     }
   };
@@ -417,6 +427,7 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
                 <BaseProvider theme={LightTheme}>
                   {/* <pre>{JSON.stringify(dob)}</pre> */}
                   <UberDatePicker
+                    aria-labelledby="dob-input"
                     aria-label="Select a date"
                     placeholder="MM/DD/YYYY"
                     formatString="MM/dd/yyyy"

@@ -7,13 +7,14 @@ import { basicInfoAtom } from "@/common/states/customerBasic.atom";
 import StepFifteen from "@/pages/step-filteen";
 import { Progress } from "@mantine/core";
 import { useWindowScroll } from "@mantine/hooks";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useAtom, useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import FullBodyPhoto from "./intake-steps/FullbodyPhoto";
 
+import patientApiRepository from "@/common/api/repositories/patientRepository";
 import AnimatedStep from "@/common/components/AnimatedSteps";
 import { AnimatePresence } from "framer-motion";
 import MedicalHistory from "./intake-steps/hair-growth/medicalHistory";
@@ -21,6 +22,7 @@ import SymptomHistory from "./intake-steps/hair-growth/symptomHistory";
 import WhenNotice from "./intake-steps/hair-growth/whenNotice";
 import MedsAllergy from "./intake-steps/prevMedsAllergy";
 import { questions } from "./intake-steps/questions";
+import SelfIntroDuce from "./intake-steps/selfIntroDuce";
 import SexualHealthConcerns from "./intake-steps/sexual-health/sexualHealthConcerns";
 import SexualHealthFinal from "./intake-steps/sexual-health/sexualHealthFinal";
 import SexualHealthRisks from "./intake-steps/sexual-health/sexualHealthRisks";
@@ -71,6 +73,8 @@ const PatientIntake = () => {
   const [filteredSteps, setFilteredSteps] = useState<StepConfig[]>([]);
   const [totalDynamicSteps, setTotalDynamicSteps] = useState(0);
 
+  const accessToken = localStorage.getItem("accessToken");
+
   const stepConfig: StepConfig[] = [
     // Shared / Weight Loss steps
     { component: FullBodyPhoto, categories: ["weightLoss"] },
@@ -103,6 +107,7 @@ const PatientIntake = () => {
     { component: WhenNotice, categories: ["hairGrowth"] },
     { component: MedicalHistory, categories: ["hairGrowth"] },
     { component: SymptomHistory, categories: ["hairGrowth"] },
+    { component: SelfIntroDuce, categories: ["hairGrowth", "sexualHealth", "testosterone", "peptides", "weightLoss"] },
 
     // TODO: add Testosterone-specific steps
     // { component: StepX, categories: ["Testosterone"] },
@@ -111,7 +116,35 @@ const PatientIntake = () => {
     // TODO: add Hair Growth-specific steps
     // { component: StepZ, categories: ["Hair Growth"] },
   ];
+  const patientDetailsQuery = useQuery({
+    queryKey: ["partner-patient-booking-query", prescriptionUId],
+    queryFn: () => patientApiRepository.publicGetPatientDetails({ u_id: prescriptionUId || "" }),
+    enabled: !!prescriptionUId && basicInfo == undefined && accessToken != undefined,
+  });
 
+  useEffect(() => {
+    if (patientDetailsQuery?.data?.data?.data != undefined || patientDetailsQuery?.data?.data?.data != null) {
+      const medicationCats: string[] = patientDetailsQuery?.data?.data?.data?.prescription_details?.map((item) => item.medication.medication_category);
+      const categories: string[] = [];
+      if (medicationCats.some((cat) => ["Single Peptides", "Peptides Blends"].includes(cat))) categories.push("peptides");
+      if (medicationCats.some((cat) => ["Testosterone"].includes(cat))) categories.push("testosterone");
+      if (medicationCats.some((cat) => ["Hair Growth (Male)", "Hair Growth (Female)"].includes(cat))) categories.push("hairGrowth");
+      if (medicationCats.some((cat) => ["Sexual Health (Male)", "Sexual Health (Female)"].includes(cat))) categories.push("sexualHealth");
+      if (medicationCats.some((cat) => ["Weight Loss"].includes(cat))) categories.push("weightLoss");
+
+      setActiveCategories(categories);
+
+      let stepsFiltered = stepConfig.filter((step) => step.categories.some((cat) => categories.includes(cat)));
+
+      // Condition: Male + Others → remove StepFive
+      if (basicInfo?.patient?.gender === "male" || basicInfo?.patient?.gender === "Male") {
+        stepsFiltered = stepsFiltered.filter((step) => step.component !== StepFive);
+      }
+
+      setFilteredSteps(stepsFiltered);
+      setTotalDynamicSteps(stepsFiltered.length);
+    }
+  }, [patientDetailsQuery?.data?.data?.data]);
   useEffect(() => {
     const medicationCats: string[] = Array.isArray(selectedCategory) ? selectedCategory : selectedCategory ? [selectedCategory] : [];
 
@@ -361,7 +394,11 @@ const PatientIntake = () => {
       )} */}
 
       {/* Thanks Step */}
-      {activeStep === totalDynamicSteps + 1 && <ThanksStep isActive={totalDynamicSteps && activeStep == totalDynamicSteps + 1 && totalDynamicSteps > 0 ? true : false} />}
+      {activeStep === totalDynamicSteps + 1 && activeStep != 1 && !patientDetailsQuery.isLoading ? (
+        <ThanksStep isActive={totalDynamicSteps && activeStep == totalDynamicSteps + 1 && totalDynamicSteps > 0 ? true : false} />
+      ) : (
+        ""
+      )}
     </>
   );
 };
