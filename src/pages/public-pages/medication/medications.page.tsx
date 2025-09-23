@@ -141,28 +141,30 @@ const MedicationsPage = () => {
           Based on your responses, we've personalized these product suggestions for you. Kindly select the one you prefer.
         </span>
       </div>
+      {medicines?.length > 0 ? (
+        <div className="grid md:grid-cols-3 sm:grid-cols-2 lg:gap-y-12 lg:gap-x-20 gap-7 pt-12 lg:pb-24 pb-[250px]">
+          {medicines?.map((item, index) => {
+            const isInCart = cartItems.some((cartItem) => cartItem.id === item.id);
 
-      <div className="grid md:grid-cols-3 sm:grid-cols-2 lg:gap-y-12 lg:gap-x-20 gap-7 pt-12 lg:pb-24 pb-[250px]">
-        {medicines?.map((item, index) => {
-          const isInCart = cartItems.some((cartItem) => cartItem.id === item.id);
+            return (
+              <MedicationCard
+                key={index}
+                image={`${import.meta.env.VITE_BASE_PATH}/storage/${item?.image}`}
+                title={`${item?.name} ${item.strength ? item.strength + " " + item.unit : ""} `}
+                cost={item?.customer_medication?.price}
+                lab_fee={stateWiseLabFee(item, selectedState)}
+                onAddToCart={() => handleAddToCart(item)}
+                onShowDetails={() => handelDetailsModal(item)}
+                disabled={isInCart} // pass this prop to your MedicationCard
+                selectedCategory={selectedCategory}
+              />
+            );
+          })}
+        </div>
+      ) : (
+        <h5 className="text-center text-primary mt-[100px]">No medication found for the specified category.</h5>
+      )}
 
-          return (
-            <MedicationCard
-              key={index}
-              image={`${import.meta.env.VITE_BASE_PATH}/storage/${item?.image}`}
-              title={`${item?.name} ${item.strength ? item.strength + " " + item.unit : ""} `}
-              cost={item?.customer_medication?.price}
-              lab_fee={stateWiseLabFee(item, selectedState)}
-              onAddToCart={() => handleAddToCart(item)}
-              onShowDetails={() => handelDetailsModal(item)}
-              disabled={isInCart} // pass this prop to your MedicationCard
-              selectedCategory={selectedCategory}
-            />
-          );
-        })}
-      </div>
-
-      <h5 className="text-center text-primary">No medication found for the specified category.</h5>
       {cartItems.length > 0 && (
         <div className="fixed left-0 bottom-16 w-full animate-fadeInUp">
           <div className="bg-warning-bg px-10 lg:py-6 py-5 flex md:flex-row flex-col items-center justify-between rounded-2xl md:mx-5 mx-4 md:gap-2 gap-4">
