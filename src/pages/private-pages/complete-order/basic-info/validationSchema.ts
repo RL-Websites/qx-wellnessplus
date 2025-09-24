@@ -45,7 +45,7 @@ export const basicInfoValidationSchema = yup.object({
       }
 
       // Get productCategory from the context object
-      const { selectedCategory } = validationContext.options.context;
+      const context = validationContext.options.context;
 
       const selectedDate = value[0];
       if (!selectedDate) {
@@ -55,7 +55,7 @@ export const basicInfoValidationSchema = yup.object({
       // 3. Use dayjs.diff() for an accurate age calculation.
       const age = dayjs().diff(dayjs(selectedDate), "year");
       // Check for the special category
-      if (selectedCategory === "Testosterone") {
+      if (context?.selectedCategory?.includes("Testosterone")) {
         // Return a custom error message if the check fails
         return age >= 22 || validationContext.createError({ message: "You must be at least 22 years old." });
       }
