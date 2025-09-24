@@ -106,7 +106,8 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
     watch,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(basicInfoValidationSchema),
+    resolver: yupResolver(basicInfoValidationSchema, { context: { selectedCategory } }),
+    context: { selectedCategory },
   });
 
   const state = watch("state");

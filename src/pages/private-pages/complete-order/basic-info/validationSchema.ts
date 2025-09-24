@@ -30,7 +30,7 @@ export const basicInfoValidationSchema = yup.object({
     .array(yup.string().nonNullable(() => "Please provide a valid date of format MM/DD/YYYY."))
     .typeError("Please provide a valid date of format MM/DD/YYYY.")
     .required("Please provide your date of birth")
-    .test("is18plus", "You must be at least 18 years old", (value) => {
+    .test("is18plus", "You must be at least 18 years old", (value, validationContext) => {
       // const today = new Date();
       // const selectedDate = value[0];
       // const year = dayjs(selectedDate).get("year");
@@ -44,6 +44,9 @@ export const basicInfoValidationSchema = yup.object({
         return true;
       }
 
+      // Get productCategory from the context object
+      const { selectedCategory } = validationContext.options.context;
+
       const selectedDate = value[0];
       if (!selectedDate) {
         return true;
@@ -51,7 +54,13 @@ export const basicInfoValidationSchema = yup.object({
 
       // 3. Use dayjs.diff() for an accurate age calculation.
       const age = dayjs().diff(dayjs(selectedDate), "year");
-      return age >= 18;
+      // Check for the special category
+      if (selectedCategory === "Testosterone") {
+        // Return a custom error message if the check fails
+        return age >= 22 || validationContext.createError({ message: "You must be at least 22 years old." });
+      }
+      // Otherwise, run the default validation
+      return age >= 18 || validationContext.createError({ message: "You must be at least 18 years old." });
     }),
   country: yup.string().label("Country"),
   address: yup
