@@ -11,7 +11,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useAtom, useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import FullBodyPhoto from "./intake-steps/FullbodyPhoto";
 
 import patientApiRepository from "@/common/api/repositories/patientRepository";
@@ -72,6 +72,7 @@ const PatientIntake = () => {
   const [activeCategories, setActiveCategories] = useState<string[]>([]);
   const [filteredSteps, setFilteredSteps] = useState<StepConfig[]>([]);
   const [totalDynamicSteps, setTotalDynamicSteps] = useState(0);
+  const navigate = useNavigate();
 
   const accessToken = localStorage.getItem("accessToken");
 
@@ -124,49 +125,54 @@ const PatientIntake = () => {
 
   useEffect(() => {
     if (patientDetailsQuery?.data?.data?.data != undefined || patientDetailsQuery?.data?.data?.data != null) {
-      const medicationCats: string[] = patientDetailsQuery?.data?.data?.data?.prescription_details?.map((item) => item.medication.medication_category);
-      const categories: string[] = [];
-      if (medicationCats.some((cat) => ["Single Peptides", "Peptides Blends"].includes(cat))) categories.push("peptides");
-      if (medicationCats.some((cat) => ["Testosterone"].includes(cat))) categories.push("testosterone");
-      if (medicationCats.some((cat) => ["Hair Growth (Male)", "Hair Growth (Female)"].includes(cat))) categories.push("hairGrowth");
-      if (medicationCats.some((cat) => ["Sexual Health (Male)", "Sexual Health (Female)"].includes(cat))) categories.push("sexualHealth");
-      if (medicationCats.some((cat) => ["Weight Loss"].includes(cat))) categories.push("weightLoss");
+      if (patientDetailsQuery?.data?.data?.data?.status && patientDetailsQuery?.data?.data?.data?.status == "intake_pending") {
+        const medicationCats: string[] = patientDetailsQuery?.data?.data?.data?.prescription_details?.map((item) => item.medication.medication_category);
+        const categories: string[] = [];
+        if (medicationCats.some((cat) => ["Single Peptides", "Peptides Blends"].includes(cat))) categories.push("peptides");
+        if (medicationCats.some((cat) => ["Testosterone"].includes(cat))) categories.push("testosterone");
+        if (medicationCats.some((cat) => ["Hair Growth (Male)", "Hair Growth (Female)"].includes(cat))) categories.push("hairGrowth");
+        if (medicationCats.some((cat) => ["Sexual Health (Male)", "Sexual Health (Female)"].includes(cat))) categories.push("sexualHealth");
+        if (medicationCats.some((cat) => ["Weight Loss"].includes(cat))) categories.push("weightLoss");
 
-      setActiveCategories(categories);
+        setActiveCategories(categories);
 
-      let stepsFiltered = stepConfig.filter((step) => step.categories.some((cat) => categories.includes(cat)));
+        let stepsFiltered = stepConfig.filter((step) => step.categories.some((cat) => categories.includes(cat)));
 
-      // Condition: Male + Others → remove StepFive
-      if (basicInfo?.patient?.gender === "male" || basicInfo?.patient?.gender === "Male") {
-        stepsFiltered = stepsFiltered.filter((step) => step.component !== StepFive);
+        // Condition: Male + Others → remove StepFive
+        if (basicInfo?.patient?.gender === "male" || basicInfo?.patient?.gender === "Male") {
+          stepsFiltered = stepsFiltered.filter((step) => step.component !== StepFive);
+        }
+
+        setFilteredSteps(stepsFiltered);
+        setTotalDynamicSteps(stepsFiltered.length);
+      } else if (patientDetailsQuery?.data?.data?.data?.status && patientDetailsQuery?.data?.data?.data?.status == "pending") {
+        setTotalDynamicSteps(1);
+        setActiveStep(2);
       }
-
-      setFilteredSteps(stepsFiltered);
-      setTotalDynamicSteps(stepsFiltered.length);
     }
   }, [patientDetailsQuery?.data?.data?.data]);
-  useEffect(() => {
-    const medicationCats: string[] = Array.isArray(selectedCategory) ? selectedCategory : selectedCategory ? [selectedCategory] : [];
+  // useEffect(() => {
+  //   const medicationCats: string[] = Array.isArray(selectedCategory) ? selectedCategory : selectedCategory ? [selectedCategory] : [];
 
-    const categories: string[] = [];
-    if (medicationCats.some((cat) => ["Single Peptides", "Peptides Blends"].includes(cat))) categories.push("peptides");
-    if (medicationCats.some((cat) => ["Testosterone"].includes(cat))) categories.push("testosterone");
-    if (medicationCats.some((cat) => ["Hair Growth (Male)", "Hair Growth (Female)"].includes(cat))) categories.push("hairGrowth");
-    if (medicationCats.some((cat) => ["Sexual Health (Male)", "Sexual Health (Female)"].includes(cat))) categories.push("sexualHealth");
-    if (medicationCats.some((cat) => ["Weight Loss"].includes(cat))) categories.push("weightLoss");
+  //   const categories: string[] = [];
+  //   if (medicationCats.some((cat) => ["Single Peptides", "Peptides Blends"].includes(cat))) categories.push("peptides");
+  //   if (medicationCats.some((cat) => ["Testosterone"].includes(cat))) categories.push("testosterone");
+  //   if (medicationCats.some((cat) => ["Hair Growth (Male)", "Hair Growth (Female)"].includes(cat))) categories.push("hairGrowth");
+  //   if (medicationCats.some((cat) => ["Sexual Health (Male)", "Sexual Health (Female)"].includes(cat))) categories.push("sexualHealth");
+  //   if (medicationCats.some((cat) => ["Weight Loss"].includes(cat))) categories.push("weightLoss");
 
-    setActiveCategories(categories);
+  //   setActiveCategories(categories);
 
-    let stepsFiltered = stepConfig.filter((step) => step.categories.some((cat) => categories.includes(cat)));
+  //   let stepsFiltered = stepConfig.filter((step) => step.categories.some((cat) => categories.includes(cat)));
 
-    // Condition: Male + Others → remove StepFive
-    if (basicInfo?.patient?.gender === "male" || basicInfo?.patient?.gender === "Male") {
-      stepsFiltered = stepsFiltered.filter((step) => step.component !== StepFive);
-    }
+  //   // Condition: Male + Others → remove StepFive
+  //   if (basicInfo?.patient?.gender === "male" || basicInfo?.patient?.gender === "Male") {
+  //     stepsFiltered = stepsFiltered.filter((step) => step.component !== StepFive);
+  //   }
 
-    setFilteredSteps(stepsFiltered);
-    setTotalDynamicSteps(stepsFiltered.length);
-  }, [selectedCategory, basicInfo?.patient?.gender]);
+  //   setFilteredSteps(stepsFiltered);
+  //   setTotalDynamicSteps(stepsFiltered.length);
+  // }, [selectedCategory, basicInfo?.patient?.gender]);
 
   const progress = (activeStep / totalDynamicSteps) * 100;
 

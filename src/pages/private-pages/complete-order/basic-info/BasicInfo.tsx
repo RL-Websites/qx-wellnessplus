@@ -104,7 +104,7 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
     clearErrors,
     setValue,
     watch,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm({
     resolver: yupResolver(basicInfoValidationSchema, { context: { selectedCategory } }),
     context: { selectedCategory },
@@ -153,14 +153,8 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
         //   tempPatientDetails?.userable?.driving_license_front ? `${import.meta.env.VITE_BASE_PATH}/storage/${tempPatientDetails?.userable?.driving_license_front}` : ""
         // );
         // setBackBase64(tempPatientDetails?.userable?.driving_license_back ? `${import.meta.env.VITE_BASE_PATH}/storage/${tempPatientDetails?.userable?.driving_license_back}` : "");
-        setValue(
-          "driving_lic_front",
-          tempPatientDetails?.userable?.driving_license_front ? `${import.meta.env.VITE_BASE_PATH}/storage/${tempPatientDetails?.userable?.driving_license_front}` : ""
-        );
-        setValue(
-          "driving_lic_front",
-          tempPatientDetails?.userable?.driving_license_back ? `${import.meta.env.VITE_BASE_PATH}/storage/${tempPatientDetails?.userable?.driving_license_back}` : ""
-        );
+        setValue("driving_lic_front", tempPatientDetails?.userable?.base64_driving_license_front ? tempPatientDetails?.userable?.base64_driving_license_front : "");
+        setValue("driving_lic_back", tempPatientDetails?.userable?.base64_driving_license_back ? tempPatientDetails?.userable?.base64_driving_license_back : "");
       }
     }
 
@@ -216,6 +210,8 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
         setBackFile(formData?.patient?.driving_lic_back || "");
         // setFrontBase64(formData?.patient?.driving_lic_front || "");
         // setBackBase64(formData?.patient?.driving_lic_back || "");
+        setValue("driving_lic_front", formData?.patient?.driving_lic_front || "");
+        setValue("driving_lic_back", formData?.patient?.driving_lic_back || "");
       }
 
       if (!formData?.patient?.dob && globalDob) {
@@ -268,8 +264,8 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
         longitude: data?.longitude || 0,
         state: data?.state,
         zip_code: data?.zip_code,
-        driving_lic_back: backBase64 || undefined,
-        driving_lic_front: frontBase64 || undefined,
+        driving_lic_back: backBase64 || "",
+        driving_lic_front: frontBase64 || "",
       },
     };
     onNext(payload);
@@ -606,6 +602,8 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
                 </div>
               )}
             </Dropzone>
+            {errors?.driving_lic_front?.message == "" ? <p className="text-danger text-sm mt-2">Please upload an image of the front side of your driving license.</p> : ""}
+            <p></p>
           </div>
           <div className="md:col-span-1 col-span-2">
             <h6 className="font-poppins extra-form-text-medium text-foreground mb-2">Upload Driving License (Back Side)</h6>
@@ -655,6 +653,7 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
                 </div>
               )}
             </Dropzone>
+            {errors?.driving_lic_back?.message ? <p className="text-danger text-sm mt-2">Please upload an image of the back side of your driving license.</p> : ""}
           </div>
         </form>
       </div>

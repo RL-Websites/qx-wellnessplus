@@ -76,8 +76,8 @@ export const basicInfoValidationSchema = yup.object({
     .label("Zip code"),
   latitude: yup.number().nullable(),
   longitude: yup.number().nullable(),
-  driving_lic_front: yup.mixed().nullable(),
-  driving_lic_back: yup.mixed().nullable(),
+  driving_lic_front: yup.string().required("Please upload an image of the front side of your driving license."),
+  driving_lic_back: yup.string().required("Please upload an image of the back side of your driving license."),
 });
 
 export type BasicInfoFormFieldsType = yup.InferType<typeof basicInfoValidationSchema>;
