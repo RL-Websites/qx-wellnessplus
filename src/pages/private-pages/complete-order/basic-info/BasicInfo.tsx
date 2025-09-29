@@ -560,7 +560,9 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
             withAsterisk
           />
           <div className="md:col-span-1 col-span-2">
-            <h6 className="font-poppins extra-form-text-medium text-foreground mb-2">Upload Driving License (Front Side)</h6>
+            <h6 className="font-poppins extra-form-text-medium text-foreground mb-2">
+              Upload Driving License (Front Side)<span className="dml-InputWrapper-required dml-NumberInput-required">*</span>
+            </h6>
             <Dropzone
               onDrop={(files) => handleFileUpload(files, "front")}
               onReject={(rejectedFiles) => {
@@ -611,7 +613,9 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
             <p></p>
           </div>
           <div className="md:col-span-1 col-span-2">
-            <h6 className="font-poppins extra-form-text-medium text-foreground mb-2">Upload Driving License (Back Side)</h6>
+            <h6 className="font-poppins extra-form-text-medium text-foreground mb-2">
+              Upload Driving License (Back Side)<span className="dml-InputWrapper-required dml-NumberInput-required">*</span>
+            </h6>
             <Dropzone
               onDrop={(files) => handleFileUpload(files, "back")}
               onReject={(rejectedFiles) => {

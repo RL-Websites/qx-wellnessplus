@@ -120,7 +120,7 @@ const PatientIntake = () => {
   const patientDetailsQuery = useQuery({
     queryKey: ["partner-patient-booking-query", prescriptionUId],
     queryFn: () => patientApiRepository.publicGetPatientDetails({ u_id: prescriptionUId || "" }),
-    enabled: !!prescriptionUId && basicInfo == undefined && accessToken != undefined,
+    enabled: !!prescriptionUId && accessToken != undefined,
   });
 
   useEffect(() => {
