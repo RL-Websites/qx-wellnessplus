@@ -124,17 +124,21 @@ const PatientIntake = () => {
   });
 
   useEffect(() => {
+    console.log(patientDetailsQuery?.data?.data?.data?.status);
     if (patientDetailsQuery?.data?.data?.data != undefined || patientDetailsQuery?.data?.data?.data != null) {
       if (patientDetailsQuery?.data?.data?.data?.status && patientDetailsQuery?.data?.data?.data?.status == "intake_pending") {
         const medicationCats: string[] = patientDetailsQuery?.data?.data?.data?.prescription_details?.map((item) => item.medication.medication_category);
         const categories: string[] = [];
         if (medicationCats.some((cat) => ["Single Peptides", "Peptides Blends"].includes(cat))) categories.push("peptides");
         if (medicationCats.some((cat) => ["Testosterone"].includes(cat))) categories.push("testosterone");
-        if (medicationCats.some((cat) => ["Hair Growth (Male)", "Hair Growth (Female)"].includes(cat))) categories.push("hairGrowth");
-        if (medicationCats.some((cat) => ["Sexual Health (Male)", "Sexual Health (Female)"].includes(cat))) categories.push("sexualHealth");
+        if (medicationCats.some((cat) => ["Hair Growth (Male)", "Hair Growth (Female)", "Hair Growth (male)", "Hair Growth (female)"].includes(cat))) categories.push("hairGrowth");
+        if (medicationCats.some((cat) => ["Sexual Health (Male)", "Sexual Health (Female)", "Sexual Health (male)", "Sexual Health (female)"].includes(cat)))
+          categories.push("sexualHealth");
         if (medicationCats.some((cat) => ["Weight Loss"].includes(cat))) categories.push("weightLoss");
 
         setActiveCategories(categories);
+
+        console.log(categories);
 
         let stepsFiltered = stepConfig.filter((step) => step.categories.some((cat) => categories.includes(cat)));
 
