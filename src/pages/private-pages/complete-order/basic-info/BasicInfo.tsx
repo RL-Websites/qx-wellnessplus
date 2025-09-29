@@ -78,9 +78,11 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
         if (type === "front") {
           setFrontFile(base64);
           setFrontBase64(base64);
+          setValue("driving_lic_front", base64, { shouldValidate: true });
         } else {
           setBackFile(base64);
           setBackBase64(base64);
+          setValue("driving_lic_back", base64, { shouldValidate: true });
         }
       });
     }
@@ -90,12 +92,14 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
     ev.preventDefault();
     setFrontFile(undefined);
     setFrontBase64(null);
+    setValue("driving_lic_front", "");
   };
 
   const removeBackFile = (ev) => {
     ev.preventDefault();
     setBackFile(undefined);
     setBackBase64(null);
+    setValue("driving_lic_back", "");
   };
 
   const {
@@ -108,6 +112,7 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
   } = useForm({
     resolver: yupResolver(basicInfoValidationSchema, { context: { selectedCategory } }),
     context: { selectedCategory },
+    mode: "onChange",
   });
 
   const state = watch("state");
@@ -602,7 +607,7 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
                 </div>
               )}
             </Dropzone>
-            {errors?.driving_lic_front?.message == "" ? <p className="text-danger text-sm mt-2">Please upload an image of the front side of your driving license.</p> : ""}
+            {errors?.driving_lic_front?.message ? <p className="text-danger text-sm mt-2">Please upload an image of the front side of your driving license.</p> : ""}
             <p></p>
           </div>
           <div className="md:col-span-1 col-span-2">
