@@ -65,98 +65,21 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
 
   const minDate = new Date("1920-01-01");
 
-  // const fileToBase64 = (file: File, callback: (result: string) => void) => {
-  //   const reader = new FileReader();
-  //   reader.readAsDataURL(file);
-  //   reader.onload = () => callback(reader.result as string);
-  //   reader.onerror = (error) => console.error("Error converting file: ", error);
-  // };
-
-  // const handleFileUpload = (files: File[], type: "front" | "back") => {
-  //   if (files.length > 0) {
-  //     const file = files[0];
-  //     fileToBase64(file, (base64) => {
-  //       if (type === "front") {
-  //         setFrontFile(base64);
-  //         setFrontBase64(base64);
-  //         setValue("driving_lic_front", base64, { shouldValidate: true });
-  //       } else {
-  //         setBackFile(base64);
-  //         setBackBase64(base64);
-  //         setValue("driving_lic_back", base64, { shouldValidate: true });
-  //       }
-  //     });
-  //   }
-  // };
-
-  const compressToBase64Async = (files: File[]): Promise<string> =>
-    new Promise((resolve, reject) => {
-      try {
-        compressFileToBase64(files, (output) => {
-          if (output) resolve(output);
-          else reject(new Error("Compression returned empty output"));
-        });
-      } catch (err) {
-        reject(err);
-      }
-    });
-
-  const handleFileUpload = async (files: File[], type: "front" | "back") => {
-    if (!files || files.length === 0) return;
-
-    const file = files[0];
-    const filename = file.name;
-    const originalSizeBytes = file.size;
-    const uploaderId = userData?.id ?? userData?.email ?? "anonymous"; // who uploaded
-
-    try {
-      const base64Output = await compressToBase64Async(files);
-      const withoutPrefix = base64Output.split(",").pop() || base64Output;
-      const base64Length = withoutPrefix.length;
-      const compressedBytesApprox = Math.ceil((base64Length * 3) / 4);
-
-      console.log("[DrivingLicUpload]", {
-        uploader: uploaderId,
-        side: type,
-        filename,
-        originalSizeBytes,
-        compressedBytesApprox,
-        base64Length,
-        timestamp: new Date().toISOString(),
+  const handleFileUpload = (files: File[], type: "front" | "back") => {
+    if (type === "front") {
+      compressFileToBase64(files, (output) => {
+        setFrontFile(output);
+        setFrontBase64(output);
+        setValue("driving_lic_front", output, { shouldValidate: true });
       });
-
-      dmlToast.success({ title: "File compressed successfully" });
-
-      if (type === "front") {
-        setFrontFile(base64Output);
-        setFrontBase64(base64Output);
-        setValue("driving_lic_front", base64Output, { shouldValidate: true });
-      } else {
-        setBackFile(base64Output);
-        setBackBase64(base64Output);
-        setValue("driving_lic_back", base64Output, { shouldValidate: true });
-      }
-    } catch (err) {
-      console.error("Compress/upload error:", err);
-      dmlToast.error({ title: "Failed to compress/upload file" });
+    } else {
+      compressFileToBase64(files, (output) => {
+        setBackFile(output);
+        setBackBase64(output);
+        setValue("driving_lic_back", output, { shouldValidate: true });
+      });
     }
   };
-
-  // const handleFileUpload = (files: File[], type: "front" | "back") => {
-  //   if (type === "front") {
-  //     compressFileToBase64(files, (output) => {
-  //       setFrontFile(output);
-  //       setFrontBase64(output);
-  //       setValue("driving_lic_front", output, { shouldValidate: true });
-  //     });
-  //   } else {
-  //     compressFileToBase64(files, (output) => {
-  //       setBackFile(output);
-  //       setBackBase64(output);
-  //       setValue("driving_lic_back", output, { shouldValidate: true });
-  //     });
-  //   }
-  // };
 
   const removeFrontFile = (ev) => {
     ev.preventDefault();
@@ -637,7 +560,7 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
                 }
               }}
               accept={[MIME_TYPES.png, MIME_TYPES.jpeg]}
-              // maxSize={10 * 1024 ** 2} // 10MB limit
+              maxSize={10 * 1024 ** 2} // 10MB limit
               multiple={false} // Only allow one file
               classNames={{
                 root: "relative w-full min-h-[220px] border-dashed border border-grey w-full cursor-pointer rounded-lg",
@@ -690,7 +613,7 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
                 }
               }}
               accept={[MIME_TYPES.png, MIME_TYPES.jpeg]}
-              // maxSize={10 * 1024 ** 2} //10MB limit
+              maxSize={10 * 1024 ** 2} //10MB limit
               multiple={false}
               classNames={{
                 root: "relative w-full min-h-[220px] border-dashed border border-grey w-full cursor-pointer rounded-lg",
