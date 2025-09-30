@@ -13,7 +13,7 @@ export const compressFileToBase64 = (files: File[], callback: (output: string) =
     new Compressor(file, {
       quality: 0.8,
       success(result) {
-        // console.log("Compressed file:", result);
+        console.log("Compressed file:", result);
         // You can now upload or use the compressed image
         fileToBase64(result, (base64) => {
           callback(base64);
