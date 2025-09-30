@@ -1,6 +1,8 @@
 import dayjs from "dayjs";
 import * as yup from "yup";
 
+const DATE_FORMATS = ["MM-DD-YYYY", "MM/DD/YYYY", "YYYY-MM-DD"];
+
 export const basicInfoValidationSchema = yup.object({
   first_name: yup
     .string()
@@ -47,20 +49,26 @@ export const basicInfoValidationSchema = yup.object({
       // Get productCategory from the context object
       const context = validationContext.options.context;
 
+      console.log("value", value[0]);
+
       const selectedDate = value[0];
       if (!selectedDate) {
         return true;
       }
 
-      // 3. Use dayjs.diff() for an accurate age calculation.
-      const age = dayjs().diff(dayjs(selectedDate), "year");
-      // Check for the special category
-      if (context?.selectedCategory?.includes("Testosterone")) {
-        // Return a custom error message if the check fails
-        return age >= 22 || validationContext.createError({ message: "You must be at least 22 years old." });
+      const parsedDate = dayjs(selectedDate, "MM-DD-YYYY");
+      console.log(parsedDate);
+      if (parsedDate.isValid()) {
+        const age = dayjs().diff(parsedDate, "year");
+        console.log(age);
+        if (context?.selectedCategory?.includes("Testosterone")) {
+          // Return a custom error message if the check fails
+          return age >= 22 || validationContext.createError({ message: "You must be at least 22 years old." });
+        }
+        // Otherwise, run the default validation
+        return age >= 18 || validationContext.createError({ message: "You must be at least 18 years old." });
       }
-      // Otherwise, run the default validation
-      return age >= 18 || validationContext.createError({ message: "You must be at least 18 years old." });
+      // Check for the special category
     }),
   country: yup.string().label("Country"),
   address: yup
