@@ -10,6 +10,7 @@ import { selectedStateAtom } from "@/common/states/state.atom";
 import { dobAtom } from "@/common/states/user.atom";
 import states from "@/data/state-list.json";
 import { formatDate } from "@/utils/date.utils";
+import { compressFileToBase64 } from "@/utils/fileUpload";
 import { getErrorMessage } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ActionIcon, Anchor, Button, Group, Image, Input, NumberInput, Radio, Select, Text } from "@mantine/core";
@@ -71,19 +72,35 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
     reader.onerror = (error) => console.error("Error converting file: ", error);
   };
 
+  // const handleFileUpload = (files: File[], type: "front" | "back") => {
+  //   if (files.length > 0) {
+  //     const file = files[0];
+  //     fileToBase64(file, (base64) => {
+  //       if (type === "front") {
+  //         setFrontFile(base64);
+  //         setFrontBase64(base64);
+  //         setValue("driving_lic_front", base64, { shouldValidate: true });
+  //       } else {
+  //         setBackFile(base64);
+  //         setBackBase64(base64);
+  //         setValue("driving_lic_back", base64, { shouldValidate: true });
+  //       }
+  //     });
+  //   }
+  // };
+
   const handleFileUpload = (files: File[], type: "front" | "back") => {
-    if (files.length > 0) {
-      const file = files[0];
-      fileToBase64(file, (base64) => {
-        if (type === "front") {
-          setFrontFile(base64);
-          setFrontBase64(base64);
-          setValue("driving_lic_front", base64, { shouldValidate: true });
-        } else {
-          setBackFile(base64);
-          setBackBase64(base64);
-          setValue("driving_lic_back", base64, { shouldValidate: true });
-        }
+    if (type === "front") {
+      compressFileToBase64(files, (output) => {
+        setFrontFile(output);
+        setFrontBase64(output);
+        setValue("driving_lic_front", output, { shouldValidate: true });
+      });
+    } else {
+      compressFileToBase64(files, (output) => {
+        setBackFile(output);
+        setBackBase64(output);
+        setValue("driving_lic_back", output, { shouldValidate: true });
       });
     }
   };
@@ -265,8 +282,8 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
         longitude: data?.longitude || 0,
         state: data?.state,
         zip_code: data?.zip_code,
-        driving_lic_back: backBase64 || "",
-        driving_lic_front: frontBase64 || "",
+        driving_lic_back: backBase64 || undefined,
+        driving_lic_front: frontBase64 || undefined,
       },
     };
     onNext(payload);
@@ -616,7 +633,7 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
               onDrop={(files) => handleFileUpload(files, "back")}
               onReject={(rejectedFiles) => {
                 if (rejectedFiles?.[0]?.errors?.[0]?.code == "file-too-large") {
-                  dmlToast.error({ title: "File size should be less than 2MB." });
+                  dmlToast.error({ title: "File size should be less than 10MB." });
                 }
               }}
               accept={[MIME_TYPES.png, MIME_TYPES.jpeg]}
