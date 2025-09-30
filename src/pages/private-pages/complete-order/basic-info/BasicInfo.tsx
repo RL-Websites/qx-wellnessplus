@@ -65,21 +65,51 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
 
   const minDate = new Date("1920-01-01");
 
+  // inside BasicInfo component (replace existing handleFileUpload)
   const handleFileUpload = (files: File[], type: "front" | "back") => {
-    if (type === "front") {
-      compressFileToBase64(files, (output) => {
+    if (!files || files.length === 0) return;
+
+    compressFileToBase64(files, (output) => {
+      if (type === "front") {
         setFrontFile(output);
         setFrontBase64(output);
         setValue("driving_lic_front", output, { shouldValidate: true });
-      });
-    } else {
-      compressFileToBase64(files, (output) => {
+        // approximate size from base64 length
+        try {
+          const sizeInKB = Math.round(((output.length * (3 / 4)) / 1024) * 100) / 100;
+          console.log(`Front compressed base64 approx size: ${sizeInKB} KB`);
+        } catch (e) {
+          console.log("Could not compute front size:", e);
+        }
+      } else {
         setBackFile(output);
         setBackBase64(output);
         setValue("driving_lic_back", output, { shouldValidate: true });
-      });
-    }
+        try {
+          const sizeInKB = Math.round(((output.length * (3 / 4)) / 1024) * 100) / 100;
+          console.log(`Back compressed base64 approx size: ${sizeInKB} KB`);
+        } catch (e) {
+          console.log("Could not compute back size:", e);
+        }
+      }
+    });
   };
+
+  // const handleFileUpload = (files: File[], type: "front" | "back") => {
+  //   if (type === "front") {
+  //     compressFileToBase64(files, (output) => {
+  //       setFrontFile(output);
+  //       setFrontBase64(output);
+  //       setValue("driving_lic_front", output, { shouldValidate: true });
+  //     });
+  //   } else {
+  //     compressFileToBase64(files, (output) => {
+  //       setBackFile(output);
+  //       setBackBase64(output);
+  //       setValue("driving_lic_back", output, { shouldValidate: true });
+  //     });
+  //   }
+  // };
 
   const removeFrontFile = (ev) => {
     ev.preventDefault();
@@ -560,7 +590,7 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
                 }
               }}
               accept={[MIME_TYPES.png, MIME_TYPES.jpeg]}
-              maxSize={10 * 1024 ** 2} // 10MB limit
+              // maxSize={10 * 1024 ** 2} // 10MB limit
               multiple={false} // Only allow one file
               classNames={{
                 root: "relative w-full min-h-[220px] border-dashed border border-grey w-full cursor-pointer rounded-lg",
@@ -613,7 +643,7 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
                 }
               }}
               accept={[MIME_TYPES.png, MIME_TYPES.jpeg]}
-              maxSize={10 * 1024 ** 2} //10MB limit
+              // maxSize={10 * 1024 ** 2} //10MB limit
               multiple={false}
               classNames={{
                 root: "relative w-full min-h-[220px] border-dashed border border-grey w-full cursor-pointer rounded-lg",
