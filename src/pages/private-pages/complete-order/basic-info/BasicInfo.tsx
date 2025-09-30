@@ -571,7 +571,7 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
                 }
               }}
               accept={[MIME_TYPES.png, MIME_TYPES.jpeg]}
-              maxSize={2 * 1024 ** 2} // 5MB limit
+              maxSize={10 * 1024 ** 2} // 10MB limit
               multiple={false} // Only allow one file
               classNames={{
                 root: "relative w-full min-h-[220px] border-dashed border border-grey w-full cursor-pointer rounded-lg",
@@ -624,7 +624,7 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
                 }
               }}
               accept={[MIME_TYPES.png, MIME_TYPES.jpeg]}
-              maxSize={2 * 1024 ** 2}
+              maxSize={10 * 1024 ** 2} //10 MB limit
               multiple={false}
               classNames={{
                 root: "relative w-full min-h-[220px] border-dashed border border-grey w-full cursor-pointer rounded-lg",
