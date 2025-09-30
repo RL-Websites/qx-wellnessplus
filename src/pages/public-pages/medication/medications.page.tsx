@@ -1,4 +1,4 @@
-import { Button } from "@mantine/core";
+import { Button, Skeleton } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useEffect, useState } from "react";
 
@@ -141,7 +141,64 @@ const MedicationsPage = () => {
           Based on your responses, we've personalized these product suggestions for you. Kindly select the one you prefer.
         </span>
       </div>
-      {medicines?.length > 0 ? (
+      {medicineQuery?.isLoading ? (
+        <div className="grid md:grid-cols-3 sm:grid-cols-2 lg:gap-y-12 lg:gap-x-20 gap-7 pt-12 lg:pb-24 pb-[250px]">
+          <div className="md:space-y-4 sm:space-y-3 space-y-2">
+            <Skeleton
+              height={326}
+              className="rounded-xl"
+            />
+            <Skeleton
+              height={64}
+              className="rounded-xl"
+            />
+            <Skeleton
+              height={67}
+              className="rounded-xl"
+            />
+            <Skeleton
+              height={40}
+              className="rounded-xl"
+            />
+          </div>
+          <div className="md:space-y-4 sm:space-y-3 space-y-2">
+            <Skeleton
+              height={326}
+              className="rounded-xl"
+            />
+            <Skeleton
+              height={64}
+              className="rounded-xl"
+            />
+            <Skeleton
+              height={67}
+              className="rounded-xl"
+            />
+            <Skeleton
+              height={40}
+              className="rounded-xl"
+            />
+          </div>
+          <div className="md:space-y-4 sm:space-y-3 space-y-2">
+            <Skeleton
+              height={326}
+              className="rounded-xl"
+            />
+            <Skeleton
+              height={64}
+              className="rounded-xl"
+            />
+            <Skeleton
+              height={67}
+              className="rounded-xl"
+            />
+            <Skeleton
+              height={40}
+              className="rounded-xl"
+            />
+          </div>
+        </div>
+      ) : medicines?.length ? (
         <div className="grid md:grid-cols-3 sm:grid-cols-2 lg:gap-y-12 lg:gap-x-20 gap-7 pt-12 lg:pb-24 pb-[250px]">
           {medicines?.map((item, index) => {
             const isInCart = cartItems.some((cartItem) => cartItem.id === item.id);
