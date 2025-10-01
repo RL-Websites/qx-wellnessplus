@@ -1,6 +1,8 @@
 import dayjs from "dayjs";
 import * as yup from "yup";
 
+const DATE_FORMATS = ["MM-DD-YYYY", "MM/DD/YYYY", "YYYY-MM-DD"];
+
 export const basicInfoValidationSchema = yup.object({
   first_name: yup
     .string()
@@ -31,15 +33,6 @@ export const basicInfoValidationSchema = yup.object({
     .typeError("Please provide a valid date of format MM/DD/YYYY.")
     .required("Please provide your date of birth")
     .test("is18plus", "You must be at least 18 years old", (value, validationContext) => {
-      // const today = new Date();
-      // const selectedDate = value[0];
-      // const year = dayjs(selectedDate).get("year");
-      // // console.log(today.getFullYear(), year);
-      // return today.getFullYear() - year >= 18;
-
-      // 2. Add a "guard clause" to handle the initial empty state.
-      // The .required() rule will handle the error message for empty values.
-      // This test should only run if there IS a value.
       if (!value || value.length === 0) {
         return true;
       }
@@ -47,20 +40,26 @@ export const basicInfoValidationSchema = yup.object({
       // Get productCategory from the context object
       const context = validationContext.options.context;
 
+      console.log("value", value[0]);
+
       const selectedDate = value[0];
       if (!selectedDate) {
         return true;
       }
 
-      // 3. Use dayjs.diff() for an accurate age calculation.
-      const age = dayjs().diff(dayjs(selectedDate), "year");
-      // Check for the special category
-      if (context?.selectedCategory?.includes("Testosterone")) {
-        // Return a custom error message if the check fails
-        return age >= 22 || validationContext.createError({ message: "You must be at least 22 years old." });
+      const parsedDate = dayjs(selectedDate, "MM-DD-YYYY");
+      console.log(parsedDate);
+      if (parsedDate.isValid()) {
+        const age = dayjs().diff(parsedDate, "year");
+        console.log(age);
+        if (context?.selectedCategory?.includes("Testosterone")) {
+          // Return a custom error message if the check fails
+          return age >= 22 || validationContext.createError({ message: "You must be at least 22 years old." });
+        }
+        // Otherwise, run the default validation
+        return age >= 18 || validationContext.createError({ message: "You must be at least 18 years old." });
       }
-      // Otherwise, run the default validation
-      return age >= 18 || validationContext.createError({ message: "You must be at least 18 years old." });
+      // Check for the special category
     }),
   country: yup.string().label("Country"),
   address: yup
@@ -76,8 +75,8 @@ export const basicInfoValidationSchema = yup.object({
     .label("Zip code"),
   latitude: yup.number().nullable(),
   longitude: yup.number().nullable(),
-  driving_lic_front: yup.mixed().nullable(),
-  driving_lic_back: yup.mixed().nullable(),
+  driving_lic_front: yup.string().required("Please upload an image of the front side of your driving license."),
+  driving_lic_back: yup.string().required("Please upload an image of the back side of your driving license."),
 });
 
 export type BasicInfoFormFieldsType = yup.InferType<typeof basicInfoValidationSchema>;

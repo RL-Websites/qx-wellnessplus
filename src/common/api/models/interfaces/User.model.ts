@@ -66,6 +66,8 @@ export interface IUserable {
   stripe_connect_id?: string;
   driving_license_front: string;
   driving_license_back: string;
+  base64_driving_license_front?: string;
+  base64_driving_license_back?: string;
   u_id: string;
 }
 
