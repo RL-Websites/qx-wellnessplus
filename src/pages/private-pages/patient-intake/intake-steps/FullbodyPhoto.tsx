@@ -1,4 +1,5 @@
 import { heightAtom, weightAtom } from "@/common/states/height.atom";
+import { compressFileToBase64 } from "@/utils/fileUpload";
 import { getErrorMessage } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ActionIcon, Anchor, Button, Image, Input, NumberInput, Text } from "@mantine/core";
@@ -82,14 +83,25 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
   }, [defaultValues, heightObj]);
 
   const handleFileUpload = (files: File[]) => {
-    if (files.length > 0) {
-      const file = files[0];
-      fileToBase64(file, (base64) => {
-        setFullBodyBase64(base64);
-        setValue("measurement.full_body_image", base64);
-        clearErrors("measurement.full_body_image");
-      });
-    }
+    if (!files || files.length === 0) return;
+
+    compressFileToBase64(files, (output: string) => {
+      setFullBodyBase64(output);
+
+      setValue("measurement.full_body_image", output, { shouldValidate: true });
+
+      clearErrors("measurement.full_body_image");
+
+      try {
+        const sizeInKB = Math.round(((output.length * (3 / 4)) / 1024) * 100) / 100;
+        console.log(`Full body compressed base64 approx size: ${sizeInKB} KB`);
+        if (sizeInKB > 100) {
+          console.warn("Warning: compressed image size is larger than 100 KB.");
+        }
+      } catch (e) {
+        console.log("Could not compute compressed size:", e);
+      }
+    });
   };
 
   const removeFile = () => {
@@ -213,7 +225,7 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
                 }
               }}
               accept={[MIME_TYPES.png, MIME_TYPES.jpeg]}
-              maxSize={5 * 1024 ** 2}
+              // maxSize={5 * 1024 ** 2} //5MB limit
               multiple={false}
               classNames={{
                 root: "relative w-full md:h-full h-[500px] border-dashed border border-gray-300 bg-gray-50 cursor-pointer rounded-lg",
