@@ -25,9 +25,8 @@ const HomeHeader = () => {
     <div className="header flex items-center justify-between pb-12">
       <div className="logo flex items-center gap-2">
         <NavLink
-          to={userData?.userable_type ? "/category" : "/"}
+          to={location.pathname != "" ? "/category" : "/"}
           component={RdNavLink}
-          className={``}
           classNames={{
             root: "p-0 h-8 bg-transparent",
             label: "flex items-center gap-4",

@@ -27,9 +27,10 @@ const registrationSchema = yup.object({
     .label("Last Name"),
   emailAddress: yup
     .string()
-    .required(({ label }) => `${label} is required.`)
-    .label("Email")
-    .email(),
+    .email("Please provide a valid email address")
+    .matches(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, "A valid Email address is required")
+    .required(({ label }) => `A valid ${label} is required`)
+    .label("Email"),
   password: yup
     .string()
     .required("You need to add a password")
