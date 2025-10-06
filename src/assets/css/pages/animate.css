@@ -1,11 +1,33 @@
 @layer components {
+  /* Keyframes with multiple animation principles */
+  @keyframes fadeInPrincipled {
+    0% {
+      opacity: 0;
+      transform: translateX(60px) scale(0.95);
+    }
+    60% {
+      opacity: 1;
+      transform: translateX(-4px) scale(1.01); /* Overshoot */
+    }
+    80% {
+      transform: translateX(2px) scale(0.995); /* Settle back */
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
+  }
+
+  /* Staged entry with follow-through */
   .animate-title {
-    @apply delay-200 duration-500 animate-fadeInRight;
+    animation: fadeInPrincipled 0.9s cubic-bezier(0.34, 0.7, 0.64, 1) 0s both;
   }
+
   .animate-content {
-    @apply delay-700 duration-500 animate-fadeInRight;
+    animation: fadeInPrincipled 0.95s cubic-bezier(0.34, 0.7, 0.64, 1) 0.1s both;
   }
+
   .animate-btns {
-    @apply delay-[1200] duration-500 animate-fadeInUp;
+    animation: fadeInPrincipled 1s cubic-bezier(0.34, 0.7, 0.64, 1) 0.2s both;
   }
 }
