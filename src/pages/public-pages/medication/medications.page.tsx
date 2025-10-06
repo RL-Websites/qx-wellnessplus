@@ -1,4 +1,4 @@
-import { Button } from "@mantine/core";
+import { Button, Skeleton } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useEffect, useState } from "react";
 
@@ -57,7 +57,13 @@ const MedicationsPage = () => {
       const medList = medicineQuery.data?.data?.data?.map((item) => ({ ...item, qty: 1 }));
       setMedicines(medList || []);
     }
-  }, [medicineQuery.data?.data?.data]);
+  }, [medicineQuery.data]);
+
+  useEffect(() => {
+    if (medicineQuery?.isError && medicineQuery?.error?.response?.data?.status_code == 404) {
+      setMedicines([]);
+    }
+  }, [medicineQuery.isFetched]);
 
   // console.log(medicineQuery);
 
@@ -135,26 +141,86 @@ const MedicationsPage = () => {
           Based on your responses, we've personalized these product suggestions for you. Kindly select the one you prefer.
         </span>
       </div>
-
-      <div className="grid md:grid-cols-3 sm:grid-cols-2 lg:gap-y-12 lg:gap-x-20 gap-7 pt-12 lg:pb-24 pb-[250px]">
-        {medicines?.map((item, index) => {
-          const isInCart = cartItems.some((cartItem) => cartItem.id === item.id);
-
-          return (
-            <MedicationCard
-              key={index}
-              image={`${import.meta.env.VITE_BASE_PATH}/storage/${item?.image}`}
-              title={`${item?.name} ${item.strength ? item.strength + " " + item.unit : ""} `}
-              cost={item?.customer_medication?.price}
-              lab_fee={stateWiseLabFee(item, selectedState)}
-              onAddToCart={() => handleAddToCart(item)}
-              onShowDetails={() => handelDetailsModal(item)}
-              disabled={isInCart} // pass this prop to your MedicationCard
-              selectedCategory={selectedCategory}
+      {medicineQuery?.isLoading ? (
+        <div className="grid md:grid-cols-3 sm:grid-cols-2 lg:gap-y-12 lg:gap-x-20 gap-7 pt-12 lg:pb-24 pb-[250px]">
+          <div className="md:space-y-4 sm:space-y-3 space-y-2">
+            <Skeleton
+              height={326}
+              className="rounded-xl"
             />
-          );
-        })}
-      </div>
+            <Skeleton
+              height={64}
+              className="rounded-xl"
+            />
+            <Skeleton
+              height={67}
+              className="rounded-xl"
+            />
+            <Skeleton
+              height={40}
+              className="rounded-xl"
+            />
+          </div>
+          <div className="md:space-y-4 sm:space-y-3 space-y-2">
+            <Skeleton
+              height={326}
+              className="rounded-xl"
+            />
+            <Skeleton
+              height={64}
+              className="rounded-xl"
+            />
+            <Skeleton
+              height={67}
+              className="rounded-xl"
+            />
+            <Skeleton
+              height={40}
+              className="rounded-xl"
+            />
+          </div>
+          <div className="md:space-y-4 sm:space-y-3 space-y-2">
+            <Skeleton
+              height={326}
+              className="rounded-xl"
+            />
+            <Skeleton
+              height={64}
+              className="rounded-xl"
+            />
+            <Skeleton
+              height={67}
+              className="rounded-xl"
+            />
+            <Skeleton
+              height={40}
+              className="rounded-xl"
+            />
+          </div>
+        </div>
+      ) : medicines?.length ? (
+        <div className="grid md:grid-cols-3 sm:grid-cols-2 lg:gap-y-12 lg:gap-x-20 gap-7 pt-12 lg:pb-24 pb-[250px]">
+          {medicines?.map((item, index) => {
+            const isInCart = cartItems.some((cartItem) => cartItem.id === item.id);
+
+            return (
+              <MedicationCard
+                key={index}
+                image={`${import.meta.env.VITE_BASE_PATH}/storage/${item?.image}`}
+                title={`${item?.name} ${item.strength ? item.strength + " " + item.unit : ""} `}
+                cost={item?.customer_medication?.price}
+                lab_fee={stateWiseLabFee(item, selectedState)}
+                onAddToCart={() => handleAddToCart(item)}
+                onShowDetails={() => handelDetailsModal(item)}
+                disabled={isInCart} // pass this prop to your MedicationCard
+                selectedCategory={selectedCategory}
+              />
+            );
+          })}
+        </div>
+      ) : (
+        <h5 className="text-center text-primary mt-[100px]">No medication found for the specified category.</h5>
+      )}
 
       {cartItems.length > 0 && (
         <div className="fixed left-0 bottom-16 w-full animate-fadeInUp">

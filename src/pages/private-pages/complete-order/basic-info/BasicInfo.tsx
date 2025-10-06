@@ -10,6 +10,7 @@ import { selectedStateAtom } from "@/common/states/state.atom";
 import { dobAtom } from "@/common/states/user.atom";
 import states from "@/data/state-list.json";
 import { formatDate } from "@/utils/date.utils";
+import { compressFileToBase64 } from "@/utils/fileUpload";
 import { getErrorMessage } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ActionIcon, Anchor, Button, Group, Image, Input, NumberInput, Radio, Select, Text } from "@mantine/core";
@@ -64,38 +65,64 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
 
   const minDate = new Date("1920-01-01");
 
-  const fileToBase64 = (file: File, callback: (result: string) => void) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => callback(reader.result as string);
-    reader.onerror = (error) => console.error("Error converting file: ", error);
+  // inside BasicInfo component (replace existing handleFileUpload)
+  const handleFileUpload = (files: File[], type: "front" | "back") => {
+    if (!files || files.length === 0) return;
+
+    compressFileToBase64(files, (output) => {
+      if (type === "front") {
+        setFrontFile(output);
+        setFrontBase64(output);
+        setValue("driving_lic_front", output, { shouldValidate: true });
+        // approximate size from base64 length
+        try {
+          const sizeInKB = Math.round(((output.length * (3 / 4)) / 1024) * 100) / 100;
+          console.log(`Front compressed base64 approx size: ${sizeInKB} KB`);
+        } catch (e) {
+          console.log("Could not compute front size:", e);
+        }
+      } else {
+        setBackFile(output);
+        setBackBase64(output);
+        setValue("driving_lic_back", output, { shouldValidate: true });
+        try {
+          const sizeInKB = Math.round(((output.length * (3 / 4)) / 1024) * 100) / 100;
+          console.log(`Back compressed base64 approx size: ${sizeInKB} KB`);
+        } catch (e) {
+          console.log("Could not compute back size:", e);
+        }
+      }
+    });
   };
 
-  const handleFileUpload = (files: File[], type: "front" | "back") => {
-    if (files.length > 0) {
-      const file = files[0];
-      fileToBase64(file, (base64) => {
-        if (type === "front") {
-          setFrontFile(base64);
-          setFrontBase64(base64);
-        } else {
-          setBackFile(base64);
-          setBackBase64(base64);
-        }
-      });
-    }
-  };
+  // const handleFileUpload = (files: File[], type: "front" | "back") => {
+  //   if (type === "front") {
+  //     compressFileToBase64(files, (output) => {
+  //       setFrontFile(output);
+  //       setFrontBase64(output);
+  //       setValue("driving_lic_front", output, { shouldValidate: true });
+  //     });
+  //   } else {
+  //     compressFileToBase64(files, (output) => {
+  //       setBackFile(output);
+  //       setBackBase64(output);
+  //       setValue("driving_lic_back", output, { shouldValidate: true });
+  //     });
+  //   }
+  // };
 
   const removeFrontFile = (ev) => {
     ev.preventDefault();
     setFrontFile(undefined);
     setFrontBase64(null);
+    setValue("driving_lic_front", "");
   };
 
   const removeBackFile = (ev) => {
     ev.preventDefault();
     setBackFile(undefined);
     setBackBase64(null);
+    setValue("driving_lic_back", "");
   };
 
   const {
@@ -104,10 +131,14 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
     clearErrors,
     setValue,
     watch,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm({
     resolver: yupResolver(basicInfoValidationSchema),
+    context: { selectedCategory },
+    mode: "onChange",
   });
+
+  //  { context: { selectedCategory } }
 
   const state = watch("state");
 
@@ -142,24 +173,12 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
         setZipCode(tempPatientDetails?.userable?.zipcode);
         setValue("latitude", tempPatientDetails?.userable?.latitude ? Number(tempPatientDetails?.userable?.latitude) : null);
         setValue("longitude", tempPatientDetails?.userable?.longitude ? Number(tempPatientDetails?.userable?.longitude) : null);
-        setFrontFile(
-          tempPatientDetails?.userable?.driving_license_front ? `${import.meta.env.VITE_BASE_PATH}/storage/${tempPatientDetails?.userable?.driving_license_front}` : undefined
-        );
-        setBackFile(
-          tempPatientDetails?.userable?.driving_license_back ? `${import.meta.env.VITE_BASE_PATH}/storage/${tempPatientDetails?.userable?.driving_license_back}` : undefined
-        );
-        // setFrontBase64(
-        //   tempPatientDetails?.userable?.driving_license_front ? `${import.meta.env.VITE_BASE_PATH}/storage/${tempPatientDetails?.userable?.driving_license_front}` : ""
-        // );
-        // setBackBase64(tempPatientDetails?.userable?.driving_license_back ? `${import.meta.env.VITE_BASE_PATH}/storage/${tempPatientDetails?.userable?.driving_license_back}` : "");
-        setValue(
-          "driving_lic_front",
-          tempPatientDetails?.userable?.driving_license_front ? `${import.meta.env.VITE_BASE_PATH}/storage/${tempPatientDetails?.userable?.driving_license_front}` : ""
-        );
-        setValue(
-          "driving_lic_front",
-          tempPatientDetails?.userable?.driving_license_back ? `${import.meta.env.VITE_BASE_PATH}/storage/${tempPatientDetails?.userable?.driving_license_back}` : ""
-        );
+        setFrontFile(tempPatientDetails?.userable?.base64_driving_license_front ? tempPatientDetails?.userable?.base64_driving_license_front : "");
+        setBackFile(tempPatientDetails?.userable?.base64_driving_license_front ? tempPatientDetails?.userable?.base64_driving_license_front : "");
+        setFrontBase64(tempPatientDetails?.userable?.base64_driving_license_front ? tempPatientDetails?.userable?.base64_driving_license_front : "");
+        setBackBase64(tempPatientDetails?.userable?.base64_driving_license_front ? tempPatientDetails?.userable?.base64_driving_license_front : "");
+        setValue("driving_lic_front", tempPatientDetails?.userable?.base64_driving_license_front ? tempPatientDetails?.userable?.base64_driving_license_front : "");
+        setValue("driving_lic_back", tempPatientDetails?.userable?.base64_driving_license_back ? tempPatientDetails?.userable?.base64_driving_license_back : "");
       }
     }
 
@@ -213,8 +232,10 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
         setValue("longitude", Number(formData?.patient?.longitude));
         setFrontFile(formData?.patient?.driving_lic_front || "");
         setBackFile(formData?.patient?.driving_lic_back || "");
-        // setFrontBase64(formData?.patient?.driving_lic_front || "");
-        // setBackBase64(formData?.patient?.driving_lic_back || "");
+        setFrontBase64(formData?.patient?.driving_lic_front || "");
+        setBackBase64(formData?.patient?.driving_lic_back || "");
+        setValue("driving_lic_front", formData?.patient?.driving_lic_front || "");
+        setValue("driving_lic_back", formData?.patient?.driving_lic_back || "");
       }
 
       if (!formData?.patient?.dob && globalDob) {
@@ -227,7 +248,6 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
       } else if (formData?.patient?.dob) {
         const parsedDate = dayjs(formData.patient.dob, "MM-DD-YYYY");
         if (parsedDate.isValid()) {
-          console.log(parsedDate.toDate());
           setDob(parsedDate.toDate());
           setValue("dob", [parsedDate.format("MM-DD-YYYY")]);
         }
@@ -284,6 +304,17 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
           block: "center",
         });
         phoneElement.focus();
+      }
+    }
+    if (error?.dob?.message) {
+      const dobElement = document.querySelector('[aria-labelledby="dob-input"]') as HTMLElement;
+
+      if (dobElement) {
+        dobElement.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+        dobElement.focus();
       }
     }
   };
@@ -417,6 +448,7 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
                 <BaseProvider theme={LightTheme}>
                   {/* <pre>{JSON.stringify(dob)}</pre> */}
                   <UberDatePicker
+                    aria-labelledby="dob-input"
                     aria-label="Select a date"
                     placeholder="MM/DD/YYYY"
                     formatString="MM/dd/yyyy"
@@ -547,16 +579,18 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
             withAsterisk
           />
           <div className="md:col-span-1 col-span-2">
-            <h6 className="font-poppins extra-form-text-medium text-foreground mb-2">Upload Driving License (Front Side)</h6>
+            <h6 className="font-poppins extra-form-text-medium text-foreground mb-2">
+              Upload Driving License (Front Side)<span className="dml-InputWrapper-required dml-NumberInput-required">*</span>
+            </h6>
             <Dropzone
               onDrop={(files) => handleFileUpload(files, "front")}
               onReject={(rejectedFiles) => {
                 if (rejectedFiles?.[0]?.errors?.[0]?.code == "file-too-large") {
-                  dmlToast.error({ title: "File size should be less than 2MB." });
+                  dmlToast.error({ title: "File size should be less than 10MB." });
                 }
               }}
               accept={[MIME_TYPES.png, MIME_TYPES.jpeg]}
-              maxSize={2 * 1024 ** 2} // 5MB limit
+              // maxSize={10 * 1024 ** 2} // 10MB limit
               multiple={false} // Only allow one file
               classNames={{
                 root: "relative w-full min-h-[220px] border-dashed border border-grey w-full cursor-pointer rounded-lg",
@@ -594,18 +628,22 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
                 </div>
               )}
             </Dropzone>
+            {errors?.driving_lic_front?.message ? <p className="text-danger text-sm mt-2">Please upload an image of the front side of your driving license.</p> : ""}
+            <p></p>
           </div>
           <div className="md:col-span-1 col-span-2">
-            <h6 className="font-poppins extra-form-text-medium text-foreground mb-2">Upload Driving License (Back Side)</h6>
+            <h6 className="font-poppins extra-form-text-medium text-foreground mb-2">
+              Upload Driving License (Back Side)<span className="dml-InputWrapper-required dml-NumberInput-required">*</span>
+            </h6>
             <Dropzone
               onDrop={(files) => handleFileUpload(files, "back")}
               onReject={(rejectedFiles) => {
                 if (rejectedFiles?.[0]?.errors?.[0]?.code == "file-too-large") {
-                  dmlToast.error({ title: "File size should be less than 2MB." });
+                  dmlToast.error({ title: "File size should be less than 10MB." });
                 }
               }}
               accept={[MIME_TYPES.png, MIME_TYPES.jpeg]}
-              maxSize={2 * 1024 ** 2}
+              // maxSize={10 * 1024 ** 2} //10MB limit
               multiple={false}
               classNames={{
                 root: "relative w-full min-h-[220px] border-dashed border border-grey w-full cursor-pointer rounded-lg",
@@ -643,6 +681,7 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
                 </div>
               )}
             </Dropzone>
+            {errors?.driving_lic_back?.message ? <p className="text-danger text-sm mt-2">Please upload an image of the back side of your driving license.</p> : ""}
           </div>
         </form>
       </div>
