@@ -50,7 +50,7 @@ export const basicInfoValidationSchema = yup.object({
       const parsedDate = dayjs(selectedDate, "MM-DD-YYYY");
       console.log(parsedDate);
       if (parsedDate.isValid()) {
-        const age = dayjs().diff(parsedDate, "year");
+        const age = dayjs().diff(selectedDate, "year");
         console.log(age);
         if (context?.selectedCategory?.includes("Testosterone")) {
           // Return a custom error message if the check fails
