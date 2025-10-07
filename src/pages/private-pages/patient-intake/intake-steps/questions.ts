@@ -146,4 +146,8 @@ export const questions = [
     label:
       "Depending on state regulations, your provider may reach out to you to perform a consultation over the phone. Otherwise, your provider will review your intake forms and approve your script if all criteria are met",
   },
+  {
+    name: "selfIntro",
+    label: "Additional Details or Questions Provided by Patient",
+  },
 ];

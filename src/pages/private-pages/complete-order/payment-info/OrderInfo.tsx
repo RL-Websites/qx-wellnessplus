@@ -175,6 +175,15 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
     onNext(payload);
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      if (event?.currentTarget?.value) {
+        handleApplyPromo({ promo_code: event?.currentTarget?.value });
+      }
+      event.preventDefault();
+    }
+  };
+
   const handleNext = handleSubmit(submitFormWithPatientCard);
 
   return (
@@ -213,7 +222,7 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
                       {item?.medicine_type == "ODT" ? "Oral" : item?.medicine_type} | {item?.medication_category}
                     </div>
                     <div className="text-foreground">
-                      Price: ${item?.lab_required == "1" ? (Number(calculatePrice(item)) + stateWiseLabFee(item, selectedState)).toFixed(2) : calculatePrice(item)}
+                      Price: ${item?.lab_required == "1" ? (Number(calculatePrice(item)) + stateWiseLabFee(item, selectedState)).toFixed(2) : calculatePrice(item).toFixed(2)}
                     </div>
                   </div>
                 </div>
@@ -266,6 +275,7 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
                 label="Apply Promo Code"
                 placeholder="Enter promo code"
                 {...register("promo_code")}
+                onKeyDown={handleKeyDown}
                 rightSection={
                   appliedPromo ? (
                     <div

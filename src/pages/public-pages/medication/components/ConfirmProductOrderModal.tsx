@@ -1,5 +1,6 @@
 import { IPartnerMedicineListItem } from "@/common/api/models/interfaces/Medication.model";
-import { Button, Group, Modal, Radio } from "@mantine/core";
+import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
+import { Button, Modal, Radio } from "@mantine/core";
 import { useState } from "react";
 
 interface IConfirmationModalProps {
@@ -21,7 +22,7 @@ function ConfirmProductOrderModal(modalProps: IConfirmationModalProps) {
       centered
       closeOnClickOutside={false}
       classNames={{
-        content: "rounded-2xl max-w-md w-full",
+        content: "md:min-w-[540px]",
       }}
     >
       <Modal.Overlay />
@@ -34,28 +35,19 @@ function ConfirmProductOrderModal(modalProps: IConfirmationModalProps) {
         </Modal.Header>
 
         <Modal.Body className="px-6 pb-6 pt-2">
-          <h2 className="text-foreground text-2xl font-poppins font-semibold mb-4">Select Quantity</h2>
+          <h2 className="text-foreground text-2xl font-poppins font-semibold mb-4 animate-title">Select Quantity</h2>
 
           <Radio.Group
             value={selectedQty.toString()}
             onChange={(value) => setSelectedQty(Number(value))}
-            className="mb-8"
+            className="mb-8 mt-6 w-full animate-content"
           >
-            <Group>
+            <div className="grid md:grid-cols-2 gap-5 w-full">
               {["1", "2"].map((qty) => (
                 <Radio
                   key={qty}
                   value={qty}
-                  classNames={{
-                    root: "relative w-[calc(100%_-_50%_-_10px)]",
-                    radio: "hidden",
-                    inner: "hidden",
-                    labelWrapper: "w-full",
-                    label: `
-                    block !w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium
-                    ${selectedQty.toString() === qty ? "border-gray-300 text-black bg-white" : "border-gray-300 bg-white text-black"}
-                  `,
-                  }}
+                  classNames={getBaseWebRadios(selectedQty.toString(), qty)}
                   label={
                     <div className="text-center relative">
                       <span className="text-foreground">
@@ -70,7 +62,7 @@ function ConfirmProductOrderModal(modalProps: IConfirmationModalProps) {
                   }
                 />
               ))}
-            </Group>
+            </div>
           </Radio.Group>
 
           <div className="bg-warning-bg text-foreground text-sm rounded-xl px-4 py-4 space-y-3 mb-6">

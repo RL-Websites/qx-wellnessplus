@@ -1,4 +1,8 @@
+import dayjs from "dayjs";
 import * as yup from "yup";
+
+const DATE_FORMATS = ["MM-DD-YYYY", "MM/DD/YYYY", "YYYY-MM-DD"];
+
 export const basicInfoValidationSchema = yup.object({
   first_name: yup
     .string()
@@ -27,15 +31,42 @@ export const basicInfoValidationSchema = yup.object({
   dob: yup
     .array(yup.string().nonNullable(() => "Please provide a valid date of format MM/DD/YYYY."))
     .typeError("Please provide a valid date of format MM/DD/YYYY.")
-    .required("Please provide your date of birth"),
-  // weight: yup.string().required("Weight is required"),
-  // height: yup.string().required("Height is required"),
+    .required("Please provide your date of birth")
+    .test("is18plus", "You must be at least 18 years old", (value, validationContext) => {
+      if (!value || value.length === 0) {
+        return true;
+      }
+
+      // Get productCategory from the context object
+      const context = validationContext.options.context;
+
+      console.log("value", value[0]);
+
+      const selectedDate = value[0];
+      if (!selectedDate) {
+        return true;
+      }
+
+      const parsedDate = dayjs(selectedDate, "MM-DD-YYYY");
+      console.log(parsedDate);
+      if (parsedDate.isValid()) {
+        const age = dayjs().diff(parsedDate, "year");
+        console.log(age);
+        if (context?.selectedCategory?.includes("Testosterone")) {
+          // Return a custom error message if the check fails
+          return age >= 22 || validationContext.createError({ message: "You must be at least 22 years old." });
+        }
+        // Otherwise, run the default validation
+        return age >= 18 || validationContext.createError({ message: "You must be at least 18 years old." });
+      }
+      // Check for the special category
+    }),
   country: yup.string().label("Country"),
   address: yup
     .string()
     .required(({ label }) => `${label} is required`)
     .label("Address"),
-  address2: yup.string().optional(),
+  address2: yup.string().nullable().optional(),
   state: yup.string().required("Please select a state").label("State"),
   city: yup.string().required("Please select a city").label("City"),
   zip_code: yup
@@ -44,8 +75,8 @@ export const basicInfoValidationSchema = yup.object({
     .label("Zip code"),
   latitude: yup.number().nullable(),
   longitude: yup.number().nullable(),
-  driving_lic_front: yup.mixed().nullable(),
-  driving_lic_back: yup.mixed().nullable(),
+  driving_lic_front: yup.string().required("Please upload an image of the front side of your driving license."),
+  driving_lic_back: yup.string().required("Please upload an image of the back side of your driving license."),
 });
 
 export type BasicInfoFormFieldsType = yup.InferType<typeof basicInfoValidationSchema>;

@@ -14,7 +14,9 @@ const ThanksStep = ({ isActive }: { isActive: boolean }) => {
     const timer = setTimeout(() => {
       if (openedRef.current) return; // extra guard
       openedRef.current = true;
-      window.open(url, "_blank", "noopener,noreferrer");
+      // window.location(url, "_blank", "noopener,noreferrer");
+      // window.location.href = url;
+      window.location.replace(url);
     }, 10000);
   }, []);
 
