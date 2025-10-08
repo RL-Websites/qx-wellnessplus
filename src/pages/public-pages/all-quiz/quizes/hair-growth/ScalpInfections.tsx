@@ -16,9 +16,10 @@ interface IScalpInfectionsProps {
   onNext: (data: scalpInfectionsSchemaType) => void;
   onBack: () => void;
   defaultValues?: scalpInfectionsSchemaType;
+  direction?: "forward" | "backward"; // ✅ Add this
 }
 
-const ScalpInfections = ({ onNext, onBack, defaultValues }: IScalpInfectionsProps) => {
+const ScalpInfections = ({ onNext, onBack, defaultValues, direction }: IScalpInfectionsProps) => {
   const [isExiting, setIsExiting] = useState(false);
   const [isBackExiting, setIsBackExiting] = useState(false);
 
@@ -29,7 +30,7 @@ const ScalpInfections = ({ onNext, onBack, defaultValues }: IScalpInfectionsProp
     setTimeout(() => {
       setIsBackExiting(false);
       onBack();
-    }, 420);
+    }, 750);
   };
 
   const handleFormSubmit = (data: scalpInfectionsSchemaType) => {
@@ -39,7 +40,7 @@ const ScalpInfections = ({ onNext, onBack, defaultValues }: IScalpInfectionsProp
     setTimeout(() => {
       setIsExiting(false);
       onNext(data);
-    }, 420); // ✅ Matches animation duration (400ms + 100ms delay)
+    }, 750); // ✅ Matches animation duration (400ms + 100ms delay)
   };
   const {
     handleSubmit,
@@ -67,12 +68,14 @@ const ScalpInfections = ({ onNext, onBack, defaultValues }: IScalpInfectionsProp
     <form
       id="scalpInfectionsForm"
       onSubmit={handleSubmit(handleFormSubmit)}
-      className={`card-common-width-lg mx-auto space-y-6 ${isExiting ? "animate-content-exit" : isBackExiting ? "animate-content-exit-back" : "animate-content"}`}
+      className={`card-common-width-lg mx-auto space-y-6 ${
+        isExiting ? "animate-content-exit" : isBackExiting ? "animate-content-exit-back" : direction === "forward" ? "animate-content-enter-right" : "animate-content-enter-left"
+      }`}
     >
       <div>
         <h2
           className={`text-center text-3xl font-poppins font-semibold text-foreground ${
-            isExiting ? "animate-title-exit" : isBackExiting ? "animate-title-exit-back" : "animate-title"
+            isExiting ? "animate-title-exit" : isBackExiting ? "animate-title-exit-back" : direction === "forward" ? "animate-title-enter-right" : "animate-title-enter-left"
           }`}
         >
           Do you have a history of scalp infections (e.g., seborrheic dermatitis)?
@@ -81,7 +84,15 @@ const ScalpInfections = ({ onNext, onBack, defaultValues }: IScalpInfectionsProp
         <Radio.Group
           value={scalpInfactions}
           onChange={handleSelect}
-          className="mt-6 w-full animate-content"
+          className={`mt-6 w-full  ${
+            isExiting
+              ? "animate-content-exit"
+              : isBackExiting
+              ? "animate-content-exit-back"
+              : direction === "forward"
+              ? "animate-content-enter-right"
+              : "animate-content-enter-left"
+          }`}
         >
           <div className="grid md:grid-cols-2 w-full gap-5">
             {options.map((option) => (
@@ -106,7 +117,11 @@ const ScalpInfections = ({ onNext, onBack, defaultValues }: IScalpInfectionsProp
         {errors.scalpInfactions && <Text className="text-red-500 text-sm mt-5 text-center">{errors.scalpInfactions.message}</Text>}
       </div>
 
-      <div className={`flex justify-center gap-6 pt-4 animate-btns ${isExiting ? "animate-btns-exit" : isBackExiting ? "animate-btns-exit-back" : "animate-btns"}`}>
+      <div
+        className={`flex justify-center gap-6 pt-4 animate-btns  ${
+          isExiting ? "animate-btns-exit" : isBackExiting ? "animate-btns-exit-back" : direction === "forward" ? "animate-btns-enter-right" : "animate-btns-enter-left"
+        }`}
+      >
         <Button
           variant="outline"
           className="w-[200px]"

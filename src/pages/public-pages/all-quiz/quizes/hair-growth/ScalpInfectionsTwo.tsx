@@ -1,6 +1,7 @@
 import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Radio, Text } from "@mantine/core";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -15,9 +16,10 @@ interface IScalpInfectionsTwoProps {
   onNext: (data: scalpInfectionsTwoSchemaType) => void;
   onBack: () => void;
   defaultValues?: scalpInfectionsTwoSchemaType;
+  direction?: "forward" | "backward"; // ✅ Add this
 }
 
-const ScalpInfectionsTwo = ({ onNext, onBack, defaultValues }: IScalpInfectionsTwoProps) => {
+const ScalpInfectionsTwo = ({ onNext, onBack, defaultValues, direction }: IScalpInfectionsTwoProps) => {
   const {
     handleSubmit,
     setValue,
@@ -32,6 +34,8 @@ const ScalpInfectionsTwo = ({ onNext, onBack, defaultValues }: IScalpInfectionsT
   });
 
   const scalpInfactions = watch("scalpInfactions");
+  const [isExiting, setIsExiting] = useState(false);
+  const [isBackExiting, setIsBackExiting] = useState(false);
 
   const options = ["No", "Yes"];
 
@@ -40,19 +44,52 @@ const ScalpInfectionsTwo = ({ onNext, onBack, defaultValues }: IScalpInfectionsT
     clearErrors("scalpInfactions");
   };
 
+  const handleBackClick = () => {
+    setIsBackExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsBackExiting(false);
+      onBack();
+    }, 750);
+  };
+
+  const handleFormSubmit = (data: scalpInfectionsTwoSchemaType) => {
+    setIsExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsExiting(false);
+      onNext(data);
+    }, 750); // ✅ Matches animation duration (400ms + 100ms delay)
+  };
   return (
     <form
       id="scalpInfectionsTwoForm"
-      onSubmit={handleSubmit(onNext)}
+      onSubmit={handleSubmit(handleFormSubmit)}
       className="card-common-width-lg  mx-auto space-y-6"
     >
       <div>
-        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground animate-title">Do you have any untreated scalp infections (e.g., fungal)? </h2>
+        <h2
+          className={`text-center text-3xl font-poppins font-semibold text-foreground ${
+            isExiting ? "animate-title-exit" : isBackExiting ? "animate-title-exit-back" : direction === "forward" ? "animate-title-enter-right" : "animate-title-enter-left"
+          }`}
+        >
+          Do you have any untreated scalp infections (e.g., fungal)?{" "}
+        </h2>
 
         <Radio.Group
           value={scalpInfactions}
           onChange={handleSelect}
-          className="mt-6 w-full animate-content"
+          className={`mt-6 w-full ${
+            isExiting
+              ? "animate-content-exit"
+              : isBackExiting
+              ? "animate-content-exit-back"
+              : direction === "forward"
+              ? "animate-content-enter-right"
+              : "animate-content-enter-left"
+          }`}
         >
           <div className="grid md:grid-cols-2 w-full gap-5">
             {options.map((option) => (
@@ -77,11 +114,15 @@ const ScalpInfectionsTwo = ({ onNext, onBack, defaultValues }: IScalpInfectionsT
         {errors.scalpInfactions && <Text className="text-red-500 text-sm mt-5 text-center">{errors.scalpInfactions.message}</Text>}
       </div>
 
-      <div className="flex justify-center gap-6 pt-4 animate-btns">
+      <div
+        className={`flex justify-center gap-6 pt-4 ${
+          isExiting ? "animate-btns-exit" : isBackExiting ? "animate-btns-exit-back" : direction === "forward" ? "animate-btns-enter-right" : "animate-btns-enter-left"
+        }`}
+      >
         <Button
           variant="outline"
           className="w-[200px]"
-          onClick={onBack}
+          onClick={handleBackClick}
         >
           Back
         </Button>

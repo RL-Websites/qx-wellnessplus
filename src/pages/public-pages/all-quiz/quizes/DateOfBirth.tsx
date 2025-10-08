@@ -17,6 +17,8 @@ import * as yup from "yup";
 interface IDobProps {
   onNext: (data: dobSchemaType) => void;
   onBack: () => void;
+  direction?: "forward" | "backward"; // ✅ Add this
+
   defaultValues?: dobSchemaType;
 }
 
@@ -24,10 +26,11 @@ type dobSchemaType = {
   date_of_birth: Date;
 };
 
-export default function DateOfBirth({ onNext, onBack, defaultValues }: IDobProps) {
+export default function DateOfBirth({ onNext, onBack, defaultValues, direction }: IDobProps) {
   const engine = new Styletron();
   const [dob, setDob] = useState<any>(defaultValues?.date_of_birth ?? null);
   const [isExiting, setIsExiting] = useState(false);
+  const [isBackExiting, setIsBackExiting] = useState(false);
 
   const selectedCategory = useAtomValue(selectedCategoryAtom);
 
@@ -54,7 +57,17 @@ export default function DateOfBirth({ onNext, onBack, defaultValues }: IDobProps
     setTimeout(() => {
       onNext(data);
       setIsExiting(false);
-    }, 450); // ✅ Matches animation duration (400ms + 100ms delay)
+    }, 750); // ✅ Matches animation duration (400ms + 100ms delay)
+  };
+
+  const handleBackClick = () => {
+    setIsBackExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsBackExiting(false);
+      onBack();
+    }, 750);
   };
 
   const {
@@ -69,17 +82,41 @@ export default function DateOfBirth({ onNext, onBack, defaultValues }: IDobProps
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
-      <h2 className={`heading-text text-foreground uppercase text-center ${isExiting ? "animate-title-exit" : "animate-title"}`}>Date of Birth</h2>
+      <h2
+        className={`heading-text text-foreground uppercase text-center ${
+          isExiting ? "animate-content-exit" : isBackExiting ? "animate-content-exit-back" : direction === "forward" ? "animate-content-enter-right" : "animate-content-enter-left"
+        }`}
+      >
+        Date of Birth
+      </h2>
       {selectedCategory?.includes("Testosterone") ? (
-        <p className={`text-xl text-foreground font-poppins text-center pt-5 ${isExiting ? "animate-content-exit" : "animate-content"}`}>
+        <p
+          className={`text-xl text-foreground font-poppins text-center pt-5 ${
+            isExiting ? "animate-title-exit" : isBackExiting ? "animate-title-exit-back" : direction === "forward" ? "animate-title-enter-right" : "animate-title-enter-left"
+          }`}
+        >
           For Testosterone Therapy, you must be {ageLimit} years or older.
         </p>
       ) : (
-        <p className={`text-xl text-foreground font-poppins text-center pt-5 ${isExiting ? "animate-content-exit" : "animate-content"}`}>
+        <p
+          className={`text-xl text-foreground font-poppins text-center pt-5 ${
+            isExiting
+              ? "animate-content-exit"
+              : isBackExiting
+              ? "animate-content-exit-back"
+              : direction === "forward"
+              ? "animate-content-enter-right"
+              : "animate-content-enter-left"
+          }`}
+        >
           We cannot prescribe any medication if you are under {ageLimit} years old
         </p>
       )}
-      <div className={`card-common card-common-width relative z-10 delay-1000 duration-500 ${isExiting ? "animate-content-exit" : "animate-content"}`}>
+      <div
+        className={`card-common card-common-width relative z-10 delay-1000 duration-500 ${
+          isExiting ? "animate-content-exit" : isBackExiting ? "animate-content-exit-back" : direction === "forward" ? "animate-content-enter-right" : "animate-content-enter-left"
+        }`}
+      >
         <form
           id="dobForm"
           className="w-full"
@@ -120,7 +157,11 @@ export default function DateOfBirth({ onNext, onBack, defaultValues }: IDobProps
         </form>
       </div>
 
-      <div className={`flex justify-center md:gap-6 gap-3 md:pt-8 pt-5 relative z-0 ${isExiting ? "animate-btns-exit" : "animate-btns"}`}>
+      <div
+        className={`flex justify-center md:gap-6 gap-3 md:pt-8 pt-5 relative z-0 ${
+          isExiting ? "animate-btns-exit" : isBackExiting ? "animate-btns-exit-back" : direction === "forward" ? "animate-btns-enter-right" : "animate-btns-enter-left"
+        }`}
+      >
         <Button
           variant="outline"
           className="w-[200px] animate-btns"

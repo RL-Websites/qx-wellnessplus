@@ -21,9 +21,10 @@ interface IGenderHairGrowthProps {
   onNext: (data: GenderHairGrowthSchemaType) => void;
   onBack: () => void;
   defaultValues?: GenderHairGrowthSchemaType;
+  direction?: "forward" | "backward"; // ✅ Add this
 }
 
-export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGenderHairGrowthProps) {
+export default function GenderHairGrowth({ onNext, onBack, defaultValues, direction }: IGenderHairGrowthProps) {
   const [selectedCategory, setSelectedCategory] = useAtom(selectedCategoryAtom);
   const [selectedGender, setSelectedGender] = useAtom(selectedGenderAtom);
   const [isExiting, setIsExiting] = useState(false);
@@ -49,7 +50,7 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGen
     setTimeout(() => {
       setIsExiting(false);
       onNext(data);
-    }, 420); // ✅ Matches animation duration (400ms + 100ms delay)
+    }, 750); // ✅ Matches animation duration (400ms + 100ms delay)
   };
 
   const handleBackClick = () => {
@@ -59,7 +60,7 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGen
     setTimeout(() => {
       setIsBackExiting(false);
       onBack();
-    }, 420);
+    }, 750);
   };
 
   const genderHairGrowth = watch("genderHairGrowth");
@@ -92,11 +93,19 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGen
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
-      <h2 className={`heading-text text-foreground uppercase text-center  ${isExiting ? "animate-title-exit" : isBackExiting ? "animate-title-exit-back" : "animate-title"}`}>
+      <h2
+        className={`heading-text text-foreground uppercase text-center  ${
+          isExiting ? "animate-title-exit" : isBackExiting ? "animate-title-exit-back" : direction === "forward" ? "animate-title-enter-right" : "animate-title-enter-left"
+        }`}
+      >
         Gender
       </h2>
 
-      <div className={`card-common-width-lg mx-auto mt-10 ${isExiting ? "animate-content-exit" : isBackExiting ? "animate-content-exit-back" : "animate-content"}`}>
+      <div
+        className={`card-common-width-lg mx-auto mt-10 ${
+          isExiting ? "animate-content-exit" : isBackExiting ? "animate-content-exit-back" : direction === "forward" ? "animate-content-enter-right" : "animate-content-enter-left"
+        }`}
+      >
         <form
           id="genderHairGrowthForm"
           onSubmit={handleSubmit(handleFormSubmit)}
@@ -131,7 +140,11 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGen
         </form>
       </div>
 
-      <div className={`flex justify-center md:gap-6 gap-3 md:pt-8 pt-5  ${isExiting ? "animate-btns-exit" : isBackExiting ? "animate-btns-exit-back" : "animate-btns"}`}>
+      <div
+        className={`flex justify-center md:gap-6 gap-3 md:pt-8 pt-5  ${
+          isExiting ? "animate-btns-exit" : isBackExiting ? "animate-btns-exit-back" : direction === "forward" ? "animate-btns-enter-right" : "animate-btns-enter-left"
+        }`}
+      >
         <Button
           variant="outline"
           className="w-[200px]"

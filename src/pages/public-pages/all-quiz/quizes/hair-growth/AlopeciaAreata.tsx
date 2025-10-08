@@ -1,6 +1,7 @@
 import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Radio, Text } from "@mantine/core";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -15,9 +16,10 @@ interface IAlopeciaAreataProps {
   onNext: (data: AlopeciaAreataSchemaType) => void;
   onBack: () => void;
   defaultValues?: AlopeciaAreataSchemaType;
+  direction?: "forward" | "backward"; // ✅ Add this
 }
 
-const AlopeciaAreata = ({ onNext, onBack, defaultValues }: IAlopeciaAreataProps) => {
+const AlopeciaAreata = ({ onNext, onBack, defaultValues, direction }: IAlopeciaAreataProps) => {
   const {
     handleSubmit,
     setValue,
@@ -33,6 +35,9 @@ const AlopeciaAreata = ({ onNext, onBack, defaultValues }: IAlopeciaAreataProps)
 
   const alopeciaAreata = watch("alopeciaAreata");
 
+  const [isExiting, setIsExiting] = useState(false);
+  const [isBackExiting, setIsBackExiting] = useState(false);
+
   const options = ["No", "Yes"];
 
   const handleSelect = (value: string) => {
@@ -40,19 +45,53 @@ const AlopeciaAreata = ({ onNext, onBack, defaultValues }: IAlopeciaAreataProps)
     clearErrors("alopeciaAreata");
   };
 
+  const handleFormSubmit = (data: AlopeciaAreataSchemaType) => {
+    setIsExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsExiting(false);
+      onNext(data);
+    }, 750); // ✅ Matches animation duration (400ms + 100ms delay)
+  };
+
+  const handleBackClick = () => {
+    setIsBackExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsBackExiting(false);
+      onBack();
+    }, 750);
+  };
+
   return (
     <form
       id="AlopeciaAreataForm"
-      onSubmit={handleSubmit(onNext)}
+      onSubmit={handleSubmit(handleFormSubmit)}
       className="card-common-width-lg mx-auto space-y-6"
     >
       <div>
-        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground animate-title">Do you have any form of alopecia areata? </h2>
+        <h2
+          className={`text-center text-3xl font-poppins font-semibold text-foreground  ${
+            isExiting ? "animate-title-exit" : isBackExiting ? "animate-title-exit-back" : direction === "forward" ? "animate-title-enter-right" : "animate-title-enter-left"
+          }`}
+        >
+          Do you have any form of alopecia areata?{" "}
+        </h2>
 
         <Radio.Group
           value={alopeciaAreata}
           onChange={handleSelect}
-          className="mt-6 w-full animate-content"
+          className={`mt-6 w-full  ${
+            isExiting
+              ? "animate-content-exit"
+              : isBackExiting
+              ? "animate-content-exit-back"
+              : direction === "forward"
+              ? "animate-content-enter-right"
+              : "animate-content-enter-left"
+          }`}
         >
           <div className="grid md:grid-cols-2 w-full gap-5">
             {options.map((option) => (
@@ -77,11 +116,15 @@ const AlopeciaAreata = ({ onNext, onBack, defaultValues }: IAlopeciaAreataProps)
         {errors.alopeciaAreata && <Text className="text-red-500 text-sm mt-5 text-center">{errors.alopeciaAreata.message}</Text>}
       </div>
 
-      <div className="flex justify-center gap-6 pt-4 animate-btns">
+      <div
+        className={`flex justify-center gap-6 pt-4 ${
+          isExiting ? "animate-btns-exit" : isBackExiting ? "animate-btns-exit-back" : direction === "forward" ? "animate-btns-enter-right" : "animate-btns-enter-left"
+        }`}
+      >
         <Button
           variant="outline"
           className="w-[200px]"
-          onClick={onBack}
+          onClick={handleBackClick}
         >
           Back
         </Button>

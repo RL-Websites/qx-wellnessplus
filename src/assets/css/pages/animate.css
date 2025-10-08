@@ -1,9 +1,9 @@
 @layer components {
-  /* Premium keyframes with smooth motion */
-  @keyframes premiumQuizEnter {
+  /* Enter from RIGHT (after clicking Next) */
+  @keyframes premiumQuizEnterFromRight {
     0% {
       opacity: 0;
-      transform: translateX(15px) scale(0.96);
+      transform: translateX(20px) scale(1);
     }
     100% {
       opacity: 1;
@@ -11,17 +11,31 @@
     }
   }
 
+  /* Enter from LEFT (after clicking Back) */
+  @keyframes premiumQuizEnterFromLeft {
+    0% {
+      opacity: 0;
+      transform: translateX(-20px) scale(1);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
+  }
+
+  /* Exit to LEFT (when clicking Next) */
   @keyframes premiumQuizExitForward {
     0% {
       opacity: 1;
-      transform: translateX(0) scale(1);
+      transform: translateX(0px) scale(1);
     }
     100% {
       opacity: 0;
-      transform: translateX(25px) scale(0.96);
+      transform: translateX(0px) scale(1);
     }
   }
 
+  /* Exit to RIGHT (when clicking Back) */
   @keyframes premiumQuizExitBackward {
     0% {
       opacity: 1;
@@ -29,46 +43,59 @@
     }
     100% {
       opacity: 0;
-      transform: translateX(-25px) scale(0.96);
+      transform: translateX(0px) scale(1);
     }
   }
 
-  /* Smooth entrance animations */
-  .animate-title {
-    animation: premiumQuizEnter 0.4s cubic-bezier(0.4, 0, 1, 1) 0.05s both;
+  /* ENTRANCE from RIGHT - After Next button */
+  .animate-title-enter-right {
+    animation: premiumQuizEnterFromRight 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
   }
 
-  .animate-content {
-    animation: premiumQuizEnter 0.4s cubic-bezier(0.4, 0, 1, 1) 0.15s both;
+  .animate-content-enter-right {
+    animation: premiumQuizEnterFromRight 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.12s both;
   }
 
-  .animate-btns {
-    animation: premiumQuizEnter 0.4s cubic-bezier(0.4, 0, 1, 1) 0.25s both;
+  .animate-btns-enter-right {
+    animation: premiumQuizEnterFromRight 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.24s both;
   }
 
-  /* Forward exit animations (Next button) */
+  /* ENTRANCE from LEFT - After Back button */
+  .animate-title-enter-left {
+    animation: premiumQuizEnterFromLeft 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  }
+
+  .animate-content-enter-left {
+    animation: premiumQuizEnterFromLeft 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.12s both;
+  }
+
+  .animate-btns-enter-left {
+    animation: premiumQuizEnterFromLeft 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.24s both;
+  }
+
+  /* EXIT to LEFT - Next button clicked */
   .animate-title-exit {
-    animation: premiumQuizExitForward 0.4s cubic-bezier(0.4, 0, 1, 1) both;
+    animation: premiumQuizExitForward 0.65s cubic-bezier(0.6, 0.04, 0.98, 0.34) both;
   }
 
   .animate-content-exit {
-    animation: premiumQuizExitForward 0.4s cubic-bezier(0.4, 0, 1, 1) 0.05s both;
+    animation: premiumQuizExitForward 0.65s cubic-bezier(0.6, 0.04, 0.98, 0.34) 0.05s both;
   }
 
   .animate-btns-exit {
-    animation: premiumQuizExitForward 0.4s cubic-bezier(0.4, 0, 1, 1) 0.1s both;
+    animation: premiumQuizExitForward 0.65s cubic-bezier(0.6, 0.04, 0.98, 0.34) 0.1s both;
   }
 
-  /* Backward exit animations (Back button) */
+  /* EXIT to RIGHT - Back button clicked */
   .animate-title-exit-back {
-    animation: premiumQuizExitBackward 0.4s cubic-bezier(0.4, 0, 1, 1) both;
+    animation: premiumQuizExitBackward 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
   }
 
   .animate-content-exit-back {
-    animation: premiumQuizExitBackward 0.4s cubic-bezier(0.4, 0, 1, 1) 0.05s both;
+    animation: premiumQuizExitBackward 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.05s both;
   }
 
   .animate-btns-exit-back {
-    animation: premiumQuizExitBackward 0.4s cubic-bezier(0.4, 0, 1, 1) 0.1s both;
+    animation: premiumQuizExitBackward 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.1s both;
   }
 }

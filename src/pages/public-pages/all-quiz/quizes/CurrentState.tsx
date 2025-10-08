@@ -20,11 +20,37 @@ interface ICurrentProps {
   onNext: (data: CurrentStateSchemaType & { inEligibleUser?: boolean }) => void;
   onBack: () => void;
   defaultValues?: CurrentStateSchemaType;
+  direction?: "forward" | "backward"; // ✅ Add this
 }
 
-export default function CurrentState({ onNext, onBack, defaultValues }: ICurrentProps) {
+export default function CurrentState({ onNext, onBack, defaultValues, direction }: ICurrentProps) {
   const [globalState, setGlobalState] = useAtom(selectedStateAtom); // Jotai global state
   const [stateSearchVal, setStateSearchVal] = useState<string>("");
+
+  const [isExiting, setIsExiting] = useState(false);
+  const [isBackExiting, setIsBackExiting] = useState(false);
+
+  const handleBackClick = () => {
+    setIsBackExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsBackExiting(false);
+      onBack();
+    }, 420);
+  };
+
+  const handleFormSubmit = (data: CurrentStateSchemaType) => {
+    setIsExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsExiting(false);
+      onNext({
+        ...data,
+      });
+    }, 750); // ✅ Matches animation duration (400ms + 100ms delay)
+  };
 
   const {
     handleSubmit,
@@ -48,17 +74,21 @@ export default function CurrentState({ onNext, onBack, defaultValues }: ICurrent
     }
   }, [state, setGlobalState]);
 
-  const handleFormSubmit = (data: CurrentStateSchemaType) => {
-    onNext({
-      ...data,
-    });
-  };
-
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
-      <h2 className="heading-text text-foreground uppercase text-center animate-title">Current State</h2>
+      <h2
+        className={`heading-text text-foreground uppercase text-center  ${
+          isExiting ? "animate-title-exit" : isBackExiting ? "animate-title-exit-back" : direction === "forward" ? "animate-title-enter-right" : "animate-title-enter-left"
+        }`}
+      >
+        Current State
+      </h2>
 
-      <div className="card-common card-common-width relative z-10 delay-1000 duration-500 animate-fadeInRight">
+      <div
+        className={`card-common card-common-width relative z-10 delay-1000 duration-500 ${
+          isExiting ? "animate-content-exit" : isBackExiting ? "animate-content-exit-back" : direction === "forward" ? "animate-content-enter-right" : "animate-content-enter-left"
+        }`}
+      >
         <form
           id="currentStateForm"
           onSubmit={handleSubmit(handleFormSubmit)}
@@ -93,11 +123,15 @@ export default function CurrentState({ onNext, onBack, defaultValues }: ICurrent
         </form>
       </div>
 
-      <div className="flex justify-center gap-6 pt-8 animate-btns">
+      <div
+        className={`flex justify-center gap-6 pt-8 ${
+          isExiting ? "animate-btns-exit" : isBackExiting ? "animate-btns-exit-back" : direction === "forward" ? "animate-btns-enter-right" : "animate-btns-enter-left"
+        }`}
+      >
         <Button
           variant="outline"
           className="w-[200px]"
-          onClick={onBack}
+          onClick={handleBackClick}
         >
           Back
         </Button>

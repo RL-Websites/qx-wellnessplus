@@ -1,6 +1,7 @@
 import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Radio, Text } from "@mantine/core";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -15,9 +16,10 @@ interface IThyroidDiseaseProps {
   onNext: (data: ThyroidDiseaseSchemaType) => void;
   onBack: () => void;
   defaultValues?: ThyroidDiseaseSchemaType;
+  direction?: "forward" | "backward"; // ✅ Add this
 }
 
-const ThyroidDisease = ({ onNext, onBack, defaultValues }: IThyroidDiseaseProps) => {
+const ThyroidDisease = ({ onNext, onBack, defaultValues, direction }: IThyroidDiseaseProps) => {
   const {
     handleSubmit,
     setValue,
@@ -31,6 +33,29 @@ const ThyroidDisease = ({ onNext, onBack, defaultValues }: IThyroidDiseaseProps)
     resolver: yupResolver(ThyroidDiseaseSchema),
   });
 
+  const [isExiting, setIsExiting] = useState(false);
+  const [isBackExiting, setIsBackExiting] = useState(false);
+
+  const handleFormSubmit = (data: ThyroidDiseaseSchemaType) => {
+    setIsExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsExiting(false);
+      onNext(data);
+    }, 750); // ✅ Matches animation duration (400ms + 100ms delay)
+  };
+
+  const handleBackClick = () => {
+    setIsBackExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsBackExiting(false);
+      onBack();
+    }, 750);
+  };
+
   const thyroidDisease = watch("thyroidDisease");
 
   const options = ["No", "Yes"];
@@ -43,16 +68,30 @@ const ThyroidDisease = ({ onNext, onBack, defaultValues }: IThyroidDiseaseProps)
   return (
     <form
       id="thyroidDisease"
-      onSubmit={handleSubmit(onNext)}
+      onSubmit={handleSubmit(handleFormSubmit)}
       className="card-common-width-lg  mx-auto space-y-6"
     >
       <div>
-        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground animate-title">Do you have severe uncontrolled thyroid disease?</h2>
+        <h2
+          className={`text-center text-3xl font-poppins font-semibold text-foreground ${
+            isExiting ? "animate-title-exit" : isBackExiting ? "animate-title-exit-back" : direction === "forward" ? "animate-title-enter-right" : "animate-title-enter-left"
+          }`}
+        >
+          Do you have severe uncontrolled thyroid disease?
+        </h2>
 
         <Radio.Group
           value={thyroidDisease}
           onChange={handleSelect}
-          className="mt-6 w-full animate-content"
+          className={`mt-6 w-full ${
+            isExiting
+              ? "animate-content-exit"
+              : isBackExiting
+              ? "animate-content-exit-back"
+              : direction === "forward"
+              ? "animate-content-enter-right"
+              : "animate-content-enter-left"
+          }`}
         >
           <div className="grid md:grid-cols-2 w-full gap-5">
             {options.map((option) => (
@@ -77,11 +116,15 @@ const ThyroidDisease = ({ onNext, onBack, defaultValues }: IThyroidDiseaseProps)
         {errors.thyroidDisease && <Text className="text-red-500 text-sm mt-5 text-center">{errors.thyroidDisease.message}</Text>}
       </div>
 
-      <div className="flex justify-center gap-6 pt-4 animate-btns">
+      <div
+        className={`flex justify-center gap-6 pt-4 ${
+          isExiting ? "animate-btns-exit" : isBackExiting ? "animate-btns-exit-back" : direction === "forward" ? "animate-btns-enter-right" : "animate-btns-enter-left"
+        }`}
+      >
         <Button
           variant="outline"
           className="w-[200px]"
-          onClick={onBack}
+          onClick={handleBackClick}
         >
           Back
         </Button>
