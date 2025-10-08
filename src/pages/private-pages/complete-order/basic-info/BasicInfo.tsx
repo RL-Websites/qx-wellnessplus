@@ -43,7 +43,7 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
   const [dob, setDob] = useState<any>(null);
   const [phone, setPhone] = useState<string>();
   const [selectedGender, setSelectedGender] = useAtom(selectedGenderAtom);
-  const [gender, setGender] = useState<string>(selectedGender || "male");
+  const [gender, setGender] = useState<string | null>(selectedGender || null);
   const [selectedState, setSelectedState] = useAtom(selectedStateAtom);
   const [stateSearchVal, setStateSearchVal] = useState<string>(selectedState || "");
   const [address, setAddress] = useState<string>("");
@@ -397,6 +397,7 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
             label="Gender"
             withAsterisk
             value={gender}
+            className="col-span-2 md:col-span-1 w-full"
             defaultValue={gender}
             onChange={(value) => {
               setValue("gender", value);
@@ -407,13 +408,12 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
               }
             }}
             name="gender"
-            className="md:col-span-1 col-span-2 justify-start"
             classNames={InputErrorMessage}
             error={getErrorMessage(errors?.gender)}
           >
             <Group
               mt="xs"
-              className="flex justify-between md:gap-7 gap-3 w-full"
+              className="flex md:gap-7 gap-3 w-full"
             >
               <Radio
                 value="Male"
