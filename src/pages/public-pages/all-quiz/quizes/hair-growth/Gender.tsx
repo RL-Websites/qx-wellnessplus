@@ -6,6 +6,7 @@ import { selectedGenderAtom } from "@/common/states/gender.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Radio, Text } from "@mantine/core";
 import { useAtom } from "jotai";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -25,6 +26,9 @@ interface IGenderHairGrowthProps {
 export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGenderHairGrowthProps) {
   const [selectedCategory, setSelectedCategory] = useAtom(selectedCategoryAtom);
   const [selectedGender, setSelectedGender] = useAtom(selectedGenderAtom);
+  const [isExiting, setIsExiting] = useState(false);
+  const [isBackExiting, setIsBackExiting] = useState(false);
+
   const {
     handleSubmit,
     setValue,
@@ -37,6 +41,26 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGen
     },
     resolver: yupResolver(GenderHairGrowthSchema),
   });
+
+  const handleFormSubmit = (data: GenderHairGrowthSchemaType) => {
+    setIsExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsExiting(false);
+      onNext(data);
+    }, 420); // ✅ Matches animation duration (400ms + 100ms delay)
+  };
+
+  const handleBackClick = () => {
+    setIsBackExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsBackExiting(false);
+      onBack();
+    }, 420);
+  };
 
   const genderHairGrowth = watch("genderHairGrowth");
   const options = ["Male", "Female"];
@@ -68,12 +92,14 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGen
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
-      <h2 className="heading-text text-foreground uppercase text-center animate-title">Gender</h2>
+      <h2 className={`heading-text text-foreground uppercase text-center  ${isExiting ? "animate-title-exit" : isBackExiting ? "animate-title-exit-back" : "animate-title"}`}>
+        Gender
+      </h2>
 
-      <div className="card-common-width-lg mx-auto mt-10 animate-content">
+      <div className={`card-common-width-lg mx-auto mt-10 ${isExiting ? "animate-content-exit" : isBackExiting ? "animate-content-exit-back" : "animate-content"}`}>
         <form
           id="genderHairGrowthForm"
-          onSubmit={handleSubmit(onNext)}
+          onSubmit={handleSubmit(handleFormSubmit)}
           className="w-full"
         >
           <Radio.Group
@@ -105,11 +131,11 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGen
         </form>
       </div>
 
-      <div className="flex justify-center md:gap-6 gap-3 md:pt-8 pt-5 animate-btns">
+      <div className={`flex justify-center md:gap-6 gap-3 md:pt-8 pt-5  ${isExiting ? "animate-btns-exit" : isBackExiting ? "animate-btns-exit-back" : "animate-btns"}`}>
         <Button
           variant="outline"
           className="w-[200px]"
-          onClick={onBack}
+          onClick={handleBackClick}
         >
           Back
         </Button>

@@ -27,6 +27,8 @@ type dobSchemaType = {
 export default function DateOfBirth({ onNext, onBack, defaultValues }: IDobProps) {
   const engine = new Styletron();
   const [dob, setDob] = useState<any>(defaultValues?.date_of_birth ?? null);
+  const [isExiting, setIsExiting] = useState(false);
+
   const selectedCategory = useAtomValue(selectedCategoryAtom);
 
   const ageLimit = selectedCategory?.includes("Testosterone") ? 22 : 18;
@@ -45,6 +47,16 @@ export default function DateOfBirth({ onNext, onBack, defaultValues }: IDobProps
       .max(maxValidDate, `You must be at least ${ageLimit} years old`),
   });
 
+  const handleFormSubmit = (data: dobSchemaType) => {
+    setIsExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      onNext(data);
+      setIsExiting(false);
+    }, 450); // ✅ Matches animation duration (400ms + 100ms delay)
+  };
+
   const {
     clearErrors,
     handleSubmit,
@@ -57,17 +69,21 @@ export default function DateOfBirth({ onNext, onBack, defaultValues }: IDobProps
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
-      <h2 className="heading-text text-foreground uppercase text-center animate-title">Date of Birth</h2>
+      <h2 className={`heading-text text-foreground uppercase text-center ${isExiting ? "animate-title-exit" : "animate-title"}`}>Date of Birth</h2>
       {selectedCategory?.includes("Testosterone") ? (
-        <p className="text-xl text-foreground font-poppins text-center pt-5 animate-content">For Testosterone Therapy, you must be {ageLimit} years or older.</p>
+        <p className={`text-xl text-foreground font-poppins text-center pt-5 ${isExiting ? "animate-content-exit" : "animate-content"}`}>
+          For Testosterone Therapy, you must be {ageLimit} years or older.
+        </p>
       ) : (
-        <p className="text-xl text-foreground font-poppins text-center pt-5 animate-content">We cannot prescribe any medication if you are under {ageLimit} years old</p>
+        <p className={`text-xl text-foreground font-poppins text-center pt-5 ${isExiting ? "animate-content-exit" : "animate-content"}`}>
+          We cannot prescribe any medication if you are under {ageLimit} years old
+        </p>
       )}
-      <div className="card-common card-common-width relative z-10 delay-1000 duration-500 animate-fadeInRight">
+      <div className={`card-common card-common-width relative z-10 delay-1000 duration-500 ${isExiting ? "animate-content-exit" : "animate-content"}`}>
         <form
           id="dobForm"
           className="w-full"
-          onSubmit={handleSubmit(onNext)}
+          onSubmit={handleSubmit(handleFormSubmit)}
         >
           <Input.Wrapper
             label="Date of Birth"
@@ -104,7 +120,7 @@ export default function DateOfBirth({ onNext, onBack, defaultValues }: IDobProps
         </form>
       </div>
 
-      <div className="flex justify-center md:gap-6 gap-3 md:pt-8 pt-5 relative z-0">
+      <div className={`flex justify-center md:gap-6 gap-3 md:pt-8 pt-5 relative z-0 ${isExiting ? "animate-btns-exit" : "animate-btns"}`}>
         <Button
           variant="outline"
           className="w-[200px] animate-btns"

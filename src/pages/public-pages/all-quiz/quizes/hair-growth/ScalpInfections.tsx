@@ -1,6 +1,7 @@
 import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Radio, Text } from "@mantine/core";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -18,6 +19,28 @@ interface IScalpInfectionsProps {
 }
 
 const ScalpInfections = ({ onNext, onBack, defaultValues }: IScalpInfectionsProps) => {
+  const [isExiting, setIsExiting] = useState(false);
+  const [isBackExiting, setIsBackExiting] = useState(false);
+
+  const handleBackClick = () => {
+    setIsBackExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsBackExiting(false);
+      onBack();
+    }, 420);
+  };
+
+  const handleFormSubmit = (data: scalpInfectionsSchemaType) => {
+    setIsExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsExiting(false);
+      onNext(data);
+    }, 420); // ✅ Matches animation duration (400ms + 100ms delay)
+  };
   const {
     handleSubmit,
     setValue,
@@ -43,11 +66,17 @@ const ScalpInfections = ({ onNext, onBack, defaultValues }: IScalpInfectionsProp
   return (
     <form
       id="scalpInfectionsForm"
-      onSubmit={handleSubmit(onNext)}
-      className="card-common-width-lg mx-auto space-y-6"
+      onSubmit={handleSubmit(handleFormSubmit)}
+      className={`card-common-width-lg mx-auto space-y-6 ${isExiting ? "animate-content-exit" : isBackExiting ? "animate-content-exit-back" : "animate-content"}`}
     >
       <div>
-        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground animate-title">Do you have a history of scalp infections (e.g., seborrheic dermatitis)?</h2>
+        <h2
+          className={`text-center text-3xl font-poppins font-semibold text-foreground ${
+            isExiting ? "animate-title-exit" : isBackExiting ? "animate-title-exit-back" : "animate-title"
+          }`}
+        >
+          Do you have a history of scalp infections (e.g., seborrheic dermatitis)?
+        </h2>
 
         <Radio.Group
           value={scalpInfactions}
@@ -77,11 +106,11 @@ const ScalpInfections = ({ onNext, onBack, defaultValues }: IScalpInfectionsProp
         {errors.scalpInfactions && <Text className="text-red-500 text-sm mt-5 text-center">{errors.scalpInfactions.message}</Text>}
       </div>
 
-      <div className="flex justify-center gap-6 pt-4 animate-btns">
+      <div className={`flex justify-center gap-6 pt-4 animate-btns ${isExiting ? "animate-btns-exit" : isBackExiting ? "animate-btns-exit-back" : "animate-btns"}`}>
         <Button
           variant="outline"
           className="w-[200px]"
-          onClick={onBack}
+          onClick={handleBackClick}
         >
           Back
         </Button>
