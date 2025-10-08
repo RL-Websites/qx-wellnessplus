@@ -122,3 +122,12 @@ export const stateWiseLabFee = (medicine?: IMedicineListItem, patientState?: str
     return Number(medicine?.lab_fee);
   }
 };
+
+export const isValidUrl = (url: string) => {
+  try {
+    new URL(url);
+    return true;
+  } catch {
+    return false;
+  }
+};
