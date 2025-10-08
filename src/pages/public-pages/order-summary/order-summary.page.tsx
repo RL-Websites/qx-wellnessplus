@@ -3,7 +3,7 @@ import { cartItemsAtom } from "@/common/states/product.atom";
 import { selectedStateAtom } from "@/common/states/state.atom";
 import { userAtom } from "@/common/states/user.atom";
 import { calculatePrice, stateWiseLabFee } from "@/utils/helper.utils";
-import { Button } from "@mantine/core";
+import { Avatar, Button } from "@mantine/core";
 import { useAtom, useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
 import { NavLink as RdNavLink, useNavigate } from "react-router-dom";
@@ -61,11 +61,16 @@ const OrderSummary = () => {
                 key={item.id}
                 className="flex lg:flex-row flex-col gap-5 relative"
               >
-                <img
+                <Avatar
                   src={item.image ? `${import.meta.env.VITE_BASE_PATH}/storage/${item.image}` : "/placeholder.png"}
-                  className="size-32 rounded-lg"
-                  alt={item.name}
-                />
+                  size={129}
+                  radius={10}
+                >
+                  <img
+                    src="/images/product-img-placeholder.jpg"
+                    alt="product image"
+                  />
+                </Avatar>
                 <div className="lg:w-[calc(100%_-_154px)]">
                   <h6 className="text-xl font-semibold text-foreground font-poppins max-w-[300px]">
                     {item.name} {item.strength ? `${item.strength} ${item.unit}` : ""}
