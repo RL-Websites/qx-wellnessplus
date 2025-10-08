@@ -2,6 +2,7 @@ import { IUserData } from "@/common/api/models/interfaces/User.model";
 import { customerAtom } from "@/common/states/customer.atom";
 import { cartItemsAtom } from "@/common/states/product.atom";
 import { userAtom } from "@/common/states/user.atom";
+import { isValidUrl } from "@/utils/helper.utils";
 import { Button, Image, NavLink } from "@mantine/core";
 import { useAtom, useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
@@ -35,7 +36,7 @@ const HomeHeader = () => {
             <>
               {customerData?.logo ? (
                 <Image
-                  src={customerData?.logo ? `${import.meta.env.VITE_BASE_PATH}/storage/${customerData?.logo}` : ""}
+                  src={customerData?.logo ? (isValidUrl(customerData.logo) ? customerData.logo : `${import.meta.env.VITE_BASE_PATH}/storage/${customerData.logo}`) : ""}
                   alt={customerData?.logo ? customerData?.name : ""}
                   className="lg:w-16 md:w-12 w-10"
                 />
