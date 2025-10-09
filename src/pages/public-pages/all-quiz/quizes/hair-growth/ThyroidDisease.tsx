@@ -113,7 +113,7 @@ const ThyroidDisease = ({ onNext, onBack, defaultValues, direction }: IThyroidDi
             ))}
           </div>
         </Radio.Group>
-        {errors.thyroidDisease && <Text className="text-red-500 text-sm mt-5 text-center animate-fadeInUp">{errors.thyroidDisease.message}</Text>}
+        {errors.thyroidDisease && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.thyroidDisease.message}</Text>}
       </div>
 
       <div

@@ -113,7 +113,7 @@ const HairTreatment = ({ onNext, onBack, defaultValues, direction }: IHairTreatm
             ))}
           </div>
         </Radio.Group>
-        {errors.hairTreatment && <Text className="text-red-500 text-sm mt-5 text-center animate-fadeInUp">{errors.hairTreatment.message}</Text>}
+        {errors.hairTreatment && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.hairTreatment.message}</Text>}
       </div>
 
       <div

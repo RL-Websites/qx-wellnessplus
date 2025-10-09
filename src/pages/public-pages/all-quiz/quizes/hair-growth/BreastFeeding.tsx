@@ -112,7 +112,7 @@ const HairGrowthBreastFeeding = ({ onNext, onBack, defaultValues, direction }: I
             ))}
           </div>
         </Radio.Group>
-        {errors.breastFeeding && <Text className="text-red-500 text-sm mt-5 text-center animate-fadeInUp">{errors.breastFeeding.message}</Text>}
+        {errors.breastFeeding && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.breastFeeding.message}</Text>}
       </div>
 
       <div

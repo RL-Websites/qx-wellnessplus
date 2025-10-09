@@ -112,7 +112,7 @@ const MedicationTaking = ({ onNext, onBack, defaultValues, direction }: IMedicat
             ))}
           </div>
         </Radio.Group>
-        {errors.medicationTaking && <Text className="text-red-500 text-sm mt-5 text-center animate-fadeInUp">{errors.medicationTaking.message}</Text>}
+        {errors.medicationTaking && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.medicationTaking.message}</Text>}
       </div>
 
       <div

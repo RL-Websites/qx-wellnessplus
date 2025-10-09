@@ -113,7 +113,7 @@ const Chemotherapy = ({ onNext, onBack, defaultValues, direction }: IChemotherap
             ))}
           </div>
         </Radio.Group>
-        {errors.chemotherapy && <Text className="text-red-500 text-sm mt-5 text-center animate-fadeInUp">{errors.chemotherapy.message}</Text>}
+        {errors.chemotherapy && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.chemotherapy.message}</Text>}
       </div>
 
       <div

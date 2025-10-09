@@ -113,7 +113,7 @@ const Pcos = ({ onNext, onBack, defaultValues, direction }: IPcosProps) => {
             ))}
           </div>
         </Radio.Group>
-        {errors.pcos && <Text className="text-red-500 text-sm mt-5 text-center animate-fadeInUp">{errors.pcos.message}</Text>}
+        {errors.pcos && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.pcos.message}</Text>}
       </div>
 
       <div

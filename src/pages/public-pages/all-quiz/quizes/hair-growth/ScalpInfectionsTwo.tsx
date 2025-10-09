@@ -111,7 +111,7 @@ const ScalpInfectionsTwo = ({ onNext, onBack, defaultValues, direction }: IScalp
             ))}
           </div>
         </Radio.Group>
-        {errors.scalpInfactions && <Text className="text-red-500 text-sm mt-5 text-center animate-fadeInUp">{errors.scalpInfactions.message}</Text>}
+        {errors.scalpInfactions && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.scalpInfactions.message}</Text>}
       </div>
 
       <div

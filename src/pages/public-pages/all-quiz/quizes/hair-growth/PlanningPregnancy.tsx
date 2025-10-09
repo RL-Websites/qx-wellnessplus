@@ -112,7 +112,7 @@ const PlanningPregnancy = ({ onNext, onBack, defaultValues, direction }: IPlanni
             ))}
           </div>
         </Radio.Group>
-        {errors.planningPregnancy && <Text className="text-red-500 text-sm mt-5 text-center animate-fadeInUp">{errors.planningPregnancy.message}</Text>}
+        {errors.planningPregnancy && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.planningPregnancy.message}</Text>}
       </div>
 
       <div

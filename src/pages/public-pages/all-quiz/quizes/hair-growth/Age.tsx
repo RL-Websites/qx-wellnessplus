@@ -95,7 +95,7 @@ const Age = ({ onNext, onBack, defaultValues, direction }: IAgeProps) => {
               error={errors.age?.message ? errors.age?.message : false}
               classNames={{
                 label: "!text-sm md:!text-base lg:!text-lg",
-                error: "animate-fadeInUp",
+                error: "animate-pulseFade",
               }}
             >
               <Input

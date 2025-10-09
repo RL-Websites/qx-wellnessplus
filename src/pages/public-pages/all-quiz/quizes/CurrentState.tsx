@@ -99,7 +99,7 @@ export default function CurrentState({ onNext, onBack, defaultValues, direction 
             withAsterisk
             classNames={{
               wrapper: "bg-grey-btn rounded-md",
-              error: "animate-fadeInUp",
+              error: "animate-pulseFade",
             }}
             rightSection={<i className="icon-down-arrow text-sm"></i>}
             searchable

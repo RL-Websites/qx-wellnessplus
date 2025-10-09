@@ -113,7 +113,7 @@ const AlopeciaAreata = ({ onNext, onBack, defaultValues, direction }: IAlopeciaA
             ))}
           </div>
         </Radio.Group>
-        {errors.alopeciaAreata && <Text className="text-red-500 text-sm mt-5 text-center animate-fadeInUp">{errors.alopeciaAreata.message}</Text>}
+        {errors.alopeciaAreata && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.alopeciaAreata.message}</Text>}
       </div>
 
       <div
