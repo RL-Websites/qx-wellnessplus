@@ -112,7 +112,7 @@ const MedicationTaking = ({ onNext, onBack, defaultValues, direction }: IMedicat
             ))}
           </div>
         </Radio.Group>
-        {errors.medicationTaking && <Text className="text-red-500 text-sm mt-5 text-center">{errors.medicationTaking.message}</Text>}
+        {errors.medicationTaking && <Text className="text-red-500 text-sm mt-5 text-center animate-fadeInUp">{errors.medicationTaking.message}</Text>}
       </div>
 
       <div
@@ -122,14 +122,14 @@ const MedicationTaking = ({ onNext, onBack, defaultValues, direction }: IMedicat
       >
         <Button
           variant="outline"
-          className="w-[200px]"
+          className="w-[200px] animated-btn"
           onClick={handleBackClick}
         >
           Back
         </Button>
         <Button
           type="submit"
-          className="w-[200px]"
+          className="w-[200px] animated-btn"
           form="MedicationTaking"
         >
           Next

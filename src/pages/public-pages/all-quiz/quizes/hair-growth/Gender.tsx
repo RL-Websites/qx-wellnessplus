@@ -136,7 +136,7 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues, direct
               ))}
             </div>
           </Radio.Group>
-          {errors.genderHairGrowth && <Text className="text-red-500 text-sm mt-5 text-center">Please select your gender.</Text>}
+          {errors.genderHairGrowth && <Text className="text-red-500 text-sm mt-5 text-center animate-fadeInUp">Please select your gender.</Text>}
         </form>
       </div>
 
@@ -147,14 +147,14 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues, direct
       >
         <Button
           variant="outline"
-          className="w-[200px]"
+          className="w-[200px] animated-btn"
           onClick={handleBackClick}
         >
           Back
         </Button>
         <Button
           type="submit"
-          className="w-[200px]"
+          className="w-[200px] animated-btn"
           form="genderHairGrowthForm"
         >
           Next

@@ -112,7 +112,7 @@ const HairGrowthBreastFeeding = ({ onNext, onBack, defaultValues, direction }: I
             ))}
           </div>
         </Radio.Group>
-        {errors.breastFeeding && <Text className="text-red-500 text-sm mt-5 text-center">{errors.breastFeeding.message}</Text>}
+        {errors.breastFeeding && <Text className="text-red-500 text-sm mt-5 text-center animate-fadeInUp">{errors.breastFeeding.message}</Text>}
       </div>
 
       <div
@@ -122,14 +122,14 @@ const HairGrowthBreastFeeding = ({ onNext, onBack, defaultValues, direction }: I
       >
         <Button
           variant="outline"
-          className="w-[200px]"
+          className="w-[200px] animated-btn"
           onClick={handleBackClick}
         >
           Back
         </Button>
         <Button
           type="submit"
-          className="w-[200px]"
+          className="w-[200px] animated-btn"
           form="hairGrowthBreastFeedingForm"
         >
           Next

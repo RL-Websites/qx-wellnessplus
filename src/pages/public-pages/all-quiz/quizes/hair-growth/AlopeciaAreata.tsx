@@ -113,7 +113,7 @@ const AlopeciaAreata = ({ onNext, onBack, defaultValues, direction }: IAlopeciaA
             ))}
           </div>
         </Radio.Group>
-        {errors.alopeciaAreata && <Text className="text-red-500 text-sm mt-5 text-center">{errors.alopeciaAreata.message}</Text>}
+        {errors.alopeciaAreata && <Text className="text-red-500 text-sm mt-5 text-center animate-fadeInUp">{errors.alopeciaAreata.message}</Text>}
       </div>
 
       <div
@@ -123,14 +123,14 @@ const AlopeciaAreata = ({ onNext, onBack, defaultValues, direction }: IAlopeciaA
       >
         <Button
           variant="outline"
-          className="w-[200px]"
+          className="w-[200px] animated-btn"
           onClick={handleBackClick}
         >
           Back
         </Button>
         <Button
           type="submit"
-          className="w-[200px]"
+          className="w-[200px] animated-btn"
           form="AlopeciaAreataForm"
         >
           Next

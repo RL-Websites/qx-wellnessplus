@@ -95,6 +95,7 @@ const Age = ({ onNext, onBack, defaultValues, direction }: IAgeProps) => {
               error={errors.age?.message ? errors.age?.message : false}
               classNames={{
                 label: "!text-sm md:!text-base lg:!text-lg",
+                error: "animate-fadeInUp",
               }}
             >
               <Input
@@ -111,14 +112,14 @@ const Age = ({ onNext, onBack, defaultValues, direction }: IAgeProps) => {
           >
             <Button
               variant="outline"
-              className="w-[200px]"
+              className="w-[200px] animated-btn"
               onClick={handleBackClick}
             >
               Back
             </Button>
             <Button
               type="submit"
-              className="w-[200px]"
+              className="w-[200px] animated-btn"
               form="ageForm"
             >
               Next

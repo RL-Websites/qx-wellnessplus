@@ -111,7 +111,7 @@ const ScalpInfectionsTwo = ({ onNext, onBack, defaultValues, direction }: IScalp
             ))}
           </div>
         </Radio.Group>
-        {errors.scalpInfactions && <Text className="text-red-500 text-sm mt-5 text-center">{errors.scalpInfactions.message}</Text>}
+        {errors.scalpInfactions && <Text className="text-red-500 text-sm mt-5 text-center animate-fadeInUp">{errors.scalpInfactions.message}</Text>}
       </div>
 
       <div
@@ -121,14 +121,14 @@ const ScalpInfectionsTwo = ({ onNext, onBack, defaultValues, direction }: IScalp
       >
         <Button
           variant="outline"
-          className="w-[200px]"
+          className="w-[200px] animated-btn"
           onClick={handleBackClick}
         >
           Back
         </Button>
         <Button
           type="submit"
-          className="w-[200px]"
+          className="w-[200px] animated-btn"
           form="scalpInfectionsTwoForm"
         >
           Next

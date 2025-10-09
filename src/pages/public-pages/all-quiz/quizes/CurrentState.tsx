@@ -99,6 +99,7 @@ export default function CurrentState({ onNext, onBack, defaultValues, direction 
             withAsterisk
             classNames={{
               wrapper: "bg-grey-btn rounded-md",
+              error: "animate-fadeInUp",
             }}
             rightSection={<i className="icon-down-arrow text-sm"></i>}
             searchable
@@ -130,14 +131,14 @@ export default function CurrentState({ onNext, onBack, defaultValues, direction 
       >
         <Button
           variant="outline"
-          className="w-[200px]"
+          className="w-[200px] animated-btn"
           onClick={handleBackClick}
         >
           Back
         </Button>
         <Button
           type="submit"
-          className="w-[200px]"
+          className="w-[200px] animated-btn"
           form="currentStateForm"
         >
           Next

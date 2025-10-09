@@ -113,7 +113,7 @@ const Chemotherapy = ({ onNext, onBack, defaultValues, direction }: IChemotherap
             ))}
           </div>
         </Radio.Group>
-        {errors.chemotherapy && <Text className="text-red-500 text-sm mt-5 text-center">{errors.chemotherapy.message}</Text>}
+        {errors.chemotherapy && <Text className="text-red-500 text-sm mt-5 text-center animate-fadeInUp">{errors.chemotherapy.message}</Text>}
       </div>
 
       <div
@@ -123,14 +123,14 @@ const Chemotherapy = ({ onNext, onBack, defaultValues, direction }: IChemotherap
       >
         <Button
           variant="outline"
-          className="w-[200px]"
+          className="w-[200px] animated-btn"
           onClick={handleBackClick}
         >
           Back
         </Button>
         <Button
           type="submit"
-          className="w-[200px]"
+          className="w-[200px] animated-btn"
           form="chemotherapyForm"
         >
           Next

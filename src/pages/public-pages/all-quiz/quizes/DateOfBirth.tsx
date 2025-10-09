@@ -126,7 +126,7 @@ export default function DateOfBirth({ onNext, onBack, defaultValues, direction }
             label="Date of Birth"
             error={getErrorMessage(errors.date_of_birth)}
             withAsterisk
-            classNames={InputErrorMessage}
+            classNames={{ ...InputErrorMessage, error: "animate-fadeInUp" }}
           >
             <div className={`${errors?.date_of_birth ? "baseWeb-error" : ""} dml-Input-wrapper dml-Input-Calendar relative`}>
               <StyletronProvider value={engine}>
@@ -164,7 +164,7 @@ export default function DateOfBirth({ onNext, onBack, defaultValues, direction }
       >
         <Button
           variant="outline"
-          className="w-[200px] animate-btns"
+          className="w-[200px] animated-btn"
           component={Link}
           to="/category"
         >
@@ -172,7 +172,7 @@ export default function DateOfBirth({ onNext, onBack, defaultValues, direction }
         </Button>
         <Button
           type="submit"
-          className="w-[200px] animate-btns"
+          className="w-[200px] animated-btn"
           form="dobForm"
         >
           Next

@@ -113,7 +113,7 @@ const ThyroidDisease = ({ onNext, onBack, defaultValues, direction }: IThyroidDi
             ))}
           </div>
         </Radio.Group>
-        {errors.thyroidDisease && <Text className="text-red-500 text-sm mt-5 text-center">{errors.thyroidDisease.message}</Text>}
+        {errors.thyroidDisease && <Text className="text-red-500 text-sm mt-5 text-center animate-fadeInUp">{errors.thyroidDisease.message}</Text>}
       </div>
 
       <div
@@ -123,14 +123,14 @@ const ThyroidDisease = ({ onNext, onBack, defaultValues, direction }: IThyroidDi
       >
         <Button
           variant="outline"
-          className="w-[200px]"
+          className="w-[200px] animated-btn"
           onClick={handleBackClick}
         >
           Back
         </Button>
         <Button
           type="submit"
-          className="w-[200px]"
+          className="w-[200px] animated-btn"
           form="thyroidDisease"
         >
           Next

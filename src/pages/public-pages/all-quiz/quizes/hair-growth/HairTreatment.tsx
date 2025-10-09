@@ -113,7 +113,7 @@ const HairTreatment = ({ onNext, onBack, defaultValues, direction }: IHairTreatm
             ))}
           </div>
         </Radio.Group>
-        {errors.hairTreatment && <Text className="text-red-500 text-sm mt-5 text-center">{errors.hairTreatment.message}</Text>}
+        {errors.hairTreatment && <Text className="text-red-500 text-sm mt-5 text-center animate-fadeInUp">{errors.hairTreatment.message}</Text>}
       </div>
 
       <div
@@ -123,14 +123,14 @@ const HairTreatment = ({ onNext, onBack, defaultValues, direction }: IHairTreatm
       >
         <Button
           variant="outline"
-          className="w-[200px]"
+          className="w-[200px] animated-btn"
           onClick={handleBackClick}
         >
           Back
         </Button>
         <Button
           type="submit"
-          className="w-[200px]"
+          className="w-[200px] animated-btn"
           form="hairTreatmentForm"
         >
           Next

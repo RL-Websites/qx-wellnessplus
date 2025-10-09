@@ -113,7 +113,7 @@ const Pcos = ({ onNext, onBack, defaultValues, direction }: IPcosProps) => {
             ))}
           </div>
         </Radio.Group>
-        {errors.pcos && <Text className="text-red-500 text-sm mt-5 text-center">{errors.pcos.message}</Text>}
+        {errors.pcos && <Text className="text-red-500 text-sm mt-5 text-center animate-fadeInUp">{errors.pcos.message}</Text>}
       </div>
 
       <div
@@ -123,14 +123,14 @@ const Pcos = ({ onNext, onBack, defaultValues, direction }: IPcosProps) => {
       >
         <Button
           variant="outline"
-          className="w-[200px]"
+          className="w-[200px] animated-btn"
           onClick={handleBackClick}
         >
           Back
         </Button>
         <Button
           type="submit"
-          className="w-[200px]"
+          className="w-[200px] animated-btn"
           form="pcosForm"
         >
           Next
