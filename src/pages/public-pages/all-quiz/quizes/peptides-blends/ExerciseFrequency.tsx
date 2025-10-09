@@ -1,5 +1,7 @@
+import { animationDelay, getAnimationClass } from "@/common/constants/constants";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Grid, Radio } from "@mantine/core";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -7,6 +9,7 @@ interface IExerciseFrequencyProps {
   onNext: (data: ExerciseFrequencyFormType) => void;
   onBack: () => void;
   defaultValues?: ExerciseFrequencyFormType;
+  direction?: "forward" | "backward"; // Optional, if you want to handle direction-based animations later
 }
 
 const options = ["1–2 times per week", "3–4 times per week", "5+ times per week", "Never"];
@@ -17,7 +20,7 @@ const ExerciseFrequencySchema = yup.object({
 
 type ExerciseFrequencyFormType = yup.InferType<typeof ExerciseFrequencySchema>;
 
-const ExerciseFrequency = ({ onNext, onBack, defaultValues }: IExerciseFrequencyProps) => {
+const ExerciseFrequency = ({ onNext, onBack, defaultValues, direction }: IExerciseFrequencyProps) => {
   const {
     handleSubmit,
     setValue,
@@ -30,26 +33,47 @@ const ExerciseFrequency = ({ onNext, onBack, defaultValues }: IExerciseFrequency
     resolver: yupResolver(ExerciseFrequencySchema),
   });
 
-  const selected = watch("exerciseFrequency");
+  const [isExiting, setIsExiting] = useState(false);
+  const [isBackExiting, setIsBackExiting] = useState(false);
 
-  const onSubmit = (data: ExerciseFrequencyFormType) => {
-    onNext(data);
+  const handleFormSubmit = (data: ExerciseFrequencyFormType) => {
+    setIsExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      onNext(data);
+      setIsExiting(false);
+    }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
   };
+
+  const handleBackClick = () => {
+    setIsBackExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsBackExiting(false);
+      onBack();
+    }, animationDelay);
+  };
+
+  const selected = watch("exerciseFrequency");
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <form
         id="ExerciseFrequencyForm"
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(handleFormSubmit)}
         className="max-w-xl mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">How often do you exercise?</h2>
+          <h2 className={`text-center text-3xl font-semibold text-foreground font-poppins ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>
+            How often do you exercise?
+          </h2>
 
           <Radio.Group
             value={selected}
             onChange={(value) => setValue("exerciseFrequency", value, { shouldValidate: true })}
-            className="mt-6 animate-content"
+            className={`mt-6 ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}
           >
             <Grid gutter="md">
               {options.map((option) => (
@@ -86,20 +110,20 @@ const ExerciseFrequency = ({ onNext, onBack, defaultValues }: IExerciseFrequency
             </Grid>
           </Radio.Group>
 
-          {errors.exerciseFrequency && <div className="text-danger text-sm mt-2 text-center">{errors.exerciseFrequency.message}</div>}
+          {errors.exerciseFrequency && <div className="text-danger text-sm mt-2 text-center animate-pulseFade">{errors.exerciseFrequency.message}</div>}
         </div>
 
         <div className="flex justify-center gap-6 pt-4 animate-btns">
           <Button
             variant="outline"
-            className="w-[200px]"
+            className="w-[200px] animated-btn"
             onClick={onBack}
           >
             Back
           </Button>
           <Button
             type="submit"
-            className="w-[200px]"
+            className="w-[200px] animated-btn"
           >
             Next
           </Button>

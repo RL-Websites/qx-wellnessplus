@@ -1,5 +1,7 @@
+import { animationDelay, getAnimationClass } from "@/common/constants/constants";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Checkbox, Grid, TextInput } from "@mantine/core";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -7,6 +9,7 @@ interface PeptidesTakenBeforeProps {
   onNext: (data: PeptidesTakenBeforeFormType) => void;
   onBack: () => void;
   defaultValues?: PeptidesTakenBeforeFormType;
+  direction?: "forward" | "backward"; // Optional, if you want to handle direction-based animations later
 }
 
 const options = ["BPC-157", "TB-500", "Ipamorelin", "CJC-1295", "GHK-Cu", "Other"];
@@ -22,7 +25,7 @@ const schema = yup.object({
 
 export type PeptidesTakenBeforeFormType = yup.InferType<typeof schema>;
 
-const PeptidesTakenBefore = ({ onNext, onBack, defaultValues }: PeptidesTakenBeforeProps) => {
+const PeptidesTakenBefore = ({ onNext, onBack, defaultValues, direction }: PeptidesTakenBeforeProps) => {
   const {
     handleSubmit,
     setValue,
@@ -50,22 +53,43 @@ const PeptidesTakenBefore = ({ onNext, onBack, defaultValues }: PeptidesTakenBef
     }
   };
 
-  const onSubmit = (data: PeptidesTakenBeforeFormType) => {
-    onNext(data);
+  const [isExiting, setIsExiting] = useState(false);
+  const [isBackExiting, setIsBackExiting] = useState(false);
+
+  const handleFormSubmit = (data: PeptidesTakenBeforeFormType) => {
+    setIsExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      onNext(data);
+      setIsExiting(false);
+    }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
+  };
+
+  const handleBackClick = () => {
+    setIsBackExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsBackExiting(false);
+      onBack();
+    }, animationDelay);
   };
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <form
         id="PeptidesTakenBeforeForm"
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(handleFormSubmit)}
         className="max-w-xl mx-auto space-y-6"
       >
-        <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">If you have taken peptide therapy before, what type(s) have you taken?</h2>
+        <h2 className={`text-center text-3xl font-semibold text-foreground font-poppins ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>
+          If you have taken peptide therapy before, what type(s) have you taken?
+        </h2>
 
         <Grid
           gutter="md"
-          className="mt-6 animate-content"
+          className={`mt-6 ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}
         >
           {options.map((option) => {
             const isChecked = selectedValues?.includes(option);
@@ -96,28 +120,31 @@ const PeptidesTakenBefore = ({ onNext, onBack, defaultValues }: PeptidesTakenBef
           })}
         </Grid>
 
-        {errors.peptidesTaken && <p className="text-danger text-sm mt-2 text-center">{errors.peptidesTaken.message}</p>}
+        {errors.peptidesTaken && <p className="text-danger text-sm mt-2 text-center animate-pulseFade">{errors.peptidesTaken.message}</p>}
 
         {showOtherInput && (
           <TextInput
             {...register("peptidesOther")}
             placeholder="Please specify other peptides"
-            className="mt-4 animate-content"
+            className={`mt-4 ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}
             error={errors.peptidesOther?.message}
+            classNames={{
+              error: "animate-pulseFade",
+            }}
           />
         )}
 
-        <div className="flex justify-center gap-6 pt-6 animate-btns">
+        <div className={`flex justify-center gap-6 pt-6 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>
           <Button
             variant="outline"
-            className="w-[200px]"
-            onClick={onBack}
+            className="w-[200px] animated-btn"
+            onClick={handleBackClick}
           >
             Back
           </Button>
           <Button
             type="submit"
-            className="w-[200px]"
+            className="w-[200px] animated-btn"
           >
             Next
           </Button>

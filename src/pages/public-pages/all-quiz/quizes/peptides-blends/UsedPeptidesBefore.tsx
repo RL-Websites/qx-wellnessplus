@@ -1,12 +1,15 @@
+import { animationDelay, getAnimationClass } from "@/common/constants/constants";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Grid, Radio } from "@mantine/core";
-import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { get, useForm } from "react-hook-form";
 import * as yup from "yup";
 
 interface IUsedPeptidesBeforeProps {
   onNext: (data: UsedPeptidesFormType) => void;
   onBack: () => void;
   defaultValues?: UsedPeptidesFormType;
+  direction?: "forward" | "backward"; // Optional, if you want to handle direction-based animations later
 }
 
 const options = ["Yes", "No"];
@@ -17,7 +20,7 @@ const schema = yup.object({
 
 type UsedPeptidesFormType = yup.InferType<typeof schema>;
 
-const UsedPeptidesBefore = ({ onNext, onBack, defaultValues }: IUsedPeptidesBeforeProps) => {
+const UsedPeptidesBefore = ({ onNext, onBack, defaultValues, direction }: IUsedPeptidesBeforeProps) => {
   const {
     handleSubmit,
     setValue,
@@ -32,24 +35,45 @@ const UsedPeptidesBefore = ({ onNext, onBack, defaultValues }: IUsedPeptidesBefo
 
   const selected = watch("usedPeptides");
 
-  const onSubmit = (data: UsedPeptidesFormType) => {
-    onNext(data);
+  const [isExiting, setIsExiting] = useState(false);
+  const [isBackExiting, setIsBackExiting] = useState(false);
+
+  const handleFormSubmit = (data: UsedPeptidesFormType) => {
+    setIsExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      onNext(data);
+      setIsExiting(false);
+    }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
+  };
+
+  const handleBackClick = () => {
+    setIsBackExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsBackExiting(false);
+      onBack();
+    }, animationDelay);
   };
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <form
         id="UsedPeptidesBeforeForm"
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(handleFormSubmit)}
         className="max-w-xl mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">Have you used peptide therapies before?</h2>
+          <h2 className={`text-center text-3xl font-semibold text-foreground font-poppins ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>
+            Have you used peptide therapies before?
+          </h2>
 
           <Radio.Group
             value={selected}
             onChange={(value) => setValue("usedPeptides", value, { shouldValidate: true })}
-            className="mt-6 animate-content"
+            className={`mt-6 ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}
           >
             <Grid gutter="md">
               {options.map((option) => (
@@ -85,20 +109,20 @@ const UsedPeptidesBefore = ({ onNext, onBack, defaultValues }: IUsedPeptidesBefo
             </Grid>
           </Radio.Group>
 
-          {errors.usedPeptides && <div className="text-danger text-sm mt-2 text-center">{errors.usedPeptides.message}</div>}
+          {errors.usedPeptides && <div className="text-danger text-sm mt-2 text-center animate-pulseFade">{errors.usedPeptides.message}</div>}
         </div>
 
-        <div className="flex justify-center gap-6 pt-4 animate-btns">
+        <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>
           <Button
             variant="outline"
-            className="w-[200px]"
-            onClick={onBack}
+            className="w-[200px] animated-btn"
+            onClick={handleBackClick}
           >
             Back
           </Button>
           <Button
             type="submit"
-            className="w-[200px]"
+            className="w-[200px] animated-btn"
           >
             Next
           </Button>
