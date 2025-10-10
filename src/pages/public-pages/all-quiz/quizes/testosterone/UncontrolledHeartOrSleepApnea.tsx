@@ -113,7 +113,7 @@ const UncontrolledHeartOrSleepApnea = ({ onNext, onBack, defaultValues, directio
           {errors.heartOrSleepApnea && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.heartOrSleepApnea.message}</Text>}
         </div>
 
-        <div className="flex justify-center gap-6 pt-4 animate-btns">
+        <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>
           <Button
             variant="outline"
             className="w-[200px] animated-btn"
