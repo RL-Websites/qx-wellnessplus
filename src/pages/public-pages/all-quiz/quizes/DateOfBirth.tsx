@@ -1,6 +1,6 @@
 import { BaseWebDatePickerOverrides } from "@/common/configs/baseWebOverrides";
 import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
-import { animationDelay } from "@/common/constants/constants";
+import { animationDelay, getAnimationClass } from "@/common/constants/constants";
 import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { getErrorMessage } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -83,41 +83,17 @@ export default function DateOfBirth({ onNext, onBack, defaultValues, direction }
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
-      <h2
-        className={`heading-text text-foreground uppercase text-center ${
-          isExiting ? "animate-content-exit" : isBackExiting ? "animate-content-exit-back" : direction === "forward" ? "animate-content-enter-right" : "animate-content-enter-left"
-        }`}
-      >
-        Date of Birth
-      </h2>
+      <h2 className={`heading-text text-foreground uppercase text-center ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>Date of Birth</h2>
       {selectedCategory?.includes("Testosterone") ? (
-        <p
-          className={`text-xl text-foreground font-poppins text-center pt-5 ${
-            isExiting ? "animate-title-exit" : isBackExiting ? "animate-title-exit-back" : direction === "forward" ? "animate-title-enter-right" : "animate-title-enter-left"
-          }`}
-        >
+        <p className={`text-xl text-foreground font-poppins text-center pt-5 ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>
           For Testosterone Therapy, you must be {ageLimit} years or older.
         </p>
       ) : (
-        <p
-          className={`text-xl text-foreground font-poppins text-center pt-5 ${
-            isExiting
-              ? "animate-content-exit"
-              : isBackExiting
-              ? "animate-content-exit-back"
-              : direction === "forward"
-              ? "animate-content-enter-right"
-              : "animate-content-enter-left"
-          }`}
-        >
+        <p className={`text-xl text-foreground font-poppins text-center pt-5 ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>
           We cannot prescribe any medication if you are under {ageLimit} years old
         </p>
       )}
-      <div
-        className={`card-common card-common-width relative z-10 delay-1000 duration-500 ${
-          isExiting ? "animate-content-exit" : isBackExiting ? "animate-content-exit-back" : direction === "forward" ? "animate-content-enter-right" : "animate-content-enter-left"
-        }`}
-      >
+      <div className={`card-common card-common-width relative z-10 delay-1000 duration-500 ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}>
         <form
           id="dobForm"
           className="w-full"
@@ -158,11 +134,7 @@ export default function DateOfBirth({ onNext, onBack, defaultValues, direction }
         </form>
       </div>
 
-      <div
-        className={`flex justify-center md:gap-6 gap-3 md:pt-8 pt-5 relative z-0 ${
-          isExiting ? "animate-btns-exit" : isBackExiting ? "animate-btns-exit-back" : direction === "forward" ? "animate-btns-enter-right" : "animate-btns-enter-left"
-        }`}
-      >
+      <div className={`flex justify-center md:gap-6 gap-3 md:pt-8 pt-5 relative z-0 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>
         <Button
           variant="outline"
           className="w-[200px] animated-btn"

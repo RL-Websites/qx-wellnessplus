@@ -1,9 +1,10 @@
+import { animationDelay } from "@/common/constants/constants";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Input } from "@mantine/core";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-
+// err
 // Validation schema
 export const ageSchema = yup.object({
   age: yup.string().required("Please add your age"),
@@ -52,7 +53,7 @@ const Age = ({ onNext, onBack, defaultValues, direction }: IAgeProps) => {
     setTimeout(() => {
       setIsExiting(false);
       onNext(data);
-    }, 750); // ✅ Matches animation duration (400ms + 100ms delay)
+    }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
   };
 
   const handleBackClick = () => {
@@ -62,7 +63,7 @@ const Age = ({ onNext, onBack, defaultValues, direction }: IAgeProps) => {
     setTimeout(() => {
       setIsBackExiting(false);
       onBack();
-    }, 750);
+    }, animationDelay);
   };
 
   return (

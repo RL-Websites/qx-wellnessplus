@@ -1,6 +1,7 @@
 "use client";
 
 import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
+import { animationDelay, getAnimationClass } from "@/common/constants/constants";
 import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { selectedGenderAtom } from "@/common/states/gender.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -50,7 +51,7 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues, direct
     setTimeout(() => {
       setIsExiting(false);
       onNext(data);
-    }, 750); // ✅ Matches animation duration (400ms + 100ms delay)
+    }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
   };
 
   const handleBackClick = () => {
@@ -60,7 +61,7 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues, direct
     setTimeout(() => {
       setIsBackExiting(false);
       onBack();
-    }, 750);
+    }, animationDelay);
   };
 
   const genderHairGrowth = watch("genderHairGrowth");
@@ -93,19 +94,9 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues, direct
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
-      <h2
-        className={`heading-text text-foreground uppercase text-center  ${
-          isExiting ? "animate-title-exit" : isBackExiting ? "animate-title-exit-back" : direction === "forward" ? "animate-title-enter-right" : "animate-title-enter-left"
-        }`}
-      >
-        Gender
-      </h2>
+      <h2 className={`heading-text text-foreground uppercase text-center  ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>Gender</h2>
 
-      <div
-        className={`card-common-width-lg mx-auto mt-10 ${
-          isExiting ? "animate-content-exit" : isBackExiting ? "animate-content-exit-back" : direction === "forward" ? "animate-content-enter-right" : "animate-content-enter-left"
-        }`}
-      >
+      <div className={`card-common-width-lg mx-auto mt-10 ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}>
         <form
           id="genderHairGrowthForm"
           onSubmit={handleSubmit(handleFormSubmit)}
@@ -140,11 +131,7 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues, direct
         </form>
       </div>
 
-      <div
-        className={`flex justify-center md:gap-6 gap-3 md:pt-8 pt-5  ${
-          isExiting ? "animate-btns-exit" : isBackExiting ? "animate-btns-exit-back" : direction === "forward" ? "animate-btns-enter-right" : "animate-btns-enter-left"
-        }`}
-      >
+      <div className={`flex justify-center md:gap-6 gap-3 md:pt-8 pt-5  ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>
         <Button
           variant="outline"
           className="w-[200px] animated-btn"
