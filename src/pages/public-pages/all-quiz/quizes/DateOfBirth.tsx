@@ -1,5 +1,6 @@
 import { BaseWebDatePickerOverrides } from "@/common/configs/baseWebOverrides";
 import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
+import { animationDelay } from "@/common/constants/constants";
 import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { getErrorMessage } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -57,7 +58,7 @@ export default function DateOfBirth({ onNext, onBack, defaultValues, direction }
     setTimeout(() => {
       onNext(data);
       setIsExiting(false);
-    }, 750); // ✅ Matches animation duration (400ms + 100ms delay)
+    }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
   };
 
   const handleBackClick = () => {
@@ -67,7 +68,7 @@ export default function DateOfBirth({ onNext, onBack, defaultValues, direction }
     setTimeout(() => {
       setIsBackExiting(false);
       onBack();
-    }, 750);
+    }, animationDelay);
   };
 
   const {
