@@ -1,8 +1,10 @@
+import { animationDelay } from "@/common/constants/constants";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Input } from "@mantine/core";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-
+// err
 // Validation schema
 export const ageSchema = yup.object({
   age: yup.string().required("Please add your age"),
@@ -14,9 +16,10 @@ interface IAgeProps {
   onNext: (data: ageSchemaType) => void;
   onBack: () => void;
   defaultValues?: ageSchemaType;
+  direction?: "forward" | "backward"; // ✅ New prop for direction
 }
 
-const Age = ({ onNext, onBack, defaultValues }: IAgeProps) => {
+const Age = ({ onNext, onBack, defaultValues, direction }: IAgeProps) => {
   const {
     handleSubmit,
     register,
@@ -31,6 +34,9 @@ const Age = ({ onNext, onBack, defaultValues }: IAgeProps) => {
     resolver: yupResolver(ageSchema),
   });
 
+  const [isExiting, setIsExiting] = useState(false);
+  const [isBackExiting, setIsBackExiting] = useState(false);
+
   const age = watch("age");
 
   const options = ["No", "Yes"];
@@ -40,14 +46,48 @@ const Age = ({ onNext, onBack, defaultValues }: IAgeProps) => {
     clearErrors("age");
   };
 
+  const handleFormSubmit = (data: ageSchemaType) => {
+    setIsExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsExiting(false);
+      onNext(data);
+    }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
+  };
+
+  const handleBackClick = () => {
+    setIsBackExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsBackExiting(false);
+      onBack();
+    }, animationDelay);
+  };
+
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <div className=" card-common-width mx-auto mt-6">
-        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground animate-title">What is your age?</h2>
+        <h2
+          className={`text-center text-3xl font-poppins font-semibold text-foreground ${
+            isExiting ? "animate-title-exit" : isBackExiting ? "animate-title-exit-back" : direction === "forward" ? "animate-title-enter-right" : "animate-title-enter-left"
+          }`}
+        >
+          What is your age?
+        </h2>
         <form
           id="ageForm"
-          onSubmit={handleSubmit(onNext)}
-          className="max-w-xl mx-auto space-y-6 card-common"
+          onSubmit={handleSubmit(handleFormSubmit)}
+          className={`max-w-xl mx-auto space-y-6 card-common ${
+            isExiting
+              ? "animate-content-exit"
+              : isBackExiting
+              ? "animate-content-exit-back"
+              : direction === "forward"
+              ? "animate-content-enter-right"
+              : "animate-content-enter-left"
+          }`}
         >
           <div>
             <Input.Wrapper
@@ -56,6 +96,7 @@ const Age = ({ onNext, onBack, defaultValues }: IAgeProps) => {
               error={errors.age?.message ? errors.age?.message : false}
               classNames={{
                 label: "!text-sm md:!text-base lg:!text-lg",
+                error: "animate-pulseFade",
               }}
             >
               <Input
@@ -65,17 +106,21 @@ const Age = ({ onNext, onBack, defaultValues }: IAgeProps) => {
             </Input.Wrapper>
           </div>
 
-          <div className="flex justify-center md:gap-6 gap-3 md:pt-8 pt-5">
+          <div
+            className={`flex justify-center md:gap-6 gap-3 md:pt-8 pt-5 ${
+              isExiting ? "animate-btns-exit" : isBackExiting ? "animate-btns-exit-back" : direction === "forward" ? "animate-btns-enter-right" : "animate-btns-enter-left"
+            }`}
+          >
             <Button
               variant="outline"
-              className="w-[200px]"
-              onClick={onBack}
+              className="w-[200px] animated-btn"
+              onClick={handleBackClick}
             >
               Back
             </Button>
             <Button
               type="submit"
-              className="w-[200px]"
+              className="w-[200px] animated-btn"
               form="ageForm"
             >
               Next

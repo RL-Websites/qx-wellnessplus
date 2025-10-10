@@ -1,5 +1,6 @@
 import { BaseWebDatePickerOverrides } from "@/common/configs/baseWebOverrides";
 import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
+import { animationDelay, getAnimationClass } from "@/common/constants/constants";
 import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { getErrorMessage } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -17,6 +18,8 @@ import * as yup from "yup";
 interface IDobProps {
   onNext: (data: dobSchemaType) => void;
   onBack: () => void;
+  direction?: "forward" | "backward"; // ✅ Add this
+
   defaultValues?: dobSchemaType;
 }
 
@@ -24,9 +27,12 @@ type dobSchemaType = {
   date_of_birth: Date;
 };
 
-export default function DateOfBirth({ onNext, onBack, defaultValues }: IDobProps) {
+export default function DateOfBirth({ onNext, onBack, defaultValues, direction }: IDobProps) {
   const engine = new Styletron();
   const [dob, setDob] = useState<any>(defaultValues?.date_of_birth ?? null);
+  const [isExiting, setIsExiting] = useState(false);
+  const [isBackExiting, setIsBackExiting] = useState(false);
+
   const selectedCategory = useAtomValue(selectedCategoryAtom);
 
   const ageLimit = selectedCategory?.includes("Testosterone") ? 22 : 18;
@@ -45,6 +51,26 @@ export default function DateOfBirth({ onNext, onBack, defaultValues }: IDobProps
       .max(maxValidDate, `You must be at least ${ageLimit} years old`),
   });
 
+  const handleFormSubmit = (data: dobSchemaType) => {
+    setIsExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      onNext(data);
+      setIsExiting(false);
+    }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
+  };
+
+  const handleBackClick = () => {
+    setIsBackExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsBackExiting(false);
+      onBack();
+    }, animationDelay);
+  };
+
   const {
     clearErrors,
     handleSubmit,
@@ -57,23 +83,27 @@ export default function DateOfBirth({ onNext, onBack, defaultValues }: IDobProps
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
-      <h2 className="heading-text text-foreground uppercase text-center animate-title">Date of Birth</h2>
+      <h2 className={`heading-text text-foreground uppercase text-center ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>Date of Birth</h2>
       {selectedCategory?.includes("Testosterone") ? (
-        <p className="text-xl text-foreground font-poppins text-center pt-5 animate-content">For Testosterone Therapy, you must be {ageLimit} years or older.</p>
+        <p className={`text-xl text-foreground font-poppins text-center pt-5 ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>
+          For Testosterone Therapy, you must be {ageLimit} years or older.
+        </p>
       ) : (
-        <p className="text-xl text-foreground font-poppins text-center pt-5 animate-content">We cannot prescribe any medication if you are under {ageLimit} years old</p>
+        <p className={`text-xl text-foreground font-poppins text-center pt-5 ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>
+          We cannot prescribe any medication if you are under {ageLimit} years old
+        </p>
       )}
-      <div className="card-common card-common-width relative z-10 delay-1000 duration-500 animate-fadeInRight">
+      <div className={`card-common card-common-width relative z-10 delay-1000 duration-500 ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}>
         <form
           id="dobForm"
           className="w-full"
-          onSubmit={handleSubmit(onNext)}
+          onSubmit={handleSubmit(handleFormSubmit)}
         >
           <Input.Wrapper
             label="Date of Birth"
             error={getErrorMessage(errors.date_of_birth)}
             withAsterisk
-            classNames={InputErrorMessage}
+            classNames={{ ...InputErrorMessage, error: "animate-pulseFade" }}
           >
             <div className={`${errors?.date_of_birth ? "baseWeb-error" : ""} dml-Input-wrapper dml-Input-Calendar relative`}>
               <StyletronProvider value={engine}>
@@ -104,10 +134,10 @@ export default function DateOfBirth({ onNext, onBack, defaultValues }: IDobProps
         </form>
       </div>
 
-      <div className="flex justify-center md:gap-6 gap-3 md:pt-8 pt-5 relative z-0">
+      <div className={`flex justify-center md:gap-6 gap-3 md:pt-8 pt-5 relative z-0 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>
         <Button
           variant="outline"
-          className="w-[200px] animate-btns"
+          className="w-[200px] animated-btn"
           component={Link}
           to="/category"
         >
@@ -115,7 +145,7 @@ export default function DateOfBirth({ onNext, onBack, defaultValues }: IDobProps
         </Button>
         <Button
           type="submit"
-          className="w-[200px] animate-btns"
+          className="w-[200px] animated-btn"
           form="dobForm"
         >
           Next

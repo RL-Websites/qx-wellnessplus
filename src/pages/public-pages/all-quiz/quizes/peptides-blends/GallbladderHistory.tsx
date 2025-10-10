@@ -1,10 +1,13 @@
+import { animationDelay, getAnimationClass } from "@/common/constants/constants";
 import { Button, Grid, Radio } from "@mantine/core";
+import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 
 interface GallbladderHistoryProps {
   onNext: (data: GallbladderHistoryFormType & { disqualified: boolean }) => void;
   onBack: () => void;
   defaultValues?: GallbladderHistoryFormType;
+  direction?: "forward" | "backward"; // Optional, if you want to handle direction-based animations later
 }
 
 type GallbladderHistoryFormType = {
@@ -14,7 +17,7 @@ type GallbladderHistoryFormType = {
 
 const subOptions = ["Gallbladder removed within last 2 months (disqualifier)", "Gallbladder removed more than 2 months ago"];
 
-const GallbladderHistory = ({ onNext, onBack, defaultValues }: GallbladderHistoryProps) => {
+const GallbladderHistory = ({ onNext, onBack, defaultValues, direction }: GallbladderHistoryProps) => {
   const {
     handleSubmit,
     setValue,
@@ -31,20 +34,41 @@ const GallbladderHistory = ({ onNext, onBack, defaultValues }: GallbladderHistor
   const hasHistory = useWatch({ name: "hasGallbladderHistory", control });
   const detail = useWatch({ name: "gallbladderDetail", control });
 
-  const onSubmit = (data: GallbladderHistoryFormType) => {
-    const disqualified = data.gallbladderDetail === subOptions[0];
-    onNext({ ...data, disqualified });
+  const [isExiting, setIsExiting] = useState(false);
+  const [isBackExiting, setIsBackExiting] = useState(false);
+
+  const handleFormSubmit = (data: GallbladderHistoryFormType) => {
+    setIsExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      const disqualified = data.gallbladderDetail === subOptions[0];
+      onNext({ ...data, disqualified });
+      setIsExiting(false);
+    }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
+  };
+
+  const handleBackClick = () => {
+    setIsBackExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsBackExiting(false);
+      onBack();
+    }, animationDelay);
   };
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <form
         id="GallbladderHistoryForm"
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(handleFormSubmit)}
         className="max-w-xl mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">Do you have a personal history of gallbladder disease?</h2>
+          <h2 className={`text-center text-3xl font-semibold text-foreground font-poppins ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>
+            Do you have a personal history of gallbladder disease?
+          </h2>
 
           {/* Step 1: Yes / No */}
           <Radio.Group
@@ -53,7 +77,7 @@ const GallbladderHistory = ({ onNext, onBack, defaultValues }: GallbladderHistor
               setValue("hasGallbladderHistory", value as "Yes" | "No");
               setValue("gallbladderDetail", "");
             }}
-            className="mt-6 animate-content"
+            className={`mt-6 ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}
           >
             <Grid gutter="md">
               {["Yes", "No"].map((option) => (
@@ -68,6 +92,7 @@ const GallbladderHistory = ({ onNext, onBack, defaultValues }: GallbladderHistor
                       radio: "hidden",
                       inner: "hidden",
                       labelWrapper: "w-full",
+                      error: "animate-pulseFade",
                       label: `
                         block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointer
                         ${hasHistory === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
@@ -92,11 +117,11 @@ const GallbladderHistory = ({ onNext, onBack, defaultValues }: GallbladderHistor
           {/* Step 2: Detail selection if "Yes" */}
           {hasHistory === "Yes" && (
             <div className="mt-6">
-              <h3 className="text-lg font-medium mb-2 text-center animate-title">Please specify</h3>
+              <h3 className={`text-lg font-medium mb-2 text-center ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>Please specify</h3>
               <Radio.Group
                 value={detail}
                 onChange={(value) => setValue("gallbladderDetail", value)}
-                className="animate-content"
+                className={`${getAnimationClass("content", isExiting, isBackExiting, direction)}`}
               >
                 <Grid gutter="md">
                   {subOptions.map((option) => (
@@ -110,6 +135,7 @@ const GallbladderHistory = ({ onNext, onBack, defaultValues }: GallbladderHistor
                           root: "relative w-full",
                           radio: "hidden",
                           inner: "hidden",
+                          error: "animate-pulseFade",
                           labelWrapper: "w-full",
                           label: `
                             block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointer
@@ -135,17 +161,17 @@ const GallbladderHistory = ({ onNext, onBack, defaultValues }: GallbladderHistor
           )}
         </div>
 
-        <div className="flex justify-center gap-6 pt-6 animate-btns">
+        <div className={`flex justify-center gap-6 pt-6 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>
           <Button
             variant="outline"
-            className="w-[200px]"
-            onClick={onBack}
+            className="w-[200px] animated-btn"
+            onClick={handleBackClick}
           >
             Back
           </Button>
           <Button
             type="submit"
-            className="w-[200px]"
+            className="w-[200px] animated-btn"
           >
             Next
           </Button>

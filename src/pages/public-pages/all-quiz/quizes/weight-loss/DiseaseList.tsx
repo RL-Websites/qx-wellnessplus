@@ -1,6 +1,7 @@
+import { animationDelay, getAnimationClass } from "@/common/constants/constants";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Checkbox, Grid } from "@mantine/core";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -14,9 +15,10 @@ interface IDiseaseListProps {
   onNext: (data: DiseaseListSchemaType & { eligible?: boolean }) => void;
   onBack: () => void;
   defaultValues?: DiseaseListSchemaType;
+  direction?: "forward" | "backward"; // Optional, if you want to handle direction-based animations later
 }
 
-const DiseaseList = ({ onNext, onBack, defaultValues }: IDiseaseListProps) => {
+const DiseaseList = ({ onNext, onBack, defaultValues, direction }: IDiseaseListProps) => {
   const {
     handleSubmit,
     setValue,
@@ -71,24 +73,45 @@ const DiseaseList = ({ onNext, onBack, defaultValues }: IDiseaseListProps) => {
     );
   };
 
-  const onSubmit = (data: DiseaseListSchemaType) => {
-    const isEligible = data.diseaseList.length === 1 && data.diseaseList[0] === "None of the above";
-    onNext({ ...data, eligible: isEligible });
+  const [isExiting, setIsExiting] = useState(false);
+  const [isBackExiting, setIsBackExiting] = useState(false);
+
+  const handleFormSubmit = (data: DiseaseListSchemaType) => {
+    setIsExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      const isEligible = data.diseaseList.length === 1 && data.diseaseList[0] === "None of the above";
+      onNext({ ...data, eligible: isEligible });
+      setIsExiting(false);
+    }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
+  };
+
+  const handleBackClick = () => {
+    setIsBackExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsBackExiting(false);
+      onBack();
+    }, animationDelay);
   };
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <form
         id="diseaseListForm"
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(handleFormSubmit)}
         className="max-w-xl mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">Do you have or have had any of the following?</h2>
+          <h2 className={`text-center text-3xl font-semibold text-foreground font-poppins ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>
+            Do you have or have had any of the following?
+          </h2>
 
           <Grid
             gutter="md"
-            className="mt-6 animate-title"
+            className={`mt-6 ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}
           >
             {options.map((option) => {
               const isChecked = selectedValues.includes(option);
@@ -119,20 +142,20 @@ const DiseaseList = ({ onNext, onBack, defaultValues }: IDiseaseListProps) => {
             })}
           </Grid>
 
-          {errors.diseaseList && <div className="text-danger text-sm mt-2 text-center">{errors.diseaseList.message}</div>}
+          {errors.diseaseList && <div className="text-danger text-sm mt-2 text-center animate-pulseFade">{errors.diseaseList.message}</div>}
         </div>
 
-        <div className="flex justify-center gap-6 pt-4 animate-btns">
+        <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>
           <Button
             variant="outline"
-            className="w-[200px]"
-            onClick={onBack}
+            className="w-[200px] animated-btn"
+            onClick={handleBackClick}
           >
             Back
           </Button>
           <Button
             type="submit"
-            className="w-[200px]"
+            className="w-[200px] animated-btn"
             form="diseaseListForm"
           >
             Next

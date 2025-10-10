@@ -1,10 +1,13 @@
+import { animationDelay, getAnimationClass } from "@/common/constants/constants";
 import { Button, Grid, Radio } from "@mantine/core";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 interface ThyroidHistoryProps {
   onNext: (data: ThyroidHistoryFormType) => void;
   onBack: () => void;
   defaultValues?: ThyroidHistoryFormType;
+  direction?: "forward" | "backward"; // Optional, if you want to handle direction-based animations later
 }
 
 type ThyroidHistoryFormType = {
@@ -19,7 +22,7 @@ const options = [
   "No", // No should appear at the bottom
 ];
 
-const ThyroidHistory = ({ onNext, onBack, defaultValues }: ThyroidHistoryProps) => {
+const ThyroidHistory = ({ onNext, onBack, defaultValues, direction }: ThyroidHistoryProps) => {
   const { setValue, handleSubmit, watch } = useForm<ThyroidHistoryFormType>({
     defaultValues: {
       thyroidHistory: defaultValues?.thyroidHistory || "",
@@ -28,24 +31,46 @@ const ThyroidHistory = ({ onNext, onBack, defaultValues }: ThyroidHistoryProps) 
 
   const selected = watch("thyroidHistory");
 
-  const onSubmit = (data: ThyroidHistoryFormType) => {
-    onNext(data);
+  const [isExiting, setIsExiting] = useState(false);
+  const [isBackExiting, setIsBackExiting] = useState(false);
+
+  const handleFormSubmit = (data: ThyroidHistoryFormType) => {
+    setIsExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      onNext(data);
+      setIsExiting(false);
+    }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
+  };
+
+  const handleBackClick = () => {
+    setIsBackExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsBackExiting(false);
+      onBack();
+    }, animationDelay);
   };
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <form
         id="ThyroidHistoryForm"
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(handleFormSubmit)}
         className="max-w-xl mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">Do you have a history of thyroid disorders?</h2>
+          <h2 className={`text-center text-3xl font-semibold text-foreground font-poppins ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>
+            Do you have a history of thyroid disorders?
+          </h2>
 
           <Radio.Group
             value={selected}
             onChange={(value) => setValue("thyroidHistory", value, { shouldValidate: true })}
-            className="mt-6 animate-content"
+            className={`mt-6 ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}
+            classNames={{ error: "animate-pulseFade" }} // Style the error message
           >
             <Grid gutter="md">
               {options.map((option) => (
@@ -82,17 +107,17 @@ const ThyroidHistory = ({ onNext, onBack, defaultValues }: ThyroidHistoryProps) 
           </Radio.Group>
         </div>
 
-        <div className="flex justify-center gap-6 pt-4 animate-btns">
+        <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>
           <Button
             variant="outline"
-            className="w-[200px]"
-            onClick={onBack}
+            className="w-[200px] animated-btn"
+            onClick={handleBackClick}
           >
             Back
           </Button>
           <Button
             type="submit"
-            className="w-[200px]"
+            className="w-[200px] animated-btn"
             form="ThyroidHistoryForm"
           >
             Next

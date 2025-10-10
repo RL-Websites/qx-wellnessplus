@@ -1,11 +1,13 @@
 "use client";
 
 import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
+import { animationDelay, getAnimationClass } from "@/common/constants/constants";
 import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { selectedGenderAtom } from "@/common/states/gender.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Radio, Text } from "@mantine/core";
 import { useAtom } from "jotai";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -20,11 +22,15 @@ interface IGenderHairGrowthProps {
   onNext: (data: GenderHairGrowthSchemaType) => void;
   onBack: () => void;
   defaultValues?: GenderHairGrowthSchemaType;
+  direction?: "forward" | "backward"; // ✅ Add this
 }
 
-export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGenderHairGrowthProps) {
+export default function GenderHairGrowth({ onNext, onBack, defaultValues, direction }: IGenderHairGrowthProps) {
   const [selectedCategory, setSelectedCategory] = useAtom(selectedCategoryAtom);
   const [selectedGender, setSelectedGender] = useAtom(selectedGenderAtom);
+  const [isExiting, setIsExiting] = useState(false);
+  const [isBackExiting, setIsBackExiting] = useState(false);
+
   const {
     handleSubmit,
     setValue,
@@ -37,6 +43,26 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGen
     },
     resolver: yupResolver(GenderHairGrowthSchema),
   });
+
+  const handleFormSubmit = (data: GenderHairGrowthSchemaType) => {
+    setIsExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsExiting(false);
+      onNext(data);
+    }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
+  };
+
+  const handleBackClick = () => {
+    setIsBackExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsBackExiting(false);
+      onBack();
+    }, animationDelay);
+  };
 
   const genderHairGrowth = watch("genderHairGrowth");
   const options = ["Male", "Female"];
@@ -68,12 +94,12 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGen
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
-      <h2 className="heading-text text-foreground uppercase text-center animate-title">Gender</h2>
+      <h2 className={`heading-text text-foreground uppercase text-center  ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>Gender</h2>
 
-      <div className="card-common-width-lg mx-auto mt-10 animate-content">
+      <div className={`card-common-width-lg mx-auto mt-10 ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}>
         <form
           id="genderHairGrowthForm"
-          onSubmit={handleSubmit(onNext)}
+          onSubmit={handleSubmit(handleFormSubmit)}
           className="w-full"
         >
           <Radio.Group
@@ -101,21 +127,21 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues }: IGen
               ))}
             </div>
           </Radio.Group>
-          {errors.genderHairGrowth && <Text className="text-red-500 text-sm mt-5 text-center">Please select your gender.</Text>}
+          {errors.genderHairGrowth && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">Please select your gender.</Text>}
         </form>
       </div>
 
-      <div className="flex justify-center md:gap-6 gap-3 md:pt-8 pt-5 animate-btns">
+      <div className={`flex justify-center md:gap-6 gap-3 md:pt-8 pt-5  ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>
         <Button
           variant="outline"
-          className="w-[200px]"
-          onClick={onBack}
+          className="w-[200px] animated-btn"
+          onClick={handleBackClick}
         >
           Back
         </Button>
         <Button
           type="submit"
-          className="w-[200px]"
+          className="w-[200px] animated-btn"
           form="genderHairGrowthForm"
         >
           Next

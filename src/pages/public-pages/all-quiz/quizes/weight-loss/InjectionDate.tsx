@@ -1,6 +1,7 @@
 import { BaseWebDatePickerOverrides } from "@/common/configs/baseWebOverrides";
 import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
 import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
+import { animationDelay, getAnimationClass } from "@/common/constants/constants";
 import { prevGlpMedDetails } from "@/common/states/product.atom";
 import { formatDate } from "@/utils/date.utils";
 import { getErrorMessage } from "@/utils/helper.utils";
@@ -26,9 +27,10 @@ interface IInjectionDateProps {
   onNext: (data: InjectionDateSchemaType) => void;
   onBack: () => void;
   defaultValues?: InjectionDateSchemaType;
+  direction?: "forward" | "backward"; // Optional, if you want to handle direction-based animations later
 }
 
-export default function InjectionDate({ onNext, onBack, defaultValues }: IInjectionDateProps) {
+export default function InjectionDate({ onNext, onBack, defaultValues, direction }: IInjectionDateProps) {
   const engine = new Styletron();
   const [prevGlpDetails, setPrevGlpDetails] = useAtom(prevGlpMedDetails);
   const [injectionDate, setInjectionDate] = useState<any>(defaultValues?.injection_date ?? null);
@@ -68,17 +70,47 @@ export default function InjectionDate({ onNext, onBack, defaultValues }: IInject
     clearErrors(field);
   };
 
+  const [isExiting, setIsExiting] = useState(false);
+  const [isBackExiting, setIsBackExiting] = useState(false);
+
+  const handleFormSubmit = (data: InjectionDateSchemaType) => {
+    setIsExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      onNext(data);
+      setIsExiting(false);
+    }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
+  };
+
+  const handleBackClick = () => {
+    setIsBackExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsBackExiting(false);
+      onBack();
+    }, animationDelay);
+  };
+
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <form
         id="injectionDateForm"
         className="w-full"
-        onSubmit={handleSubmit(onNext)}
+        onSubmit={handleSubmit(handleFormSubmit)}
       >
-        <h2 className="text-center lg:!text-3xl md:!text-2xl sm:text-xl text-lg font-poppins font-semibold text-foreground animate-title">
+        <h2
+          className={`text-center lg:!text-3xl md:!text-2xl sm:text-xl text-lg font-poppins font-semibold text-foreground ${getAnimationClass(
+            "title",
+            isExiting,
+            isBackExiting,
+            direction
+          )}`}
+        >
           When was the last time you used your medication?
         </h2>
-        <div className="card-common card-common-width relative z-10 animate-content">
+        <div className={`card-common card-common-width relative z-10 ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}>
           <Input.Wrapper
             label="Medication Date"
             error={getErrorMessage(errors.injection_date)}
@@ -114,21 +146,21 @@ export default function InjectionDate({ onNext, onBack, defaultValues }: IInject
           </Input.Wrapper>
         </div>
 
-        <div className="card-common-width-lg mx-auto mt-10 animate-content">
+        <div className={`card-common-width-lg mx-auto mt-10 ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}>
           <Radio.Group
             value={lastDose}
             onChange={(value) => {
               handleSelect("lastDose", value);
             }}
             label="What was your last dosage?"
-            className="mt-10 w-full"
+            className={`mt-10 w-full ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}
             classNames={{
               root: "!block",
-              error: "sm:!text-end !text-start w-full",
-              label: "block lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2 text-center font-semibold text-foreground animate-title",
+              error: "sm:!text-end !text-start w-full animate-pulseFade",
+              label: "block lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2 text-center font-semibold text-foreground",
             }}
           >
-            <div className="grid md:grid-cols-2 gap-5 w-full animate-content">
+            <div className={`grid md:grid-cols-2 gap-5 w-full ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}>
               {lastDoseOptions.map((option) => (
                 <Radio
                   key={option}
@@ -150,19 +182,19 @@ export default function InjectionDate({ onNext, onBack, defaultValues }: IInject
           </Radio.Group>
         </div>
 
-        {errors.lastDose && <Text className="text-red-500 text-sm mt-5 text-center">{errors.lastDose.message}</Text>}
+        {errors.lastDose && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.lastDose.message}</Text>}
       </form>
-      <div className="flex justify-center md:gap-6 gap-3 md:pt-8 pt-5 relative z-0 animate-btns">
+      <div className={`flex justify-center md:gap-6 gap-3 md:pt-8 pt-5 relative z-0 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>
         <Button
           variant="outline"
-          className="w-[200px]"
-          onClick={onBack}
+          className="w-[200px] animated-btn"
+          onClick={handleBackClick}
         >
           Back
         </Button>
         <Button
           type="submit"
-          className="w-[200px]"
+          className="w-[200px] animated-btn"
           form="injectionDateForm"
         >
           Next

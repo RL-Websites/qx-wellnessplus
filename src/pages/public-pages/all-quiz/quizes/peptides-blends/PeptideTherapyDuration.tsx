@@ -1,12 +1,15 @@
+import { animationDelay, getAnimationClass } from "@/common/constants/constants";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Grid, Radio } from "@mantine/core";
-import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { get, useForm } from "react-hook-form";
 import * as yup from "yup";
 
 interface PeptideTherapyDurationProps {
   onNext: (data: PeptideTherapyDurationFormType) => void;
   onBack: () => void;
   defaultValues?: PeptideTherapyDurationFormType;
+  direction?: "forward" | "backward"; // Optional, if you want to handle direction-based animations later
 }
 
 const options = ["Less than 1 month", "1–3 months", "4–6 months", "More than 6 months"];
@@ -17,7 +20,7 @@ const schema = yup.object({
 
 export type PeptideTherapyDurationFormType = yup.InferType<typeof schema>;
 
-const PeptideTherapyDuration = ({ onNext, onBack, defaultValues }: PeptideTherapyDurationProps) => {
+const PeptideTherapyDuration = ({ onNext, onBack, defaultValues, direction }: PeptideTherapyDurationProps) => {
   const {
     handleSubmit,
     setValue,
@@ -31,24 +34,44 @@ const PeptideTherapyDuration = ({ onNext, onBack, defaultValues }: PeptideTherap
   });
 
   const therapyDuration = watch("therapyDuration");
+  const [isExiting, setIsExiting] = useState(false);
+  const [isBackExiting, setIsBackExiting] = useState(false);
 
-  const onSubmit = (data: PeptideTherapyDurationFormType) => {
-    onNext(data);
+  const handleFormSubmit = (data: PeptideTherapyDurationFormType) => {
+    setIsExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      onNext(data);
+      setIsExiting(false);
+    }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
+  };
+
+  const handleBackClick = () => {
+    setIsBackExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsBackExiting(false);
+      onBack();
+    }, animationDelay);
   };
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <form
         id="PeptideTherapyDurationForm"
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(handleFormSubmit)}
         className="max-w-xl mx-auto space-y-6"
       >
-        <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">How long have you been on your current or previous peptide therapy?</h2>
+        <h2 className={`text-center text-3xl font-semibold text-foreground font-poppins ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>
+          How long have you been on your current or previous peptide therapy?
+        </h2>
 
         <Radio.Group
           value={therapyDuration}
           onChange={(value) => setValue("therapyDuration", value, { shouldValidate: true })}
-          className="mt-6 animate-content"
+          className={`mt-6 ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}
         >
           <Grid gutter="md">
             {options.map((option) => (
@@ -84,19 +107,19 @@ const PeptideTherapyDuration = ({ onNext, onBack, defaultValues }: PeptideTherap
           </Grid>
         </Radio.Group>
 
-        {errors.therapyDuration && <p className="text-danger text-sm mt-2 text-center">{errors.therapyDuration.message}</p>}
+        {errors.therapyDuration && <p className="text-danger text-sm mt-2 text-center animate-pulseFade">{errors.therapyDuration.message}</p>}
 
-        <div className="flex justify-center gap-6 pt-6 animate-btns">
+        <div className={`flex justify-center gap-6 pt-6 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>
           <Button
             variant="outline"
-            className="w-[200px]"
-            onClick={onBack}
+            className="w-[200px] animated-btn"
+            onClick={handleBackClick}
           >
             Back
           </Button>
           <Button
             type="submit"
-            className="w-[200px]"
+            className="w-[200px] animated-btn"
             form="PeptideTherapyDurationForm"
           >
             Next
