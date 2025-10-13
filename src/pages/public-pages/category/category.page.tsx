@@ -91,9 +91,8 @@ const CategoryPage = () => {
     }
     return acc;
   }, []);
-
   return (
-    <div className={`space-y-12 ${isExiting ? "site-home-hero-exit" : "site-home-hero"}`}>
+    <div className={`space-y-12 site-home-hero ${isExiting ? "site-home-hero-exit" : ""}`}>
       <h4 className="heading-text text-center text-foreground uppercase">Choose A Treatment</h4>
 
       <div

@@ -51,7 +51,7 @@ const HomePage = () => {
 
   return (
     <div className="site-main-bg">
-      <div className={`${isExiting ? "site-home-hero-exit" : "site-home-hero"}`}>
+      <div className={`site-home-hero ${isExiting ? "site-home-hero-exit" : ""}`}>
         <div className="container mx-auto">
           <div className="header grid md:grid-cols-2 grid-cols-1  items-center justify-between ">
             <div className="flex flex-col w-full gap-7 lg:py-16 py-10">

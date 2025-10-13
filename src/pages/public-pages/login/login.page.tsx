@@ -132,7 +132,7 @@ const Login = () => {
   };
 
   return (
-    <div className={`grid lg:grid-cols-2 ${isExiting ? "site-home-hero-exit" : "site-home-hero"}`}>
+    <div className={`grid lg:grid-cols-2 site-home-hero ${isExiting ? "site-home-hero-exit" : ""}`}>
       <div className="lg:space-y-[30px] space-y-4 lg:text-start text-center">
         <h2 className="lg:text-[70px] md:text-6xl text-4xl text-foreground uppercase">Login</h2>
         <div className="space-y-2.5">
