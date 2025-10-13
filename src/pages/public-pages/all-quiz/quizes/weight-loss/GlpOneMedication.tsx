@@ -1,8 +1,10 @@
 import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
+import { animationDelay, getAnimationClass } from "@/common/constants/constants";
 import { prevGlpMedDetails } from "@/common/states/product.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Radio, Text } from "@mantine/core";
 import { useAtom } from "jotai";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -20,9 +22,10 @@ interface GlpOneMedicationProps {
   onNext: (data: glpOneMedicationSchemaType & { eligible?: boolean }) => void;
   onBack: () => void;
   defaultValues?: glpOneMedicationSchemaType;
+  direction?: "forward" | "backward"; // Optional, if you want to handle direction-based animations later
 }
 
-const GlpOneMedication = ({ onNext, onBack, defaultValues }: GlpOneMedicationProps) => {
+const GlpOneMedication = ({ onNext, onBack, defaultValues, direction }: GlpOneMedicationProps) => {
   const [prevGlpDetails, setPrevGlpDetails] = useAtom(prevGlpMedDetails);
   const {
     handleSubmit,
@@ -50,6 +53,29 @@ const GlpOneMedication = ({ onNext, onBack, defaultValues }: GlpOneMedicationPro
     clearErrors(field);
   };
 
+  const [isExiting, setIsExiting] = useState(false);
+  const [isBackExiting, setIsBackExiting] = useState(false);
+
+  const handleFormSubmit = (data: glpOneMedicationSchemaType) => {
+    setIsExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      onNext(data);
+      setIsExiting(false);
+    }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
+  };
+
+  const handleBackClick = () => {
+    setIsBackExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsBackExiting(false);
+      onBack();
+    }, animationDelay);
+  };
+
   const takesGlpOptions = ["No", "Yes"];
   const glpDetailsOptions = ["Semaglutide", "Tirzepatide"];
 
@@ -57,7 +83,7 @@ const GlpOneMedication = ({ onNext, onBack, defaultValues }: GlpOneMedicationPro
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <form
         id="glpOneMedicationForm"
-        onSubmit={handleSubmit(onNext)}
+        onSubmit={handleSubmit(handleFormSubmit)}
         className="card-common-width-lg mx-auto space-y-10"
       >
         <Radio.Group
@@ -72,10 +98,11 @@ GLP-1 medication?"
           classNames={{
             root: "sm:!grid !block",
             error: "sm:!text-end !text-start w-full",
-            label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2 text-center animate-title",
+            label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2 text-center",
           }}
+          className={`${getAnimationClass("title", isExiting, isBackExiting, direction)}`}
         >
-          <div className="grid md:grid-cols-2 gap-5 w-full animate-content">
+          <div className={`grid md:grid-cols-2 gap-5 w-full ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}>
             {takesGlpOptions.map((option) => (
               <Radio
                 key={option}
@@ -96,7 +123,7 @@ GLP-1 medication?"
           </div>
         </Radio.Group>
 
-        {errors.takesGlpOneMedication && <Text className="text-red-500 text-sm mt-5 text-center">{errors.takesGlpOneMedication.message}</Text>}
+        {errors.takesGlpOneMedication && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.takesGlpOneMedication.message}</Text>}
 
         {showDetails && (
           <Radio.Group
@@ -106,10 +133,11 @@ GLP-1 medication?"
             classNames={{
               root: " !block mt-6 w-full",
               error: "sm:!text-end !text-start w-full",
-              label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2 text-center w-full animate-title",
+              label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2 text-center w-full",
             }}
+            className={`${getAnimationClass("content", isExiting, isBackExiting, direction)}`}
           >
-            <div className="grid md:grid-cols-2 gap-5 w-full animate-content">
+            <div className="grid md:grid-cols-2 gap-5 w-full">
               {glpDetailsOptions.map((option) => (
                 <Radio
                   key={option}
@@ -130,19 +158,19 @@ GLP-1 medication?"
             </div>
           </Radio.Group>
         )}
-        {errors.glpOneMedicationDetails && <Text className="text-red-500 text-sm mt-5 text-center">{errors.glpOneMedicationDetails.message}</Text>}
+        {errors.glpOneMedicationDetails && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.glpOneMedicationDetails.message}</Text>}
 
-        <div className="flex justify-center gap-6 pt-4 animate-btns">
+        <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>
           <Button
             variant="outline"
-            className="w-[200px]"
-            onClick={onBack}
+            className="w-[200px] animated-btn"
+            onClick={handleBackClick}
           >
             Back
           </Button>
           <Button
             type="submit"
-            className="w-[200px]"
+            className="w-[200px] animated-btn"
             form="glpOneMedicationForm"
           >
             Next

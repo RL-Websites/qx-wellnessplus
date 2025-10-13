@@ -1,5 +1,6 @@
 "use client";
 
+import { animationDelay, getAnimationClass } from "@/common/constants/constants";
 import { selectedStateAtom } from "@/common/states/state.atom";
 import states from "@/data/state-list.json";
 import { getErrorMessage } from "@/utils/helper.utils";
@@ -20,11 +21,37 @@ interface ICurrentProps {
   onNext: (data: CurrentStateSchemaType & { inEligibleUser?: boolean }) => void;
   onBack: () => void;
   defaultValues?: CurrentStateSchemaType;
+  direction?: "forward" | "backward"; // ✅ Add this
 }
 
-export default function CurrentState({ onNext, onBack, defaultValues }: ICurrentProps) {
+export default function CurrentState({ onNext, onBack, defaultValues, direction }: ICurrentProps) {
   const [globalState, setGlobalState] = useAtom(selectedStateAtom); // Jotai global state
   const [stateSearchVal, setStateSearchVal] = useState<string>("");
+
+  const [isExiting, setIsExiting] = useState(false);
+  const [isBackExiting, setIsBackExiting] = useState(false);
+
+  const handleBackClick = () => {
+    setIsBackExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsBackExiting(false);
+      onBack();
+    }, animationDelay);
+  };
+
+  const handleFormSubmit = (data: CurrentStateSchemaType) => {
+    setIsExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsExiting(false);
+      onNext({
+        ...data,
+      });
+    }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
+  };
 
   const {
     handleSubmit,
@@ -48,17 +75,11 @@ export default function CurrentState({ onNext, onBack, defaultValues }: ICurrent
     }
   }, [state, setGlobalState]);
 
-  const handleFormSubmit = (data: CurrentStateSchemaType) => {
-    onNext({
-      ...data,
-    });
-  };
-
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
-      <h2 className="heading-text text-foreground uppercase text-center animate-title">Current State</h2>
+      <h2 className={`heading-text text-foreground uppercase text-center  ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>Current State</h2>
 
-      <div className="card-common card-common-width relative z-10 delay-1000 duration-500 animate-fadeInRight">
+      <div className={`card-common card-common-width relative z-10 delay-1000 duration-500 ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}>
         <form
           id="currentStateForm"
           onSubmit={handleSubmit(handleFormSubmit)}
@@ -69,6 +90,7 @@ export default function CurrentState({ onNext, onBack, defaultValues }: ICurrent
             withAsterisk
             classNames={{
               wrapper: "bg-grey-btn rounded-md",
+              error: "animate-pulseFade",
             }}
             rightSection={<i className="icon-down-arrow text-sm"></i>}
             searchable
@@ -93,17 +115,17 @@ export default function CurrentState({ onNext, onBack, defaultValues }: ICurrent
         </form>
       </div>
 
-      <div className="flex justify-center gap-6 pt-8 animate-btns">
+      <div className={`flex justify-center gap-6 pt-8 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>
         <Button
           variant="outline"
-          className="w-[200px]"
-          onClick={onBack}
+          className="w-[200px] animated-btn"
+          onClick={handleBackClick}
         >
           Back
         </Button>
         <Button
           type="submit"
-          className="w-[200px]"
+          className="w-[200px] animated-btn"
           form="currentStateForm"
         >
           Next

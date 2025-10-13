@@ -1,6 +1,8 @@
 import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
+import { animationDelay, getAnimationClass } from "@/common/constants/constants";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Radio, Text } from "@mantine/core";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -15,9 +17,10 @@ interface IScalpInfectionsTwoProps {
   onNext: (data: scalpInfectionsTwoSchemaType) => void;
   onBack: () => void;
   defaultValues?: scalpInfectionsTwoSchemaType;
+  direction?: "forward" | "backward"; // ✅ Add this
 }
 
-const ScalpInfectionsTwo = ({ onNext, onBack, defaultValues }: IScalpInfectionsTwoProps) => {
+const ScalpInfectionsTwo = ({ onNext, onBack, defaultValues, direction }: IScalpInfectionsTwoProps) => {
   const {
     handleSubmit,
     setValue,
@@ -32,6 +35,8 @@ const ScalpInfectionsTwo = ({ onNext, onBack, defaultValues }: IScalpInfectionsT
   });
 
   const scalpInfactions = watch("scalpInfactions");
+  const [isExiting, setIsExiting] = useState(false);
+  const [isBackExiting, setIsBackExiting] = useState(false);
 
   const options = ["No", "Yes"];
 
@@ -40,19 +45,40 @@ const ScalpInfectionsTwo = ({ onNext, onBack, defaultValues }: IScalpInfectionsT
     clearErrors("scalpInfactions");
   };
 
+  const handleBackClick = () => {
+    setIsBackExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsBackExiting(false);
+      onBack();
+    }, animationDelay);
+  };
+
+  const handleFormSubmit = (data: scalpInfectionsTwoSchemaType) => {
+    setIsExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsExiting(false);
+      onNext(data);
+    }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
+  };
   return (
     <form
       id="scalpInfectionsTwoForm"
-      onSubmit={handleSubmit(onNext)}
+      onSubmit={handleSubmit(handleFormSubmit)}
       className="card-common-width-lg  mx-auto space-y-6"
     >
       <div>
-        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground animate-title">Do you have any untreated scalp infections (e.g., fungal)? </h2>
+        <h2 className={`text-center text-3xl font-poppins font-semibold text-foreground ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>
+          Do you have any untreated scalp infections (e.g., fungal)?{" "}
+        </h2>
 
         <Radio.Group
           value={scalpInfactions}
           onChange={handleSelect}
-          className="mt-6 w-full animate-content"
+          className={`mt-6 w-full ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}
         >
           <div className="grid md:grid-cols-2 w-full gap-5">
             {options.map((option) => (
@@ -74,20 +100,20 @@ const ScalpInfectionsTwo = ({ onNext, onBack, defaultValues }: IScalpInfectionsT
             ))}
           </div>
         </Radio.Group>
-        {errors.scalpInfactions && <Text className="text-red-500 text-sm mt-5 text-center">{errors.scalpInfactions.message}</Text>}
+        {errors.scalpInfactions && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.scalpInfactions.message}</Text>}
       </div>
 
-      <div className="flex justify-center gap-6 pt-4 animate-btns">
+      <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>
         <Button
           variant="outline"
-          className="w-[200px]"
-          onClick={onBack}
+          className="w-[200px] animated-btn"
+          onClick={handleBackClick}
         >
           Back
         </Button>
         <Button
           type="submit"
-          className="w-[200px]"
+          className="w-[200px] animated-btn"
           form="scalpInfectionsTwoForm"
         >
           Next

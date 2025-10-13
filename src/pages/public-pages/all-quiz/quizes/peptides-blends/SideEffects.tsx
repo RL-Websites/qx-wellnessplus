@@ -1,12 +1,15 @@
+import { animationDelay, getAnimationClass } from "@/common/constants/constants";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Checkbox, Grid, TextInput } from "@mantine/core";
-import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { get, useForm } from "react-hook-form";
 import * as yup from "yup";
 
 interface SideEffectsProps {
   onNext: (data: SideEffectsFormType) => void;
   onBack: () => void;
   defaultValues?: SideEffectsFormType;
+  direction?: "forward" | "backward"; // Optional, if you want to handle direction-based animations later
 }
 
 const options = ["Nausea", "Headaches", "Joint pain", "Swelling at injection site", "Fatigue", "No side effects", "Other"];
@@ -20,7 +23,7 @@ const schema = yup.object({
 
 export type SideEffectsFormType = yup.InferType<typeof schema>;
 
-const SideEffects = ({ onNext, onBack, defaultValues }: SideEffectsProps) => {
+const SideEffects = ({ onNext, onBack, defaultValues, direction }: SideEffectsProps) => {
   const {
     handleSubmit,
     setValue,
@@ -65,22 +68,43 @@ const SideEffects = ({ onNext, onBack, defaultValues }: SideEffectsProps) => {
     }
   };
 
-  const onSubmit = (data: SideEffectsFormType) => {
-    onNext(data);
+  const [isExiting, setIsExiting] = useState(false);
+  const [isBackExiting, setIsBackExiting] = useState(false);
+
+  const handleFormSubmit = (data: SideEffectsFormType) => {
+    setIsExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      onNext(data);
+      setIsExiting(false);
+    }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
+  };
+
+  const handleBackClick = () => {
+    setIsBackExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsBackExiting(false);
+      onBack();
+    }, animationDelay);
   };
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <form
         id="SideEffectsForm"
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(handleFormSubmit)}
         className="max-w-xl mx-auto space-y-6"
       >
-        <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">Have you experienced any side effects?</h2>
+        <h2 className={`text-center text-3xl font-semibold text-foreground font-poppins ${getAnimationClass("title", isExiting, isBackExiting)}`}>
+          Have you experienced any side effects?
+        </h2>
 
         <Grid
           gutter="md"
-          className="mt-6 animate-content"
+          className={`mt-6 ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}
         >
           {options.map((option) => {
             const isChecked = selectedValues.includes(option);
@@ -111,28 +135,28 @@ const SideEffects = ({ onNext, onBack, defaultValues }: SideEffectsProps) => {
           })}
         </Grid>
 
-        {errors.sideEffects && <p className="text-danger text-sm mt-2 text-center">{errors.sideEffects.message}</p>}
+        {errors.sideEffects && <p className="text-danger text-sm mt-2 text-center animate-pulseFade">{errors.sideEffects.message}</p>}
 
         {showOtherInput && (
           <TextInput
             {...register("sideEffectsOther")}
             placeholder="Please specify other side effects"
-            className="mt-4 animate-content"
+            className={`mt-4 ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}
             error={errors.sideEffectsOther?.message}
           />
         )}
 
-        <div className="flex justify-center gap-6 pt-6 animate-btns">
+        <div className={`flex justify-center gap-6 pt-6 getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>
           <Button
             variant="outline"
-            className="w-[200px]"
-            onClick={onBack}
+            className="w-[200px] animated-btn"
+            onClick={handleBackClick}
           >
             Back
           </Button>
           <Button
             type="submit"
-            className="w-[200px]"
+            className="w-[200px] animated-btn"
           >
             Next
           </Button>

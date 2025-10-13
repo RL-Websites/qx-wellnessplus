@@ -1,6 +1,8 @@
+import { animationDelay, getAnimationClass } from "@/common/constants/constants";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Group, Radio } from "@mantine/core";
-import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { get, useForm } from "react-hook-form";
 import * as yup from "yup";
 
 // Validation schema
@@ -14,9 +16,10 @@ interface ICustomerStatusProps {
   onNext: (data: customerStatusSchemaType) => void;
   onBack: () => void;
   defaultValues?: customerStatusSchemaType;
+  direction?: "forward" | "backward"; // Optional, if you want to handle direction-based animations later
 }
 
-const CustomerStatus = ({ onNext, onBack, defaultValues }: ICustomerStatusProps) => {
+const CustomerStatus = ({ onNext, onBack, defaultValues, direction }: ICustomerStatusProps) => {
   const {
     handleSubmit,
     setValue,
@@ -39,19 +42,44 @@ const CustomerStatus = ({ onNext, onBack, defaultValues }: ICustomerStatusProps)
     clearErrors("customerStatus");
   };
 
+  const [isExiting, setIsExiting] = useState(false);
+  const [isBackExiting, setIsBackExiting] = useState(false);
+
+  const handleFormSubmit = (data: customerStatusSchemaType) => {
+    setIsExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      onNext(data);
+      setIsExiting(false);
+    }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
+  };
+
+  const handleBackClick = () => {
+    setIsBackExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsBackExiting(false);
+      onBack();
+    }, animationDelay);
+  };
+
   return (
     <form
       id="customerStatusForm"
-      onSubmit={handleSubmit(onNext)}
+      onSubmit={handleSubmit(handleFormSubmit)}
       className="max-w-xl mx-auto space-y-6"
     >
       <div>
-        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground animate-title">Are you new or an existing Wellness Plus customer?</h2>
+        <h2 className={`text-center text-3xl font-poppins font-semibold text-foreground ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>
+          Are you new or an existing Wellness Plus customer?
+        </h2>
 
         <Radio.Group
           value={customerStatus}
           onChange={handleSelect}
-          className="mt-6 animate-content"
+          className={`mt-6 ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}
           error={errors?.customerStatus?.message}
         >
           <Group grow>
@@ -63,6 +91,7 @@ const CustomerStatus = ({ onNext, onBack, defaultValues }: ICustomerStatusProps)
                   root: "relative w-full",
                   radio: "hidden",
                   inner: "hidden",
+                  error: "animate-pulseFade",
                   labelWrapper: "w-full",
                   label: `
                     block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointer
@@ -85,17 +114,17 @@ const CustomerStatus = ({ onNext, onBack, defaultValues }: ICustomerStatusProps)
         </Radio.Group>
       </div>
 
-      <div className="flex justify-center gap-6 pt-4 animate-btns">
+      <div className={`flex justify-center gap-6 pt-4 getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>
         <Button
           variant="outline"
-          className="w-[200px]"
-          onClick={onBack}
+          className="w-[200px] animated-btn"
+          onClick={handleBackClick}
         >
           Back
         </Button>
         <Button
           type="submit"
-          className="w-[200px]"
+          className="w-[200px] animated-btn"
           form="customerStatusForm"
         >
           Next

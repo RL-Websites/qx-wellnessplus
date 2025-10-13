@@ -98,10 +98,19 @@ export default {
           "0%": { opacity: 0, transform: "translateX(30px)" },
           "100%": { opacity: 1, transform: "translateY(0)" },
         },
+        pulseFade: {
+          "0%": {
+            opacity: "0",
+          },
+          "100%": {
+            opacity: "1",
+          },
+        },
       },
       animation: {
         fadeInUp: "fadeInUp 0.4s ease-out",
         fadeInRight: "fadeInRight 0.4s ease-out",
+        pulseFade: "pulseFade 0.9s ease-in-out",
       },
     },
   },

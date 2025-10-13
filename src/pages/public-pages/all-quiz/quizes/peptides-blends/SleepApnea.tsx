@@ -1,5 +1,7 @@
+import { animationDelay, getAnimationClass } from "@/common/constants/constants";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Grid, Radio } from "@mantine/core";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -18,9 +20,10 @@ interface SleepApneaProps {
   onNext: (data: SleepApneaFormType) => void;
   onBack: () => void;
   defaultValues?: SleepApneaFormType;
+  direction?: "forward" | "backward"; // Optional, if you want to handle direction-based animations later
 }
 
-const SleepApnea = ({ onNext, onBack, defaultValues }: SleepApneaProps) => {
+const SleepApnea = ({ onNext, onBack, defaultValues, direction }: SleepApneaProps) => {
   const {
     handleSubmit,
     setValue,
@@ -37,18 +40,39 @@ const SleepApnea = ({ onNext, onBack, defaultValues }: SleepApneaProps) => {
   const hasSleepApnea = watch("hasSleepApnea");
   const apneaType = watch("apneaType");
 
-  const onSubmit = (data: SleepApneaFormType) => {
-    onNext(data);
+  const [isExiting, setIsExiting] = useState(false);
+  const [isBackExiting, setIsBackExiting] = useState(false);
+
+  const handleFormSubmit = (data: SleepApneaFormType) => {
+    setIsExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      onNext(data);
+      setIsExiting(false);
+    }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
+  };
+
+  const handleBackClick = () => {
+    setIsBackExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsBackExiting(false);
+      onBack();
+    }, animationDelay);
   };
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <form
         id="SleepApneaForm"
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(handleFormSubmit)}
         className="max-w-xl mx-auto space-y-6"
       >
-        <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">Do you have diagnosed sleep apnea?</h2>
+        <h2 className={`text-center text-3xl font-semibold text-foreground font-poppins ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>
+          Do you have diagnosed sleep apnea?
+        </h2>
 
         {/* Main Yes/No */}
         <Radio.Group
@@ -57,7 +81,7 @@ const SleepApnea = ({ onNext, onBack, defaultValues }: SleepApneaProps) => {
             setValue("hasSleepApnea", value as "Yes" | "No", { shouldValidate: true });
             if (value === "No") setValue("apneaType", "");
           }}
-          className="mt-6 animate-content"
+          className={`mt-6 ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}
         >
           <Grid gutter="md">
             {["Yes", "No"].map((option) => (
@@ -93,17 +117,17 @@ const SleepApnea = ({ onNext, onBack, defaultValues }: SleepApneaProps) => {
           </Grid>
         </Radio.Group>
 
-        {errors.hasSleepApnea && <p className="text-danger text-sm mt-2 text-center">{errors.hasSleepApnea.message}</p>}
+        {errors.hasSleepApnea && <p className="text-danger text-sm mt-2 text-center animate-pulseFade">{errors.hasSleepApnea.message}</p>}
 
         {/* Follow-up if Yes */}
         {hasSleepApnea === "Yes" && (
           <div className="mt-6">
-            <h3 className="text-lg font-medium mb-2 text-center animate-title">Are you using CPAP?</h3>
+            <h3 className={`text-lg font-medium mb-2 text-center ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>Are you using CPAP?</h3>
 
             <Radio.Group
               value={apneaType}
               onChange={(value) => setValue("apneaType", value as "using CPAP" | "not using CPAP", { shouldValidate: true })}
-              className="animate-content"
+              className={`${getAnimationClass("content", isExiting, isBackExiting, direction)}`}
             >
               <Grid gutter="md">
                 {["using CPAP", "not using CPAP"].map((option) => (
@@ -139,21 +163,21 @@ const SleepApnea = ({ onNext, onBack, defaultValues }: SleepApneaProps) => {
               </Grid>
             </Radio.Group>
 
-            {errors.apneaType && <p className="text-danger text-sm mt-2 text-center">{errors.apneaType.message}</p>}
+            {errors.apneaType && <p className="text-danger text-sm mt-2 text-center animate-pulseFade">{errors.apneaType.message}</p>}
           </div>
         )}
 
-        <div className="flex justify-center gap-6 pt-6 animate-btns">
+        <div className={`flex justify-center gap-6 pt-6 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>
           <Button
             variant="outline"
-            className="w-[200px]"
-            onClick={onBack}
+            className="w-[200px] animated-btn"
+            onClick={handleBackClick}
           >
             Back
           </Button>
           <Button
             type="submit"
-            className="w-[200px]"
+            className="w-[200px] animated-btn"
             form="SleepApneaForm"
           >
             Next

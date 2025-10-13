@@ -1,5 +1,7 @@
+import { animationDelay, getAnimationClass } from "@/common/constants/constants";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Grid, Radio } from "@mantine/core";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -7,6 +9,7 @@ interface EndocrineAutoimmuneProps {
   onNext: (data: EndocrineAutoimmuneFormType) => void;
   onBack: () => void;
   defaultValues?: EndocrineAutoimmuneFormType;
+  direction?: "forward" | "backward"; // Optional, if you want to handle direction-based animations later
 }
 
 const options = ["Yes", "No"];
@@ -17,7 +20,7 @@ const schema = yup.object({
 
 type EndocrineAutoimmuneFormType = yup.InferType<typeof schema>;
 
-const EndocrineAutoimmuneDisorders = ({ onNext, onBack, defaultValues }: EndocrineAutoimmuneProps) => {
+const EndocrineAutoimmuneDisorders = ({ onNext, onBack, defaultValues, direction }: EndocrineAutoimmuneProps) => {
   const {
     handleSubmit,
     setValue,
@@ -31,25 +34,45 @@ const EndocrineAutoimmuneDisorders = ({ onNext, onBack, defaultValues }: Endocri
   });
 
   const selected = watch("endocrineAutoimmuneDisorder");
+  const [isExiting, setIsExiting] = useState(false);
+  const [isBackExiting, setIsBackExiting] = useState(false);
 
-  const onSubmit = (data: EndocrineAutoimmuneFormType) => {
-    onNext(data);
+  const handleFormSubmit = (data: EndocrineAutoimmuneFormType) => {
+    setIsExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      onNext(data);
+      setIsExiting(false);
+    }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
+  };
+
+  const handleBackClick = () => {
+    setIsBackExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsBackExiting(false);
+      onBack();
+    }, animationDelay);
   };
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <form
         id="EndocrineAutoimmuneForm"
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(handleBackClick)}
         className="max-w-xl mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">Do you have any known endocrine or autoimmune disorders?</h2>
+          <h2 className={`text-center text-3xl font-semibold text-foreground font-poppins ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>
+            Do you have any known endocrine or autoimmune disorders?
+          </h2>
 
           <Radio.Group
             value={selected}
             onChange={(value) => setValue("endocrineAutoimmuneDisorder", value, { shouldValidate: true })}
-            className="mt-6 animate-content"
+            className={`mt-6 ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}
           >
             <Grid gutter="md">
               {options.map((option) => (
@@ -85,20 +108,20 @@ const EndocrineAutoimmuneDisorders = ({ onNext, onBack, defaultValues }: Endocri
             </Grid>
           </Radio.Group>
 
-          {errors.endocrineAutoimmuneDisorder && <div className="text-danger text-sm mt-2 text-center">{errors.endocrineAutoimmuneDisorder.message}</div>}
+          {errors.endocrineAutoimmuneDisorder && <div className="animate-pulseFade text-danger text-sm mt-2 text-center">{errors.endocrineAutoimmuneDisorder.message}</div>}
         </div>
 
-        <div className="flex justify-center gap-6 pt-4 animate-btns">
+        <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>
           <Button
             variant="outline"
-            className="w-[200px]"
-            onClick={onBack}
+            className="w-[200px] animated-btn"
+            onClick={handleBackClick}
           >
             Back
           </Button>
           <Button
             type="submit"
-            className="w-[200px]"
+            className="w-[200px] animated-btn"
           >
             Next
           </Button>
