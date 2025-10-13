@@ -2,13 +2,78 @@
   &-main-bg {
     @apply bg-[url(/images/home-bg.png)] min-h-screen bg-cover bg-repeat;
   }
-  &-home-hero {
+  /* &-home-hero {
     @apply md:bg-[url(/images/home-banner.png)] min-h-screen bg-none xl:bg-no-repeat bg-repeat-y bg-right;
     background-size: 35%;
+    animation: floatIn 2s cubic-bezier(0.23, 1, 0.32, 1) 0.5s both;
+    transform-style: preserve-3d;
+  }
+  &-home-hero-exit {
+    animation: floatOut 0.5s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+  } */
+
+  &-home-hero {
+    @apply min-h-screen bg-none relative;
+    animation: floatIn 2s cubic-bezier(0.23, 1, 0.32, 1) 0.5s both;
+
+    &-bg {
+      @apply md:bg-[url(/images/home-banner.png)] bg-none xl:bg-no-repeat bg-repeat-y bg-right;
+      background-size: 35%;
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+
+      z-index: 0;
+      animation: floatIn 0.5s cubic-bezier(0.23, 1, 0.32, 1) 0.5s both;
+
+      &-exit {
+        animation: bgFloatOut 0.5s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards !important;
+      }
+    }
+
+    &-exit {
+      animation: floatOut 0.5s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards !important;
+    }
   }
 }
+
 @media only screen and (max-width: 576px) {
   .p-GridCell {
     margin-bottom: 20px !important;
+  }
+}
+
+@keyframes floatIn {
+  0% {
+    opacity: 0;
+    transform: translateX(30px) translateZ(50px);
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) translateZ(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes floatOut {
+  0% {
+    opacity: 1;
+    filter: blur(0);
+  }
+  100% {
+    opacity: 0;
+
+    filter: blur(2px);
+  }
+}
+
+/* ✅ New keyframe specifically for background - removes 3D transforms */
+@keyframes bgFloatOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
   }
 }

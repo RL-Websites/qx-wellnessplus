@@ -21,3 +21,10 @@ export const getAnimationClass = (
 
   return `animate-${element}-enter-left`;
 };
+
+export const getHomePageAnimationClass = (element: "thank-you-text" | "wellness-text" | "btns", isExiting: boolean): string => {
+  if (isExiting) {
+    return `${element}-exit`;
+  }
+  return element; // ✅ Returns base class with enter animation
+};

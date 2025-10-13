@@ -1,5 +1,6 @@
 import { categoryRepository } from "@/common/api/repositories/categoryRepository";
 import CategoryCard from "@/common/components/CategoryCard";
+import { animationDelay } from "@/common/constants/constants";
 import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { customerAtom } from "@/common/states/customer.atom";
 import { prevGlpMedDetails } from "@/common/states/product.atom";
@@ -13,6 +14,21 @@ const CategoryPage = () => {
   const setSelectedCategory = useSetAtom(selectedCategoryAtom);
   const [customerData, setCustomerData] = useAtom(customerAtom);
   const setPrevGlpMedDetails = useSetAtom(prevGlpMedDetails);
+  const [isExiting, setIsExiting] = useState(false);
+  const handleCategoryClick2 = (categoryName: string) => {
+    setIsExiting(true);
+    setTimeout(() => {
+      setIsExiting(false);
+      if (categoryName.includes("Peptides")) {
+        const newCategory = ["Single Peptides", "Peptides Blends"];
+        setSelectedCategory(newCategory);
+      } else {
+        const newCategory = [categoryName];
+        setSelectedCategory(newCategory);
+      }
+      setPrevGlpMedDetails(RESET);
+    }, animationDelay);
+  };
 
   const categoryListQuery = useQuery({
     queryKey: ["categoryList", customerData?.slug],
@@ -77,7 +93,7 @@ const CategoryPage = () => {
   }, []);
 
   return (
-    <div className="space-y-12">
+    <div className={`space-y-12 ${isExiting ? "site-home-hero-exit" : "site-home-hero"}`}>
       <h4 className="heading-text text-center text-foreground uppercase">Choose A Treatment</h4>
 
       <div
@@ -86,7 +102,7 @@ const CategoryPage = () => {
         {transformedCategories?.map((item, index) => (
           <CategoryCard
             key={index}
-            onClick={() => handleCategoryClick(item)}
+            onClick={() => handleCategoryClick2(item)}
             image={categoryImages[item]}
             title={item}
             link="/quiz"

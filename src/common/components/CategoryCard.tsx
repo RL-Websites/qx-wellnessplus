@@ -13,14 +13,13 @@ const CategoryCard = (cardProps: ICardProps) => {
     <Link
       to={cardProps.link}
       onClick={cardProps.onClick}
-      className="space-y-5 text-center"
+      className="space-y-5 text-center category-card"
     >
       {cardProps?.image ? (
         <ThumbBg>
           <img
             src={cardProps.image}
             alt=""
-            className="max-w-full xl:h-[260px] lg:h-[230px] h-[200px]"
           />
         </ThumbBg>
       ) : (
