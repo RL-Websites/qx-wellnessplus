@@ -89,7 +89,7 @@ const RegistrationPage = () => {
 
     setTimeout(() => {
       setIsExiting(false);
-      navigate("/category");
+      navigate("/login");
       //navigate("/category");
     }, animationDelay);
   };
