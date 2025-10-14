@@ -15,6 +15,7 @@ const CategoryPage = () => {
   const [customerData, setCustomerData] = useAtom(customerAtom);
   const setPrevGlpMedDetails = useSetAtom(prevGlpMedDetails);
   const [isExiting, setIsExiting] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const handleCategoryClick2 = (categoryName: string) => {
     setIsExiting(true);
     setTimeout(() => {
@@ -35,10 +36,14 @@ const CategoryPage = () => {
     queryFn: () => categoryRepository.getCategoryList(customerData?.slug),
     // enabled: !slug,
   });
+  useEffect(() => {
+    setIsLoading(true);
+  }, []);
 
   useEffect(() => {
     if (categoryListQuery.isFetched && categoryListQuery.data?.data?.status_code === 200) {
       setCategory(categoryListQuery?.data?.data?.data);
+      setIsLoading(false);
     }
   }, [categoryListQuery.data?.data?.data]);
 
@@ -91,25 +96,32 @@ const CategoryPage = () => {
     }
     return acc;
   }, []);
-  return (
-    <div className={`space-y-12 site-home-hero ${isExiting ? "site-home-hero-exit" : ""}`}>
-      <h4 className="heading-text text-center text-foreground uppercase">Choose A Treatment</h4>
 
-      <div
-        className={`${(category?.length ?? 0) < 3 ? `flex flex-wrap justify-center` : "grid lg:grid-cols-3 sm:grid-cols-2"} lg:gap-y-12 gap-y-7  lg:gap-x-20 md:gap-x-10 gap-x-5`}
-      >
-        {transformedCategories?.map((item, index) => (
-          <CategoryCard
-            key={index}
-            onClick={() => handleCategoryClick2(item)}
-            image={categoryImages[item]}
-            title={item}
-            link="/quiz"
-          />
-        ))}
+  {
+    return isLoading ? (
+      <div className="flex justify-center items-center min-h-[400px]">
+        <div className="w-16 h-16 border-4 border-gray-200 border-t-primary rounded-full animate-spin"></div>
       </div>
-    </div>
-  );
+    ) : (
+      <div className={`space-y-12 site-home-hero ${isExiting ? "site-home-hero-exit" : ""}`}>
+        <h4 className="heading-text text-center text-foreground uppercase">Choose A Treatment</h4>
+
+        <div
+          className={`${(category?.length ?? 0) < 3 ? `flex flex-wrap justify-center` : "grid lg:grid-cols-3 sm:grid-cols-2"} lg:gap-y-12 gap-y-7  lg:gap-x-20 md:gap-x-10 gap-x-5`}
+        >
+          {transformedCategories?.map((item, index) => (
+            <CategoryCard
+              key={index}
+              onClick={() => handleCategoryClick2(item)}
+              image={categoryImages[item]}
+              title={item}
+              link="/quiz"
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }
 };
 
 export default CategoryPage;

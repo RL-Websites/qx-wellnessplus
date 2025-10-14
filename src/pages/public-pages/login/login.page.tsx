@@ -126,8 +126,8 @@ const Login = () => {
 
     setTimeout(() => {
       setIsExiting(false);
-      // navigate(customerData?.slug ? "/order-summary" : "/");
-      navigate("/category");
+      navigate(customerData?.slug ? "/order-summary" : "/");
+      //navigate("/category");
     }, animationDelay);
   };
 
