@@ -15,8 +15,7 @@ const CategoryPage = () => {
   const [customerData, setCustomerData] = useAtom(customerAtom);
   const setPrevGlpMedDetails = useSetAtom(prevGlpMedDetails);
   const [isExiting, setIsExiting] = useState(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const handleCategoryClick2 = (categoryName: string) => {
+  const handleCategoryClick = (categoryName: string) => {
     setIsExiting(true);
     setTimeout(() => {
       setIsExiting(false);
@@ -36,27 +35,23 @@ const CategoryPage = () => {
     queryFn: () => categoryRepository.getCategoryList(customerData?.slug),
     // enabled: !slug,
   });
-  useEffect(() => {
-    setIsLoading(true);
-  }, []);
 
   useEffect(() => {
     if (categoryListQuery.isFetched && categoryListQuery.data?.data?.status_code === 200) {
       setCategory(categoryListQuery?.data?.data?.data);
-      setIsLoading(false);
     }
   }, [categoryListQuery.data?.data?.data]);
 
-  const handleCategoryClick = (categoryName: string) => {
-    if (categoryName.includes("Peptides")) {
-      const newCategory = ["Single Peptides", "Peptides Blends"];
-      setSelectedCategory(newCategory);
-    } else {
-      const newCategory = [categoryName];
-      setSelectedCategory(newCategory);
-    }
-    setPrevGlpMedDetails(RESET);
-  };
+  // const handleCategoryClick = (categoryName: string) => {
+  //   if (categoryName.includes("Peptides")) {
+  //     const newCategory = ["Single Peptides", "Peptides Blends"];
+  //     setSelectedCategory(newCategory);
+  //   } else {
+  //     const newCategory = [categoryName];
+  //     setSelectedCategory(newCategory);
+  //   }
+  //   setPrevGlpMedDetails(RESET);
+  // };
 
   const categoryImages = {
     "Weight Loss": "images/weight-loos.png",
@@ -98,7 +93,7 @@ const CategoryPage = () => {
   }, []);
 
   {
-    return isLoading ? (
+    return categoryListQuery.isLoading ? (
       <div className="flex justify-center items-center min-h-[400px]">
         <div className="w-16 h-16 border-4 border-gray-200 border-t-primary rounded-full animate-spin"></div>
       </div>
@@ -112,7 +107,7 @@ const CategoryPage = () => {
           {transformedCategories?.map((item, index) => (
             <CategoryCard
               key={index}
-              onClick={() => handleCategoryClick2(item)}
+              onClick={() => handleCategoryClick(item)}
               image={categoryImages[item]}
               title={item}
               link="/quiz"

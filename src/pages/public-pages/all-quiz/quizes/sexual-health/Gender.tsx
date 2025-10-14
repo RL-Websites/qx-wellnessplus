@@ -64,8 +64,8 @@ export default function GenderSexualHealth({ onNext, onBack, defaultValues, dire
 
     // Wait for exit animation to complete
     setTimeout(() => {
-      onNext(data);
       setIsExiting(false);
+      onNext(data);
     }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
   };
 
