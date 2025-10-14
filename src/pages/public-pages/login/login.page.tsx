@@ -178,7 +178,7 @@ const Login = () => {
           <div className="flex justify-between">
             <Button
               variant="outline"
-              className="lg:w-[206px]"
+              className="lg:w-[206px] animated-btn"
               onClick={handleBackClick}
             >
               Back
@@ -186,7 +186,7 @@ const Login = () => {
             <Button
               size="md"
               type="submit"
-              className="bg-primary text-white rounded-xl lg:w-[206px]"
+              className="bg-primary text-white rounded-xl lg:w-[206px] animated-btn"
               loading={LoginMutation.isPending}
             >
               Login

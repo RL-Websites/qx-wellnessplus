@@ -3,6 +3,7 @@ import { IRegistrationRequestPayload } from "@/common/api/models/interfaces/Auth
 import authApiRepository from "@/common/api/repositories/authRepository";
 import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
 import dmlToast from "@/common/configs/toaster.config";
+import { animationDelay } from "@/common/constants/constants";
 import useAuthToken from "@/common/hooks/useAuthToken";
 import { cartItemsAtom } from "@/common/states/product.atom";
 import { user_id, userAtom } from "@/common/states/user.atom";
@@ -11,7 +12,7 @@ import { Button, Input, PasswordInput } from "@mantine/core";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useAtom } from "jotai";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import * as yup from "yup";
@@ -55,6 +56,7 @@ const RegistrationPage = () => {
   const [userId, setUserId] = useAtom(user_id);
   const navigate = useNavigate();
   const location = useLocation();
+  const [isExiting, setIsExiting] = useState(false);
 
   useEffect(() => {
     if (location.pathname == "/registration" && getAccessToken()) {
@@ -82,7 +84,18 @@ const RegistrationPage = () => {
     }
   }, [userData]);
 
+  const handleBackClick = () => {
+    setIsExiting(true);
+
+    setTimeout(() => {
+      setIsExiting(false);
+      navigate("/category");
+      //navigate("/category");
+    }, animationDelay);
+  };
+
   const onSubmit = (data: registrationSchemaType) => {
+    setIsExiting(true);
     const payload = { first_name: data.firstName, last_name: data.lastName, email: data.emailAddress, password: data.password, confirm_password: data.confirmPassword };
     RegistrationMutation.mutate(payload, {
       onSuccess: (res) => {
@@ -106,8 +119,8 @@ const RegistrationPage = () => {
   };
 
   return (
-    <div className="">
-      <h2 className="lg:text-[70px] md:text-6xl text-4xl text-foreground uppercase text-center">Registration</h2>
+    <div className={`site-home-hero ${isExiting ? "site-home-hero-exit" : ""}`}>
+      <h2 className={`lg:text-[70px] md:text-6xl text-4xl text-foreground uppercase text-center  `}>Registration</h2>
       <form
         className="w-full "
         onSubmit={handleSubmit(onSubmit)}
@@ -175,11 +188,9 @@ const RegistrationPage = () => {
         <div className="card-common-width  mx-auto mt-10">
           <div className="flex justify-between">
             <Button
-              size="md"
-              className="lg:w-[206px]"
               variant="outline"
-              component={Link}
-              to={`/login`}
+              className="lg:w-[206px] animated-btn"
+              onClick={handleBackClick}
             >
               Back
             </Button>
