@@ -51,8 +51,8 @@ const CardiovascularDisease = ({ onNext, onBack, defaultValues, direction }: ICa
 
     // Wait for exit animation to complete
     setTimeout(() => {
-      onNext({ ...data, eligible: data.cardiovascularDisease === "Yes" });
       setIsExiting(false);
+      onNext({ ...data, eligible: data.cardiovascularDisease === "Yes" });
     }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
   };
 

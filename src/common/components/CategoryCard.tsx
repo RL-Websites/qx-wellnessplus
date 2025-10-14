@@ -1,32 +1,27 @@
-import { Link } from "react-router-dom";
 import ThumbBg from "./ThumbBg";
 
 interface ICardProps {
   image: string;
   title: string;
-  link: string;
   onClick?: () => void;
 }
 
 const CategoryCard = (cardProps: ICardProps) => {
   return (
-    <Link
-      to={cardProps.link}
-      onClick={cardProps.onClick}
-      className="space-y-5 text-center category-card"
+    <div
+      onClick={cardProps.onClick} // ✅ Add the onClick handler here
+      className="space-y-5 text-center category-card cursor-pointer" // ✅ Add cursor-pointer for visual feedback
     >
       {cardProps?.image ? (
         <ThumbBg>
           <img
             src={cardProps.image}
-            alt=""
+            alt={cardProps.title || "Category"}
           />
         </ThumbBg>
-      ) : (
-        ""
-      )}
-      <div className="card-title ">{cardProps?.title ? <h4 className="font-poppins font-medium lg:text-3xl md:text-2xl sm:text-xl text-base">{cardProps?.title}</h4> : ""}</div>
-    </Link>
+      ) : null}
+      <div className="card-title">{cardProps?.title && <h4 className="font-poppins font-medium lg:text-3xl md:text-2xl sm:text-xl text-base">{cardProps.title}</h4>}</div>
+    </div>
   );
 };
 

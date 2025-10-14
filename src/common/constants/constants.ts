@@ -28,3 +28,13 @@ export const getHomePageAnimationClass = (element: "thank-you-text" | "wellness-
   }
   return element; // ✅ Returns base class with enter animation
 };
+// export const canonicalize = (raw: string) => {
+//   const s = (raw || "").toLowerCase();
+//   if (s.includes("hair growth")) return "Hair Growth";
+//   if (s.includes("sexual health")) return "Sexual Health";
+//   if (s.includes("peptides")) return "Peptides";
+//   if (s.includes("weight loss")) return "Weight Loss";
+//   if (s.includes("testosterone")) return "Testosterone";
+//   // fallback to original but trimmed/capitalized if you want
+//   return raw;
+// };

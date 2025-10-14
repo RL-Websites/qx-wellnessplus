@@ -10,7 +10,7 @@ import { Datepicker as UberDatePicker } from "baseui/datepicker";
 import { useAtomValue } from "jotai";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Client as Styletron } from "styletron-engine-monolithic";
 import { Provider as StyletronProvider } from "styletron-react";
 import * as yup from "yup";
@@ -36,6 +36,7 @@ export default function DateOfBirth({ onNext, onBack, defaultValues, direction }
   const selectedCategory = useAtomValue(selectedCategoryAtom);
 
   const ageLimit = selectedCategory?.includes("Testosterone") ? 22 : 18;
+  const navigate = useNavigate();
 
   const maxValidDate = new Date();
   maxValidDate.setFullYear(maxValidDate.getFullYear() - ageLimit);
@@ -56,8 +57,8 @@ export default function DateOfBirth({ onNext, onBack, defaultValues, direction }
 
     // Wait for exit animation to complete
     setTimeout(() => {
-      onNext(data);
       setIsExiting(false);
+      onNext(data);
     }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
   };
 
@@ -67,7 +68,7 @@ export default function DateOfBirth({ onNext, onBack, defaultValues, direction }
     // Wait for exit animation to complete
     setTimeout(() => {
       setIsBackExiting(false);
-      onBack();
+      navigate("/category");
     }, animationDelay);
   };
 
@@ -138,8 +139,7 @@ export default function DateOfBirth({ onNext, onBack, defaultValues, direction }
         <Button
           variant="outline"
           className="w-[200px] animated-btn"
-          component={Link}
-          to="/category"
+          onClick={handleBackClick}
         >
           Back
         </Button>

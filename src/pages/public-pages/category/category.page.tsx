@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useAtom, useSetAtom } from "jotai";
 import { RESET } from "jotai/utils";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const CategoryPage = () => {
   const [category, setCategory] = useState<any | null>();
@@ -15,6 +16,8 @@ const CategoryPage = () => {
   const [customerData, setCustomerData] = useAtom(customerAtom);
   const setPrevGlpMedDetails = useSetAtom(prevGlpMedDetails);
   const [isExiting, setIsExiting] = useState(false);
+  const navigate = useNavigate(); // ✅ Initialize navigate
+
   const handleCategoryClick = (categoryName: string) => {
     setIsExiting(true);
     setTimeout(() => {
@@ -27,6 +30,7 @@ const CategoryPage = () => {
         setSelectedCategory(newCategory);
       }
       setPrevGlpMedDetails(RESET);
+      navigate("/quiz"); // ✅ Navigate AFTER setting the state
     }, animationDelay);
   };
 
@@ -110,7 +114,8 @@ const CategoryPage = () => {
               onClick={() => handleCategoryClick(item)}
               image={categoryImages[item]}
               title={item}
-              link="/quiz"
+              // ✅ REMOVE the link prop - navigation is now handled in onClick
+              // link="/quiz"
             />
           ))}
         </div>

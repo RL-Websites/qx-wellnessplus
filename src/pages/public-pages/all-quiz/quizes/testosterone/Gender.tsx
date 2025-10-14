@@ -73,7 +73,7 @@ export default function GenderSexualHealth({ onNext, onBack, defaultValues, dire
 
   const handleSelect = (value: string) => {
     if (value === "Male") {
-      setSelectedCategory(["Sexual Health (Male"]);
+      setSelectedCategory(["Sexual Health (Male)"]);
     } else if (value === "Female") {
       setSelectedCategory(["Sexual Health (Female)"]);
     }

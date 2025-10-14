@@ -77,6 +77,7 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues, direct
     setValue("genderHairGrowth", value, { shouldValidate: true });
     clearErrors("genderHairGrowth");
     setSelectedGender(value);
+    // console.log(selectedCategory);
   };
 
   // const handleSelect = (value: string) => {
