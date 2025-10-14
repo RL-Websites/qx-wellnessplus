@@ -166,8 +166,8 @@ const Login = () => {
             <Button
               variant="outline"
               className="lg:w-[206px]"
-              component={Link}
-              to={customerData?.slug ? "/order-summary" : "/"}
+              // to={cartItems?.length > 0 ? "/order-summary" : "/"}
+              onClick={() => navigate(-1)}
             >
               Back
             </Button>
