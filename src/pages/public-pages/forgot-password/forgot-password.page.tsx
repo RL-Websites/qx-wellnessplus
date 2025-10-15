@@ -61,10 +61,9 @@ const ForgetPasswordPage = () => {
         dmlToast.success({
           title: res?.data?.message,
         });
+        // setIsExitingForgot(true);
 
-        setTimeout(() => {
-          setIsExitingForgot(true);
-        }, animationDelay);
+        // setTimeout(() => {}, animationDelay);
       },
       onError: (error: any) => {
         dmlToast.error({

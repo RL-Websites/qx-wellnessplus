@@ -5,7 +5,7 @@ import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
 import dmlToast from "@/common/configs/toaster.config";
 import { animationDelay } from "@/common/constants/constants";
 import useAuthToken from "@/common/hooks/useAuthToken";
-import { isExitingAtomCategory, isExitingAtomLogin, isExitingAtomRegister } from "@/common/states/animation.atom";
+import { isExitingAtomCategory, isExitingAtomForgot, isExitingAtomLogin, isExitingAtomRegister } from "@/common/states/animation.atom";
 import { customerAtom } from "@/common/states/customer.atom";
 import { cartItemsAtom } from "@/common/states/product.atom";
 import { redirectUrlAtom } from "@/common/states/redirect.atom";
@@ -49,6 +49,8 @@ const Login = () => {
   const [isExitingCategory, setIsExitingCategory] = useAtom(isExitingAtomCategory);
   const [isExitingLogin, setIsExitingLogin] = useAtom(isExitingAtomLogin);
   const [isExitingRegister, setIsExitingRegister] = useAtom(isExitingAtomRegister);
+  const [isExitingForgot, setIsExitingForgot] = useAtom(isExitingAtomForgot);
+
   useEffect(() => {
     scrollTo({ y: 0 });
   }, []);
@@ -140,6 +142,7 @@ const Login = () => {
     // Wait for animation duration (e.g. 400ms)
     setTimeout(() => {
       navigate("/forgot-password");
+      setIsExitingForgot(false);
       setIsExitingLogin(false);
     }, animationDelay);
   };

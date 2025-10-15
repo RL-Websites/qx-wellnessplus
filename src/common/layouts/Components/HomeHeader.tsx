@@ -109,6 +109,7 @@ const HomeHeader = () => {
             onClick={() => {
               setIsExitingRegister(true);
               setIsExitingCategory(true);
+              setIsExitingForgot(true);
               setIsExitingLogin(false);
               setTimeout(() => {
                 navigate("/login");
