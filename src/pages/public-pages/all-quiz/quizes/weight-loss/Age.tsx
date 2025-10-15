@@ -36,9 +36,19 @@ const AgeWeightLoss = ({ onNext, onBack, defaultValues, direction }: IAgeWeightL
 
   const ageWeightLoss = watch("ageWeightLoss");
 
-  const handleSelect = (value: string) => {
-    setValue("ageWeightLoss", value, { shouldValidate: true });
-    clearErrors("ageWeightLoss");
+  const handleSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+
+    if (errors.ageWeightLoss) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue("ageWeightLoss", value, { shouldValidate: true });
+        clearErrors("ageWeightLoss");
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue("ageWeightLoss", value, { shouldValidate: true });
+    }
   };
 
   const [isExiting, setIsExiting] = useState(false);
@@ -63,6 +73,7 @@ const AgeWeightLoss = ({ onNext, onBack, defaultValues, direction }: IAgeWeightL
       onBack();
     }, animationDelay);
   };
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
@@ -82,12 +93,13 @@ const AgeWeightLoss = ({ onNext, onBack, defaultValues, direction }: IAgeWeightL
               error={errors.ageWeightLoss?.message ? errors.ageWeightLoss?.message : false}
               classNames={{
                 label: "!text-sm md:!text-base lg:!text-lg",
-                error: "animate-pulseFade",
+                error: `${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`,
               }}
             >
               <Input
                 type="text"
                 {...register("ageWeightLoss")}
+                onChange={handleSelect}
               />
             </Input.Wrapper>
           </div>

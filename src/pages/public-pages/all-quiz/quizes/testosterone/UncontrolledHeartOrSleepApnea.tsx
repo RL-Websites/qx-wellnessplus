@@ -36,8 +36,16 @@ const UncontrolledHeartOrSleepApnea = ({ onNext, onBack, defaultValues, directio
   const options = ["No", "Yes"];
 
   const handleSelect = (value: string) => {
-    setValue("heartOrSleepApnea", value, { shouldValidate: true });
-    clearErrors("heartOrSleepApnea");
+    if (errors.heartOrSleepApnea) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue("heartOrSleepApnea", value, { shouldValidate: true });
+        clearErrors("heartOrSleepApnea");
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue("heartOrSleepApnea", value, { shouldValidate: true });
+    }
   };
 
   const [isExiting, setIsExiting] = useState(false);
@@ -62,6 +70,7 @@ const UncontrolledHeartOrSleepApnea = ({ onNext, onBack, defaultValues, directio
       onBack();
     }, animationDelay);
   };
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
@@ -110,7 +119,9 @@ const UncontrolledHeartOrSleepApnea = ({ onNext, onBack, defaultValues, directio
             </div>
           </Radio.Group>
 
-          {errors.heartOrSleepApnea && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.heartOrSleepApnea.message}</Text>}
+          {errors.heartOrSleepApnea && (
+            <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.heartOrSleepApnea.message}</Text>
+          )}
         </div>
 
         <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>

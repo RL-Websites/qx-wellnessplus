@@ -55,6 +55,7 @@ const ExerciseFrequency = ({ onNext, onBack, defaultValues, direction }: IExerci
       onBack();
     }, animationDelay);
   };
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   const selected = watch("exerciseFrequency");
 
@@ -110,7 +111,9 @@ const ExerciseFrequency = ({ onNext, onBack, defaultValues, direction }: IExerci
             </Grid>
           </Radio.Group>
 
-          {errors.exerciseFrequency && <div className="text-danger text-sm mt-2 text-center animate-pulseFade">{errors.exerciseFrequency.message}</div>}
+          {errors.exerciseFrequency && (
+            <div className={`text-danger text-sm mt-2 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.exerciseFrequency.message}</div>
+          )}
         </div>
 
         <div className="flex justify-center gap-6 pt-4 animate-btns">

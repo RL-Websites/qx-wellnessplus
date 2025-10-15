@@ -36,9 +36,19 @@ const BMI = ({ onNext, onBack, defaultValues, direction }: IBMIProps) => {
 
   const bmi = watch("bmi");
 
-  const handleSelect = (value: string) => {
-    setValue("bmi", value, { shouldValidate: true });
-    clearErrors("bmi");
+  const handleSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+
+    if (errors.bmi) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue("bmi", value, { shouldValidate: true });
+        clearErrors("bmi");
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue("bmi", value, { shouldValidate: true });
+    }
   };
 
   const [isExiting, setIsExiting] = useState(false);
@@ -63,6 +73,7 @@ const BMI = ({ onNext, onBack, defaultValues, direction }: IBMIProps) => {
       onBack();
     }, animationDelay);
   };
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
@@ -82,14 +93,16 @@ const BMI = ({ onNext, onBack, defaultValues, direction }: IBMIProps) => {
               error={errors.bmi?.message ? errors.bmi?.message : false}
               classNames={{
                 label: "!text-sm md:!text-base lg:!text-lg",
-                error: "animate-pulseFade",
+                error: `${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`,
               }}
             >
               <Input
                 type="number"
                 step="0.1"
                 min={0}
-                {...register("bmi")}
+                {...register("bmi", {
+                  onChange: handleSelect,
+                })}
               />
             </Input.Wrapper>
           </div>

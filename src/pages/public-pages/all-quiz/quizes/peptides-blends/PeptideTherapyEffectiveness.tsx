@@ -47,6 +47,7 @@ const PeptideTherapyEffectiveness = ({ onNext, onBack, defaultValues, direction 
       onBack();
     }, animationDelay);
   };
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">

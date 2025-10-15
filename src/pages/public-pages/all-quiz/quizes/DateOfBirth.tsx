@@ -81,6 +81,7 @@ export default function DateOfBirth({ onNext, onBack, defaultValues, direction }
     resolver: yupResolver(dobSchema),
     defaultValues,
   });
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
@@ -104,7 +105,7 @@ export default function DateOfBirth({ onNext, onBack, defaultValues, direction }
             label="Date of Birth"
             error={getErrorMessage(errors.date_of_birth)}
             withAsterisk
-            classNames={{ ...InputErrorMessage, error: "animate-pulseFade" }}
+            classNames={{ ...InputErrorMessage, error: isErrorFading ? "error-fade-out" : "animate-pulseFade" }}
           >
             <div className={`${errors?.date_of_birth ? "baseWeb-error" : ""} dml-Input-wrapper dml-Input-Calendar relative`}>
               <StyletronProvider value={engine}>
@@ -121,9 +122,18 @@ export default function DateOfBirth({ onNext, onBack, defaultValues, direction }
                     error={!!errors.date_of_birth}
                     onChange={(data) => {
                       if (data?.date) {
-                        setDob([data.date]);
-                        setValue("date_of_birth", data.date, { shouldValidate: true });
-                        clearErrors("date_of_birth");
+                        if (errors.date_of_birth) {
+                          setIsErrorFading(true);
+                          setTimeout(() => {
+                            setDob([data.date]);
+                            setValue("date_of_birth", data.date, { shouldValidate: true });
+                            clearErrors("date_of_birth");
+                            setIsErrorFading(false);
+                          }, 300);
+                        } else {
+                          setDob([data.date]);
+                          setValue("date_of_birth", data.date, { shouldValidate: true });
+                        }
                       }
                     }}
                     overrides={BaseWebDatePickerOverrides}

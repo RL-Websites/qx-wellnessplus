@@ -41,7 +41,36 @@ const WeightLossHeight = ({ onNext, onBack, defaultValues, direction }: IWeightL
 
   const [isExiting, setIsExiting] = useState(false);
   const [isBackExiting, setIsBackExiting] = useState(false);
+  const handleSelectFeet = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
 
+    if (errors.weightlossheightFeet) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue("weightlossheightFeet", value, { shouldValidate: true });
+        clearErrors("weightlossheightFeet");
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue("weightlossheightFeet", value, { shouldValidate: true });
+    }
+  };
+
+  // Add handleSelect function for inches input
+  const handleSelectInch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+
+    if (errors.weightlossheightInch) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue("weightlossheightInch", value, { shouldValidate: true });
+        clearErrors("weightlossheightInch");
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue("weightlossheightInch", value, { shouldValidate: true });
+    }
+  };
   const handleFormSubmit = (data: weightLossHeightSchemaType) => {
     setIsExiting(true);
 
@@ -75,6 +104,7 @@ const WeightLossHeight = ({ onNext, onBack, defaultValues, direction }: IWeightL
       onBack();
     }, animationDelay);
   };
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
@@ -95,7 +125,7 @@ const WeightLossHeight = ({ onNext, onBack, defaultValues, direction }: IWeightL
               classNames={{
                 label: "!text-sm md:!text-base lg:!text-lg",
                 root: "sm:!grid !block",
-                error: "sm:!text-end !text-start w-full animate-pulseFade",
+                error: `sm:!text-end !text-start w-full ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`,
               }}
               className="w-full"
             >
@@ -103,6 +133,7 @@ const WeightLossHeight = ({ onNext, onBack, defaultValues, direction }: IWeightL
                 placeholder="Feet"
                 type="text"
                 {...register("weightlossheightFeet")}
+                onChange={handleSelectFeet}
               />
             </Input.Wrapper>
 
@@ -112,7 +143,7 @@ const WeightLossHeight = ({ onNext, onBack, defaultValues, direction }: IWeightL
               classNames={{
                 label: "!text-sm md:!text-base lg:!text-lg",
                 root: "sm:!grid !block",
-                error: "sm:!text-end !text-start w-full animate-pulseFade",
+                error: `sm:!text-end !text-start w-full ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`,
               }}
               className="w-full"
             >
@@ -120,6 +151,7 @@ const WeightLossHeight = ({ onNext, onBack, defaultValues, direction }: IWeightL
                 placeholder="Inches"
                 type="text"
                 {...register("weightlossheightInch")}
+                onChange={handleSelectInch}
               />
             </Input.Wrapper>
           </div>

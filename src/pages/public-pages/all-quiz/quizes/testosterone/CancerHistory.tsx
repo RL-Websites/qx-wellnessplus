@@ -36,8 +36,16 @@ const CancerHistory = ({ onNext, onBack, defaultValues, direction }: ICancerHist
   const options = ["No", "Yes"];
 
   const handleSelect = (value: string) => {
-    setValue("cancerHistory", value, { shouldValidate: true });
-    clearErrors("cancerHistory");
+    if (errors.cancerHistory) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue("cancerHistory", value, { shouldValidate: true });
+        clearErrors("cancerHistory");
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue("cancerHistory", value, { shouldValidate: true });
+    }
   };
 
   const [isExiting, setIsExiting] = useState(false);
@@ -62,6 +70,7 @@ const CancerHistory = ({ onNext, onBack, defaultValues, direction }: ICancerHist
       onBack();
     }, animationDelay);
   };
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
@@ -110,7 +119,9 @@ const CancerHistory = ({ onNext, onBack, defaultValues, direction }: ICancerHist
             </div>
           </Radio.Group>
 
-          {errors.cancerHistory && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.cancerHistory.message}</Text>}
+          {errors.cancerHistory && (
+            <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.cancerHistory.message}</Text>
+          )}
         </div>
 
         <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>

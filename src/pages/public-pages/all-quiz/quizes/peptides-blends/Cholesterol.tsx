@@ -1,5 +1,5 @@
 import { animationDelay, getAnimationClass } from "@/common/constants/constants";
-import { Button, Grid, Radio } from "@mantine/core";
+import { Button, Grid, Radio, Text } from "@mantine/core";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -17,7 +17,13 @@ type CholesterolFormType = {
 const options = ["On medication", "Greater than 240 without medication", "Neither"];
 
 const Cholesterol = ({ onNext, onBack, defaultValues, direction }: CholesterolProps) => {
-  const { setValue, handleSubmit, watch } = useForm<CholesterolFormType>({
+  const {
+    setValue,
+    handleSubmit,
+    watch,
+    clearErrors,
+    formState: { errors },
+  } = useForm<CholesterolFormType>({
     defaultValues: {
       cholesterolStatus: defaultValues?.cholesterolStatus || "",
     },
@@ -37,6 +43,7 @@ const Cholesterol = ({ onNext, onBack, defaultValues, direction }: CholesterolPr
       setIsExiting(false);
     }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
   };
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   const handleBackClick = () => {
     setIsBackExiting(true);
@@ -46,6 +53,19 @@ const Cholesterol = ({ onNext, onBack, defaultValues, direction }: CholesterolPr
       setIsBackExiting(false);
       onBack();
     }, animationDelay);
+  };
+
+  const handleSelect = (value: string) => {
+    if (errors.cholesterolStatus) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue("cholesterolStatus", value, { shouldValidate: true });
+        clearErrors("cholesterolStatus");
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue("cholesterolStatus", value, { shouldValidate: true });
+    }
   };
 
   return (
@@ -62,7 +82,7 @@ const Cholesterol = ({ onNext, onBack, defaultValues, direction }: CholesterolPr
 
           <Radio.Group
             value={selected}
-            onChange={(value) => setValue("cholesterolStatus", value, { shouldValidate: true })}
+            onChange={handleSelect}
             className={`mt-6 ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}
           >
             <Grid gutter="md">
@@ -98,6 +118,10 @@ const Cholesterol = ({ onNext, onBack, defaultValues, direction }: CholesterolPr
               ))}
             </Grid>
           </Radio.Group>
+
+          {errors.cholesterolStatus && (
+            <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.cholesterolStatus.message}</Text>
+          )}
         </div>
 
         <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>

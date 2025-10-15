@@ -30,6 +30,7 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues, direct
   const [selectedGender, setSelectedGender] = useAtom(selectedGenderAtom);
   const [isExiting, setIsExiting] = useState(false);
   const [isBackExiting, setIsBackExiting] = useState(false);
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   const {
     handleSubmit,
@@ -68,16 +69,28 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues, direct
   const options = ["Male", "Female"];
 
   const handleSelect = (value: string) => {
-    if (value === "Male") {
-      setSelectedCategory(["Hair Growth (Male)"]);
-    } else if (value === "Female") {
-      setSelectedCategory(["Hair Growth (Female)"]);
+    if (errors.genderHairGrowth) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        if (value === "Male") {
+          setSelectedCategory(["Hair Growth (Male)"]);
+        } else if (value === "Female") {
+          setSelectedCategory(["Hair Growth (Female)"]);
+        }
+        setValue("genderHairGrowth", value, { shouldValidate: true });
+        clearErrors("genderHairGrowth");
+        setSelectedGender(value);
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      if (value === "Male") {
+        setSelectedCategory(["Hair Growth (Male)"]);
+      } else if (value === "Female") {
+        setSelectedCategory(["Hair Growth (Female)"]);
+      }
+      setValue("genderHairGrowth", value, { shouldValidate: true });
+      setSelectedGender(value);
     }
-
-    setValue("genderHairGrowth", value, { shouldValidate: true });
-    clearErrors("genderHairGrowth");
-    setSelectedGender(value);
-    // console.log(selectedCategory);
   };
 
   // const handleSelect = (value: string) => {
@@ -128,7 +141,9 @@ export default function GenderHairGrowth({ onNext, onBack, defaultValues, direct
               ))}
             </div>
           </Radio.Group>
-          {errors.genderHairGrowth && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">Please select your gender.</Text>}
+          {errors.genderHairGrowth && (
+            <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>Please select your gender.</Text>
+          )}
         </form>
       </div>
 

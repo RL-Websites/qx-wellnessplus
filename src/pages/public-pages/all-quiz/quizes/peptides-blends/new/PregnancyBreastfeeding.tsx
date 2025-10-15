@@ -39,12 +39,21 @@ const PregnancyBreastfeeding = ({ onNext, onBack, defaultValues, direction }: IP
   const options = ["No", "Yes"];
 
   const handleSelect = (value: string) => {
-    setValue("pregnancyBreastfeeding", value, { shouldValidate: true });
-    clearErrors("pregnancyBreastfeeding");
+    if (errors.pregnancyBreastfeeding) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue("pregnancyBreastfeeding", value, { shouldValidate: true });
+        clearErrors("pregnancyBreastfeeding");
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue("pregnancyBreastfeeding", value, { shouldValidate: true });
+    }
   };
 
   const [isExiting, setIsExiting] = useState(false);
   const [isBackExiting, setIsBackExiting] = useState(false);
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   const handleFormSubmit = (data: PregnancyBreastfeedingSchemaType) => {
     setIsExiting(true);
@@ -104,7 +113,9 @@ const PregnancyBreastfeeding = ({ onNext, onBack, defaultValues, direction }: IP
             </div>
           </Radio.Group>
 
-          {errors.pregnancyBreastfeeding && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.pregnancyBreastfeeding.message}</Text>}
+          {errors.pregnancyBreastfeeding && (
+            <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.pregnancyBreastfeeding.message}</Text>
+          )}
         </div>
 
         <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>

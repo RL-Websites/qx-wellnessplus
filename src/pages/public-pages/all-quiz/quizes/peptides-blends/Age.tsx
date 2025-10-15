@@ -36,6 +36,7 @@ const Age = ({ onNext, onBack, defaultValues, direction }: IAgeProps) => {
 
   const [isExiting, setIsExiting] = useState(false);
   const [isBackExiting, setIsBackExiting] = useState(false);
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   const handleFormSubmit = (data: ageSchemaType) => {
     setIsExiting(true);
@@ -66,6 +67,17 @@ const Age = ({ onNext, onBack, defaultValues, direction }: IAgeProps) => {
     clearErrors("age");
   };
 
+  const handleAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (errors.age) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        clearErrors("age");
+        setIsErrorFading(false);
+      }, 300);
+    }
+    setValue("age", e.target.value, { shouldValidate: true });
+  };
+
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <div className=" card-common-width mx-auto mt-6">
@@ -82,11 +94,13 @@ const Age = ({ onNext, onBack, defaultValues, direction }: IAgeProps) => {
               error={errors.age?.message ? errors.age?.message : false}
               classNames={{
                 label: "!text-sm md:!text-base lg:!text-lg",
+                error: isErrorFading ? "error-fade-out" : "animate-pulseFade", // Add this
               }}
             >
               <Input
                 type="text"
                 {...register("age")}
+                onChange={handleAgeChange}
               />
             </Input.Wrapper>
           </div>

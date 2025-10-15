@@ -36,13 +36,24 @@ const WeightLossGoal = ({ onNext, onBack, defaultValues, direction }: IWeightLos
 
   const weightLossGoal = watch("weightlossgoal");
 
-  const handleSelect = (value: string) => {
-    setValue("weightlossgoal", value, { shouldValidate: true });
-    clearErrors("weightlossgoal");
+  const handleSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+
+    if (errors.weightlossgoal) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue("weightlossgoal", value, { shouldValidate: true });
+        clearErrors("weightlossgoal");
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue("weightlossgoal", value, { shouldValidate: true });
+    }
   };
 
   const [isExiting, setIsExiting] = useState(false);
   const [isBackExiting, setIsBackExiting] = useState(false);
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   const handleFormSubmit = (data: weightLossGoalSchemaType) => {
     setIsExiting(true);
@@ -80,11 +91,13 @@ const WeightLossGoal = ({ onNext, onBack, defaultValues, direction }: IWeightLos
               label="Weight Loss Goal (lbs)"
               required
               error={errors.weightlossgoal?.message ? errors.weightlossgoal?.message : false}
-              classNames={{ ...InputErrorMessage, error: "animate-pulseFade" }}
+              classNames={{ ...InputErrorMessage, error: `${isErrorFading ? "error-fade-out" : "animate-pulseFade"}` }}
             >
               <Input
                 type="text"
-                {...register("weightlossgoal")}
+                {...register("weightlossgoal", {
+                  onChange: handleSelect,
+                })}
               />
             </Input.Wrapper>
           </div>

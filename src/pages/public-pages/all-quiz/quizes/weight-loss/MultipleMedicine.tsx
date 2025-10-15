@@ -41,9 +41,18 @@ const MultipleMedicine = ({ onNext, onBack, defaultValues, direction }: IMultipl
   const options = ["Semaglutide", "Tirzepatide"];
 
   const handleSelect = (value: string) => {
-    setValue("selectedMedicine", value, { shouldValidate: true });
-    setPrevGlpDetails((prev) => ({ ...prev, preferredMedType: value }));
-    clearErrors("selectedMedicine");
+    if (errors.selectedMedicine) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue("selectedMedicine", value, { shouldValidate: true });
+        setPrevGlpDetails((prev) => ({ ...prev, preferredMedType: value }));
+        clearErrors("selectedMedicine");
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue("selectedMedicine", value, { shouldValidate: true });
+      setPrevGlpDetails((prev) => ({ ...prev, preferredMedType: value }));
+    }
   };
 
   const [isExiting, setIsExiting] = useState(false);
@@ -68,6 +77,7 @@ const MultipleMedicine = ({ onNext, onBack, defaultValues, direction }: IMultipl
       onBack();
     }, animationDelay);
   };
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
@@ -115,7 +125,9 @@ const MultipleMedicine = ({ onNext, onBack, defaultValues, direction }: IMultipl
               ))}
             </div>
           </Radio.Group>
-          {errors.selectedMedicine && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.selectedMedicine.message}</Text>}
+          {errors.selectedMedicine && (
+            <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.selectedMedicine.message}</Text>
+          )}
           <div className={`space-y-2.5 pt-4 ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}>
             <p className="text-xl text-foreground font-medium font-poppins">
               <span className="font-semibold">Semaglutide:</span> A proven GLP-1 medication that reduces appetite and supports steady weight loss. Often considered a good starting

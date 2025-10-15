@@ -38,8 +38,16 @@ const Nitroglycerin = ({ onNext, onBack, defaultValues, direction }: INitroglyce
   const options = ["No", "Yes"];
 
   const handleSelect = (value: string) => {
-    setValue("nitroglycerin", value, { shouldValidate: true });
-    clearErrors("nitroglycerin");
+    if (errors.nitroglycerin) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue("nitroglycerin", value, { shouldValidate: true });
+        clearErrors("nitroglycerin");
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue("nitroglycerin", value, { shouldValidate: true });
+    }
   };
   const [isExiting, setIsExiting] = useState(false);
   const [isBackExiting, setIsBackExiting] = useState(false);
@@ -53,6 +61,7 @@ const Nitroglycerin = ({ onNext, onBack, defaultValues, direction }: INitroglyce
       setIsExiting(false);
     }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
   };
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   const handleBackClick = () => {
     setIsBackExiting(true);
@@ -102,7 +111,9 @@ const Nitroglycerin = ({ onNext, onBack, defaultValues, direction }: INitroglyce
             </div>
           </Radio.Group>
 
-          {errors.nitroglycerin && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.nitroglycerin.message}</Text>}
+          {errors.nitroglycerin && (
+            <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.nitroglycerin.message}</Text>
+          )}
         </div>
 
         <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>

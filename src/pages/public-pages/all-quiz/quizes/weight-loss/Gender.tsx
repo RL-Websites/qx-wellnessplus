@@ -45,20 +45,38 @@ export default function GenderWeightLoss({ onNext, onBack, defaultValues, direct
   const options = ["Male", "Female"];
 
   const handleSelect = (value: string) => {
-    if (selectedCategory?.includes("Hair Growth")) {
-      if (value === "Male") {
-        const newCat = ["Hair Growth (Male)"];
-        setSelectedCategory(newCat);
+    if (errors.genderWeightLoss) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        if (selectedCategory?.includes("Hair Growth")) {
+          if (value === "Male") {
+            const newCat = ["Hair Growth (Male)"];
+            setSelectedCategory(newCat);
+          }
+          if (value === "Female") {
+            const newCat = ["Hair Growth (Female)"];
+            setSelectedCategory(newCat);
+          }
+        }
+        setValue("genderWeightLoss", value, { shouldValidate: true });
+        clearErrors("genderWeightLoss");
+        setSelectedGender(value);
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      if (selectedCategory?.includes("Hair Growth")) {
+        if (value === "Male") {
+          const newCat = ["Hair Growth (Male)"];
+          setSelectedCategory(newCat);
+        }
+        if (value === "Female") {
+          const newCat = ["Hair Growth (Female)"];
+          setSelectedCategory(newCat);
+        }
       }
-      if (value === "Female") {
-        const newCat = ["Hair Growth (Female)"];
-
-        setSelectedCategory(newCat);
-      }
+      setValue("genderWeightLoss", value, { shouldValidate: true });
+      setSelectedGender(value);
     }
-    setValue("genderWeightLoss", value, { shouldValidate: true });
-    clearErrors("genderWeightLoss");
-    setSelectedGender(value);
   };
 
   const [isExiting, setIsExiting] = useState(false);
@@ -86,6 +104,7 @@ export default function GenderWeightLoss({ onNext, onBack, defaultValues, direct
       onBack();
     }, animationDelay);
   };
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
@@ -122,7 +141,9 @@ export default function GenderWeightLoss({ onNext, onBack, defaultValues, direct
               ))}
             </div>
           </Radio.Group>
-          {errors.genderWeightLoss && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">Please select your gender.</Text>}
+          {errors.genderWeightLoss && (
+            <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>Please select your gender.</Text>
+          )}
         </form>
       </div>
 

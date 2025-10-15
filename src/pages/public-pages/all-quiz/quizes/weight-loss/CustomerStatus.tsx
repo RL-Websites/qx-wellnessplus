@@ -39,8 +39,16 @@ const CustomerStatus = ({ onNext, onBack, defaultValues, direction }: ICustomerS
   const options = ["Existing", "New"];
 
   const handleSelect = (value: string) => {
-    setValue("customerStatus", value, { shouldValidate: true });
-    clearErrors("customerStatus");
+    if (errors.customerStatus) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue("customerStatus", value, { shouldValidate: true });
+        clearErrors("customerStatus");
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue("customerStatus", value, { shouldValidate: true });
+    }
   };
 
   // const handleFormSubmit = (data: customerStatusSchemaType) => {
@@ -72,6 +80,7 @@ const CustomerStatus = ({ onNext, onBack, defaultValues, direction }: ICustomerS
       onBack();
     }, animationDelay);
   };
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
@@ -110,7 +119,9 @@ const CustomerStatus = ({ onNext, onBack, defaultValues, direction }: ICustomerS
               ))}
             </div>
           </Radio.Group>
-          {errors.customerStatus && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.customerStatus.message}</Text>}
+          {errors.customerStatus && (
+            <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.customerStatus.message}</Text>
+          )}
         </div>
 
         <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>

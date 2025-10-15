@@ -30,7 +30,7 @@ export default function CurrentState({ onNext, onBack, defaultValues, direction 
 
   const [isExiting, setIsExiting] = useState(false);
   const [isBackExiting, setIsBackExiting] = useState(false);
-
+  const [isErrorFading, setIsErrorFading] = useState(false);
   const handleBackClick = () => {
     setIsBackExiting(true);
 
@@ -74,7 +74,26 @@ export default function CurrentState({ onNext, onBack, defaultValues, direction 
       setGlobalState(state);
     }
   }, [state, setGlobalState]);
-
+  const handleStateChange = (value: string | null, option: any) => {
+    if (errors.state) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue("state", value || "");
+        if (value) {
+          setStateSearchVal(option?.label || "");
+          clearErrors("state");
+          setGlobalState(value);
+        }
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue("state", value || "");
+      if (value) {
+        setStateSearchVal(option?.label || "");
+        setGlobalState(value);
+      }
+    }
+  };
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <h2 className={`heading-text text-foreground uppercase text-center  ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>Current State</h2>
@@ -90,7 +109,7 @@ export default function CurrentState({ onNext, onBack, defaultValues, direction 
             withAsterisk
             classNames={{
               wrapper: "bg-grey-btn rounded-md",
-              error: "animate-pulseFade",
+              error: isErrorFading ? "error-fade-out" : "animate-pulseFade",
             }}
             rightSection={<i className="icon-down-arrow text-sm"></i>}
             searchable
@@ -103,14 +122,7 @@ export default function CurrentState({ onNext, onBack, defaultValues, direction 
               label: item?.StateName,
             }))}
             error={getErrorMessage(errors.state?.message)}
-            onChange={(value, option) => {
-              setValue("state", value || "");
-              if (value) {
-                setStateSearchVal(option?.label || "");
-                clearErrors("state");
-                setGlobalState(value); // update global state immediately
-              }
-            }}
+            onChange={handleStateChange}
           />
         </form>
       </div>

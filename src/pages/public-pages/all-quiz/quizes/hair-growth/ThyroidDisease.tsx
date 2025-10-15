@@ -36,6 +36,7 @@ const ThyroidDisease = ({ onNext, onBack, defaultValues, direction }: IThyroidDi
 
   const [isExiting, setIsExiting] = useState(false);
   const [isBackExiting, setIsBackExiting] = useState(false);
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   const handleFormSubmit = (data: ThyroidDiseaseSchemaType) => {
     setIsExiting(true);
@@ -62,8 +63,16 @@ const ThyroidDisease = ({ onNext, onBack, defaultValues, direction }: IThyroidDi
   const options = ["No", "Yes"];
 
   const handleSelect = (value: string) => {
-    setValue("thyroidDisease", value, { shouldValidate: true });
-    clearErrors("thyroidDisease");
+    if (errors.thyroidDisease) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue("thyroidDisease", value, { shouldValidate: true });
+        clearErrors("thyroidDisease");
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue("thyroidDisease", value, { shouldValidate: true });
+    }
   };
 
   return (
@@ -102,7 +111,9 @@ const ThyroidDisease = ({ onNext, onBack, defaultValues, direction }: IThyroidDi
             ))}
           </div>
         </Radio.Group>
-        {errors.thyroidDisease && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.thyroidDisease.message}</Text>}
+        {errors.thyroidDisease && (
+          <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.thyroidDisease.message}</Text>
+        )}
       </div>
 
       <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>

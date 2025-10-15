@@ -57,6 +57,7 @@ const AlcoholConsumption = ({ onNext, onBack, defaultValues, direction }: Alcoho
       onBack();
     }, animationDelay);
   };
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
@@ -109,7 +110,7 @@ const AlcoholConsumption = ({ onNext, onBack, defaultValues, direction }: Alcoho
             </Grid>
           </Radio.Group>
 
-          {errors.alcohol && <div className="text-danger text-sm mt-2 text-center animate-pulseFade">{errors.alcohol.message}</div>}
+          {errors.alcohol && <div className={`text-danger text-sm mt-2 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.alcohol.message}</div>}
         </div>
 
         <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>

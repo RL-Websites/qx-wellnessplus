@@ -39,8 +39,16 @@ const CardiovascularDisease = ({ onNext, onBack, defaultValues, direction }: ICa
   const options = ["No", "Yes"];
 
   const handleSelect = (value: string) => {
-    setValue("cardiovascularDisease", value, { shouldValidate: true });
-    clearErrors("cardiovascularDisease");
+    if (errors.cardiovascularDisease) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue("cardiovascularDisease", value, { shouldValidate: true });
+        clearErrors("cardiovascularDisease");
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue("cardiovascularDisease", value, { shouldValidate: true });
+    }
   };
 
   const [isExiting, setIsExiting] = useState(false);
@@ -65,6 +73,7 @@ const CardiovascularDisease = ({ onNext, onBack, defaultValues, direction }: ICa
       onBack();
     }, animationDelay);
   };
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
@@ -103,7 +112,9 @@ const CardiovascularDisease = ({ onNext, onBack, defaultValues, direction }: ICa
               ))}
             </div>
           </Radio.Group>
-          {errors.cardiovascularDisease && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.cardiovascularDisease.message}</Text>}
+          {errors.cardiovascularDisease && (
+            <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.cardiovascularDisease.message}</Text>
+          )}
         </div>
 
         <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>
