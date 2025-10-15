@@ -41,11 +41,16 @@ const WeightLossWeight = ({ onNext, onBack, defaultValues, direction }: IWeightL
 
     if (errors.weightlossweight) {
       setIsErrorFading(true);
+
+      // Step 1: Update value immediately so typing feels responsive
+      setValue("weightlossweight", value);
+
+      // Step 2: Wait for fade-out animation before clearing error
       setTimeout(() => {
-        setValue("weightlossweight", value, { shouldValidate: true });
-        clearErrors("weightlossweight");
+        clearErrors("weightlossweight"); // remove the message
         setIsErrorFading(false);
-      }, 300);
+        setValue("weightlossweight", value, { shouldValidate: true });
+      }, 300); // 300ms = your CSS fade-out duration
     } else {
       setValue("weightlossweight", value, { shouldValidate: true });
     }
@@ -95,9 +100,8 @@ const WeightLossWeight = ({ onNext, onBack, defaultValues, direction }: IWeightL
             >
               <Input
                 type="text"
-                {...register("weightlossweight", {
-                  onChange: handleSelect,
-                })}
+                {...register("weightlossweight")}
+                onChange={handleSelect}
               />
             </Input.Wrapper>
           </div>
