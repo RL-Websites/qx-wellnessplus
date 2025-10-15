@@ -111,6 +111,8 @@ export default {
         fadeInUp: "fadeInUp 0.4s ease-out",
         fadeInRight: "fadeInRight 0.4s ease-out",
         pulseFade: "pulseFade 0.9s ease-in-out",
+        "toast-enter": "toastSlideIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards",
+        "toast-exit": "toastSlideOut 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards",
       },
     },
   },

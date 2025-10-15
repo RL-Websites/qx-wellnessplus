@@ -3,11 +3,15 @@ import authApiRepository from "@/common/api/repositories/authRepository";
 import SuccessContent from "@/common/components/SuccessContent";
 import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
 import dmlToast from "@/common/configs/toaster.config";
+import { animationDelay } from "@/common/constants/constants";
+import { isExitingAtomForgot, isExitingAtomLogin } from "@/common/states/animation.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Input } from "@mantine/core";
 import { useMutation } from "@tanstack/react-query";
+import { useAtom } from "jotai";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { NavLink as RdNavLink } from "react-router-dom";
+import { NavLink as RdNavLink, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 
 // schema declaration with yup resolver
@@ -22,6 +26,10 @@ const forgetPasswordSchema = yup.object({
 type ForgetPasswordSchemaType = yup.InferType<typeof forgetPasswordSchema>;
 
 const ForgetPasswordPage = () => {
+  const [isExiting, setIsExiting] = useAtom(isExitingAtomLogin);
+  const [isExitingForgot, setIsExitingForgot] = useAtom(isExitingAtomForgot);
+  const navigate = useNavigate();
+
   // react hook form
   const {
     register,
@@ -30,6 +38,15 @@ const ForgetPasswordPage = () => {
   } = useForm({
     resolver: yupResolver(forgetPasswordSchema),
   });
+  const handleBackClick = () => {
+    setIsExitingForgot(true);
+
+    setTimeout(() => {
+      setIsExitingForgot(false);
+      navigate("/login");
+      //navigate("/category");
+    }, animationDelay);
+  };
 
   const forgetMutation = useMutation({
     mutationFn: (payload: IForgetPassPayload) => {
@@ -44,9 +61,13 @@ const ForgetPasswordPage = () => {
         dmlToast.success({
           title: res?.data?.message,
         });
+
+        setTimeout(() => {
+          setIsExitingForgot(true);
+        }, animationDelay);
       },
       onError: (error: any) => {
-        dmlToast.show({
+        dmlToast.error({
           title: error?.response?.data?.message,
         });
       },
@@ -55,7 +76,7 @@ const ForgetPasswordPage = () => {
   };
 
   return (
-    <div className="">
+    <div className={`register-main ${isExitingForgot ? "register-main-exit" : ""}`}>
       <h2 className="lg:text-[70px] md:text-6xl text-4xl text-foreground uppercase text-center">Forgot Password</h2>
       <div className=" card-common-width mx-auto flex flex-col lg:gap-7 md:gap-5 gap-3">
         <div>
@@ -91,16 +112,16 @@ const ForgetPasswordPage = () => {
                   <div className="flex md:justify-between justify-center md:gap-6 gap-3">
                     <Button
                       variant="outline"
-                      className="md:min-w-[200px] min-w-[150px]"
-                      component={RdNavLink}
-                      to={`/login`}
+                      className="md:min-w-[200px] min-w-[150px] animated-btn"
+                      onClick={handleBackClick}
                     >
                       Back
                     </Button>
+
                     <Button
                       size="md"
                       type="submit"
-                      className="bg-primary text-white rounded-xl md:w-[200px] min-w-[150px]"
+                      className="bg-primary text-white rounded-xl md:w-[200px] min-w-[150px] animated-btn"
                       loading={forgetMutation.isPending}
                     >
                       Send Reset Link

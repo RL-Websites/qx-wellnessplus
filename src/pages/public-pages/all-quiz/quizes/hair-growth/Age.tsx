@@ -42,16 +42,8 @@ const Age = ({ onNext, onBack, defaultValues, direction }: IAgeProps) => {
   const options = ["No", "Yes"];
 
   const handleSelect = (value: string) => {
-    if (errors.age) {
-      setIsErrorFading(true);
-      setTimeout(() => {
-        setValue("age", value, { shouldValidate: true });
-        clearErrors("age");
-        setIsErrorFading(false);
-      }, 300);
-    } else {
-      setValue("age", value, { shouldValidate: true });
-    }
+    setValue("age", value, { shouldValidate: true });
+    clearErrors("age");
   };
 
   const handleFormSubmit = (data: ageSchemaType) => {

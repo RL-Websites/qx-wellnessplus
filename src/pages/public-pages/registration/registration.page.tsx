@@ -5,6 +5,7 @@ import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
 import dmlToast from "@/common/configs/toaster.config";
 import { animationDelay } from "@/common/constants/constants";
 import useAuthToken from "@/common/hooks/useAuthToken";
+import { isExitingAtomLogin, isExitingAtomRegister } from "@/common/states/animation.atom";
 import { cartItemsAtom } from "@/common/states/product.atom";
 import { user_id, userAtom } from "@/common/states/user.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -56,7 +57,8 @@ const RegistrationPage = () => {
   const [userId, setUserId] = useAtom(user_id);
   const navigate = useNavigate();
   const location = useLocation();
-  const [isExiting, setIsExiting] = useState(false);
+  const [isExiting, setIsExiting] = useAtom(isExitingAtomRegister);
+  const [isExitingLogin, setIsExitingLogin] = useAtom(isExitingAtomLogin);
 
   useEffect(() => {
     if (location.pathname == "/registration" && getAccessToken()) {
@@ -89,6 +91,7 @@ const RegistrationPage = () => {
 
     setTimeout(() => {
       setIsExiting(false);
+      setIsExitingLogin(false);
       navigate("/login");
       //navigate("/category");
     }, animationDelay);
@@ -207,6 +210,14 @@ const RegistrationPage = () => {
             <span className="text-primary font-normal font-poppins">Already have an account? </span>
             <Link
               to="/login"
+              onClick={(e) => {
+                e.preventDefault(); // Prevent immediate navigation
+                setIsExiting(true); // Trigger exit animation
+                setTimeout(() => {
+                  setIsExitingLogin(false);
+                  navigate("/login");
+                }, animationDelay);
+              }}
               className="text-foreground underline"
             >
               Please Login

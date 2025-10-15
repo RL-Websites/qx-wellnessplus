@@ -5,7 +5,7 @@ import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
 import dmlToast from "@/common/configs/toaster.config";
 import { animationDelay } from "@/common/constants/constants";
 import useAuthToken from "@/common/hooks/useAuthToken";
-import { isExitingAtomCategory } from "@/common/states/animation.atom";
+import { isExitingAtomCategory, isExitingAtomLogin, isExitingAtomRegister } from "@/common/states/animation.atom";
 import { customerAtom } from "@/common/states/customer.atom";
 import { cartItemsAtom } from "@/common/states/product.atom";
 import { redirectUrlAtom } from "@/common/states/redirect.atom";
@@ -47,8 +47,8 @@ const Login = () => {
   const [, scrollTo] = useWindowScroll();
   const redirectUrl = useAtomValue(redirectUrlAtom);
   const [isExitingCategory, setIsExitingCategory] = useAtom(isExitingAtomCategory);
-  const [isExitingLogin, setIsExitingLogin] = useState(false);
-
+  const [isExitingLogin, setIsExitingLogin] = useAtom(isExitingAtomLogin);
+  const [isExitingRegister, setIsExitingRegister] = useAtom(isExitingAtomRegister);
   useEffect(() => {
     scrollTo({ y: 0 });
   }, []);
@@ -129,11 +129,20 @@ const Login = () => {
     setTimeout(() => {
       setIsExitingLogin(false);
       // navigate(customerData?.slug ? "/order-summary" : "/");
-      navigate(-1);
+      navigate(customerData?.slug ? "/order-summary" : "/");
       setIsExitingCategory(false);
     }, animationDelay);
   };
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsExitingLogin(true);
 
+    // Wait for animation duration (e.g. 400ms)
+    setTimeout(() => {
+      navigate("/forgot-password");
+      setIsExitingLogin(false);
+    }, animationDelay);
+  };
   return (
     <div className={`grid lg:grid-cols-2 login-main ${isExitingLogin ? "login-main-exit" : ""}`}>
       <div className="lg:space-y-[30px] space-y-4 lg:text-start text-center">
@@ -196,16 +205,24 @@ const Login = () => {
             </Button>
           </div>
           <div className="mt-6 flex md:flex-row flex-col gap-2 items-center justify-between">
-            <Link
-              to="/forgot-password"
-              className="text-foreground underline md:text-base text-sm"
+            <button
+              onClick={handleClick}
+              className={`text-foreground underline md:text-base text-sm`}
             >
               Forgot Password
-            </Link>
+            </button>
             <p className="md:text-lg sm:text-base text-sm text-foreground font-semibold">
               <span className="text-primary font-normal">First-time Visitor? </span>
               <Link
                 to="/registration"
+                onClick={(e) => {
+                  e.preventDefault(); // Prevent immediate navigation
+                  setIsExitingLogin(true); // Trigger exit animation
+                  setTimeout(() => {
+                    setIsExitingRegister(false);
+                    navigate("/registration");
+                  }, animationDelay);
+                }}
                 className="text-foreground underline font-medium"
               >
                 Create an account

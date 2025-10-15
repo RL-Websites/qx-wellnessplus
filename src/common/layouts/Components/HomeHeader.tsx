@@ -1,6 +1,6 @@
 import { IUserData } from "@/common/api/models/interfaces/User.model";
 import { animationDelay } from "@/common/constants/constants";
-import { isExitingAtomCategory } from "@/common/states/animation.atom";
+import { isExitingAtomCategory, isExitingAtomForgot, isExitingAtomLogin, isExitingAtomRegister } from "@/common/states/animation.atom";
 import { customerAtom } from "@/common/states/customer.atom";
 import { cartItemsAtom } from "@/common/states/product.atom";
 import { userAtom } from "@/common/states/user.atom";
@@ -14,7 +14,10 @@ const HomeHeader = () => {
   const [userData, setUserData] = useAtom<IUserData | null>(userAtom);
   const [customerData, setCustomerData] = useAtom(customerAtom);
   const [isExiting, setIsExiting] = useAtom(isExitingAtomCategory);
-
+  const [isExitingLogin, setIsExitingLogin] = useAtom(isExitingAtomLogin);
+  const [isExitingRegister, setIsExitingRegister] = useAtom(isExitingAtomRegister);
+  const [isExitingForgot, setIsExitingForgot] = useAtom(isExitingAtomForgot);
+  const [isExistingCategory, setIsExitingCategory] = useAtom(isExitingAtomCategory);
   const location = useLocation();
   const cartItems = useAtomValue(cartItemsAtom);
   const navigate = useNavigate();
@@ -86,8 +89,14 @@ const HomeHeader = () => {
             size="sm-3"
             color="primary"
             className="font-semibold lg:text-lg md:text-base text-sm animated-btn"
-            component={Link}
-            to="/registration"
+            onClick={() => {
+              setIsExitingLogin(true);
+              setIsExitingRegister(false);
+
+              setTimeout(() => {
+                navigate("/registration");
+              }, animationDelay);
+            }}
           >
             Register
           </Button>
@@ -98,7 +107,9 @@ const HomeHeader = () => {
             color="primary"
             className="font-semibold lg:text-lg md:text-base text-sm animated-btn"
             onClick={() => {
-              setIsExiting(true);
+              setIsExitingRegister(true);
+              setIsExitingCategory(true);
+              setIsExitingLogin(false);
               setTimeout(() => {
                 navigate("/login");
               }, animationDelay);
