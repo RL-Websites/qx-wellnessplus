@@ -5,6 +5,7 @@ import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
 import dmlToast from "@/common/configs/toaster.config";
 import { animationDelay } from "@/common/constants/constants";
 import useAuthToken from "@/common/hooks/useAuthToken";
+import { isExitingAtomCategory } from "@/common/states/animation.atom";
 import { customerAtom } from "@/common/states/customer.atom";
 import { cartItemsAtom } from "@/common/states/product.atom";
 import { redirectUrlAtom } from "@/common/states/redirect.atom";
@@ -45,7 +46,8 @@ const Login = () => {
   const location = useLocation();
   const [, scrollTo] = useWindowScroll();
   const redirectUrl = useAtomValue(redirectUrlAtom);
-  const [isExiting, setIsExiting] = useState(false);
+  const [isExitingCategory, setIsExitingCategory] = useAtom(isExitingAtomCategory);
+  const [isExitingLogin, setIsExitingLogin] = useState(false);
 
   useEffect(() => {
     scrollTo({ y: 0 });
@@ -86,7 +88,7 @@ const Login = () => {
 
   const onSubmit = (data: loginSchemaType) => {
     // const finalData = { ...data, ...{ type: "admin", u_id: uid } };
-    setIsExiting(true);
+    setIsExitingLogin(true);
     const payload = { email: data.emailAddress, password: data.password };
     LoginMutation.mutate(payload, {
       onSuccess: (res) => {
@@ -122,17 +124,18 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleBackClick = () => {
-    setIsExiting(true);
+    setIsExitingLogin(true);
 
     setTimeout(() => {
-      setIsExiting(false);
-      navigate(customerData?.slug ? "/order-summary" : "/");
-      //navigate("/category");
+      setIsExitingLogin(false);
+      // navigate(customerData?.slug ? "/order-summary" : "/");
+      navigate(-1);
+      setIsExitingCategory(false);
     }, animationDelay);
   };
 
   return (
-    <div className={`grid lg:grid-cols-2 site-home-hero ${isExiting ? "site-home-hero-exit" : ""}`}>
+    <div className={`grid lg:grid-cols-2 login-main ${isExitingLogin ? "login-main-exit" : ""}`}>
       <div className="lg:space-y-[30px] space-y-4 lg:text-start text-center">
         <h2 className="lg:text-[70px] md:text-6xl text-4xl text-foreground uppercase">Login</h2>
         <div className="space-y-2.5">

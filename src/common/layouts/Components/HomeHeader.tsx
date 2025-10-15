@@ -1,4 +1,6 @@
 import { IUserData } from "@/common/api/models/interfaces/User.model";
+import { animationDelay } from "@/common/constants/constants";
+import { isExitingAtomCategory } from "@/common/states/animation.atom";
 import { customerAtom } from "@/common/states/customer.atom";
 import { cartItemsAtom } from "@/common/states/product.atom";
 import { userAtom } from "@/common/states/user.atom";
@@ -11,6 +13,8 @@ import { Link, NavLink as RdNavLink, useLocation, useNavigate } from "react-rout
 const HomeHeader = () => {
   const [userData, setUserData] = useAtom<IUserData | null>(userAtom);
   const [customerData, setCustomerData] = useAtom(customerAtom);
+  const [isExiting, setIsExiting] = useAtom(isExitingAtomCategory);
+
   const location = useLocation();
   const cartItems = useAtomValue(cartItemsAtom);
   const navigate = useNavigate();
@@ -81,7 +85,7 @@ const HomeHeader = () => {
             variant="outline"
             size="sm-3"
             color="primary"
-            className="font-semibold lg:text-lg md:text-base text-sm"
+            className="font-semibold lg:text-lg md:text-base text-sm animated-btn"
             component={Link}
             to="/registration"
           >
@@ -92,9 +96,13 @@ const HomeHeader = () => {
             variant="outline"
             size="sm-3"
             color="primary"
-            className="font-semibold lg:text-lg md:text-base text-sm"
-            component={Link}
-            to="/login"
+            className="font-semibold lg:text-lg md:text-base text-sm animated-btn"
+            onClick={() => {
+              setIsExiting(true);
+              setTimeout(() => {
+                navigate("/login");
+              }, animationDelay);
+            }}
           >
             Login
           </Button>

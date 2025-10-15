@@ -1,6 +1,7 @@
 import { categoryRepository } from "@/common/api/repositories/categoryRepository";
 import CategoryCard from "@/common/components/CategoryCard";
 import { animationDelay } from "@/common/constants/constants";
+import { isExitingAtomCategory } from "@/common/states/animation.atom";
 import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { customerAtom } from "@/common/states/customer.atom";
 import { prevGlpMedDetails } from "@/common/states/product.atom";
@@ -15,7 +16,7 @@ const CategoryPage = () => {
   const setSelectedCategory = useSetAtom(selectedCategoryAtom);
   const [customerData, setCustomerData] = useAtom(customerAtom);
   const setPrevGlpMedDetails = useSetAtom(prevGlpMedDetails);
-  const [isExiting, setIsExiting] = useState(false);
+  const [isExiting, setIsExiting] = useAtom(isExitingAtomCategory);
   const navigate = useNavigate(); // ✅ Initialize navigate
 
   const handleCategoryClick = (categoryName: string) => {
@@ -102,7 +103,7 @@ const CategoryPage = () => {
         <div className="w-16 h-16 border-4 border-gray-200 border-t-primary rounded-full animate-spin"></div>
       </div>
     ) : (
-      <div className={`space-y-12 site-home-hero ${isExiting ? "site-home-hero-exit" : ""}`}>
+      <div className={`space-y-12 category-main ${isExiting ? "category-main-exit" : ""}`}>
         <h4 className="heading-text text-center text-foreground uppercase">Choose A Treatment</h4>
 
         <div

@@ -119,7 +119,7 @@ const RegistrationPage = () => {
   };
 
   return (
-    <div className={`site-home-hero ${isExiting ? "site-home-hero-exit" : ""}`}>
+    <div className={`register-main ${isExiting ? "register-main-exit" : ""}`}>
       <h2 className={`lg:text-[70px] md:text-6xl text-4xl text-foreground uppercase text-center  `}>Registration</h2>
       <form
         className="w-full "
