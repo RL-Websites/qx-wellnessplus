@@ -80,11 +80,11 @@ const RegistrationPage = () => {
     },
   });
 
-  useEffect(() => {
-    if (!userData) {
-      navigate("/registration");
-    }
-  }, [userData]);
+  // useEffect(() => {
+  //   if (!userData) {
+  //     navigate("/registration");
+  //   }
+  // }, [userData]);
 
   const handleBackClick = () => {
     setIsExiting(true);
@@ -92,7 +92,11 @@ const RegistrationPage = () => {
     setTimeout(() => {
       setIsExiting(false);
       setIsExitingLogin(false);
-      navigate("/login");
+      if (location.key !== "default") {
+        navigate(-1);
+      } else {
+        navigate("/login"); // Fallback to login if no history
+      }
       //navigate("/category");
     }, animationDelay);
   };
@@ -215,7 +219,11 @@ const RegistrationPage = () => {
                 setIsExiting(true); // Trigger exit animation
                 setTimeout(() => {
                   setIsExitingLogin(false);
-                  navigate("/login");
+                  if (location.key !== "default") {
+                    navigate(-1);
+                  } else {
+                    navigate("/login");
+                  }
                 }, animationDelay);
               }}
               className="text-foreground underline"

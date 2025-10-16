@@ -131,7 +131,11 @@ const Login = () => {
     setTimeout(() => {
       setIsExitingLogin(false);
       // navigate(customerData?.slug ? "/order-summary" : "/");
-      navigate(customerData?.slug ? "/order-summary" : "/");
+      if (location.key !== "default") {
+        navigate(-1);
+      } else {
+        navigate("/"); // Or any other default page
+      }
       setIsExitingCategory(false);
     }, animationDelay);
   };

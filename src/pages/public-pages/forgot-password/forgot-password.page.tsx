@@ -11,7 +11,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { NavLink as RdNavLink, useNavigate } from "react-router-dom";
+import { NavLink as RdNavLink, useLocation, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 
 // schema declaration with yup resolver
@@ -43,10 +43,16 @@ const ForgetPasswordPage = () => {
 
     setTimeout(() => {
       setIsExitingForgot(false);
-      navigate("/login");
+      if (location.key !== "default") {
+        navigate(-1);
+      } else {
+        navigate("/login", { replace: true }); // Fallback to login if no history
+      }
       //navigate("/category");
     }, animationDelay);
   };
+
+  const location = useLocation();
 
   const forgetMutation = useMutation({
     mutationFn: (payload: IForgetPassPayload) => {

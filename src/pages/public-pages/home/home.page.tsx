@@ -112,12 +112,23 @@ const HomePage = () => {
               </Button>
               <p className={`sm:text-lg text-base text-foreground font-medium md:text-start text-center`}>
                 Are you an existing customer?{" "}
-                <Link
-                  className="text-primary font-semibold underline"
-                  to={"/login"}
+                <span
+                  className="text-primary font-semibold underline cursor-pointer"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setIsExiting(true);
+                    setTimeout(() => {
+                      setIsExiting(false);
+                      if (location.key !== "default") {
+                        navigate(-1);
+                      } else {
+                        navigate("/login");
+                      }
+                    }, animationDelay);
+                  }}
                 >
                   Login Now
-                </Link>
+                </span>
               </p>
             </div>
           </div>

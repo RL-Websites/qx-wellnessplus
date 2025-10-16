@@ -21,14 +21,8 @@ const HomeHeader = () => {
   const location = useLocation();
   const cartItems = useAtomValue(cartItemsAtom);
   const navigate = useNavigate();
-  const [isLoginPage, setIsLoginPage] = useState<boolean>(false);
-  useEffect(() => {
-    if (location.pathname == "/login") {
-      setIsLoginPage(true);
-    } else {
-      setIsLoginPage(false);
-    }
-  }, [location]);
+  const isLoginPage = location.pathname === "/login";
+  const onAuthPage = location.pathname === "/registration" || location.pathname === "/forgot-password";
   return (
     <div className="header flex items-center justify-between pb-12">
       <div className="logo flex items-center gap-2">
@@ -99,6 +93,22 @@ const HomeHeader = () => {
             }}
           >
             Register
+          </Button>
+        ) : onAuthPage ? (
+          <Button
+            variant="outline"
+            size="sm-3"
+            color="primary"
+            className="font-semibold lg:text-lg md:text-base text-sm"
+            onClick={() => {
+              if (location.key !== "default") {
+                navigate(-1);
+              } else {
+                navigate("/login");
+              }
+            }}
+          >
+            Login
           </Button>
         ) : (
           <Button
