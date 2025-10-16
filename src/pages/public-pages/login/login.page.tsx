@@ -167,7 +167,13 @@ const Login = () => {
               variant="outline"
               className="lg:w-[206px]"
               // to={cartItems?.length > 0 ? "/order-summary" : "/"}
-              onClick={() => navigate(-1)}
+              onClick={() => {
+                if (location.key !== "default") {
+                  navigate(-1);
+                } else {
+                  navigate("/"); // Or any other default page
+                }
+              }}
             >
               Back
             </Button>

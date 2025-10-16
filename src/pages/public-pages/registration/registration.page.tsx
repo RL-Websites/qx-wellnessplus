@@ -76,12 +76,6 @@ const RegistrationPage = () => {
     },
   });
 
-  useEffect(() => {
-    if (!userData) {
-      navigate("/registration");
-    }
-  }, [userData]);
-
   const onSubmit = (data: registrationSchemaType) => {
     const payload = { first_name: data.firstName, last_name: data.lastName, email: data.emailAddress, password: data.password, confirm_password: data.confirmPassword };
     RegistrationMutation.mutate(payload, {
@@ -178,8 +172,13 @@ const RegistrationPage = () => {
               size="md"
               className="lg:w-[206px]"
               variant="outline"
-              component={Link}
-              to={`/login`}
+              onClick={() => {
+                if (location.key !== "default") {
+                  navigate(-1);
+                } else {
+                  navigate("/login"); // Fallback to login if no history
+                }
+              }}
             >
               Back
             </Button>
@@ -194,12 +193,18 @@ const RegistrationPage = () => {
           </div>
           <p className="md:text-lg sm:text-base text-sm text-foreground font-semibold mt-6 text-center">
             <span className="text-primary font-normal font-poppins">Already have an account? </span>
-            <Link
-              to="/login"
-              className="text-foreground underline"
+            <span
+              className="text-foreground underline cursor-pointer"
+              onClick={() => {
+                if (location.key !== "default") {
+                  navigate(-1);
+                } else {
+                  navigate("/login");
+                }
+              }}
             >
               Please Login
-            </Link>
+            </span>
           </p>
         </div>
       </form>

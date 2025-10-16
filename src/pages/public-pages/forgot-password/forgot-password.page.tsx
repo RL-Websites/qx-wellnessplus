@@ -7,7 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Input } from "@mantine/core";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import { NavLink as RdNavLink } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 
 // schema declaration with yup resolver
@@ -30,6 +30,10 @@ const ForgetPasswordPage = () => {
   } = useForm({
     resolver: yupResolver(forgetPasswordSchema),
   });
+
+  const location = useLocation();
+
+  const navigate = useNavigate();
 
   const forgetMutation = useMutation({
     mutationFn: (payload: IForgetPassPayload) => {
@@ -92,8 +96,13 @@ const ForgetPasswordPage = () => {
                     <Button
                       variant="outline"
                       className="md:min-w-[200px] min-w-[150px]"
-                      component={RdNavLink}
-                      to={`/login`}
+                      onClick={() => {
+                        if (location.key !== "default") {
+                          navigate(-1);
+                        } else {
+                          navigate("/login", { replace: true }); // Fallback to login if no history
+                        }
+                      }}
                     >
                       Back
                     </Button>
