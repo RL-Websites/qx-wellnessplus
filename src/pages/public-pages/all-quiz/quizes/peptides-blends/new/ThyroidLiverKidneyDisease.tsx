@@ -40,6 +40,7 @@ const ThyroidLiverKidneyDisease = ({ onNext, onBack, defaultValues, direction }:
 
   const [isExiting, setIsExiting] = useState(false);
   const [isBackExiting, setIsBackExiting] = useState(false);
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   const handleFormSubmit = (data: ThyroidLiverKidneyDiseaseSchemaType) => {
     setIsExiting(true);
@@ -62,8 +63,16 @@ const ThyroidLiverKidneyDisease = ({ onNext, onBack, defaultValues, direction }:
   };
 
   const handleSelect = (value: string) => {
-    setValue("thyroidLiverKidneyDisease", value, { shouldValidate: true });
-    clearErrors("thyroidLiverKidneyDisease");
+    if (errors.thyroidLiverKidneyDisease) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue("thyroidLiverKidneyDisease", value, { shouldValidate: true });
+        clearErrors("thyroidLiverKidneyDisease");
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue("thyroidLiverKidneyDisease", value, { shouldValidate: true });
+    }
   };
 
   const onSubmit = (data: ThyroidLiverKidneyDiseaseSchemaType) => {};
@@ -106,7 +115,9 @@ const ThyroidLiverKidneyDisease = ({ onNext, onBack, defaultValues, direction }:
             </div>
           </Radio.Group>
 
-          {errors.thyroidLiverKidneyDisease && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.thyroidLiverKidneyDisease.message}</Text>}
+          {errors.thyroidLiverKidneyDisease && (
+            <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.thyroidLiverKidneyDisease.message}</Text>
+          )}
         </div>
 
         <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>

@@ -21,3 +21,20 @@ export const getAnimationClass = (
 
   return `animate-${element}-enter-left`;
 };
+
+export const getHomePageAnimationClass = (element: "thank-you-text" | "wellness-text" | "btns", isExiting: boolean): string => {
+  if (isExiting) {
+    return `${element}-exit`;
+  }
+  return element; // ✅ Returns base class with enter animation
+};
+// export const canonicalize = (raw: string) => {
+//   const s = (raw || "").toLowerCase();
+//   if (s.includes("hair growth")) return "Hair Growth";
+//   if (s.includes("sexual health")) return "Sexual Health";
+//   if (s.includes("peptides")) return "Peptides";
+//   if (s.includes("weight loss")) return "Weight Loss";
+//   if (s.includes("testosterone")) return "Testosterone";
+//   // fallback to original but trimmed/capitalized if you want
+//   return raw;
+// };

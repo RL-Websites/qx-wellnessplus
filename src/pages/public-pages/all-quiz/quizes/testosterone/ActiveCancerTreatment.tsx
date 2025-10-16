@@ -37,8 +37,16 @@ const ActiveCancerTreatment = ({ onNext, onBack, defaultValues, direction }: IAc
   const options = ["No", "Yes"];
 
   const handleSelect = (value: string) => {
-    setValue("activeCancerTreatment", value, { shouldValidate: true });
-    clearErrors("activeCancerTreatment");
+    if (errors.activeCancerTreatment) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue("activeCancerTreatment", value, { shouldValidate: true });
+        clearErrors("activeCancerTreatment");
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue("activeCancerTreatment", value, { shouldValidate: true });
+    }
   };
 
   const [isExiting, setIsExiting] = useState(false);
@@ -65,6 +73,7 @@ const ActiveCancerTreatment = ({ onNext, onBack, defaultValues, direction }: IAc
   };
 
   const onSubmit = (data: ActiveCancerTreatmentSchemaType) => {};
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
@@ -113,7 +122,9 @@ const ActiveCancerTreatment = ({ onNext, onBack, defaultValues, direction }: IAc
             </div>
           </Radio.Group>
 
-          {errors.activeCancerTreatment && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.activeCancerTreatment.message}</Text>}
+          {errors.activeCancerTreatment && (
+            <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.activeCancerTreatment.message}</Text>
+          )}
         </div>
 
         <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>

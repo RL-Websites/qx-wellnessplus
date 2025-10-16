@@ -46,11 +46,22 @@ const GlpOneMedication = ({ onNext, onBack, defaultValues, direction }: GlpOneMe
   const showDetails = takesGlpOneMedication === "Yes";
 
   const handleSelect = (field: keyof glpOneMedicationSchemaType, value: string) => {
-    setValue(field, value, { shouldValidate: true });
-    if (field == "glpOneMedicationDetails") {
-      setPrevGlpDetails((prev) => ({ ...prev, currentMedType: value }));
+    if (errors[field]) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue(field, value, { shouldValidate: true });
+        if (field == "glpOneMedicationDetails") {
+          setPrevGlpDetails((prev) => ({ ...prev, currentMedType: value }));
+        }
+        clearErrors(field);
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue(field, value, { shouldValidate: true });
+      if (field == "glpOneMedicationDetails") {
+        setPrevGlpDetails((prev) => ({ ...prev, currentMedType: value }));
+      }
     }
-    clearErrors(field);
   };
 
   const [isExiting, setIsExiting] = useState(false);
@@ -78,6 +89,7 @@ const GlpOneMedication = ({ onNext, onBack, defaultValues, direction }: GlpOneMe
 
   const takesGlpOptions = ["No", "Yes"];
   const glpDetailsOptions = ["Semaglutide", "Tirzepatide"];
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
@@ -123,7 +135,9 @@ GLP-1 medication?"
           </div>
         </Radio.Group>
 
-        {errors.takesGlpOneMedication && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.takesGlpOneMedication.message}</Text>}
+        {errors.takesGlpOneMedication && (
+          <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.takesGlpOneMedication.message}</Text>
+        )}
 
         {showDetails && (
           <Radio.Group
@@ -158,7 +172,9 @@ GLP-1 medication?"
             </div>
           </Radio.Group>
         )}
-        {errors.glpOneMedicationDetails && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.glpOneMedicationDetails.message}</Text>}
+        {errors.glpOneMedicationDetails && (
+          <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.glpOneMedicationDetails.message}</Text>
+        )}
 
         <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>
           <Button

@@ -35,14 +35,22 @@ const Cancers = ({ onNext, onBack, defaultValues, direction }: ICancersProps) =>
 
   const [isExiting, setIsExiting] = useState(false);
   const [isBackExiting, setIsBackExiting] = useState(false);
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   const cancers = watch("cancers");
 
   const options = ["No", "Yes"];
-
   const handleSelect = (value: string) => {
-    setValue("cancers", value, { shouldValidate: true });
-    clearErrors("cancers");
+    if (errors.cancers) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue("cancers", value, { shouldValidate: true });
+        clearErrors("cancers");
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue("cancers", value, { shouldValidate: true });
+    }
   };
 
   const handleFormSubmit = (data: CancersSchemaType) => {
@@ -103,7 +111,7 @@ const Cancers = ({ onNext, onBack, defaultValues, direction }: ICancersProps) =>
             </div>
           </Radio.Group>
 
-          {errors.cancers && <Text className="text-red-500 text-sm mt-5 text-center animation-pulseFade">{errors.cancers.message}</Text>}
+          {errors.cancers && <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.cancers.message}</Text>}
         </div>
 
         <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>

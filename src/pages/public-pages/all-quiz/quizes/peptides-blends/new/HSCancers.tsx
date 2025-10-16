@@ -38,12 +38,21 @@ const HSCancers = ({ onNext, onBack, defaultValues, direction }: IHSCancersProps
   const options = ["No", "Yes"];
 
   const handleSelect = (value: string) => {
-    setValue("hscancers", value, { shouldValidate: true });
-    clearErrors("hscancers");
+    if (errors.hscancers) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue("hscancers", value, { shouldValidate: true });
+        clearErrors("hscancers");
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue("hscancers", value, { shouldValidate: true });
+    }
   };
 
   const [isExiting, setIsExiting] = useState(false);
   const [isBackExiting, setIsBackExiting] = useState(false);
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   const handleFormSubmit = (data: HSCancersSchemaType) => {
     setIsExiting(true);
@@ -103,7 +112,9 @@ const HSCancers = ({ onNext, onBack, defaultValues, direction }: IHSCancersProps
             </div>
           </Radio.Group>
 
-          {errors.hscancers && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.hscancers.message}</Text>}
+          {errors.hscancers && (
+            <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.hscancers.message}</Text>
+          )}
         </div>
 
         <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>

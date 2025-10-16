@@ -58,6 +58,7 @@ const Pcos = ({ onNext, onBack, defaultValues, direction }: IPcosProps) => {
       onBack();
     }, animationDelay);
   };
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   const handleSelect = (value: string) => {
     setValue("pcos", value, { shouldValidate: true });

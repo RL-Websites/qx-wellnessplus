@@ -38,8 +38,16 @@ const CustomerStatus = ({ onNext, onBack, defaultValues, direction }: ICustomerS
   const options = ["Existing", "New"];
 
   const handleSelect = (value: string) => {
-    setValue("customerStatus", value, { shouldValidate: true });
-    clearErrors("customerStatus");
+    if (errors.customerStatus) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue("customerStatus", value, { shouldValidate: true });
+        clearErrors("customerStatus");
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue("customerStatus", value, { shouldValidate: true });
+    }
   };
 
   const [isExiting, setIsExiting] = useState(false);
@@ -64,6 +72,7 @@ const CustomerStatus = ({ onNext, onBack, defaultValues, direction }: ICustomerS
       onBack();
     }, animationDelay);
   };
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   return (
     <form
@@ -91,7 +100,7 @@ const CustomerStatus = ({ onNext, onBack, defaultValues, direction }: ICustomerS
                   root: "relative w-full",
                   radio: "hidden",
                   inner: "hidden",
-                  error: "animate-pulseFade",
+                  error: `${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`,
                   labelWrapper: "w-full",
                   label: `
                     block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointer

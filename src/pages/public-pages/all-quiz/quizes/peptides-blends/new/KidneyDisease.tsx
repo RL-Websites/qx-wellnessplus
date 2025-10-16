@@ -38,10 +38,19 @@ const KidneyDisease = ({ onNext, onBack, defaultValues, direction }: IKidneyDise
   const options = ["No", "Yes"];
   const [isExiting, setIsExiting] = useState(false);
   const [isBackExiting, setIsBackExiting] = useState(false);
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   const handleSelect = (value: string) => {
-    setValue("kidneyDisease", value, { shouldValidate: true });
-    clearErrors("kidneyDisease");
+    if (errors.kidneyDisease) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue("kidneyDisease", value, { shouldValidate: true });
+        clearErrors("kidneyDisease");
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue("kidneyDisease", value, { shouldValidate: true });
+    }
   };
 
   const handleFormSubmit = (data: KidneyDiseaseSchemaType) => {
@@ -102,7 +111,9 @@ const KidneyDisease = ({ onNext, onBack, defaultValues, direction }: IKidneyDise
             </div>
           </Radio.Group>
 
-          {errors.kidneyDisease && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.kidneyDisease.message}</Text>}
+          {errors.kidneyDisease && (
+            <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.kidneyDisease.message}</Text>
+          )}
         </div>
 
         <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>

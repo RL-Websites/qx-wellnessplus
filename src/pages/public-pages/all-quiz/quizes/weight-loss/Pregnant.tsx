@@ -38,8 +38,16 @@ const WeightLossPregnant = ({ onNext, onBack, defaultValues, direction }: IWeigh
   const options = ["No", "Yes"];
 
   const handleSelect = (value: string) => {
-    setValue("weightLossPregnant", value, { shouldValidate: true });
-    clearErrors("weightLossPregnant");
+    if (errors.weightLossPregnant) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue("weightLossPregnant", value, { shouldValidate: true });
+        clearErrors("weightLossPregnant");
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue("weightLossPregnant", value, { shouldValidate: true });
+    }
   };
 
   const [isExiting, setIsExiting] = useState(false);
@@ -54,6 +62,7 @@ const WeightLossPregnant = ({ onNext, onBack, defaultValues, direction }: IWeigh
       setIsExiting(false);
     }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
   };
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   const handleBackClick = () => {
     setIsBackExiting(true);
@@ -111,7 +120,9 @@ const WeightLossPregnant = ({ onNext, onBack, defaultValues, direction }: IWeigh
               ))}
             </Group>
           </Radio.Group>
-          {errors.weightLossPregnant && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.weightLossPregnant.message}</Text>}
+          {errors.weightLossPregnant && (
+            <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.weightLossPregnant.message}</Text>
+          )}
         </div>
 
         <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>

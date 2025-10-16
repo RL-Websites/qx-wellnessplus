@@ -55,6 +55,7 @@ const HormoneTherapy = ({ onNext, onBack, defaultValues, direction }: HormoneThe
       onBack();
     }, animationDelay);
   };
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">

@@ -38,8 +38,16 @@ const WeightLossBreastFeeding = ({ onNext, onBack, defaultValues, direction }: I
   const options = ["No", "Yes"];
 
   const handleSelect = (value: string) => {
-    setValue("breastFeeding", value, { shouldValidate: true });
-    clearErrors("breastFeeding");
+    if (errors.breastFeeding) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue("breastFeeding", value, { shouldValidate: true });
+        clearErrors("breastFeeding");
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue("breastFeeding", value, { shouldValidate: true });
+    }
   };
 
   const [isExiting, setIsExiting] = useState(false);
@@ -64,6 +72,7 @@ const WeightLossBreastFeeding = ({ onNext, onBack, defaultValues, direction }: I
       onBack();
     }, animationDelay);
   };
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
@@ -111,7 +120,9 @@ const WeightLossBreastFeeding = ({ onNext, onBack, defaultValues, direction }: I
               ))}
             </Group>
           </Radio.Group>
-          {errors.breastFeeding && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.breastFeeding.message}</Text>}
+          {errors.breastFeeding && (
+            <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.breastFeeding.message}</Text>
+          )}
         </div>
 
         <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>

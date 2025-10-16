@@ -37,8 +37,16 @@ const Impairment = ({ onNext, onBack, defaultValues, direction }: IImpairmentPro
   const options = ["No", "Yes"];
 
   const handleSelect = (value: string) => {
-    setValue("impairment", value, { shouldValidate: true });
-    clearErrors("impairment");
+    if (errors.impairment) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue("impairment", value, { shouldValidate: true });
+        clearErrors("impairment");
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue("impairment", value, { shouldValidate: true });
+    }
   };
 
   const [isExiting, setIsExiting] = useState(false);
@@ -63,6 +71,7 @@ const Impairment = ({ onNext, onBack, defaultValues, direction }: IImpairmentPro
       onBack();
     }, animationDelay);
   };
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
@@ -102,7 +111,9 @@ const Impairment = ({ onNext, onBack, defaultValues, direction }: IImpairmentPro
             </div>
           </Radio.Group>
 
-          {errors.impairment && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.impairment.message}</Text>}
+          {errors.impairment && (
+            <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.impairment.message}</Text>
+          )}
         </div>
 
         <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>

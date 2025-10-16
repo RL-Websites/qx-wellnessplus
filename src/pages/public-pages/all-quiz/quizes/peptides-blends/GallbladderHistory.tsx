@@ -1,5 +1,5 @@
 import { animationDelay, getAnimationClass } from "@/common/constants/constants";
-import { Button, Grid, Radio } from "@mantine/core";
+import { Button, Grid, Radio, Text } from "@mantine/core";
 import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 
@@ -23,6 +23,7 @@ const GallbladderHistory = ({ onNext, onBack, defaultValues, direction }: Gallbl
     setValue,
     control,
     register,
+    clearErrors,
     formState: { errors },
   } = useForm<GallbladderHistoryFormType>({
     defaultValues: {
@@ -36,7 +37,7 @@ const GallbladderHistory = ({ onNext, onBack, defaultValues, direction }: Gallbl
 
   const [isExiting, setIsExiting] = useState(false);
   const [isBackExiting, setIsBackExiting] = useState(false);
-
+  const [isDetailErrorFading, setIsDetailErrorFading] = useState(false);
   const handleFormSubmit = (data: GallbladderHistoryFormType) => {
     setIsExiting(true);
 
@@ -58,6 +59,35 @@ const GallbladderHistory = ({ onNext, onBack, defaultValues, direction }: Gallbl
     }, animationDelay);
   };
 
+  const handleHistorySelect = (value: string) => {
+    if (errors.hasGallbladderHistory) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue("hasGallbladderHistory", value as "Yes" | "No", { shouldValidate: true });
+        setValue("gallbladderDetail", "");
+        clearErrors("hasGallbladderHistory");
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue("hasGallbladderHistory", value as "Yes" | "No", { shouldValidate: true });
+      setValue("gallbladderDetail", "");
+    }
+  };
+
+  const handleDetailSelect = (value: string) => {
+    if (errors.gallbladderDetail) {
+      setIsDetailErrorFading(true);
+      setTimeout(() => {
+        setValue("gallbladderDetail", value, { shouldValidate: true });
+        clearErrors("gallbladderDetail");
+        setIsDetailErrorFading(false);
+      }, 300);
+    } else {
+      setValue("gallbladderDetail", value, { shouldValidate: true });
+    }
+  };
+  const [isErrorFading, setIsErrorFading] = useState(false);
+
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <form
@@ -73,10 +103,7 @@ const GallbladderHistory = ({ onNext, onBack, defaultValues, direction }: Gallbl
           {/* Step 1: Yes / No */}
           <Radio.Group
             value={hasHistory}
-            onChange={(value) => {
-              setValue("hasGallbladderHistory", value as "Yes" | "No");
-              setValue("gallbladderDetail", "");
-            }}
+            onChange={handleHistorySelect}
             className={`mt-6 ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}
           >
             <Grid gutter="md">
@@ -92,7 +119,7 @@ const GallbladderHistory = ({ onNext, onBack, defaultValues, direction }: Gallbl
                       radio: "hidden",
                       inner: "hidden",
                       labelWrapper: "w-full",
-                      error: "animate-pulseFade",
+
                       label: `
                         block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointer
                         ${hasHistory === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
@@ -114,13 +141,17 @@ const GallbladderHistory = ({ onNext, onBack, defaultValues, direction }: Gallbl
             </Grid>
           </Radio.Group>
 
+          {errors.hasGallbladderHistory && (
+            <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.hasGallbladderHistory.message}</Text>
+          )}
+
           {/* Step 2: Detail selection if "Yes" */}
           {hasHistory === "Yes" && (
             <div className="mt-6">
               <h3 className={`text-lg font-medium mb-2 text-center ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>Please specify</h3>
               <Radio.Group
                 value={detail}
-                onChange={(value) => setValue("gallbladderDetail", value)}
+                onChange={handleDetailSelect}
                 className={`${getAnimationClass("content", isExiting, isBackExiting, direction)}`}
               >
                 <Grid gutter="md">
@@ -157,6 +188,11 @@ const GallbladderHistory = ({ onNext, onBack, defaultValues, direction }: Gallbl
                   ))}
                 </Grid>
               </Radio.Group>
+              {errors.gallbladderDetail && (
+                <Text className={"text-red-500 text-sm mt-5 text-center " + (isDetailErrorFading ? "error-fade-out" : "animate-pulseFade")}>
+                  {errors.gallbladderDetail.message}
+                </Text>
+              )}
             </div>
           )}
         </div>

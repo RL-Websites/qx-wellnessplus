@@ -37,13 +37,23 @@ const AlopeciaAreata = ({ onNext, onBack, defaultValues, direction }: IAlopeciaA
   const alopeciaAreata = watch("alopeciaAreata");
 
   const [isExiting, setIsExiting] = useState(false);
+  const [isErrorFading, setIsErrorFading] = useState(false);
+
   const [isBackExiting, setIsBackExiting] = useState(false);
 
   const options = ["No", "Yes"];
 
   const handleSelect = (value: string) => {
-    setValue("alopeciaAreata", value, { shouldValidate: true });
-    clearErrors("alopeciaAreata");
+    if (errors.alopeciaAreata) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue("alopeciaAreata", value, { shouldValidate: true });
+        clearErrors("alopeciaAreata");
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue("alopeciaAreata", value, { shouldValidate: true });
+    }
   };
 
   const handleFormSubmit = (data: AlopeciaAreataSchemaType) => {
@@ -102,7 +112,9 @@ const AlopeciaAreata = ({ onNext, onBack, defaultValues, direction }: IAlopeciaA
             ))}
           </div>
         </Radio.Group>
-        {errors.alopeciaAreata && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.alopeciaAreata.message}</Text>}
+        {errors.alopeciaAreata && (
+          <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.alopeciaAreata.message}</Text>
+        )}
       </div>
 
       <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>

@@ -45,15 +45,28 @@ export default function GenderSexualHealth({ onNext, onBack, defaultValues, dire
   const options = ["Male", "Female"];
 
   const handleSelect = (value: string) => {
-    if (value === "Male") {
-      setSelectedCategory(["Sexual Health (Male)"]);
-    } else if (value === "Female") {
-      setSelectedCategory(["Sexual Health (Female)"]);
+    if (errors.genderSexualHealth) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        if (value === "Male") {
+          setSelectedCategory(["Sexual Health (Male)"]);
+        } else if (value === "Female") {
+          setSelectedCategory(["Sexual Health (Female)"]);
+        }
+        setValue("genderSexualHealth", value, { shouldValidate: true });
+        clearErrors("genderSexualHealth");
+        setSelectedGender(value);
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      if (value === "Male") {
+        setSelectedCategory(["Sexual Health (Male)"]);
+      } else if (value === "Female") {
+        setSelectedCategory(["Sexual Health (Female)"]);
+      }
+      setValue("genderSexualHealth", value, { shouldValidate: true });
+      setSelectedGender(value);
     }
-
-    setValue("genderSexualHealth", value, { shouldValidate: true });
-    clearErrors("genderSexualHealth");
-    setSelectedGender(value);
   };
 
   const [isExiting, setIsExiting] = useState(false);
@@ -64,8 +77,8 @@ export default function GenderSexualHealth({ onNext, onBack, defaultValues, dire
 
     // Wait for exit animation to complete
     setTimeout(() => {
-      onNext(data);
       setIsExiting(false);
+      onNext(data);
     }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
   };
 
@@ -78,6 +91,7 @@ export default function GenderSexualHealth({ onNext, onBack, defaultValues, dire
       onBack();
     }, animationDelay);
   };
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
@@ -114,7 +128,9 @@ export default function GenderSexualHealth({ onNext, onBack, defaultValues, dire
               ))}
             </div>
           </Radio.Group>
-          {errors.genderSexualHealth && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">Please select your gender.</Text>}
+          {errors.genderSexualHealth && (
+            <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>Please select your gender.</Text>
+          )}
         </form>
       </div>
 

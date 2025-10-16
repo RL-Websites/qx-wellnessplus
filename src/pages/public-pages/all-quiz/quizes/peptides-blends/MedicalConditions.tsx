@@ -77,6 +77,7 @@ const MedicalConditions = ({ onNext, onBack, defaultValues, direction }: Medical
       setIsExiting(false);
     }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
   };
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   const handleBackClick = () => {
     setIsBackExiting(true);

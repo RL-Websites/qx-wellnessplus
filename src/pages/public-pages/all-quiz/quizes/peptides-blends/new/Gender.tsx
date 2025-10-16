@@ -44,17 +44,31 @@ export default function GenderPeptides({ onNext, onBack, defaultValues, directio
   const options = ["Male", "Female"];
 
   const handleSelect = (value: string) => {
-    if (selectedCategory?.includes("Hair Growth")) {
-      const newCat = value === "Male" ? ["Hair Growth (Male)"] : ["Hair Growth (Female)"];
-      setSelectedCategory(newCat);
+    if (errors.genderPeptides) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        if (selectedCategory?.includes("Hair Growth")) {
+          const newCat = value === "Male" ? ["Hair Growth (Male)"] : ["Hair Growth (Female)"];
+          setSelectedCategory(newCat);
+        }
+        setValue("genderPeptides", value, { shouldValidate: true });
+        clearErrors("genderPeptides");
+        setSelectedGender(value);
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      if (selectedCategory?.includes("Hair Growth")) {
+        const newCat = value === "Male" ? ["Hair Growth (Male)"] : ["Hair Growth (Female)"];
+        setSelectedCategory(newCat);
+      }
+      setValue("genderPeptides", value, { shouldValidate: true });
+      setSelectedGender(value);
     }
-    setValue("genderPeptides", value, { shouldValidate: true });
-    clearErrors("genderPeptides");
-    setSelectedGender(value);
   };
 
   const [isExiting, setIsExiting] = useState(false);
   const [isBackExiting, setIsBackExiting] = useState(false);
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   const handleFormSubmit = (data: GenderPeptidesSchemaType) => {
     setIsExiting(true);
@@ -114,7 +128,9 @@ export default function GenderPeptides({ onNext, onBack, defaultValues, directio
               ))}
             </div>
           </Radio.Group>
-          {errors.genderPeptides && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.genderPeptides.message}</Text>}
+          {errors.genderPeptides && (
+            <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.genderPeptides.message}</Text>
+          )}
         </form>
       </div>
 

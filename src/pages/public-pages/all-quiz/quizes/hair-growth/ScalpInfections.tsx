@@ -23,6 +23,7 @@ interface IScalpInfectionsProps {
 const ScalpInfections = ({ onNext, onBack, defaultValues, direction }: IScalpInfectionsProps) => {
   const [isExiting, setIsExiting] = useState(false);
   const [isBackExiting, setIsBackExiting] = useState(false);
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   const handleBackClick = () => {
     setIsBackExiting(true);
@@ -61,8 +62,16 @@ const ScalpInfections = ({ onNext, onBack, defaultValues, direction }: IScalpInf
   const options = ["No", "Yes"];
 
   const handleSelect = (value: string) => {
-    setValue("scalpInfactions", value, { shouldValidate: true });
-    clearErrors("scalpInfactions");
+    if (errors.scalpInfactions) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue("scalpInfactions", value, { shouldValidate: true });
+        clearErrors("scalpInfactions");
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue("scalpInfactions", value, { shouldValidate: true });
+    }
   };
 
   return (
@@ -101,7 +110,9 @@ const ScalpInfections = ({ onNext, onBack, defaultValues, direction }: IScalpInf
             ))}
           </div>
         </Radio.Group>
-        {errors.scalpInfactions && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.scalpInfactions.message}</Text>}
+        {errors.scalpInfactions && (
+          <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}> {errors.scalpInfactions.message}</Text>
+        )}
       </div>
 
       <div className={`flex justify-center gap-6 pt-4 animate-btns  ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>

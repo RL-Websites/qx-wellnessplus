@@ -56,6 +56,7 @@ const EndocrineAutoimmuneDisorders = ({ onNext, onBack, defaultValues, direction
       onBack();
     }, animationDelay);
   };
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
@@ -108,7 +109,9 @@ const EndocrineAutoimmuneDisorders = ({ onNext, onBack, defaultValues, direction
             </Grid>
           </Radio.Group>
 
-          {errors.endocrineAutoimmuneDisorder && <div className="animate-pulseFade text-danger text-sm mt-2 text-center">{errors.endocrineAutoimmuneDisorder.message}</div>}
+          {errors.endocrineAutoimmuneDisorder && (
+            <div className={`text-danger text-sm mt-2 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.endocrineAutoimmuneDisorder.message}</div>
+          )}
         </div>
 
         <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>

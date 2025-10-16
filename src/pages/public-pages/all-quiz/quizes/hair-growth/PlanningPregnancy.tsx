@@ -38,6 +38,8 @@ const PlanningPregnancy = ({ onNext, onBack, defaultValues, direction }: IPlanni
 
   const options = ["No", "Yes"];
   const [isExiting, setIsExiting] = useState(false);
+  const [isErrorFading, setIsErrorFading] = useState(false);
+
   const [isBackExiting, setIsBackExiting] = useState(false);
 
   const handleFormSubmit = (data: planningPregnancySchemaType) => {
@@ -61,8 +63,16 @@ const PlanningPregnancy = ({ onNext, onBack, defaultValues, direction }: IPlanni
   };
 
   const handleSelect = (value: string) => {
-    setValue("planningPregnancy", value, { shouldValidate: true });
-    clearErrors("planningPregnancy");
+    if (errors.planningPregnancy) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue("planningPregnancy", value, { shouldValidate: true });
+        clearErrors("planningPregnancy");
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue("planningPregnancy", value, { shouldValidate: true });
+    }
   };
 
   return (
@@ -101,7 +111,9 @@ const PlanningPregnancy = ({ onNext, onBack, defaultValues, direction }: IPlanni
             ))}
           </div>
         </Radio.Group>
-        {errors.planningPregnancy && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.planningPregnancy.message}</Text>}
+        {errors.planningPregnancy && (
+          <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.planningPregnancy.message}</Text>
+        )}
       </div>
 
       <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>

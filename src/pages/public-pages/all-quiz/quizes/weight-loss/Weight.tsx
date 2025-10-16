@@ -36,9 +36,24 @@ const WeightLossWeight = ({ onNext, onBack, defaultValues, direction }: IWeightL
 
   const weightLossWeight = watch("weightlossweight");
 
-  const handleSelect = (value: string) => {
-    setValue("weightlossweight", value, { shouldValidate: true });
-    clearErrors("weightlossweight");
+  const handleSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+
+    if (errors.weightlossweight) {
+      setIsErrorFading(true);
+
+      // Step 1: Update value immediately so typing feels responsive
+      setValue("weightlossweight", value);
+
+      // Step 2: Wait for fade-out animation before clearing error
+      setTimeout(() => {
+        clearErrors("weightlossweight"); // remove the message
+        setIsErrorFading(false);
+        setValue("weightlossweight", value, { shouldValidate: true });
+      }, 300); // 300ms = your CSS fade-out duration
+    } else {
+      setValue("weightlossweight", value, { shouldValidate: true });
+    }
   };
 
   const [isExiting, setIsExiting] = useState(false);
@@ -63,6 +78,7 @@ const WeightLossWeight = ({ onNext, onBack, defaultValues, direction }: IWeightL
       onBack();
     }, animationDelay);
   };
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
@@ -80,11 +96,12 @@ const WeightLossWeight = ({ onNext, onBack, defaultValues, direction }: IWeightL
               label="Your Weight (lbs)"
               required
               error={errors.weightlossweight?.message ? errors.weightlossweight?.message : false}
-              classNames={{ ...InputErrorMessage, error: "animate-pulseFade" }}
+              classNames={{ ...InputErrorMessage, error: `${isErrorFading ? "error-fade-out" : "animate-pulseFade"}` }}
             >
               <Input
                 type="text"
                 {...register("weightlossweight")}
+                onChange={handleSelect}
               />
             </Input.Wrapper>
           </div>

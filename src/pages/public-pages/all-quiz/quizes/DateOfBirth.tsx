@@ -10,7 +10,7 @@ import { Datepicker as UberDatePicker } from "baseui/datepicker";
 import { useAtomValue } from "jotai";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Client as Styletron } from "styletron-engine-monolithic";
 import { Provider as StyletronProvider } from "styletron-react";
 import * as yup from "yup";
@@ -36,6 +36,7 @@ export default function DateOfBirth({ onNext, onBack, defaultValues, direction }
   const selectedCategory = useAtomValue(selectedCategoryAtom);
 
   const ageLimit = selectedCategory?.includes("Testosterone") ? 22 : 18;
+  const navigate = useNavigate();
 
   const maxValidDate = new Date();
   maxValidDate.setFullYear(maxValidDate.getFullYear() - ageLimit);
@@ -56,8 +57,8 @@ export default function DateOfBirth({ onNext, onBack, defaultValues, direction }
 
     // Wait for exit animation to complete
     setTimeout(() => {
-      onNext(data);
       setIsExiting(false);
+      onNext(data);
     }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
   };
 
@@ -67,7 +68,7 @@ export default function DateOfBirth({ onNext, onBack, defaultValues, direction }
     // Wait for exit animation to complete
     setTimeout(() => {
       setIsBackExiting(false);
-      onBack();
+      navigate("/category");
     }, animationDelay);
   };
 
@@ -80,6 +81,7 @@ export default function DateOfBirth({ onNext, onBack, defaultValues, direction }
     resolver: yupResolver(dobSchema),
     defaultValues,
   });
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
@@ -103,7 +105,7 @@ export default function DateOfBirth({ onNext, onBack, defaultValues, direction }
             label="Date of Birth"
             error={getErrorMessage(errors.date_of_birth)}
             withAsterisk
-            classNames={{ ...InputErrorMessage, error: "animate-pulseFade" }}
+            classNames={{ ...InputErrorMessage, error: isErrorFading ? "error-fade-out" : "animate-pulseFade" }}
           >
             <div className={`${errors?.date_of_birth ? "baseWeb-error" : ""} dml-Input-wrapper dml-Input-Calendar relative`}>
               <StyletronProvider value={engine}>
@@ -120,9 +122,18 @@ export default function DateOfBirth({ onNext, onBack, defaultValues, direction }
                     error={!!errors.date_of_birth}
                     onChange={(data) => {
                       if (data?.date) {
-                        setDob([data.date]);
-                        setValue("date_of_birth", data.date, { shouldValidate: true });
-                        clearErrors("date_of_birth");
+                        if (errors.date_of_birth) {
+                          setIsErrorFading(true);
+                          setTimeout(() => {
+                            setDob([data.date]);
+                            setValue("date_of_birth", data.date, { shouldValidate: true });
+                            clearErrors("date_of_birth");
+                            setIsErrorFading(false);
+                          }, 300);
+                        } else {
+                          setDob([data.date]);
+                          setValue("date_of_birth", data.date, { shouldValidate: true });
+                        }
                       }
                     }}
                     overrides={BaseWebDatePickerOverrides}
@@ -138,8 +149,7 @@ export default function DateOfBirth({ onNext, onBack, defaultValues, direction }
         <Button
           variant="outline"
           className="w-[200px] animated-btn"
-          component={Link}
-          to="/category"
+          onClick={handleBackClick}
         >
           Back
         </Button>

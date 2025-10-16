@@ -37,6 +37,7 @@ const MedicationTaking = ({ onNext, onBack, defaultValues, direction }: IMedicat
   const medicationTaking = watch("medicationTaking");
   const [isExiting, setIsExiting] = useState(false);
   const [isBackExiting, setIsBackExiting] = useState(false);
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   const handleFormSubmit = (data: MedicationTakingSchemaType) => {
     setIsExiting(true);
@@ -61,8 +62,16 @@ const MedicationTaking = ({ onNext, onBack, defaultValues, direction }: IMedicat
   const options = ["No", "Yes"];
 
   const handleSelect = (value: string) => {
-    setValue("medicationTaking", value, { shouldValidate: true });
-    clearErrors("medicationTaking");
+    if (errors.medicationTaking) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue("medicationTaking", value, { shouldValidate: true });
+        clearErrors("medicationTaking");
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue("medicationTaking", value, { shouldValidate: true });
+    }
   };
 
   return (
@@ -101,7 +110,9 @@ const MedicationTaking = ({ onNext, onBack, defaultValues, direction }: IMedicat
             ))}
           </div>
         </Radio.Group>
-        {errors.medicationTaking && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.medicationTaking.message}</Text>}
+        {errors.medicationTaking && (
+          <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.medicationTaking.message}</Text>
+        )}
       </div>
 
       <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>

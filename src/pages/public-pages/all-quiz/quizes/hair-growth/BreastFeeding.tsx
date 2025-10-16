@@ -34,6 +34,8 @@ const HairGrowthBreastFeeding = ({ onNext, onBack, defaultValues, direction }: I
     resolver: yupResolver(hairGrowthBreastFeedingSchema),
   });
   const [isExiting, setIsExiting] = useState(false);
+  const [isErrorFading, setIsErrorFading] = useState(false);
+
   const [isBackExiting, setIsBackExiting] = useState(false);
 
   const breastFeeding = watch("breastFeeding");
@@ -41,8 +43,16 @@ const HairGrowthBreastFeeding = ({ onNext, onBack, defaultValues, direction }: I
   const options = ["No", "Yes"];
 
   const handleSelect = (value: string) => {
-    setValue("breastFeeding", value, { shouldValidate: true });
-    clearErrors("breastFeeding");
+    if (errors.breastFeeding) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue("breastFeeding", value, { shouldValidate: true });
+        clearErrors("breastFeeding");
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue("breastFeeding", value, { shouldValidate: true });
+    }
   };
 
   const handleFormSubmit = (data: HairGrowthBreastFeedingSchemaType) => {
@@ -101,7 +111,9 @@ const HairGrowthBreastFeeding = ({ onNext, onBack, defaultValues, direction }: I
             ))}
           </div>
         </Radio.Group>
-        {errors.breastFeeding && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.breastFeeding.message}</Text>}
+        {errors.breastFeeding && (
+          <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.breastFeeding.message}</Text>
+        )}
       </div>
 
       <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>

@@ -36,6 +36,7 @@ const Chemotherapy = ({ onNext, onBack, defaultValues, direction }: IChemotherap
 
   const [isExiting, setIsExiting] = useState(false);
   const [isBackExiting, setIsBackExiting] = useState(false);
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   const handleFormSubmit = (data: chemotherapySchemaType) => {
     setIsExiting(true);
@@ -62,8 +63,16 @@ const Chemotherapy = ({ onNext, onBack, defaultValues, direction }: IChemotherap
   const options = ["No", "Yes"];
 
   const handleSelect = (value: string) => {
-    setValue("chemotherapy", value, { shouldValidate: true });
-    clearErrors("chemotherapy");
+    if (errors.chemotherapy) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue("chemotherapy", value, { shouldValidate: true });
+        clearErrors("chemotherapy");
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue("chemotherapy", value, { shouldValidate: true });
+    }
   };
 
   return (
@@ -102,7 +111,9 @@ const Chemotherapy = ({ onNext, onBack, defaultValues, direction }: IChemotherap
             ))}
           </div>
         </Radio.Group>
-        {errors.chemotherapy && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.chemotherapy.message}</Text>}
+        {errors.chemotherapy && (
+          <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.chemotherapy.message}</Text>
+        )}
       </div>
 
       <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>

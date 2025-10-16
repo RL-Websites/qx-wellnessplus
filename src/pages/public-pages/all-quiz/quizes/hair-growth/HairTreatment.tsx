@@ -35,6 +35,8 @@ const HairTreatment = ({ onNext, onBack, defaultValues, direction }: IHairTreatm
   });
 
   const [isExiting, setIsExiting] = useState(false);
+  const [isErrorFading, setIsErrorFading] = useState(false);
+
   const [isBackExiting, setIsBackExiting] = useState(false);
 
   const hairTreatment = watch("hairTreatment");
@@ -42,8 +44,16 @@ const HairTreatment = ({ onNext, onBack, defaultValues, direction }: IHairTreatm
   const options = ["No", "Yes"];
 
   const handleSelect = (value: string) => {
-    setValue("hairTreatment", value, { shouldValidate: true });
-    clearErrors("hairTreatment");
+    if (errors.hairTreatment) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue("hairTreatment", value, { shouldValidate: true });
+        clearErrors("hairTreatment");
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue("hairTreatment", value, { shouldValidate: true });
+    }
   };
 
   const handleFormSubmit = (data: hairTreatmentSchemaType) => {
@@ -102,7 +112,9 @@ const HairTreatment = ({ onNext, onBack, defaultValues, direction }: IHairTreatm
             ))}
           </div>
         </Radio.Group>
-        {errors.hairTreatment && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.hairTreatment.message}</Text>}
+        {errors.hairTreatment && (
+          <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.hairTreatment.message}</Text>
+        )}
       </div>
 
       <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>

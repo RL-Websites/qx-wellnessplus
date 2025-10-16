@@ -35,6 +35,8 @@ const CardiovascularDiseasePeptides = ({ onNext, onBack, defaultValues, directio
   });
 
   const [isExiting, setIsExiting] = useState(false);
+  const [isErrorFading, setIsErrorFading] = useState(false);
+
   const [isBackExiting, setIsBackExiting] = useState(false);
 
   const handleFormSubmit = (data: CardiovascularDiseasePeptidesSchemaType) => {
@@ -62,8 +64,16 @@ const CardiovascularDiseasePeptides = ({ onNext, onBack, defaultValues, directio
   const options = ["No", "Yes"];
 
   const handleSelect = (value: string) => {
-    setValue("cardiovascularDiseasePeptides", value, { shouldValidate: true });
-    clearErrors("cardiovascularDiseasePeptides");
+    if (errors.cardiovascularDiseasePeptides) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue("cardiovascularDiseasePeptides", value, { shouldValidate: true });
+        clearErrors("cardiovascularDiseasePeptides");
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue("cardiovascularDiseasePeptides", value, { shouldValidate: true });
+    }
   };
 
   return (
@@ -104,7 +114,11 @@ const CardiovascularDiseasePeptides = ({ onNext, onBack, defaultValues, directio
             </div>
           </Radio.Group>
 
-          {errors.cardiovascularDiseasePeptides && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.cardiovascularDiseasePeptides.message}</Text>}
+          {errors.cardiovascularDiseasePeptides && (
+            <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>
+              {errors.cardiovascularDiseasePeptides.message}
+            </Text>
+          )}
         </div>
 
         <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>

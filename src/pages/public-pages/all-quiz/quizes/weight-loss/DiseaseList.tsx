@@ -23,6 +23,7 @@ const DiseaseList = ({ onNext, onBack, defaultValues, direction }: IDiseaseListP
     handleSubmit,
     setValue,
     watch,
+    clearErrors,
     formState: { errors },
   } = useForm<DiseaseListSchemaType>({
     defaultValues: {
@@ -57,20 +58,42 @@ const DiseaseList = ({ onNext, onBack, defaultValues, direction }: IDiseaseListP
   // };
 
   const toggleValue = (value: string) => {
-    let updated: (string | undefined)[] = [];
+    if (errors.diseaseList) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        let updated: (string | undefined)[] = [];
 
-    if (value === "None of the above") {
-      updated = selectedValues.includes(value) ? [] : [value];
+        if (value === "None of the above") {
+          updated = selectedValues.includes(value) ? [] : [value];
+        } else {
+          const filtered = selectedValues.filter((v) => v !== "None of the above");
+          updated = selectedValues.includes(value) ? filtered.filter((v) => v !== value) : [...filtered, value];
+        }
+
+        setValue(
+          "diseaseList",
+          updated.filter((v): v is string => typeof v === "string"),
+          { shouldValidate: true }
+        );
+        clearErrors("diseaseList");
+        setIsErrorFading(false);
+      }, 300);
     } else {
-      const filtered = selectedValues.filter((v) => v !== "None of the above");
-      updated = selectedValues.includes(value) ? filtered.filter((v) => v !== value) : [...filtered, value];
-    }
+      let updated: (string | undefined)[] = [];
 
-    setValue(
-      "diseaseList",
-      updated.filter((v): v is string => typeof v === "string"), // ✅ FIXED HERE
-      { shouldValidate: true }
-    );
+      if (value === "None of the above") {
+        updated = selectedValues.includes(value) ? [] : [value];
+      } else {
+        const filtered = selectedValues.filter((v) => v !== "None of the above");
+        updated = selectedValues.includes(value) ? filtered.filter((v) => v !== value) : [...filtered, value];
+      }
+
+      setValue(
+        "diseaseList",
+        updated.filter((v): v is string => typeof v === "string"),
+        { shouldValidate: true }
+      );
+    }
   };
 
   const [isExiting, setIsExiting] = useState(false);
@@ -96,6 +119,7 @@ const DiseaseList = ({ onNext, onBack, defaultValues, direction }: IDiseaseListP
       onBack();
     }, animationDelay);
   };
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
@@ -142,7 +166,9 @@ const DiseaseList = ({ onNext, onBack, defaultValues, direction }: IDiseaseListP
             })}
           </Grid>
 
-          {errors.diseaseList && <div className="text-danger text-sm mt-2 text-center animate-pulseFade">{errors.diseaseList.message}</div>}
+          {errors.diseaseList && (
+            <div className={`text-danger text-sm mt-2 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.diseaseList.message}</div>
+          )}
         </div>
 
         <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>

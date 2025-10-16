@@ -62,16 +62,26 @@ export default function InjectionDate({ onNext, onBack, defaultValues, direction
   }, [prevGlpDetails?.currentMedType]);
 
   const lastDose = watch("lastDose");
-
   const handleSelect = (field: keyof InjectionDateSchemaType, value: string) => {
-    setValue(field, value, { shouldValidate: true });
-    const dose = value.split(" ")[0];
-    setPrevGlpDetails((prev) => ({ ...prev, lastDose: dose }));
-    clearErrors(field);
+    if (errors.lastDose) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue(field, value, { shouldValidate: true });
+        const dose = value.split(" ")[0];
+        setPrevGlpDetails((prev) => ({ ...prev, lastDose: dose }));
+        clearErrors(field);
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue(field, value, { shouldValidate: true });
+      const dose = value.split(" ")[0];
+      setPrevGlpDetails((prev) => ({ ...prev, lastDose: dose }));
+    }
   };
 
   const [isExiting, setIsExiting] = useState(false);
   const [isBackExiting, setIsBackExiting] = useState(false);
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   const handleFormSubmit = (data: InjectionDateSchemaType) => {
     setIsExiting(true);
@@ -182,7 +192,7 @@ export default function InjectionDate({ onNext, onBack, defaultValues, direction
           </Radio.Group>
         </div>
 
-        {errors.lastDose && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.lastDose.message}</Text>}
+        {errors.lastDose && <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.lastDose.message}</Text>}
       </form>
       <div className={`flex justify-center md:gap-6 gap-3 md:pt-8 pt-5 relative z-0 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>
         <Button

@@ -40,10 +40,19 @@ const Pcos = ({ onNext, onBack, defaultValues, direction }: IPcosProps) => {
 
   const [isExiting, setIsExiting] = useState(false);
   const [isBackExiting, setIsBackExiting] = useState(false);
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   const handleSelect = (value: string) => {
-    setValue("pcos", value, { shouldValidate: true });
-    clearErrors("pcos");
+    if (errors.pcos) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue("pcos", value, { shouldValidate: true });
+        clearErrors("pcos");
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue("pcos", value, { shouldValidate: true });
+    }
   };
 
   const handleFormSubmit = (data: pcosSchemaType) => {
@@ -102,7 +111,7 @@ const Pcos = ({ onNext, onBack, defaultValues, direction }: IPcosProps) => {
             ))}
           </div>
         </Radio.Group>
-        {errors.pcos && <Text className="text-red-500 text-sm mt-5 text-center animate-pulseFade">{errors.pcos.message}</Text>}
+        {errors.pcos && <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.pcos.message}</Text>}
       </div>
 
       <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>

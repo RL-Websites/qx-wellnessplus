@@ -57,6 +57,7 @@ const UsedPeptidesBefore = ({ onNext, onBack, defaultValues, direction }: IUsedP
       onBack();
     }, animationDelay);
   };
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
