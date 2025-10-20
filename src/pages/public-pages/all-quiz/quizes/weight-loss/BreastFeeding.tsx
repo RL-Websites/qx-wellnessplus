@@ -76,72 +76,74 @@ const WeightLossBreastFeeding = ({ onNext, onBack, defaultValues, direction }: I
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
-      <form
-        id="weightLossBreastFeedingForm"
-        onSubmit={handleSubmit(handleFormSubmit)}
-        className="card-common-width-lg mx-auto space-y-6"
-      >
-        <div>
-          <h2 className={`text-center text-3xl font-poppins font-semibold text-foreground ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>
-            Are you currently breastfeeding?
-          </h2>
+      <div className={`card-common-width-lg mx-auto mt-10 ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}>
+        <form
+          id="weightLossBreastFeedingForm"
+          onSubmit={handleSubmit(handleFormSubmit)}
+          className="card-common-width-lg mx-auto space-y-6 w-full"
+        >
+          <div>
+            <h2 className={`text-center text-3xl font-poppins font-semibold text-foreground ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>
+              Are you currently breastfeeding?
+            </h2>
 
-          <Radio.Group
-            value={breastFeeding}
-            onChange={handleSelect}
-            className={`mt-6 ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}
-          >
-            <Group grow>
-              {options.map((option) => (
-                <Radio
-                  key={option}
-                  value={option}
-                  classNames={{
-                    root: "relative w-full",
-                    radio: "hidden",
-                    inner: "hidden",
-                    labelWrapper: "w-full",
-                    label: `
+            <Radio.Group
+              value={breastFeeding}
+              onChange={handleSelect}
+              className={`mt-6 w-full ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}
+            >
+              <div className="grid md:grid-cols-2 w-full gap-5">
+                {options.map((option) => (
+                  <Radio
+                    key={option}
+                    value={option}
+                    classNames={{
+                      root: "relative w-full",
+                      radio: "hidden",
+                      inner: "hidden",
+                      labelWrapper: "w-full",
+                      label: `
                       block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointer
                       ${breastFeeding === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
                     `,
-                  }}
-                  label={
-                    <div className="relative text-center">
-                      <span className="text-foreground font-poppins">{option}</span>
-                      {breastFeeding === option && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
-                          <i className="icon-tick text-sm/none"></i>
-                        </span>
-                      )}
-                    </div>
-                  }
-                />
-              ))}
-            </Group>
-          </Radio.Group>
-          {errors.breastFeeding && (
-            <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.breastFeeding.message}</Text>
-          )}
-        </div>
+                    }}
+                    label={
+                      <div className="relative text-center">
+                        <span className="text-foreground font-poppins">{option}</span>
+                        {breastFeeding === option && (
+                          <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
+                            <i className="icon-tick text-sm/none"></i>
+                          </span>
+                        )}
+                      </div>
+                    }
+                  />
+                ))}
+              </div>
+            </Radio.Group>
+            {errors.breastFeeding && (
+              <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.breastFeeding.message}</Text>
+            )}
+          </div>
 
-        <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>
-          <Button
-            variant="outline"
-            className="w-[200px] animated-btn"
-            onClick={handleBackClick}
-          >
-            Back
-          </Button>
-          <Button
-            type="submit"
-            className="w-[200px] animated-btn"
-            form="weightLossBreastFeedingForm"
-          >
-            Next
-          </Button>
-        </div>
-      </form>
+          <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>
+            <Button
+              variant="outline"
+              className="w-[200px] animated-btn"
+              onClick={handleBackClick}
+            >
+              Back
+            </Button>
+            <Button
+              type="submit"
+              className="w-[200px] animated-btn"
+              form="weightLossBreastFeedingForm"
+            >
+              Next
+            </Button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };
