@@ -103,8 +103,10 @@ const HomeHeader = () => {
             onClick={() => {
               if (location.key !== "default") {
                 navigate(-1);
+                setIsExitingLogin(false);
               } else {
                 navigate("/login");
+                setIsExitingLogin(false);
               }
             }}
           >
