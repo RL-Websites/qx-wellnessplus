@@ -3,7 +3,9 @@ import { ILoginRequestPayload } from "@/common/api/models/interfaces/Auth.model"
 import authApiRepository from "@/common/api/repositories/authRepository";
 import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
 import dmlToast from "@/common/configs/toaster.config";
+import { animationDelay } from "@/common/constants/constants";
 import useAuthToken from "@/common/hooks/useAuthToken";
+import { isExitingAtomCategory, isExitingAtomForgot, isExitingAtomLogin, isExitingAtomRegister } from "@/common/states/animation.atom";
 import { customerAtom } from "@/common/states/customer.atom";
 import { cartItemsAtom } from "@/common/states/product.atom";
 import { redirectUrlAtom } from "@/common/states/redirect.atom";
@@ -15,7 +17,7 @@ import { useWindowScroll } from "@mantine/hooks";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useAtom, useAtomValue } from "jotai";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import * as yup from "yup";
@@ -41,10 +43,13 @@ const Login = () => {
   const [userData, setUserDataAtom] = useAtom(userAtom);
   const [customerData, setCustomerData] = useAtom(customerAtom);
   const [userId, setUserId] = useAtom(user_id);
-  const navigate = useNavigate();
   const location = useLocation();
   const [, scrollTo] = useWindowScroll();
   const redirectUrl = useAtomValue(redirectUrlAtom);
+  const [isExitingCategory, setIsExitingCategory] = useAtom(isExitingAtomCategory);
+  const [isExitingLogin, setIsExitingLogin] = useAtom(isExitingAtomLogin);
+  const [isExitingRegister, setIsExitingRegister] = useAtom(isExitingAtomRegister);
+  const [isExitingForgot, setIsExitingForgot] = useAtom(isExitingAtomForgot);
 
   useEffect(() => {
     scrollTo({ y: 0 });
@@ -85,6 +90,7 @@ const Login = () => {
 
   const onSubmit = (data: loginSchemaType) => {
     // const finalData = { ...data, ...{ type: "admin", u_id: uid } };
+    setIsExitingLogin(true);
     const payload = { email: data.emailAddress, password: data.password };
     LoginMutation.mutate(payload, {
       onSuccess: (res) => {
@@ -117,9 +123,35 @@ const Login = () => {
       },
     });
   };
+  const navigate = useNavigate();
 
+  const handleBackClick = () => {
+    setIsExitingLogin(true);
+
+    setTimeout(() => {
+      setIsExitingLogin(false);
+      // navigate(customerData?.slug ? "/order-summary" : "/");
+      if (location.key !== "default") {
+        navigate(-1);
+      } else {
+        navigate("/"); // Or any other default page
+      }
+      setIsExitingCategory(false);
+    }, animationDelay);
+  };
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsExitingLogin(true);
+
+    // Wait for animation duration (e.g. 400ms)
+    setTimeout(() => {
+      navigate("/forgot-password");
+      setIsExitingForgot(false);
+      setIsExitingLogin(false);
+    }, animationDelay);
+  };
   return (
-    <div className="grid lg:grid-cols-2">
+    <div className={`grid lg:grid-cols-2 login-main ${isExitingLogin ? "login-main-exit" : ""}`}>
       <div className="lg:space-y-[30px] space-y-4 lg:text-start text-center">
         <h2 className="lg:text-[70px] md:text-6xl text-4xl text-foreground uppercase">Login</h2>
         <div className="space-y-2.5">
@@ -165,32 +197,39 @@ const Login = () => {
           <div className="flex justify-between">
             <Button
               variant="outline"
-              className="lg:w-[206px]"
-              component={Link}
-              to={customerData?.slug ? "/order-summary" : "/"}
+              className="lg:w-[206px] animated-btn"
+              onClick={handleBackClick}
             >
               Back
             </Button>
             <Button
               size="md"
               type="submit"
-              className="bg-primary text-white rounded-xl lg:w-[206px]"
+              className="bg-primary text-white rounded-xl lg:w-[206px] animated-btn"
               loading={LoginMutation.isPending}
             >
               Login
             </Button>
           </div>
           <div className="mt-6 flex md:flex-row flex-col gap-2 items-center justify-between">
-            <Link
-              to="/forgot-password"
-              className="text-foreground underline md:text-base text-sm"
+            <button
+              onClick={handleClick}
+              className={`text-foreground underline md:text-base text-sm`}
             >
               Forgot Password
-            </Link>
+            </button>
             <p className="md:text-lg sm:text-base text-sm text-foreground font-semibold">
               <span className="text-primary font-normal">First-time Visitor? </span>
               <Link
                 to="/registration"
+                onClick={(e) => {
+                  e.preventDefault(); // Prevent immediate navigation
+                  setIsExitingLogin(true); // Trigger exit animation
+                  setTimeout(() => {
+                    setIsExitingRegister(false);
+                    navigate("/registration");
+                  }, animationDelay);
+                }}
                 className="text-foreground underline font-medium"
               >
                 Create an account
