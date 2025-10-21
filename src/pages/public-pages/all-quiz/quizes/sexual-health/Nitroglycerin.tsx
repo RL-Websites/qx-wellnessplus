@@ -1,7 +1,9 @@
 import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
+import { animationDelay, getAnimationClass } from "@/common/constants/constants";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Radio, Text } from "@mantine/core";
-import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { get, useForm } from "react-hook-form";
 import * as yup from "yup";
 
 export const nitroglycerinSchema = yup.object({
@@ -14,9 +16,10 @@ interface INitroglycerinProps {
   onNext: (data: NitroglycerinSchemaType & { eligible?: boolean }) => void;
   onBack: () => void;
   defaultValues?: NitroglycerinSchemaType;
+  direction?: "forward" | "backward"; // Optional, if you want to handle direction-based animations later
 }
 
-const Nitroglycerin = ({ onNext, onBack, defaultValues }: INitroglycerinProps) => {
+const Nitroglycerin = ({ onNext, onBack, defaultValues, direction }: INitroglycerinProps) => {
   const {
     handleSubmit,
     setValue,
@@ -35,28 +38,57 @@ const Nitroglycerin = ({ onNext, onBack, defaultValues }: INitroglycerinProps) =
   const options = ["No", "Yes"];
 
   const handleSelect = (value: string) => {
-    setValue("nitroglycerin", value, { shouldValidate: true });
-    clearErrors("nitroglycerin");
+    if (errors.nitroglycerin) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue("nitroglycerin", value, { shouldValidate: true });
+        clearErrors("nitroglycerin");
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue("nitroglycerin", value, { shouldValidate: true });
+    }
   };
+  const [isExiting, setIsExiting] = useState(false);
+  const [isBackExiting, setIsBackExiting] = useState(false);
 
-  const onSubmit = (data: NitroglycerinSchemaType) => {
-    onNext({ ...data, eligible: data.nitroglycerin === "Yes" });
+  const handleFormSubmit = (data: NitroglycerinSchemaType) => {
+    setIsExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      onNext({ ...data, eligible: data.nitroglycerin === "Yes" });
+      setIsExiting(false);
+    }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
+  };
+  const [isErrorFading, setIsErrorFading] = useState(false);
+
+  const handleBackClick = () => {
+    setIsBackExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsBackExiting(false);
+      onBack();
+    }, animationDelay);
   };
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <form
         id="nitroglycerinForm"
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(handleFormSubmit)}
         className="card-common-width-lg mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground animate-title">Are you currently taking nitrates or nitroglycerin?</h2>
+          <h2 className={`text-center text-3xl font-poppins font-semibold text-foreground ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>
+            Are you currently taking nitrates or nitroglycerin?
+          </h2>
 
           <Radio.Group
             value={nitroglycerin}
             onChange={handleSelect}
-            className="mt-6 w-full animate-content"
+            className={`mt-6 w-full ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}
           >
             <div className="grid md:grid-cols-2 gap-5 w-full">
               {options.map((option) => (
@@ -79,20 +111,22 @@ const Nitroglycerin = ({ onNext, onBack, defaultValues }: INitroglycerinProps) =
             </div>
           </Radio.Group>
 
-          {errors.nitroglycerin && <Text className="text-red-500 text-sm mt-5 text-center">{errors.nitroglycerin.message}</Text>}
+          {errors.nitroglycerin && (
+            <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.nitroglycerin.message}</Text>
+          )}
         </div>
 
-        <div className="flex justify-center gap-6 pt-4 animate-btns">
+        <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>
           <Button
             variant="outline"
-            className="w-[200px]"
-            onClick={onBack}
+            className="w-[200px] animated-btn"
+            onClick={handleBackClick}
           >
             Back
           </Button>
           <Button
             type="submit"
-            className="w-[200px]"
+            className="w-[200px] animated-btn"
             form="nitroglycerinForm"
           >
             Next

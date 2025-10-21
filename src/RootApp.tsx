@@ -49,7 +49,7 @@ function RootApp() {
         theme={theme}
         cssVariablesResolver={cssResolver}
       >
-        <Notifications />
+        <Notifications position="top-center" />
         <AuthContextProvider>
           <Suspense
             fallback={

@@ -1,6 +1,8 @@
+import { animationDelay, getAnimationClass } from "@/common/constants/constants";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Grid, Radio } from "@mantine/core";
-import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { get, useForm } from "react-hook-form";
 import * as yup from "yup";
 
 interface ILifestyleCommitmentProps {
@@ -32,26 +34,46 @@ const LifestyleCommitment = ({ onNext, onBack, defaultValues }: ILifestyleCommit
 
   const selected = watch("lifestyleCommitment");
 
-  const onSubmit = (data: LifestyleFormType) => {
-    onNext(data);
+  const [isExiting, setIsExiting] = useState(false);
+  const [isBackExiting, setIsBackExiting] = useState(false);
+
+  const handleFormSubmit = (data: LifestyleFormType) => {
+    setIsExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      onNext(data);
+      setIsExiting(false);
+    }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
+  };
+  const [isErrorFading, setIsErrorFading] = useState(false);
+
+  const handleBackClick = () => {
+    setIsBackExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsBackExiting(false);
+      onBack();
+    }, animationDelay);
   };
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <form
         id="LifestyleCommitmentForm"
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(handleFormSubmit)}
         className="max-w-xl mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">
+          <h2 className={`text-center text-3xl font-semibold text-foreground font-poppins ${getAnimationClass("title", isExiting, isBackExiting)}`}>
             Are you willing to follow a healthy lifestyle plan during peptide therapy (diet, exercise, sleep)?
           </h2>
 
           <Radio.Group
             value={selected}
             onChange={(value) => setValue("lifestyleCommitment", value, { shouldValidate: true })}
-            className="mt-6 animate-content"
+            className={`mt-6 ${getAnimationClass("content", isExiting, isBackExiting)}`}
           >
             <Grid gutter="md">
               {options.map((option) => (
@@ -87,20 +109,20 @@ const LifestyleCommitment = ({ onNext, onBack, defaultValues }: ILifestyleCommit
             </Grid>
           </Radio.Group>
 
-          {errors.lifestyleCommitment && <div className="text-danger text-sm mt-2 text-center">{errors.lifestyleCommitment.message}</div>}
+          {errors.lifestyleCommitment && <div className="animate-pulseFade text-danger text-sm mt-2 text-center">{errors.lifestyleCommitment.message}</div>}
         </div>
 
-        <div className="flex justify-center gap-6 pt-4 animate-btns">
+        <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting)}`}>
           <Button
             variant="outline"
-            className="w-[200px]"
-            onClick={onBack}
+            className="w-[200px] animated-btn"
+            onClick={handleBackClick}
           >
             Back
           </Button>
           <Button
             type="submit"
-            className="w-[200px]"
+            className="w-[200px] animated-btn"
           >
             Next
           </Button>

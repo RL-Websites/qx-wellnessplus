@@ -1,5 +1,7 @@
 import { categoryRepository } from "@/common/api/repositories/categoryRepository";
 import CategoryCard from "@/common/components/CategoryCard";
+import { animationDelay } from "@/common/constants/constants";
+import { isExitingAtomCategory } from "@/common/states/animation.atom";
 import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { customerAtom } from "@/common/states/customer.atom";
 import { prevGlpMedDetails } from "@/common/states/product.atom";
@@ -7,12 +9,31 @@ import { useQuery } from "@tanstack/react-query";
 import { useAtom, useSetAtom } from "jotai";
 import { RESET } from "jotai/utils";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const CategoryPage = () => {
   const [category, setCategory] = useState<any | null>();
   const setSelectedCategory = useSetAtom(selectedCategoryAtom);
   const [customerData, setCustomerData] = useAtom(customerAtom);
   const setPrevGlpMedDetails = useSetAtom(prevGlpMedDetails);
+  const [isExiting, setIsExiting] = useAtom(isExitingAtomCategory);
+  const navigate = useNavigate(); // ✅ Initialize navigate
+
+  const handleCategoryClick = (categoryName: string) => {
+    setIsExiting(true);
+    setTimeout(() => {
+      setIsExiting(false);
+      if (categoryName.includes("Peptides")) {
+        const newCategory = ["Single Peptides", "Peptides Blends"];
+        setSelectedCategory(newCategory);
+      } else {
+        const newCategory = [categoryName];
+        setSelectedCategory(newCategory);
+      }
+      setPrevGlpMedDetails(RESET);
+      navigate("/quiz"); // ✅ Navigate AFTER setting the state
+    }, animationDelay);
+  };
 
   const categoryListQuery = useQuery({
     queryKey: ["categoryList", customerData?.slug],
@@ -26,16 +47,16 @@ const CategoryPage = () => {
     }
   }, [categoryListQuery.data?.data?.data]);
 
-  const handleCategoryClick = (categoryName: string) => {
-    if (categoryName.includes("Peptides")) {
-      const newCategory = ["Single Peptides", "Peptides Blends"];
-      setSelectedCategory(newCategory);
-    } else {
-      const newCategory = [categoryName];
-      setSelectedCategory(newCategory);
-    }
-    setPrevGlpMedDetails(RESET);
-  };
+  // const handleCategoryClick = (categoryName: string) => {
+  //   if (categoryName.includes("Peptides")) {
+  //     const newCategory = ["Single Peptides", "Peptides Blends"];
+  //     setSelectedCategory(newCategory);
+  //   } else {
+  //     const newCategory = [categoryName];
+  //     setSelectedCategory(newCategory);
+  //   }
+  //   setPrevGlpMedDetails(RESET);
+  // };
 
   const categoryImages = {
     "Weight Loss": "images/weight-loos.png",
@@ -76,25 +97,32 @@ const CategoryPage = () => {
     return acc;
   }, []);
 
-  return (
-    <div className="space-y-12">
-      <h4 className="heading-text text-center text-foreground uppercase">Choose A Treatment</h4>
-
-      <div
-        className={`${(category?.length ?? 0) < 3 ? `flex flex-wrap justify-center` : "grid lg:grid-cols-3 sm:grid-cols-2"} lg:gap-y-12 gap-y-7  lg:gap-x-20 md:gap-x-10 gap-x-5`}
-      >
-        {transformedCategories?.map((item, index) => (
-          <CategoryCard
-            key={index}
-            onClick={() => handleCategoryClick(item)}
-            image={categoryImages[item]}
-            title={item}
-            link="/quiz"
-          />
-        ))}
+  {
+    return categoryListQuery.isLoading ? (
+      <div className="flex justify-center items-center min-h-[400px]">
+        <div className="w-16 h-16 border-4 border-gray-200 border-t-primary rounded-full animate-spin"></div>
       </div>
-    </div>
-  );
+    ) : (
+      <div className={`space-y-12 category-main ${isExiting ? "category-main-exit" : ""}`}>
+        <h4 className="heading-text text-center text-foreground uppercase">Choose A Treatment</h4>
+
+        <div
+          className={`${(category?.length ?? 0) < 3 ? `flex flex-wrap justify-center` : "grid lg:grid-cols-3 sm:grid-cols-2"} lg:gap-y-12 gap-y-7  lg:gap-x-20 md:gap-x-10 gap-x-5`}
+        >
+          {transformedCategories?.map((item, index) => (
+            <CategoryCard
+              key={index}
+              onClick={() => handleCategoryClick(item)}
+              image={categoryImages[item]}
+              title={item}
+              // ✅ REMOVE the link prop - navigation is now handled in onClick
+              // link="/quiz"
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }
 };
 
 export default CategoryPage;

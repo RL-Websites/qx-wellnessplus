@@ -1,5 +1,7 @@
+import { animationDelay, getAnimationClass } from "@/common/constants/constants";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Grid, Radio, TextInput } from "@mantine/core";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -7,6 +9,7 @@ interface PrescriptionMedicationsProps {
   onNext: (data: PrescriptionMedicationsFormType & { disqualified: boolean }) => void;
   onBack: () => void;
   defaultValues?: PrescriptionMedicationsFormType;
+  direction?: "forward" | "backward"; // Optional, if you want to handle direction-based animations later
 }
 
 // Schema using Yup
@@ -21,7 +24,7 @@ const schema = yup.object({
 
 type PrescriptionMedicationsFormType = yup.InferType<typeof schema>;
 
-const PrescriptionMedications = ({ onNext, onBack, defaultValues }: PrescriptionMedicationsProps) => {
+const PrescriptionMedications = ({ onNext, onBack, defaultValues, direction }: PrescriptionMedicationsProps) => {
   const {
     handleSubmit,
     setValue,
@@ -38,19 +41,41 @@ const PrescriptionMedications = ({ onNext, onBack, defaultValues }: Prescription
 
   const medicationType = watch("medicationType");
 
-  const onSubmit = (data: PrescriptionMedicationsFormType) => {
-    const disqualified = data.medicationType === "Insulin";
-    onNext({ ...data, disqualified });
+  const [isExiting, setIsExiting] = useState(false);
+  const [isBackExiting, setIsBackExiting] = useState(false);
+
+  const handleFormSubmit = (data: PrescriptionMedicationsFormType) => {
+    setIsExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      const disqualified = data.medicationType === "Insulin";
+      onNext({ ...data, disqualified });
+      setIsExiting(false);
+    }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
   };
+
+  const handleBackClick = () => {
+    setIsBackExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsBackExiting(false);
+      onBack();
+    }, animationDelay);
+  };
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <form
         id="PrescriptionMedicationsForm"
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(handleFormSubmit)}
         className="max-w-xl mx-auto space-y-6"
       >
-        <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">Are you currently taking any prescription medications?</h2>
+        <h2 className={`text-center text-3xl font-semibold text-foreground font-poppins ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>
+          Are you currently taking any prescription medications?
+        </h2>
 
         <Radio.Group
           value={medicationType}
@@ -62,7 +87,7 @@ const PrescriptionMedications = ({ onNext, onBack, defaultValues }: Prescription
               setValue("otherMedication", "");
             }
           }}
-          className="mt-6 animate-content"
+          className={`mt-6 ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}
         >
           <Grid gutter="md">
             {["Insulin (may be disqualifier depending on therapy)", "Other prescription medications", "None"].map((label, idx) => {
@@ -112,20 +137,20 @@ const PrescriptionMedications = ({ onNext, onBack, defaultValues }: Prescription
           </Grid>
         </Radio.Group>
 
-        {errors.medicationType && <p className="text-danger text-sm mt-2 text-center">{errors.medicationType.message}</p>}
+        {errors.medicationType && <p className="text-danger text-sm mt-2 text-center animate-pulseFade">{errors.medicationType.message}</p>}
 
         <div className="flex justify-center gap-6 pt-6 animate-btns">
           <Button
             variant="outline"
-            className="w-[200px]"
-            onClick={onBack}
+            className="w-[200px] animated-btn"
+            onClick={handleBackClick}
             type="button"
           >
             Back
           </Button>
           <Button
             type="submit"
-            className="w-[200px]"
+            className="w-[200px] animated-btn"
             form="PrescriptionMedicationsForm"
           >
             Next

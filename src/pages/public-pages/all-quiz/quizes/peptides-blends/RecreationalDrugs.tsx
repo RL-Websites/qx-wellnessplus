@@ -1,12 +1,15 @@
+import { animationDelay, getAnimationClass } from "@/common/constants/constants";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Grid, Radio, TextInput } from "@mantine/core";
-import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { get, useForm } from "react-hook-form";
 import * as yup from "yup";
 
 interface IRecreationalDrugsProps {
   onNext: (data: RecreationalDrugsFormType & { disqualified: boolean }) => void;
   onBack: () => void;
   defaultValues?: RecreationalDrugsFormType;
+  direction?: "forward" | "backward"; // Optional, if you want to handle direction-based animations later
 }
 
 const initialOptions = ["Yes", "No"];
@@ -29,7 +32,7 @@ const schema = yup.object({
 
 type RecreationalDrugsFormType = yup.InferType<typeof schema>;
 
-const RecreationalDrugs = ({ onNext, onBack, defaultValues }: IRecreationalDrugsProps) => {
+const RecreationalDrugs = ({ onNext, onBack, defaultValues, direction }: IRecreationalDrugsProps) => {
   const {
     handleSubmit,
     setValue,
@@ -47,21 +50,42 @@ const RecreationalDrugs = ({ onNext, onBack, defaultValues }: IRecreationalDrugs
 
   const usesDrugs = watch("usesDrugs");
   const drugType = watch("drugType");
+  const [isExiting, setIsExiting] = useState(false);
+  const [isBackExiting, setIsBackExiting] = useState(false);
 
-  const onSubmit = (data: RecreationalDrugsFormType) => {
-    const disqualified = data.drugType === "Cocaine (disqualifier)" || data.drugType === "Methamphetamine (disqualifier)";
-    onNext({ ...data, disqualified });
+  const handleFormSubmit = (data: RecreationalDrugsFormType) => {
+    setIsExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      const disqualified = data.drugType === "Cocaine (disqualifier)" || data.drugType === "Methamphetamine (disqualifier)";
+      onNext({ ...data, disqualified });
+      setIsExiting(false);
+    }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
   };
+
+  const handleBackClick = () => {
+    setIsBackExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsBackExiting(false);
+      onBack();
+    }, animationDelay);
+  };
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <form
         id="RecreationalDrugsForm"
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(handleFormSubmit)}
         className="max-w-xl mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">Do you use recreational drugs?</h2>
+          <h2 className={`text-center text-3xl font-semibold text-foreground font-poppins ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>
+            Do you use recreational drugs?
+          </h2>
 
           {/* Step 1: Yes / No */}
           <Radio.Group
@@ -71,7 +95,7 @@ const RecreationalDrugs = ({ onNext, onBack, defaultValues }: IRecreationalDrugs
               setValue("drugType", ""); // Reset sub-selection
               setValue("customDrug", ""); // Reset custom input
             }}
-            className="mt-6 animate-content"
+            className={`mt-6 ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}
           >
             <Grid gutter="md">
               {initialOptions.map((option) => (
@@ -107,13 +131,13 @@ const RecreationalDrugs = ({ onNext, onBack, defaultValues }: IRecreationalDrugs
             </Grid>
           </Radio.Group>
 
-          {errors.usesDrugs && <div className="text-danger text-sm mt-2 text-center">{errors.usesDrugs.message}</div>}
+          {errors.usesDrugs && <div className="text-danger text-sm mt-2 text-center animate-pulseFade">{errors.usesDrugs.message}</div>}
         </div>
 
         {/* Step 2: Substance detail if "Yes" selected */}
         {usesDrugs === "Yes" && (
           <div>
-            <h3 className="text-lg font-medium mt-6 mb-2 text-center animate-title">Which substances?</h3>
+            <h3 className={`text-lg font-medium mt-6 mb-2 text-center ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>Which substances?</h3>
 
             <Radio.Group
               value={drugType}
@@ -121,7 +145,7 @@ const RecreationalDrugs = ({ onNext, onBack, defaultValues }: IRecreationalDrugs
                 setValue("drugType", value, { shouldValidate: true });
                 if (value !== "Other") setValue("customDrug", "");
               }}
-              className="animate-content"
+              className={`${getAnimationClass("content", isExiting, isBackExiting, direction)}`}
             >
               <Grid gutter="md">
                 {followupOptions.map((option) => (
@@ -157,30 +181,30 @@ const RecreationalDrugs = ({ onNext, onBack, defaultValues }: IRecreationalDrugs
               </Grid>
             </Radio.Group>
 
-            {errors.drugType && <div className="text-danger text-sm mt-2 text-center">{errors.drugType.message}</div>}
+            {errors.drugType && <div className="text-danger text-sm mt-2 text-center animate-pulseFade">{errors.drugType.message}</div>}
 
             {drugType === "Other" && (
               <TextInput
                 {...register("customDrug")}
                 placeholder="Please specify the substance"
                 error={errors.customDrug?.message}
-                className="mt-4 animate-content"
+                className={`mt-4 ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}
               />
             )}
           </div>
         )}
 
-        <div className="flex justify-center gap-6 pt-4 animate-btns">
+        <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>
           <Button
             variant="outline"
-            className="w-[200px]"
-            onClick={onBack}
+            className="w-[200px] animated-btn"
+            onClick={handleBackClick}
           >
             Back
           </Button>
           <Button
             type="submit"
-            className="w-[200px]"
+            className="w-[200px] animated-btn"
           >
             Next
           </Button>

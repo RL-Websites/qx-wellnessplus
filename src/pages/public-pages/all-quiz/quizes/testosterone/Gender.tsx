@@ -1,11 +1,13 @@
 "use client";
 
 import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
+import { animationDelay, getAnimationClass } from "@/common/constants/constants";
 import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { selectedGenderAtom } from "@/common/states/gender.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Radio, Text } from "@mantine/core";
 import { useAtom } from "jotai";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -19,9 +21,10 @@ interface IGenderSexualHealthProps {
   onNext: (data: GenderSexualHealthSchemaType & { eligible?: boolean }) => void;
   onBack: () => void;
   defaultValues?: GenderSexualHealthSchemaType;
+  direction?: "forward" | "backward"; // Optional, if you want to handle direction-based animations later
 }
 
-export default function GenderSexualHealth({ onNext, onBack, defaultValues }: IGenderSexualHealthProps) {
+export default function GenderSexualHealth({ onNext, onBack, defaultValues, direction }: IGenderSexualHealthProps) {
   const [selectedCategory, setSelectedCategory] = useAtom(selectedCategoryAtom);
   const [selectedGender, setSelectedGender] = useAtom(selectedGenderAtom);
 
@@ -41,29 +44,62 @@ export default function GenderSexualHealth({ onNext, onBack, defaultValues }: IG
   const genderSexualHealth = watch("genderSexualHealth");
   const options = ["Male", "Female"];
 
+  const [isExiting, setIsExiting] = useState(false);
+  const [isBackExiting, setIsBackExiting] = useState(false);
+
   const handleFormSubmit = (data: GenderSexualHealthSchemaType) => {
-    onNext({
-      ...data,
-      // You can uncomment below if you need conditional logic
-      // eligible: data.genderSexualHealth === "Female",
-    });
+    setIsExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsExiting(false);
+      onNext({
+        ...data,
+        // You can uncomment below if you need conditional logic
+        // eligible: data.genderSexualHealth === "Female",
+      });
+    }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
+  };
+
+  const handleBackClick = () => {
+    setIsBackExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsBackExiting(false);
+      onBack();
+    }, animationDelay);
   };
 
   const handleSelect = (value: string) => {
-    if (value === "Male") {
-      setSelectedCategory(["Sexual Health (Male"]);
-    } else if (value === "Female") {
-      setSelectedCategory(["Sexual Health (Female)"]);
+    if (errors.genderSexualHealth) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        if (value === "Male") {
+          setSelectedCategory(["Sexual Health (Male)"]);
+        } else if (value === "Female") {
+          setSelectedCategory(["Sexual Health (Female)"]);
+        }
+        setValue("genderSexualHealth", value, { shouldValidate: true });
+        clearErrors("genderSexualHealth");
+        setSelectedGender(value);
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      if (value === "Male") {
+        setSelectedCategory(["Sexual Health (Male)"]);
+      } else if (value === "Female") {
+        setSelectedCategory(["Sexual Health (Female)"]);
+      }
+      setValue("genderSexualHealth", value, { shouldValidate: true });
+      setSelectedGender(value);
     }
-
-    setValue("genderSexualHealth", value, { shouldValidate: true });
-    clearErrors("genderSexualHealth");
-    setSelectedGender(value);
   };
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
-      <h2 className="heading-text text-foreground uppercase text-center animate-title">Gender</h2>
+      <h2 className={`heading-text text-foreground uppercase text-center ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>Gender</h2>
 
       <div className="card-common-width-lg mx-auto mt-10 animate-content">
         <form
@@ -74,7 +110,7 @@ export default function GenderSexualHealth({ onNext, onBack, defaultValues }: IG
           <Radio.Group
             value={genderSexualHealth}
             onChange={handleSelect}
-            className="mt-6 w-full"
+            className={`mt-6 w-full ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}
           >
             <div className="grid md:grid-cols-2 gap-5 w-full">
               {options.map((option) => (
@@ -97,21 +133,23 @@ export default function GenderSexualHealth({ onNext, onBack, defaultValues }: IG
             </div>
           </Radio.Group>
 
-          {errors.genderSexualHealth && <Text className="text-red-500 text-sm mt-5 text-center">{errors.genderSexualHealth.message}</Text>}
+          {errors.genderSexualHealth && (
+            <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.genderSexualHealth.message}</Text>
+          )}
         </form>
       </div>
 
-      <div className="flex justify-center md:gap-6 gap-3 md:pt-8 pt-5 animate-btns">
+      <div className={`flex justify-center md:gap-6 gap-3 md:pt-8 pt-5 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>
         <Button
           variant="outline"
-          className="w-[200px]"
-          onClick={onBack}
+          className="w-[200px] animated-btn"
+          onClick={handleBackClick}
         >
           Back
         </Button>
         <Button
           type="submit"
-          className="w-[200px]"
+          className="w-[200px] animated-btn"
           form="genderSexualHealthForm"
         >
           Next

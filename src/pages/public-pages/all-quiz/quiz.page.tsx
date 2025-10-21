@@ -66,6 +66,7 @@ const QuizPage = () => {
   const [skipInjectionDate, setSkipInjectionDate] = useState(false);
   const [globalWeight, setGlobalWeight] = useAtom(weightAtom);
   const [globalDob, setGlobalDob] = useAtom(dobAtom);
+  const [direction, setDirection] = useState<"forward" | "backward">("forward");
 
   const navigate = useNavigate();
 
@@ -95,6 +96,7 @@ const QuizPage = () => {
   useEffect(() => {
     const step = lastStepByCategory(selectedCategory || []);
     setLastStep(step);
+    // console.log(selectedCategory);
   }, [selectedCategory]);
 
   const handleFinalSubmit = (data: any) => {
@@ -104,14 +106,20 @@ const QuizPage = () => {
   };
 
   const handleNext = (data: any) => {
+    setDirection("forward"); // ✅ Set direction to forward
+
     setFormData((prev) => ({ ...prev, ...data }));
     if (activeStep < totalStep) {
       setActiveStep((prev) => prev + 1);
     }
     scrollTo({ y: 0 });
+    // console.log(activeStep);
+    // console.log(data);
   };
 
   const handleBack = () => {
+    setDirection("backward"); // ✅ Set direction to forward
+
     if (activeStep > 1) {
       if (skipInjectionDate && activeStep === 8 + genderOffset) {
         setActiveStep((prev) => prev - 2);
@@ -171,6 +179,7 @@ const QuizPage = () => {
           }}
           onBack={handleBack}
           defaultValues={formData}
+          direction={direction} // ✅ Pass direction
         />
       )}
       {(selectedCategory?.includes("Hair Growth") || selectedCategory?.includes("Hair Growth (Male)") || selectedCategory?.includes("Hair Growth (Female)")) && (
@@ -180,6 +189,7 @@ const QuizPage = () => {
               onNext={handleNext}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction} // ✅ Pass direction
             />
           )}
         </>
@@ -192,6 +202,7 @@ const QuizPage = () => {
               onNext={handleNext}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction}
             />
           )}
         </>
@@ -204,6 +215,7 @@ const QuizPage = () => {
               onNext={handleNext}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction}
             />
           )}
           {activeStep === 3 && (
@@ -218,6 +230,7 @@ const QuizPage = () => {
               }}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction}
             />
           )}
 
@@ -229,6 +242,7 @@ const QuizPage = () => {
               }}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction}
             />
           )}
 
@@ -245,6 +259,7 @@ const QuizPage = () => {
               }}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction}
             />
           )}
 
@@ -260,6 +275,7 @@ const QuizPage = () => {
               }}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction}
             />
           )}
           {selectedGender === "Female" && activeStep === 7 && (
@@ -274,6 +290,7 @@ const QuizPage = () => {
               }}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction}
             />
           )}
 
@@ -290,6 +307,7 @@ const QuizPage = () => {
               }}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction}
             />
           )}
 
@@ -298,6 +316,7 @@ const QuizPage = () => {
               onNext={handleNext}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction}
             />
           )}
 
@@ -306,6 +325,7 @@ const QuizPage = () => {
               onNext={handleNext}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction}
             />
           )}
 
@@ -314,6 +334,7 @@ const QuizPage = () => {
               onNext={handleNext}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction}
             />
           )}
 
@@ -331,6 +352,7 @@ const QuizPage = () => {
               }}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction}
             />
           )}
           {activeStep === 11 + genderOffset && (
@@ -338,6 +360,7 @@ const QuizPage = () => {
               onNext={(data) => handleFinalSubmit(data)}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction} // ✅ Pass direction
             />
           )}
         </>
@@ -357,6 +380,7 @@ const QuizPage = () => {
               }}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction}
             />
           )}
           {activeStep === 3 && (
@@ -371,6 +395,7 @@ const QuizPage = () => {
               }}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction}
             />
           )}
           {activeStep === 4 && (
@@ -386,6 +411,7 @@ const QuizPage = () => {
               }}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction}
             />
           )}
           {activeStep === 5 && (
@@ -393,6 +419,7 @@ const QuizPage = () => {
               onNext={(data) => handleFinalSubmit(data)}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction} // ✅ Pass direction
             />
           )}
         </>
@@ -414,6 +441,7 @@ const QuizPage = () => {
               }}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction}
             />
           )}
           {activeStep === 4 && (
@@ -430,6 +458,7 @@ const QuizPage = () => {
               }}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction}
             />
           )}
           {activeStep === 5 && (
@@ -445,6 +474,7 @@ const QuizPage = () => {
               }}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction}
             />
           )}
           {activeStep === 6 && (
@@ -452,6 +482,7 @@ const QuizPage = () => {
               onNext={(data) => handleFinalSubmit(data)}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction} // ✅ Pass direction
             />
           )}
         </>
@@ -472,6 +503,7 @@ const QuizPage = () => {
               }}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction}
             />
           )}
           {activeStep === 4 && (
@@ -488,6 +520,7 @@ const QuizPage = () => {
               }}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction}
             />
           )}
           {activeStep === 5 && (
@@ -503,6 +536,7 @@ const QuizPage = () => {
               }}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction}
             />
           )}
           {activeStep === 6 && (
@@ -510,6 +544,7 @@ const QuizPage = () => {
               onNext={(data) => handleFinalSubmit(data)}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction}
             />
           )}
         </>
@@ -528,6 +563,7 @@ const QuizPage = () => {
               }}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction} // ✅ Pass direction
             />
           )}
           {activeStep === 4 && (
@@ -542,6 +578,7 @@ const QuizPage = () => {
               }}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction} // ✅ Pass direction
             />
           )}
           {activeStep === 5 && (
@@ -556,6 +593,7 @@ const QuizPage = () => {
               }}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction} // ✅ Pass direction
             />
           )}
           {activeStep === 6 && (
@@ -570,6 +608,7 @@ const QuizPage = () => {
               }}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction} // ✅ Pass direction
             />
           )}
           {activeStep === 7 && (
@@ -585,6 +624,7 @@ const QuizPage = () => {
               }}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction} // ✅ Pass direction
             />
           )}
           {activeStep === 8 && (
@@ -592,6 +632,7 @@ const QuizPage = () => {
               onNext={(data) => handleFinalSubmit(data)}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction} // ✅ Pass direction
             />
           )}
         </>
@@ -610,6 +651,7 @@ const QuizPage = () => {
               }}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction} // ✅ Pass direction
             />
           )}
           {activeStep === 4 && (
@@ -623,6 +665,7 @@ const QuizPage = () => {
                 }
               }}
               onBack={handleBack}
+              direction={direction} // ✅ Pass direction
               defaultValues={formData}
             />
           )}
@@ -637,6 +680,7 @@ const QuizPage = () => {
                 }
               }}
               onBack={handleBack}
+              direction={direction} // ✅ Pass direction
               defaultValues={formData}
             />
           )}
@@ -652,6 +696,7 @@ const QuizPage = () => {
               }}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction} // ✅ Pass direction
             />
           )}
           {activeStep === 7 && (
@@ -667,6 +712,7 @@ const QuizPage = () => {
               }}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction} // ✅ Pass direction
             />
           )}
           {activeStep === 8 && (
@@ -674,6 +720,7 @@ const QuizPage = () => {
               onNext={(data) => handleFinalSubmit(data)}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction} // ✅ Pass direction
             />
           )}
         </>
@@ -686,6 +733,7 @@ const QuizPage = () => {
               onNext={handleNext}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction}
             />
           )}
           {selectedGender === "Male" && activeStep === 3 && (
@@ -702,6 +750,7 @@ const QuizPage = () => {
               }}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction}
             />
           )}
           {selectedGender === "Male" && activeStep === 4 && (
@@ -718,6 +767,7 @@ const QuizPage = () => {
               }}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction}
             />
           )}
 
@@ -735,6 +785,7 @@ const QuizPage = () => {
               }}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction}
             />
           )}
 
@@ -743,6 +794,7 @@ const QuizPage = () => {
               onNext={(data) => handleFinalSubmit(data)}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction}
             />
           )}
 
@@ -761,6 +813,7 @@ const QuizPage = () => {
               }}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction}
             />
           )}
           {selectedGender === "Female" && activeStep === 4 && (
@@ -777,6 +830,7 @@ const QuizPage = () => {
               }}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction}
             />
           )}
 
@@ -794,6 +848,7 @@ const QuizPage = () => {
               }}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction}
             />
           )}
           {selectedGender === "Female" && activeStep === 6 && (
@@ -801,6 +856,7 @@ const QuizPage = () => {
               onNext={(data) => handleFinalSubmit(data)}
               onBack={handleBack}
               defaultValues={formData}
+              direction={direction}
             />
           )}
         </>

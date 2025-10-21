@@ -1,11 +1,13 @@
 "use client";
 
 import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
+import { animationDelay, getAnimationClass } from "@/common/constants/constants";
 import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { selectedGenderAtom } from "@/common/states/gender.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Radio, Text } from "@mantine/core";
 import { useAtom } from "jotai";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -19,11 +21,13 @@ interface IGenderWeightLossProps {
   onNext: (data: GenderWeightLossSchemaType & { inEligibleUser?: boolean }) => void;
   onBack: () => void;
   defaultValues?: GenderWeightLossSchemaType;
+  direction?: "forward" | "backward"; // Optional, if you want to handle direction-based animations later
 }
 
-export default function GenderWeightLoss({ onNext, onBack, defaultValues }: IGenderWeightLossProps) {
+export default function GenderWeightLoss({ onNext, onBack, defaultValues, direction }: IGenderWeightLossProps) {
   const [selectedCategory, setSelectedCategory] = useAtom(selectedCategoryAtom);
   const [selectedGender, setSelectedGender] = useAtom(selectedGenderAtom);
+
   const {
     handleSubmit,
     setValue,
@@ -41,34 +45,72 @@ export default function GenderWeightLoss({ onNext, onBack, defaultValues }: IGen
   const options = ["Male", "Female"];
 
   const handleSelect = (value: string) => {
-    if (selectedCategory?.includes("Hair Growth")) {
-      if (value === "Male") {
-        const newCat = ["Hair Growth (Male)"];
-        setSelectedCategory(newCat);
+    if (errors.genderWeightLoss) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        if (selectedCategory?.includes("Hair Growth")) {
+          if (value === "Male") {
+            const newCat = ["Hair Growth (Male)"];
+            setSelectedCategory(newCat);
+          }
+          if (value === "Female") {
+            const newCat = ["Hair Growth (Female)"];
+            setSelectedCategory(newCat);
+          }
+        }
+        setValue("genderWeightLoss", value, { shouldValidate: true });
+        clearErrors("genderWeightLoss");
+        setSelectedGender(value);
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      if (selectedCategory?.includes("Hair Growth")) {
+        if (value === "Male") {
+          const newCat = ["Hair Growth (Male)"];
+          setSelectedCategory(newCat);
+        }
+        if (value === "Female") {
+          const newCat = ["Hair Growth (Female)"];
+          setSelectedCategory(newCat);
+        }
       }
-      if (value === "Female") {
-        const newCat = ["Hair Growth (Female)"];
-
-        setSelectedCategory(newCat);
-      }
+      setValue("genderWeightLoss", value, { shouldValidate: true });
+      setSelectedGender(value);
     }
-    setValue("genderWeightLoss", value, { shouldValidate: true });
-    clearErrors("genderWeightLoss");
-    setSelectedGender(value);
   };
+
+  const [isExiting, setIsExiting] = useState(false);
+  const [isBackExiting, setIsBackExiting] = useState(false);
 
   const handleFormSubmit = (data: GenderWeightLossSchemaType) => {
-    onNext({
-      ...data,
-      inEligibleUser: data.genderWeightLoss === "Female",
-    });
+    setIsExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      onNext({
+        ...data,
+        inEligibleUser: data.genderWeightLoss === "Female",
+      });
+      setIsExiting(false);
+    }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
   };
+
+  const handleBackClick = () => {
+    setIsBackExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsBackExiting(false);
+      onBack();
+    }, animationDelay);
+  };
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
-      <h2 className="heading-text text-foreground uppercase text-center animate-title">Gender</h2>
+      <h2 className={`heading-text text-foreground uppercase text-center ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>Gender</h2>
 
-      <div className="card-common-width-lg mx-auto mt-10 animate-content">
+      <div className={`card-common-width-lg mx-auto mt-10 ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}>
         <form
           id="genderWeightLossForm"
           onSubmit={handleSubmit(handleFormSubmit)}
@@ -99,21 +141,23 @@ export default function GenderWeightLoss({ onNext, onBack, defaultValues }: IGen
               ))}
             </div>
           </Radio.Group>
-          {errors.genderWeightLoss && <Text className="text-red-500 text-sm mt-5 text-center">Please select your gender.</Text>}
+          {errors.genderWeightLoss && (
+            <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>Please select your gender.</Text>
+          )}
         </form>
       </div>
 
-      <div className="flex justify-center gap-6 pt-8 animate-btns">
+      <div className={`flex justify-center gap-6 pt-8 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>
         <Button
           variant="outline"
-          className="w-[200px]"
-          onClick={onBack}
+          className="w-[200px] animated-btn"
+          onClick={handleBackClick}
         >
           Back
         </Button>
         <Button
           type="submit"
-          className="w-[200px]"
+          className="w-[200px] animated-btn"
           form="genderWeightLossForm"
         >
           Next

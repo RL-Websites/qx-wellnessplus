@@ -1,6 +1,8 @@
 import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
+import { animationDelay, getAnimationClass } from "@/common/constants/constants";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Radio, Text } from "@mantine/core";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -15,9 +17,10 @@ interface IThyroidDiseaseProps {
   onNext: (data: ThyroidDiseaseSchemaType) => void;
   onBack: () => void;
   defaultValues?: ThyroidDiseaseSchemaType;
+  direction?: "forward" | "backward"; // ✅ Add this
 }
 
-const ThyroidDisease = ({ onNext, onBack, defaultValues }: IThyroidDiseaseProps) => {
+const ThyroidDisease = ({ onNext, onBack, defaultValues, direction }: IThyroidDiseaseProps) => {
   const {
     handleSubmit,
     setValue,
@@ -31,28 +34,62 @@ const ThyroidDisease = ({ onNext, onBack, defaultValues }: IThyroidDiseaseProps)
     resolver: yupResolver(ThyroidDiseaseSchema),
   });
 
+  const [isExiting, setIsExiting] = useState(false);
+  const [isBackExiting, setIsBackExiting] = useState(false);
+  const [isErrorFading, setIsErrorFading] = useState(false);
+
+  const handleFormSubmit = (data: ThyroidDiseaseSchemaType) => {
+    setIsExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsExiting(false);
+      onNext(data);
+    }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
+  };
+
+  const handleBackClick = () => {
+    setIsBackExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsBackExiting(false);
+      onBack();
+    }, animationDelay);
+  };
+
   const thyroidDisease = watch("thyroidDisease");
 
   const options = ["No", "Yes"];
 
   const handleSelect = (value: string) => {
-    setValue("thyroidDisease", value, { shouldValidate: true });
-    clearErrors("thyroidDisease");
+    if (errors.thyroidDisease) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue("thyroidDisease", value, { shouldValidate: true });
+        clearErrors("thyroidDisease");
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue("thyroidDisease", value, { shouldValidate: true });
+    }
   };
 
   return (
     <form
       id="thyroidDisease"
-      onSubmit={handleSubmit(onNext)}
+      onSubmit={handleSubmit(handleFormSubmit)}
       className="card-common-width-lg  mx-auto space-y-6"
     >
       <div>
-        <h2 className="text-center text-3xl font-poppins font-semibold text-foreground animate-title">Do you have severe uncontrolled thyroid disease?</h2>
+        <h2 className={`text-center text-3xl font-poppins font-semibold text-foreground ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>
+          Do you have severe uncontrolled thyroid disease?
+        </h2>
 
         <Radio.Group
           value={thyroidDisease}
           onChange={handleSelect}
-          className="mt-6 w-full animate-content"
+          className={`mt-6 w-full ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}
         >
           <div className="grid md:grid-cols-2 w-full gap-5">
             {options.map((option) => (
@@ -74,20 +111,22 @@ const ThyroidDisease = ({ onNext, onBack, defaultValues }: IThyroidDiseaseProps)
             ))}
           </div>
         </Radio.Group>
-        {errors.thyroidDisease && <Text className="text-red-500 text-sm mt-5 text-center">{errors.thyroidDisease.message}</Text>}
+        {errors.thyroidDisease && (
+          <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.thyroidDisease.message}</Text>
+        )}
       </div>
 
-      <div className="flex justify-center gap-6 pt-4 animate-btns">
+      <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>
         <Button
           variant="outline"
-          className="w-[200px]"
-          onClick={onBack}
+          className="w-[200px] animated-btn"
+          onClick={handleBackClick}
         >
           Back
         </Button>
         <Button
           type="submit"
-          className="w-[200px]"
+          className="w-[200px] animated-btn"
           form="thyroidDisease"
         >
           Next

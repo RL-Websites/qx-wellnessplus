@@ -1,10 +1,13 @@
+import { animationDelay, getAnimationClass } from "@/common/constants/constants";
 import { Button, Grid, Radio } from "@mantine/core";
-import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { get, useForm } from "react-hook-form";
 
 interface PeptideTherapyEffectivenessProps {
   onNext: (data: PeptideTherapyEffectivenessFormType) => void;
   onBack: () => void;
   defaultValues?: PeptideTherapyEffectivenessFormType;
+  direction?: "forward" | "backward"; // Optional, if you want to handle direction-based animations later
 }
 
 type PeptideTherapyEffectivenessFormType = {
@@ -13,7 +16,7 @@ type PeptideTherapyEffectivenessFormType = {
 
 const options = ["Very effective", "Somewhat effective", "Not effective"];
 
-const PeptideTherapyEffectiveness = ({ onNext, onBack, defaultValues }: PeptideTherapyEffectivenessProps) => {
+const PeptideTherapyEffectiveness = ({ onNext, onBack, defaultValues, direction }: PeptideTherapyEffectivenessProps) => {
   const { setValue, handleSubmit, watch } = useForm<PeptideTherapyEffectivenessFormType>({
     defaultValues: {
       therapyEffectiveness: defaultValues?.therapyEffectiveness || "",
@@ -22,24 +25,49 @@ const PeptideTherapyEffectiveness = ({ onNext, onBack, defaultValues }: PeptideT
 
   const selected = watch("therapyEffectiveness");
 
-  const onSubmit = (data: PeptideTherapyEffectivenessFormType) => {
-    onNext(data);
+  const [isExiting, setIsExiting] = useState(false);
+  const [isBackExiting, setIsBackExiting] = useState(false);
+
+  const handleFormSubmit = (data: PeptideTherapyEffectivenessFormType) => {
+    setIsExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      onNext(data);
+      setIsExiting(false);
+    }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
   };
+
+  const handleBackClick = () => {
+    setIsBackExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsBackExiting(false);
+      onBack();
+    }, animationDelay);
+  };
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <form
         id="PeptideTherapyEffectivenessForm"
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(handleFormSubmit)}
         className="max-w-xl mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">How effective do you feel peptide therapy has been for you?</h2>
+          <h2 className={`text-center text-3xl font-semibold text-foreground font-poppins ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>
+            How effective do you feel peptide therapy has been for you?
+          </h2>
 
           <Radio.Group
             value={selected}
             onChange={(value) => setValue("therapyEffectiveness", value, { shouldValidate: true })}
-            className="mt-6 animate-content"
+            className={`mt-6 ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}
+            classNames={{
+              error: "animate-pulseFade", // Style the error message
+            }}
           >
             <Grid gutter="md">
               {options.map((option) => (
@@ -54,6 +82,7 @@ const PeptideTherapyEffectiveness = ({ onNext, onBack, defaultValues }: PeptideT
                       radio: "hidden",
                       inner: "hidden",
                       labelWrapper: "w-full",
+
                       label: `
                         block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointer
                         ${selected === option ? "border-primary bg-white text-black" : "border-grey bg-transparent text-black"}
@@ -76,17 +105,17 @@ const PeptideTherapyEffectiveness = ({ onNext, onBack, defaultValues }: PeptideT
           </Radio.Group>
         </div>
 
-        <div className="flex justify-center gap-6 pt-4 animate-btns">
+        <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>
           <Button
             variant="outline"
-            className="w-[200px]"
-            onClick={onBack}
+            className="w-[200px] animated-btn"
+            onClick={handleBackClick}
           >
             Back
           </Button>
           <Button
             type="submit"
-            className="w-[200px]"
+            className="w-[200px]  animated-btn"
             form="PeptideTherapyEffectivenessForm"
           >
             Next
