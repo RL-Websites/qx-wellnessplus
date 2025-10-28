@@ -174,9 +174,9 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
         setValue("latitude", tempPatientDetails?.userable?.latitude ? Number(tempPatientDetails?.userable?.latitude) : null);
         setValue("longitude", tempPatientDetails?.userable?.longitude ? Number(tempPatientDetails?.userable?.longitude) : null);
         setFrontFile(tempPatientDetails?.userable?.base64_driving_license_front ? tempPatientDetails?.userable?.base64_driving_license_front : "");
-        setBackFile(tempPatientDetails?.userable?.base64_driving_license_front ? tempPatientDetails?.userable?.base64_driving_license_front : "");
+        setBackFile(tempPatientDetails?.userable?.base64_driving_license_back ? tempPatientDetails?.userable?.base64_driving_license_back : "");
         setFrontBase64(tempPatientDetails?.userable?.base64_driving_license_front ? tempPatientDetails?.userable?.base64_driving_license_front : "");
-        setBackBase64(tempPatientDetails?.userable?.base64_driving_license_front ? tempPatientDetails?.userable?.base64_driving_license_front : "");
+        setBackBase64(tempPatientDetails?.userable?.base64_driving_license_back ? tempPatientDetails?.userable?.base64_driving_license_back : "");
         setValue("driving_lic_front", tempPatientDetails?.userable?.base64_driving_license_front ? tempPatientDetails?.userable?.base64_driving_license_front : "");
         setValue("driving_lic_back", tempPatientDetails?.userable?.base64_driving_license_back ? tempPatientDetails?.userable?.base64_driving_license_back : "");
       }
