@@ -63,6 +63,7 @@ const CategoryPage = () => {
     Testosterone: "images/testestorne.png",
     "Hair Growth": "images/hair-loos.png",
     Peptides: "images/peptides.png",
+    "Energy & Longevity": "images/energy.png",
     "Hormone Therapy": "images/hormone-therapy.png",
     "Sexual Health": "images/sexual-health.png",
   };

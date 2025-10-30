@@ -71,7 +71,7 @@ const MedicationsPage = () => {
 
   const handleAddToCart = (item: any) => {
     setPendingAddToCart(item);
-    if (item.medication_category === "Single Peptides" || item.medication_category === "Peptides Blends") {
+    if (item.medication_category === "Single Peptides" || item.medication_category === "Peptides Blends" || item.medication_category === "Energy & Longevity") {
       handleConfirmMeds.open();
     } else if (item.medication_category === "Testosterone") {
       setSelectedMedication(item);

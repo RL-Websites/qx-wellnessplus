@@ -86,6 +86,8 @@ const QuizPage = () => {
         return 5;
       case "Single Peptides":
         return 5;
+      case "Energy & Longevity":
+        return 5;
       default:
         return defaultLastStep;
     }
@@ -142,7 +144,7 @@ const QuizPage = () => {
   }, [formData.genderWeightLoss]);
 
   useEffect(() => {
-    if (selectedCategory && (selectedCategory?.includes("Peptides Blends") || selectedCategory?.includes("Single Blends"))) {
+    if (selectedCategory && (selectedCategory?.includes("Peptides Blends") || selectedCategory?.includes("Single Blends") || selectedCategory?.includes("Energy & Longevity"))) {
       setTotalStep(30);
     }
     if (selectedCategory && selectedCategory.includes("Hair Growth (Male)")) {
@@ -725,8 +727,7 @@ const QuizPage = () => {
           )}
         </>
       )}
-
-      {(selectedCategory?.includes("Peptides Blends") || selectedCategory?.includes("Single Blends")) && (
+      {(selectedCategory?.includes("Peptides Blends") || selectedCategory?.includes("Single Blends") || selectedCategory?.includes("Energy & Longevity")) && (
         <>
           {activeStep === 2 && (
             <GenderPeptides
