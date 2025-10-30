@@ -55,7 +55,7 @@ const CompleteOrderPage = () => {
       setHasOthers(true);
       setHasPeptides(false);
     }
-    if (selectedCategory && (selectedCategory?.includes("Peptides Blends") || selectedCategory?.includes("Single Blends"))) {
+    if (selectedCategory && (selectedCategory?.includes("Peptides Blends") || selectedCategory?.includes("Single Blends") || selectedCategory?.includes("Energy & Longevity"))) {
       setHasPeptides(true);
       setHasOthers(false);
     }
