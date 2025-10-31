@@ -1,10 +1,13 @@
+import { animationDelay, getAnimationClass } from "@/common/constants/constants";
 import { Button, Grid, Radio } from "@mantine/core";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 interface MENHistoryProps {
   onNext: (data: MENFormType & { disqualified: boolean }) => void;
   onBack: () => void;
   defaultValues?: MENFormType;
+  direction?: "forward" | "backward"; // Optional, if you want to handle direction-based animations later
 }
 
 type MENFormType = {
@@ -13,7 +16,7 @@ type MENFormType = {
 
 const options = ["Yes (disqualifier)", "No"];
 
-const MultipleEndocrineNeoplasia = ({ onNext, onBack, defaultValues }: MENHistoryProps) => {
+const MultipleEndocrineNeoplasia = ({ onNext, onBack, defaultValues, direction }: MENHistoryProps) => {
   const {
     handleSubmit,
     setValue,
@@ -26,21 +29,40 @@ const MultipleEndocrineNeoplasia = ({ onNext, onBack, defaultValues }: MENHistor
   });
 
   const selected = watch("hasMENHistory");
+  const [isExiting, setIsExiting] = useState(false);
+  const [isBackExiting, setIsBackExiting] = useState(false);
 
-  const onSubmit = (data: MENFormType) => {
-    const disqualified = data.hasMENHistory === "Yes (disqualifier)";
-    onNext({ ...data, disqualified });
+  const handleFormSubmit = (data: MENFormType) => {
+    setIsExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      const disqualified = data.hasMENHistory === "Yes (disqualifier)";
+      onNext({ ...data, disqualified });
+      setIsExiting(false);
+    }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
   };
+
+  const handleBackClick = () => {
+    setIsBackExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsBackExiting(false);
+      onBack();
+    }, animationDelay);
+  };
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <form
         id="MENHistoryForm"
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(handleFormSubmit)}
         className="max-w-xl mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">
+          <h2 className={`text-center text-3xl font-semibold text-foreground font-poppins ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>
             Do you have a personal or family history of Multiple Endocrine Neoplasia (MEN)?
           </h2>
 
@@ -83,20 +105,20 @@ const MultipleEndocrineNeoplasia = ({ onNext, onBack, defaultValues }: MENHistor
             </Grid>
           </Radio.Group>
 
-          {errors.hasMENHistory && <p className="text-danger text-sm mt-2 text-center">{errors.hasMENHistory.message}</p>}
+          {errors.hasMENHistory && <p className="text-danger text-sm mt-2 text-center animated-pulseFade">{errors.hasMENHistory.message}</p>}
         </div>
 
-        <div className="flex justify-center gap-6 pt-6 animate-btns">
+        <div className={`flex justify-center gap-6 pt-6 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>
           <Button
             variant="outline"
-            className="w-[200px]"
-            onClick={onBack}
+            className="w-[200px] aniamted-btn"
+            onClick={handleBackClick}
           >
             Back
           </Button>
           <Button
             type="submit"
-            className="w-[200px]"
+            className="w-[200px] animated-btn"
           >
             Next
           </Button>

@@ -1,5 +1,7 @@
+import { animationDelay, getAnimationClass } from "@/common/constants/constants";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Grid, Radio, TextInput } from "@mantine/core";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -21,12 +23,13 @@ interface MedicationAllergiesProps {
   onNext: (data: MedicationAllergiesFormType) => void;
   onBack: () => void;
   defaultValues?: MedicationAllergiesFormType;
+  direction?: "forward" | "backward"; // Optional, if you want to handle direction-based animations later
 }
 
 // ---------------------------
 // ✅ Component
 // ---------------------------
-const MedicationAllergies = ({ onNext, onBack, defaultValues }: MedicationAllergiesProps) => {
+const MedicationAllergies = ({ onNext, onBack, defaultValues, direction }: MedicationAllergiesProps) => {
   const {
     handleSubmit,
     setValue,
@@ -43,18 +46,40 @@ const MedicationAllergies = ({ onNext, onBack, defaultValues }: MedicationAllerg
 
   const hasAllergies = watch("hasAllergies");
 
-  const onSubmit = (data: MedicationAllergiesFormType) => {
-    onNext(data);
+  const [isExiting, setIsExiting] = useState(false);
+  const [isBackExiting, setIsBackExiting] = useState(false);
+
+  const handleFormSubmit = (data: MedicationAllergiesFormType) => {
+    setIsExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      onNext(data);
+      setIsExiting(false);
+    }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
+  };
+  const [isErrorFading, setIsErrorFading] = useState(false);
+
+  const handleBackClick = () => {
+    setIsBackExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsBackExiting(false);
+      onBack();
+    }, animationDelay);
   };
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <form
         id="MedicationAllergiesForm"
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(handleFormSubmit)}
         className="max-w-xl mx-auto space-y-6"
       >
-        <h2 className="text-center text-3xl font-semibold text-foreground font-poppins animate-title">Do you have any known allergies to medications?</h2>
+        <h2 className={`text-center text-3xl font-semibold text-foreground font-poppins ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>
+          Do you have any known allergies to medications?
+        </h2>
 
         {/* Yes / No Radio Selection */}
         <Radio.Group
@@ -67,7 +92,7 @@ const MedicationAllergies = ({ onNext, onBack, defaultValues }: MedicationAllerg
               setValue("allergyList", "");
             }
           }}
-          className="mt-6 animate-content"
+          className={`mt-6  ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}
         >
           <Grid gutter="md">
             {["Yes", "No"].map((label, idx) => {
@@ -106,7 +131,7 @@ const MedicationAllergies = ({ onNext, onBack, defaultValues }: MedicationAllerg
           </Grid>
         </Radio.Group>
 
-        {errors.hasAllergies && <p className="text-danger text-sm mt-2 text-center">{errors.hasAllergies.message}</p>}
+        {errors.hasAllergies && <p className="text-danger text-sm mt-2 text-center animate-pulseFade">{errors.hasAllergies.message}</p>}
 
         {/* Allergy Text Input if "Yes" */}
         {hasAllergies === "Yes" && (
@@ -122,10 +147,10 @@ const MedicationAllergies = ({ onNext, onBack, defaultValues }: MedicationAllerg
         )}
 
         {/* Navigation Buttons */}
-        <div className="flex justify-center gap-6 pt-6 animate-btns">
+        <div className={`flex justify-center gap-6 pt-6 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>
           <Button
             variant="outline"
-            className="w-[200px]"
+            className="w-[200px] animated-btn"
             onClick={onBack}
             type="button"
           >
@@ -133,7 +158,7 @@ const MedicationAllergies = ({ onNext, onBack, defaultValues }: MedicationAllerg
           </Button>
           <Button
             type="submit"
-            className="w-[200px]"
+            className="w-[200px] animated-btn"
             form="MedicationAllergiesForm"
           >
             Next
