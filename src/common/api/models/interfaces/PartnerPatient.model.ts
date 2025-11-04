@@ -241,6 +241,12 @@ export interface IPatientBookingPatientInfoDTO {
   signature?: string;
   payment?: IPatientBookingPaymentRef;
   medications?: any[];
+  clientSecret?: string;
+}
+
+export interface IPatientPaymentAuthorizeConfirmDTO {
+  payment_intent_id: string;
+  client_secret: string;
 }
 
 export interface IPatientBookingPaymentRef {
