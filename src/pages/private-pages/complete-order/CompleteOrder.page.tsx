@@ -192,7 +192,7 @@ const CompleteOrderPage = () => {
             handleBack={handleBack}
             handleSubmit={(data) => onSubmit(data)}
             isSubmitting={patientBookingMutation.isPending}
-            formData={formData}
+            formData={{ ...formData, ...{ clientSecret: clientSecret } }}
           />
         </StripeWrapper>
       )}
