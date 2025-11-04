@@ -26,7 +26,7 @@ export const basicInfoValidationSchema = yup.object({
     .label("Phone number"),
   gender: yup
     .string()
-    .required(({ label }) => `${label} is required`)
+    .required(({ label }) => `Please select your ${label}.`)
     .label("Gender"),
   dob: yup
     .array(yup.string().nonNullable(() => "Please provide a valid date of format MM/DD/YYYY."))

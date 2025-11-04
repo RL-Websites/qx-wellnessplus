@@ -1,5 +1,7 @@
+import { animationDelay, getAnimationClass } from "@/common/constants/constants";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Radio, Text } from "@mantine/core";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -14,9 +16,10 @@ interface IActiveCancerTreatmentProps {
   onNext: (data: ActiveCancerTreatmentSchemaType & { eligible?: boolean }) => void;
   onBack: () => void;
   defaultValues?: ActiveCancerTreatmentSchemaType;
+  direction?: "forward" | "backward"; // Optional, if you want to handle direction-based animations later
 }
 
-const ActiveCancerTreatment = ({ onNext, onBack, defaultValues }: IActiveCancerTreatmentProps) => {
+const ActiveCancerTreatment = ({ onNext, onBack, defaultValues, direction }: IActiveCancerTreatmentProps) => {
   const {
     handleSubmit,
     setValue,
@@ -34,28 +37,60 @@ const ActiveCancerTreatment = ({ onNext, onBack, defaultValues }: IActiveCancerT
   const options = ["No", "Yes"];
 
   const handleSelect = (value: string) => {
-    setValue("activeCancerTreatment", value, { shouldValidate: true });
-    clearErrors("activeCancerTreatment");
+    if (errors.activeCancerTreatment) {
+      setIsErrorFading(true);
+      setTimeout(() => {
+        setValue("activeCancerTreatment", value, { shouldValidate: true });
+        clearErrors("activeCancerTreatment");
+        setIsErrorFading(false);
+      }, 300);
+    } else {
+      setValue("activeCancerTreatment", value, { shouldValidate: true });
+    }
   };
 
-  const onSubmit = (data: ActiveCancerTreatmentSchemaType) => {
-    onNext({ ...data, eligible: data.activeCancerTreatment === "Yes" });
+  const [isExiting, setIsExiting] = useState(false);
+  const [isBackExiting, setIsBackExiting] = useState(false);
+
+  const handleFormSubmit = (data: ActiveCancerTreatmentSchemaType) => {
+    setIsExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsExiting(false);
+      onNext({ ...data, eligible: data.activeCancerTreatment === "Yes" });
+    }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
   };
+
+  const handleBackClick = () => {
+    setIsBackExiting(true);
+
+    // Wait for exit animation to complete
+    setTimeout(() => {
+      setIsBackExiting(false);
+      onBack();
+    }, animationDelay);
+  };
+
+  const onSubmit = (data: ActiveCancerTreatmentSchemaType) => {};
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <form
         id="activeCancerTreatmentForm"
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(handleFormSubmit)}
         className="card-common-width-lg mx-auto space-y-6"
       >
         <div>
-          <h2 className="text-center text-3xl font-poppins font-semibold text-foreground animate-title">Are you currently under active cancer treatment?</h2>
+          <h2 className={`text-center text-3xl font-poppins font-semibold text-foreground ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>
+            Are you currently under active cancer treatment?
+          </h2>
 
           <Radio.Group
             value={activeCancerTreatment}
             onChange={handleSelect}
-            className="mt-6 w-full animate-content"
+            className={`mt-6 w-full ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}
           >
             <div className="grid md:grid-cols-2 gap-5 w-full">
               {options.map((option) => (
@@ -87,20 +122,22 @@ const ActiveCancerTreatment = ({ onNext, onBack, defaultValues }: IActiveCancerT
             </div>
           </Radio.Group>
 
-          {errors.activeCancerTreatment && <Text className="text-red-500 text-sm mt-5 text-center">{errors.activeCancerTreatment.message}</Text>}
+          {errors.activeCancerTreatment && (
+            <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.activeCancerTreatment.message}</Text>
+          )}
         </div>
 
-        <div className="flex justify-center gap-6 pt-4 animate-btns">
+        <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>
           <Button
             variant="outline"
-            className="w-[200px]"
-            onClick={onBack}
+            className="w-[200px] animated-btn"
+            onClick={handleBackClick}
           >
             Back
           </Button>
           <Button
             type="submit"
-            className="w-[200px]"
+            className="w-[200px] animated-btn"
             form="activeCancerTreatmentForm"
           >
             Next

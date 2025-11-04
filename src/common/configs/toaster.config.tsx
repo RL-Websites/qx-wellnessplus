@@ -11,15 +11,17 @@ class DmlToast {
       ...props,
     });
   }
+
   success(props) {
     this.show({
-      autoClose: true,
+      autoClose: 5000,
       withCloseButton: true,
       color: "green.5",
       icon: <IconTick />,
       classNames: {
-        root: "border-l-[11px] border-green-middle h-[92px] shadow-custom-2 rounded-xl",
-        title: " md:text-lg text-base !font-poppins",
+        root: "border-l-[11px] border-green-middle h-[92px] shadow-custom-2 rounded-xl animate-toast-enter",
+        body: "animate-toast-enter",
+        title: "md:text-lg text-base !font-poppins",
         description: "text-fs-sm",
         closeButton: "text-foreground",
       },
@@ -29,13 +31,14 @@ class DmlToast {
 
   error(props) {
     this.show({
-      autoClose: true,
+      autoClose: 5000,
       withCloseButton: true,
       color: "danger",
       icon: <IconCross />,
       classNames: {
-        root: "border-l-[11px] border-danger h-[92px] shadow-custom-2 rounded-xl",
-        title: " md:text-lg text-base !font-poppins",
+        root: "border-l-[11px] border-danger h-[92px] shadow-custom-2 rounded-xl animate-toast-enter",
+        body: "",
+        title: "md:text-lg text-base !font-poppins",
         description: "text-fs-sm",
         closeButton: "text-foreground",
       },
@@ -45,12 +48,13 @@ class DmlToast {
 
   warning(props) {
     this.show({
-      autoClose: true,
+      autoClose: 5000,
       withCloseButton: true,
       color: "warning",
       icon: <IconCross />,
       classNames: {
-        root: "border-l-[11px] border-danger h-[92px] shadow-custom-2 rounded-xl",
+        root: "border-l-[11px] border-danger h-[92px] shadow-custom-2 rounded-xl animate-toast-enter",
+        body: "",
         title: "md:text-lg text-base !font-poppins",
         description: "text-fs-sm",
         closeButton: "text-foreground",

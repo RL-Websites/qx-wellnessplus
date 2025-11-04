@@ -59,6 +59,7 @@ const SelfIntroDuce: React.FC<SelfIntroProps> = ({ onNext, onBack, defaultValues
             render={({ field }) => (
               <Textarea
                 {...field}
+                className="w-full"
                 resize="vertical"
                 autosize
                 placeholder="Write something..."

@@ -43,7 +43,7 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
   const [dob, setDob] = useState<any>(null);
   const [phone, setPhone] = useState<string>();
   const [selectedGender, setSelectedGender] = useAtom(selectedGenderAtom);
-  const [gender, setGender] = useState<string>(selectedGender || "male");
+  const [gender, setGender] = useState<string | null>(selectedGender || null);
   const [selectedState, setSelectedState] = useAtom(selectedStateAtom);
   const [stateSearchVal, setStateSearchVal] = useState<string>(selectedState || "");
   const [address, setAddress] = useState<string>("");
@@ -174,9 +174,9 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
         setValue("latitude", tempPatientDetails?.userable?.latitude ? Number(tempPatientDetails?.userable?.latitude) : null);
         setValue("longitude", tempPatientDetails?.userable?.longitude ? Number(tempPatientDetails?.userable?.longitude) : null);
         setFrontFile(tempPatientDetails?.userable?.base64_driving_license_front ? tempPatientDetails?.userable?.base64_driving_license_front : "");
-        setBackFile(tempPatientDetails?.userable?.base64_driving_license_front ? tempPatientDetails?.userable?.base64_driving_license_front : "");
+        setBackFile(tempPatientDetails?.userable?.base64_driving_license_back ? tempPatientDetails?.userable?.base64_driving_license_back : "");
         setFrontBase64(tempPatientDetails?.userable?.base64_driving_license_front ? tempPatientDetails?.userable?.base64_driving_license_front : "");
-        setBackBase64(tempPatientDetails?.userable?.base64_driving_license_front ? tempPatientDetails?.userable?.base64_driving_license_front : "");
+        setBackBase64(tempPatientDetails?.userable?.base64_driving_license_back ? tempPatientDetails?.userable?.base64_driving_license_back : "");
         setValue("driving_lic_front", tempPatientDetails?.userable?.base64_driving_license_front ? tempPatientDetails?.userable?.base64_driving_license_front : "");
         setValue("driving_lic_back", tempPatientDetails?.userable?.base64_driving_license_back ? tempPatientDetails?.userable?.base64_driving_license_back : "");
       }
@@ -397,6 +397,7 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
             label="Gender"
             withAsterisk
             value={gender}
+            className="col-span-2 md:col-span-1 w-full"
             defaultValue={gender}
             onChange={(value) => {
               setValue("gender", value);
@@ -407,13 +408,12 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
               }
             }}
             name="gender"
-            className="md:col-span-1 col-span-2 justify-start"
             classNames={InputErrorMessage}
             error={getErrorMessage(errors?.gender)}
           >
             <Group
               mt="xs"
-              className="flex justify-between md:gap-7 gap-3 w-full"
+              className="flex md:gap-7 gap-3 w-full"
             >
               <Radio
                 value="Male"
@@ -578,6 +578,15 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
             allowDecimal={false}
             withAsterisk
           />
+          <div className="col-span-2">
+            <div className="bg-tag-bg py-5 px-6 rounded-xl">
+              <p className="font-semibold text-base text-tag-bg-deep">A valid driver's license (front and back) is required:</p>
+              <p className="text-fs-md text-tag-bg-deep">
+                Please upload a clear, readable, and unexpired ID image (front and back). If your identity cannot be verified due to a blurry, expired, or incomplete upload, the
+                provider will decline your order, and the consultation fee will still be charged.
+              </p>
+            </div>
+          </div>
           <div className="md:col-span-1 col-span-2">
             <h6 className="font-poppins extra-form-text-medium text-foreground mb-2">
               Upload Driving License (Front Side)<span className="dml-InputWrapper-required dml-NumberInput-required">*</span>

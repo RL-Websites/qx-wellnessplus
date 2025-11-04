@@ -3,7 +3,9 @@ import { IRegistrationRequestPayload } from "@/common/api/models/interfaces/Auth
 import authApiRepository from "@/common/api/repositories/authRepository";
 import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
 import dmlToast from "@/common/configs/toaster.config";
+import { animationDelay } from "@/common/constants/constants";
 import useAuthToken from "@/common/hooks/useAuthToken";
+import { isExitingAtomLogin, isExitingAtomRegister } from "@/common/states/animation.atom";
 import { cartItemsAtom } from "@/common/states/product.atom";
 import { user_id, userAtom } from "@/common/states/user.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -55,6 +57,8 @@ const RegistrationPage = () => {
   const [userId, setUserId] = useAtom(user_id);
   const navigate = useNavigate();
   const location = useLocation();
+  const [isExiting, setIsExiting] = useAtom(isExitingAtomRegister);
+  const [isExitingLogin, setIsExitingLogin] = useAtom(isExitingAtomLogin);
 
   useEffect(() => {
     if (location.pathname == "/registration" && getAccessToken()) {
@@ -76,11 +80,26 @@ const RegistrationPage = () => {
     },
   });
 
-  useEffect(() => {
-    if (!userData) {
-      navigate("/registration");
-    }
-  }, [userData]);
+  // useEffect(() => {
+  //   if (!userData) {
+  //     navigate("/registration");
+  //   }
+  // }, [userData]);
+
+  const handleBackClick = () => {
+    setIsExiting(true);
+
+    setTimeout(() => {
+      setIsExiting(false);
+      setIsExitingLogin(false);
+      if (location.key !== "default") {
+        navigate(-1);
+      } else {
+        navigate("/login"); // Fallback to login if no history
+      }
+      //navigate("/category");
+    }, animationDelay);
+  };
 
   const onSubmit = (data: registrationSchemaType) => {
     const payload = { first_name: data.firstName, last_name: data.lastName, email: data.emailAddress, password: data.password, confirm_password: data.confirmPassword };
@@ -89,6 +108,7 @@ const RegistrationPage = () => {
         setAccessToken(res?.data.access_token);
         setUserDataAtom(res?.data?.user);
         setUserId(res?.data?.user_id);
+        setIsExiting(true);
         if (cartItems?.length > 0) {
           navigate("/complete-order");
         } else {
@@ -106,8 +126,8 @@ const RegistrationPage = () => {
   };
 
   return (
-    <div className="">
-      <h2 className="lg:text-[70px] md:text-6xl text-4xl text-foreground uppercase text-center">Registration</h2>
+    <div className={`register-main ${isExiting ? "register-main-exit" : ""}`}>
+      <h2 className={`lg:text-[70px] md:text-6xl text-4xl text-foreground uppercase text-center  `}>Registration</h2>
       <form
         className="w-full "
         onSubmit={handleSubmit(onSubmit)}
@@ -175,11 +195,9 @@ const RegistrationPage = () => {
         <div className="card-common-width  mx-auto mt-10">
           <div className="flex justify-between">
             <Button
-              size="md"
-              className="lg:w-[206px]"
               variant="outline"
-              component={Link}
-              to={`/login`}
+              className="lg:w-[206px] animated-btn"
+              onClick={handleBackClick}
             >
               Back
             </Button>
@@ -196,6 +214,18 @@ const RegistrationPage = () => {
             <span className="text-primary font-normal font-poppins">Already have an account? </span>
             <Link
               to="/login"
+              onClick={(e) => {
+                e.preventDefault(); // Prevent immediate navigation
+                setIsExiting(true); // Trigger exit animation
+                setTimeout(() => {
+                  setIsExitingLogin(false);
+                  if (location.key !== "default") {
+                    navigate(-1);
+                  } else {
+                    navigate("/login");
+                  }
+                }, animationDelay);
+              }}
               className="text-foreground underline"
             >
               Please Login

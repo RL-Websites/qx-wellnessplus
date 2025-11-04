@@ -1,4 +1,6 @@
 import { IUserData } from "@/common/api/models/interfaces/User.model";
+import { animationDelay } from "@/common/constants/constants";
+import { isExitingAtomCategory, isExitingAtomForgot, isExitingAtomLogin, isExitingAtomRegister } from "@/common/states/animation.atom";
 import { customerAtom } from "@/common/states/customer.atom";
 import { cartItemsAtom } from "@/common/states/product.atom";
 import { userAtom } from "@/common/states/user.atom";
@@ -11,17 +13,16 @@ import { Link, NavLink as RdNavLink, useLocation, useNavigate } from "react-rout
 const HomeHeader = () => {
   const [userData, setUserData] = useAtom<IUserData | null>(userAtom);
   const [customerData, setCustomerData] = useAtom(customerAtom);
+  const [isExiting, setIsExiting] = useAtom(isExitingAtomCategory);
+  const [isExitingLogin, setIsExitingLogin] = useAtom(isExitingAtomLogin);
+  const [isExitingRegister, setIsExitingRegister] = useAtom(isExitingAtomRegister);
+  const [isExitingForgot, setIsExitingForgot] = useAtom(isExitingAtomForgot);
+  const [isExistingCategory, setIsExitingCategory] = useAtom(isExitingAtomCategory);
   const location = useLocation();
   const cartItems = useAtomValue(cartItemsAtom);
   const navigate = useNavigate();
-  const [isLoginPage, setIsLoginPage] = useState<boolean>(false);
-  useEffect(() => {
-    if (location.pathname == "/login") {
-      setIsLoginPage(true);
-    } else {
-      setIsLoginPage(false);
-    }
-  }, [location]);
+  const isLoginPage = location.pathname === "/login";
+  const onAuthPage = location.pathname === "/registration" || location.pathname === "/forgot-password";
   return (
     <div className="header flex items-center justify-between pb-12">
       <div className="logo flex items-center gap-2">
@@ -81,20 +82,51 @@ const HomeHeader = () => {
             variant="outline"
             size="sm-3"
             color="primary"
-            className="font-semibold lg:text-lg md:text-base text-sm"
-            component={Link}
-            to="/registration"
+            className="font-semibold lg:text-lg md:text-base text-sm animated-btn"
+            onClick={() => {
+              setIsExitingLogin(true);
+              setIsExitingRegister(false);
+
+              setTimeout(() => {
+                navigate("/registration");
+              }, animationDelay);
+            }}
           >
             Register
+          </Button>
+        ) : onAuthPage ? (
+          <Button
+            variant="outline"
+            size="sm-3"
+            color="primary"
+            className="font-semibold lg:text-lg md:text-base text-sm"
+            onClick={() => {
+              if (location.key !== "default") {
+                navigate(-1);
+                setIsExitingLogin(false);
+              } else {
+                navigate("/login");
+                setIsExitingLogin(false);
+              }
+            }}
+          >
+            Login
           </Button>
         ) : (
           <Button
             variant="outline"
             size="sm-3"
             color="primary"
-            className="font-semibold lg:text-lg md:text-base text-sm"
-            component={Link}
-            to="/login"
+            className="font-semibold lg:text-lg md:text-base text-sm animated-btn"
+            onClick={() => {
+              setIsExitingRegister(true);
+              setIsExitingCategory(true);
+              setIsExitingForgot(true);
+              setIsExitingLogin(false);
+              setTimeout(() => {
+                navigate("/login");
+              }, animationDelay);
+            }}
           >
             Login
           </Button>
