@@ -1,4 +1,7 @@
-import { IPatientBookingPatientInfoDTO } from "@/common/api/models/interfaces/PartnerPatient.model";
+import { IServerErrorResponse } from "@/common/api/models/interfaces/ApiResponse.model";
+import { IPatientBookingPatientInfoDTO, IPatientPaymentAuthorizeConfirmDTO } from "@/common/api/models/interfaces/PartnerPatient.model";
+import orderApiRepository from "@/common/api/repositories/orderRepository";
+import paymentRepository from "@/common/api/repositories/paymentRepository";
 import AddressAutoGoogle from "@/common/components/AddressAutoGoogle";
 import ConfirmationModal from "@/common/components/ConfirmationModal";
 import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
@@ -12,20 +15,24 @@ import { Button, Checkbox, Input, NumberInput, Select } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { StripePaymentElementOptions } from "@stripe/stripe-js";
+import { useMutation } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { shippingBillingSchema } from "./schemaValidation";
 
 interface PropTypes {
   formData?: any;
   handleBack: () => void;
-  handleSubmit: (data: IPatientBookingPatientInfoDTO) => void;
+  handleSubmit?: (data: IPatientBookingPatientInfoDTO) => void;
   isSubmitting: boolean;
 }
 
 const paymentOptions: StripePaymentElementOptions = {
-  layout: { type: "tabs", defaultCollapsed: false, radios: true, spacedAccordionItems: false },
+  // layout: { type: "tabs", defaultCollapsed: false, radios: true, spacedAccordionItems: false },
+  layout: { type: "accordion", defaultCollapsed: false, radios: false, spacedAccordionItems: false },
   fields: { billingDetails: { address: "never" } },
 };
 
@@ -46,6 +53,10 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
   const [billingStateSearchVal, setBillingStateSearchVal] = useState<string>("");
   const [totalBillAmount, setTotalBillAmount] = useState<number>(0);
 
+  const navigate = useNavigate();
+
+  const paymentAuthorizeMn = useMutation({ mutationFn: (payload: IPatientPaymentAuthorizeConfirmDTO) => paymentRepository.patientPaymentAuthorizeConfirm(payload) });
+
   useEffect(() => {
     if (cartItems?.length > 0) {
       let totalBill = 0;
@@ -57,6 +68,19 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
       setTotalBillAmount(totalBill);
     }
   }, [cartItems]);
+
+  const patientBookingMutation = useMutation({
+    mutationFn: (payload: IPatientBookingPatientInfoDTO) => orderApiRepository.patientBooking(payload),
+  });
+
+  const handleIntakeSubmit = async (data: IPatientBookingPatientInfoDTO) => {
+    try {
+      const res = await patientBookingMutation.mutateAsync(data);
+      return res; // ✅ resolves with the successful response
+    } catch (err) {
+      return Promise.reject(err); // ✅ rejects with the error
+    }
+  };
 
   const handleCheckboxChange = (checked: boolean) => {
     setIsSameAsPatientInfo(checked);
@@ -155,54 +179,89 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
       return;
     }
 
-    const { paymentIntent, error } = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        payment_method_data: {
-          billing_details: {
-            name: formData?.patient?.first_name + formData?.patient?.first_name,
-            email: formData?.patient.email,
-            phone: formData?.patient.cell_phone,
-            address: {
-              country: "US",
-              postal_code: temptSubmitPayload.billing.zip_code,
-              state: temptSubmitPayload.billing.state,
-              city: temptSubmitPayload.billing.city,
-              line1: temptSubmitPayload.billing.address,
-              line2: "",
-            },
-          },
-        },
-      },
-      redirect: "if_required",
-    });
-
-    if (error) {
-      console.error(error);
-      dmlToast.error({ title: error.message || "Payment failed. Please try again." });
-      setCapturingPayment(false);
-      handlePaymentConfirmation.close();
-      return;
-    }
-
-    // const paymentMethodId = paymentMethod.id;
-    if (paymentIntent) {
+    try {
       const payload: IPatientBookingPatientInfoDTO = {
         ...formData,
         ...temptSubmitPayload,
-        payment: {
-          amount: formData.amount,
-          client_secret: paymentIntent.client_secret || "",
-          payment_method_id: paymentIntent.payment_method || "",
-          payment_intent_id: paymentIntent.id,
-        },
       };
-      // setTempSubmitPayload((prev) => payload);
-      handleSubmit(payload);
-      setCapturingPayment(false);
-      handlePaymentConfirmation.close();
-    } else {
-      dmlToast.error({ title: "Stripe payment intent initializing error. ", message: "Please try again with refreshing the page." });
+      // First, call your backend API
+      await handleIntakeSubmit(payload);
+      // Then confirm the payment with Stripe
+      const { paymentIntent, error } = await stripe.confirmPayment({
+        elements,
+        confirmParams: {
+          payment_method_data: {
+            billing_details: {
+              name: formData?.patient?.first_name + " " + formData?.patient?.last_name, // Fixed name duplication
+              email: formData?.patient.email,
+              phone: formData?.patient.cell_phone,
+              address: {
+                country: "US",
+                postal_code: temptSubmitPayload.billing.zip_code,
+                state: temptSubmitPayload.billing.state,
+                city: temptSubmitPayload.billing.city,
+                line1: temptSubmitPayload.billing.address,
+                line2: "",
+              },
+            },
+          },
+          return_url: `${import.meta.env.VITE_FRONTEND_URL}/partner-patient-booking-success`,
+        },
+        redirect: "if_required",
+      });
+
+      // Handle Stripe errors
+      if (error) {
+        console.error(error);
+        dmlToast.error({
+          title: error.message || "Payment failed. Please try again.",
+        });
+        setCapturingPayment(false);
+        handlePaymentConfirmation.close();
+        return;
+      }
+
+      // Handle successful Stripe intent
+      if (paymentIntent) {
+        const payload: IPatientPaymentAuthorizeConfirmDTO = {
+          payment_intent_id: paymentIntent.id,
+          client_secret: paymentIntent.client_secret || "",
+        };
+        paymentAuthorizeMn.mutate(payload, {
+          onSuccess: (res) => {
+            // dmlToast.success({ title: "Patient has been invited successfully." });
+            const prescription_uId = res?.data?.data?.u_id;
+            navigate(`/patient-intake?prescription_u_id=${prescription_uId}`);
+            console.log(res);
+          },
+          onError: (err) => {
+            const error = err as AxiosError<IServerErrorResponse>;
+            dmlToast.error({ title: error.message });
+          },
+        });
+
+        setCapturingPayment(false);
+        handlePaymentConfirmation.close();
+        // ✅ Both backend and Stripe succeeded — continue to next step
+        setCapturingPayment(false);
+        handlePaymentConfirmation.close();
+        // your further code here
+      } else {
+        dmlToast.error({
+          title: "Stripe payment intent initializing error.",
+          message: "Please refresh the page and try again.",
+        });
+        setCapturingPayment(false);
+        handlePaymentConfirmation.close();
+      }
+    } catch (error: any) {
+      console.error("❌ Booking failed:", error);
+      dmlToast.error({
+        title:
+          error?.response?.data?.message || // backend-defined error
+          error?.message || // generic JS/axios error
+          "Something went wrong. Please try again.", // fallback
+      });
       setCapturingPayment(false);
       handlePaymentConfirmation.close();
     }
