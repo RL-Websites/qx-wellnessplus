@@ -1,7 +1,7 @@
 import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { useWindowScroll } from "@mantine/hooks";
 import { useAtom, useAtomValue } from "jotai";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DateOfBirth from "./quizes/DateOfBirth";
 
 import AlopeciaAreata from "./quizes/hair-growth/AlopeciaAreata";
@@ -67,7 +67,7 @@ const QuizPage = () => {
   const [globalWeight, setGlobalWeight] = useAtom(weightAtom);
   const [globalDob, setGlobalDob] = useAtom(dobAtom);
   const [direction, setDirection] = useState<"forward" | "backward">("forward");
-
+  const isProcessingRef = useRef(false);
   const navigate = useNavigate();
 
   const lastStepByCategory = (category: string[]) => {
@@ -102,12 +102,16 @@ const QuizPage = () => {
   }, [selectedCategory]);
 
   const handleFinalSubmit = (data: any) => {
+    if (isProcessingRef.current) return;
+    isProcessingRef.current = true;
     const tempData = { ...formData, ...data };
     setFormData(tempData);
     navigate("/medications");
   };
 
   const handleNext = (data: any) => {
+    if (isProcessingRef.current) return;
+    isProcessingRef.current = true;
     setDirection("forward"); // ✅ Set direction to forward
 
     setFormData((prev) => ({ ...prev, ...data }));
@@ -117,9 +121,14 @@ const QuizPage = () => {
     scrollTo({ y: 0 });
     // console.log(activeStep);
     // console.log(data);
+    setTimeout(() => {
+      isProcessingRef.current = false;
+    }, 1000);
   };
 
   const handleBack = () => {
+    if (isProcessingRef.current) return;
+    isProcessingRef.current = true;
     setDirection("backward"); // ✅ Set direction to forward
 
     if (activeStep > 1) {
@@ -131,6 +140,9 @@ const QuizPage = () => {
     }
 
     scrollTo({ y: 0 });
+    setTimeout(() => {
+      isProcessingRef.current = false;
+    }, 1000);
   };
 
   const [genderOffset, setGenderOffset] = useState(0);
