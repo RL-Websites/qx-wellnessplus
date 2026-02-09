@@ -11,6 +11,11 @@ export const MedsAllergySchema = yup.object({
     is: "Yes",
     then: (schema) => schema.required("Please mention the allergies you previously had."),
   }),
+  hasAllergyAnyMedication: yup.string().required("Please select at least one value"),
+    nameAllergyAnyMedication: yup.string().when("hasAllergyAnyMedication", {
+      is: "Yes",
+      then: (schema) => schema.required("Please mention the medication allergies you have."),
+    }),
   prescribed: yup.string().required("Please select at least one value."),
   medicines: yup.string().when("prescribed", {
     is: "Yes",
@@ -41,6 +46,8 @@ const MedsAllergy = ({ onNext, onBack, defaultValues }: MedsAllergyProps) => {
       nameAllergy: defaultValues?.nameAllergy || "",
       prescribed: defaultValues?.prescribed || "",
       medicines: defaultValues?.medicines || "",
+      hasAllergyAnyMedication: defaultValues?.hasAllergyAnyMedication || "",
+      nameAllergyAnyMedication: defaultValues?.nameAllergyAnyMedication || "",
     },
     resolver: yupResolver(MedsAllergySchema),
   });
@@ -49,8 +56,15 @@ const MedsAllergy = ({ onNext, onBack, defaultValues }: MedsAllergyProps) => {
   const prescribed = watch("prescribed");
   const allergyMedicineList = watch("nameAllergy") ?? "";
 
+  const hasAllergyAnyMedication = watch("hasAllergyAnyMedication");
+  const showMedicationAllergyNames = hasAllergyAnyMedication === "Yes";
+
+  const medicationAllergyList = watch("nameAllergyAnyMedication") ?? "";
+
   const showAllergyNames = hasAllergy === "Yes";
   const showMedicineNames = prescribed === "Yes";
+
+
 
   const yesNoOptions = ["Yes", "No"];
 
@@ -72,7 +86,7 @@ const MedsAllergy = ({ onNext, onBack, defaultValues }: MedsAllergyProps) => {
           handleSelect("hasAllergy", value);
           setValue("nameAllergy", "");
         }}
-        label="Do you have any allergy?"
+        label="Do you have any allergies?"
         classNames={{
           root: "w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
@@ -129,6 +143,73 @@ const MedsAllergy = ({ onNext, onBack, defaultValues }: MedsAllergyProps) => {
           </div>
         </div>
       )}
+
+      <div className="pt-10">
+        <Radio.Group
+          value={hasAllergyAnyMedication}
+          onChange={(value) => {
+            handleSelect("hasAllergyAnyMedication", value);
+            setValue("nameAllergyAnyMedication", "");
+          }}
+          label="Are you allergic to any medications?"
+          classNames={{
+            root: "w-full",
+            label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
+          }}
+        >
+          <div className="grid grid-cols-2 gap-5">
+            {yesNoOptions.map((option) => (
+              <Radio
+                key={option}
+                value={option}
+                classNames={getBaseWebRadios(hasAllergyAnyMedication, option)}
+                label={
+                  <div className="relative text-center">
+                    <span className="text-foreground font-poppins">{option}</span>
+                    {hasAllergyAnyMedication === option && (
+                      <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
+                        <i className="icon-tick text-sm/none"></i>
+                      </span>
+                    )}
+                  </div>
+                }
+              />
+            ))}
+          </div>
+          <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.hasAllergyAnyMedication)}</p>
+        </Radio.Group>
+        {showMedicationAllergyNames && (
+          <div className="pt-8">
+            <Textarea
+              {...register("nameAllergyAnyMedication")}
+              label="Please mention the medication allergies you have (example: Penicillin, Sulfa, Aspirin, etc.)"
+              resize="vertical"
+              autosize
+              placeholder="Please mention the medication allergies you have."
+              minRows={5}
+              aria-invalid={!!errors.nameAllergyAnyMedication}
+              aria-describedby={errors.nameAllergyAnyMedication ? "medicationAllergy-error" : undefined}
+            />
+
+            <div className="flex items-center justify-between pt-3">
+              <p className={errors.nameAllergyAnyMedication ? "text-red-500" : "text-gray-500"}>
+                {medicationAllergyList.length} / {MAX_CHARS}
+              </p>
+
+              {errors.nameAllergyAnyMedication ? (
+                <p
+                  id="medicationAllergy-error"
+                  className="text-red-500"
+                >
+                  {errors.nameAllergyAnyMedication.message}
+                </p>
+              ) : null}
+            </div>
+          </div>
+        )}
+      </div>
+
+
 
       {/* Prescribed Medicines Section */}
       <div>
