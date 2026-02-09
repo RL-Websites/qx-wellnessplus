@@ -99,7 +99,7 @@ const MedsAllergy = ({ onNext, onBack, defaultValues }: MedsAllergyProps) => {
         </div>
         <p className="text-sm text-danger text-center mt-3">{getErrorMessage(errors?.hasAllergy)}</p>
       </Radio.Group>
-
+          <h1>asdasdas</h1>
       {showAllergyNames && (
         <div className="pt-8">
           <Textarea
