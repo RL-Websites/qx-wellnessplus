@@ -231,6 +231,8 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
           onSuccess: (res) => {
             // dmlToast.success({ title: "Patient has been invited successfully." });
             const prescription_uId = res?.data?.data?.u_id;
+            setCartItems([]);
+            localStorage.removeItem("cartItems");
             navigate(`/patient-intake?prescription_u_id=${prescription_uId}`);
             console.log(res);
           },
