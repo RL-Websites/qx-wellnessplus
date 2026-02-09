@@ -1,7 +1,7 @@
 import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { useWindowScroll } from "@mantine/hooks";
 import { useAtom, useAtomValue } from "jotai";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DateOfBirth from "./quizes/DateOfBirth";
 
 import AlopeciaAreata from "./quizes/hair-growth/AlopeciaAreata";
@@ -67,7 +67,7 @@ const QuizPage = () => {
   const [globalWeight, setGlobalWeight] = useAtom(weightAtom);
   const [globalDob, setGlobalDob] = useAtom(dobAtom);
   const [direction, setDirection] = useState<"forward" | "backward">("forward");
-
+  const isProcessingRef = useRef(false);
   const navigate = useNavigate();
 
   const lastStepByCategory = (category: string[]) => {
@@ -86,6 +86,8 @@ const QuizPage = () => {
         return 5;
       case "Single Peptides":
         return 5;
+      case "Energy & Longevity":
+        return 5;
       default:
         return defaultLastStep;
     }
@@ -100,12 +102,16 @@ const QuizPage = () => {
   }, [selectedCategory]);
 
   const handleFinalSubmit = (data: any) => {
+    if (isProcessingRef.current) return;
+    isProcessingRef.current = true;
     const tempData = { ...formData, ...data };
     setFormData(tempData);
     navigate("/medications");
   };
 
   const handleNext = (data: any) => {
+    if (isProcessingRef.current) return;
+    isProcessingRef.current = true;
     setDirection("forward"); // ✅ Set direction to forward
 
     setFormData((prev) => ({ ...prev, ...data }));
@@ -115,9 +121,14 @@ const QuizPage = () => {
     scrollTo({ y: 0 });
     // console.log(activeStep);
     // console.log(data);
+    setTimeout(() => {
+      isProcessingRef.current = false;
+    }, 1000);
   };
 
   const handleBack = () => {
+    if (isProcessingRef.current) return;
+    isProcessingRef.current = true;
     setDirection("backward"); // ✅ Set direction to forward
 
     if (activeStep > 1) {
@@ -129,6 +140,9 @@ const QuizPage = () => {
     }
 
     scrollTo({ y: 0 });
+    setTimeout(() => {
+      isProcessingRef.current = false;
+    }, 1000);
   };
 
   const [genderOffset, setGenderOffset] = useState(0);
@@ -142,7 +156,7 @@ const QuizPage = () => {
   }, [formData.genderWeightLoss]);
 
   useEffect(() => {
-    if (selectedCategory && (selectedCategory?.includes("Peptides Blends") || selectedCategory?.includes("Single Blends"))) {
+    if (selectedCategory && (selectedCategory?.includes("Peptides Blends") || selectedCategory?.includes("Single Blends") || selectedCategory?.includes("Energy & Longevity"))) {
       setTotalStep(30);
     }
     if (selectedCategory && selectedCategory.includes("Hair Growth (Male)")) {
@@ -725,8 +739,7 @@ const QuizPage = () => {
           )}
         </>
       )}
-
-      {(selectedCategory?.includes("Peptides Blends") || selectedCategory?.includes("Single Blends")) && (
+      {(selectedCategory?.includes("Peptides Blends") || selectedCategory?.includes("Single Blends") || selectedCategory?.includes("Energy & Longevity")) && (
         <>
           {activeStep === 2 && (
             <GenderPeptides

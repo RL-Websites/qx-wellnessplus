@@ -7,6 +7,7 @@ import { AdminAppRoute } from "./pages/admin-app/admin-app.route";
 import { AuthRoute } from "./pages/auth/auth.route";
 
 import { PrivatePagesRoute } from "./pages/private-pages/private-pages.route";
+import BookingSuccess from "./pages/public-pages/booking-success/bookingSuccess";
 import HomePage from "./pages/public-pages/home/home.page";
 import { PublicPagesRoute } from "./pages/public-pages/public-pages.route";
 const PanelNavigator = lazy(() => import("./common/components/NavigateToPanel"));
@@ -48,6 +49,10 @@ export const RootRoute = createBrowserRouter([
     path: "",
     element: <AuthGuard userType={["admin"]} />,
     children: AdminAppRoute,
+  },
+  {
+    path: "partner-patient-booking-success",
+    element: <BookingSuccess />,
   },
   {
     path: "user-not-found",

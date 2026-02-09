@@ -17,7 +17,7 @@ import { useWindowScroll } from "@mantine/hooks";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useAtom, useAtomValue } from "jotai";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import * as yup from "yup";
@@ -90,10 +90,11 @@ const Login = () => {
 
   const onSubmit = (data: loginSchemaType) => {
     // const finalData = { ...data, ...{ type: "admin", u_id: uid } };
-    setIsExitingLogin(true);
+
     const payload = { email: data.emailAddress, password: data.password };
     LoginMutation.mutate(payload, {
       onSuccess: (res) => {
+        setIsExitingLogin(true);
         // setUserEmail(data.emailAddress);
         setUserId(res?.data?.user_id);
         setAccessToken(res?.data.access_token);

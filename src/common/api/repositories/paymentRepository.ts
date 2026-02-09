@@ -1,7 +1,8 @@
 import { AxiosInstance } from "axios";
 import $http from "../axios";
-import { IBasePaginationResponse } from "../models/interfaces/ApiResponse.model";
+import { IBasePaginationResponse, IBaseResponse } from "../models/interfaces/ApiResponse.model";
 import { ICommonParams } from "../models/interfaces/Common.model";
+import { IPatientPaymentAuthorizeConfirmDTO } from "../models/interfaces/PartnerPatient.model";
 import { ICardRef, ISaveCardDTO, IUpdateCardDoTo, IVerifyCardDTO } from "../models/interfaces/Payment.model";
 
 class PaymentRepository {
@@ -17,6 +18,10 @@ class PaymentRepository {
 
   cardUpdate(payload: IUpdateCardDoTo) {
     return this.$http.post("/spa/clinic/card-update", payload);
+  }
+
+  patientPaymentAuthorizeConfirm(payload: IPatientPaymentAuthorizeConfirmDTO) {
+    return this.$http.post<IBaseResponse<any>>("/customer/patient/payment-authorized-confirmation", { payment: payload });
   }
 
   getCardList(params: ICommonParams) {

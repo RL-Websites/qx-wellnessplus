@@ -73,7 +73,7 @@ const OrderSummary = () => {
                 </Avatar>
                 <div className="lg:w-[calc(100%_-_154px)]">
                   <h6 className="text-xl font-semibold text-foreground font-poppins max-w-[300px]">
-                    {item.name} {item.strength ? `${item.strength} ${item.unit}` : ""}
+                    {item.name} {item.strength ? `${item.strength} ${item.unit || ""}` : ""}
                   </h6>
                   <div className="flex items-center gap-2.5 pt-2.5 font-poppins">
                     <span className="text-lg text-foreground">{item.medication_category}</span>
@@ -98,7 +98,7 @@ const OrderSummary = () => {
                 className="flex flex-wrap items-center justify-between"
               >
                 <span className="text-foreground text-lg inline-block max-w-[226px] break-all">
-                  {item.name} {item.strength ? `${item.strength} ${item.unit}` : ""} x {item.qty}
+                  {item.name} {item.strength ? `${item.strength || ""} ${item.unit}` : ""} x {item.qty}
                 </span>
                 <span className="text-foreground text-lg">
                   ${item?.lab_required == "1" ? (calculatePrice(item) + stateWiseLabFee(item, selectedState)).toFixed(2) : calculatePrice(item).toFixed(2)}

@@ -96,8 +96,8 @@ const PatientIntake = () => {
     { component: StepFourteen, categories: ["weightLoss"] },
     { component: StepFifteen, categories: ["weightLoss"] },
     { component: StepSixteen, categories: ["weightLoss"] },
-    { component: FullBodyPhoto, categories: ["peptides"] },
-    { component: StepSeventeen, categories: ["peptides"] },
+    { component: FullBodyPhoto, categories: ["peptides", "energy"] },
+    { component: StepSeventeen, categories: ["peptides", "energy"] },
     { component: BodyMeasure, categories: ["testosterone"] },
     { component: HormonalHealth, categories: ["testosterone"] },
     { component: TestosteroneHistory, categories: ["testosterone"] },
@@ -108,7 +108,7 @@ const PatientIntake = () => {
     { component: WhenNotice, categories: ["hairGrowth"] },
     { component: MedicalHistory, categories: ["hairGrowth"] },
     { component: SymptomHistory, categories: ["hairGrowth"] },
-    { component: SelfIntroDuce, categories: ["hairGrowth", "sexualHealth", "testosterone", "peptides", "weightLoss"] },
+    { component: SelfIntroDuce, categories: ["hairGrowth", "sexualHealth", "testosterone", "peptides", "energy", "weightLoss"] },
 
     // TODO: add Testosterone-specific steps
     // { component: StepX, categories: ["Testosterone"] },
@@ -130,6 +130,7 @@ const PatientIntake = () => {
         const medicationCats: string[] = patientDetailsQuery?.data?.data?.data?.prescription_details?.map((item) => item.medication.medication_category);
         const categories: string[] = [];
         if (medicationCats.some((cat) => ["Single Peptides", "Peptides Blends"].includes(cat))) categories.push("peptides");
+        if (medicationCats.some((cat) => ["Energy & Longevity"].includes(cat))) categories.push("energy");
         if (medicationCats.some((cat) => ["Testosterone"].includes(cat))) categories.push("testosterone");
         if (medicationCats.some((cat) => ["Hair Growth (Male)", "Hair Growth (Female)", "Hair Growth (male)", "Hair Growth (female)"].includes(cat))) categories.push("hairGrowth");
         if (medicationCats.some((cat) => ["Sexual Health (Male)", "Sexual Health (Female)", "Sexual Health (male)", "Sexual Health (female)"].includes(cat)))

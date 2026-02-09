@@ -13,7 +13,7 @@ import { Button, Input, PasswordInput } from "@mantine/core";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useAtom } from "jotai";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import * as yup from "yup";
@@ -102,13 +102,13 @@ const RegistrationPage = () => {
   };
 
   const onSubmit = (data: registrationSchemaType) => {
-    setIsExiting(true);
     const payload = { first_name: data.firstName, last_name: data.lastName, email: data.emailAddress, password: data.password, confirm_password: data.confirmPassword };
     RegistrationMutation.mutate(payload, {
       onSuccess: (res) => {
         setAccessToken(res?.data.access_token);
         setUserDataAtom(res?.data?.user);
         setUserId(res?.data?.user_id);
+        setIsExiting(true);
         if (cartItems?.length > 0) {
           navigate("/complete-order");
         } else {

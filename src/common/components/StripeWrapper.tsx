@@ -21,7 +21,7 @@ const StripeWrapper = ({ children, clientSecret }: StripeWrapperProps) => {
       colorDanger: "#FF5A43",
       fontFamily: '"UberMove", sans-serif',
       borderRadius: "8px",
-      spacingUnit: "16px",
+      spacingUnit: "5px",
     },
     rules: {
       ".Input": {
@@ -38,6 +38,12 @@ const StripeWrapper = ({ children, clientSecret }: StripeWrapperProps) => {
         fontWeight: "500",
         fontSize: "18px",
         color: "000000",
+      },
+      ".AccordionItem": {
+        "border-bottom": "1px solid var(--colorPrimary)",
+      },
+      ".AnimateSinglePresenceItem": {
+        "border-top": "1px solid var(--colorPrimary)",
       },
     },
   };

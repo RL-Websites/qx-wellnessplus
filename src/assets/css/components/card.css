@@ -33,6 +33,13 @@
       @apply backdrop-blur-[30px] shadow-[0px_16px_16px_0px_#0000000d] bg-[rgba(255,255,255,0.6)] rounded-[20px];
     }
   }
+  .category {
+    &-card {
+      .bg-cover {
+        @apply h-[317px] sm:h-[272px] md:h-[317px] lg:h-[272px] xl:h-[317px];
+      }
+    }
+  }
   .admin-overall-stats-cards {
     .swiper-wrapper {
       @media screen and (max-width: 1440) {
