@@ -54,10 +54,12 @@ export const compressFileToBase64 = async (files: File[], callback: (output: str
 
     // Now compress with Compressor.js (same as before)
     new Compressor(blobToCompress as Blob, {
-      quality: 0.8,
+      quality: 0.7,
       // optional: limit dimensions if you want to shrink very large images
-      maxWidth: 3000,
-      maxHeight: 3000,
+      convertSize: 0,
+      maxWidth: 1920,
+      maxHeight: 1920,
+      mimeType: "image/jpeg",
       success(resultBlob) {
         // log compressed size (KB) for debugging
         const sizeKB = Math.round((resultBlob.size / 1024) * 100) / 100;

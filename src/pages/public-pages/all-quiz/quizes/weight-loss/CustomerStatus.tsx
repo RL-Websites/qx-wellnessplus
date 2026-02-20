@@ -91,7 +91,7 @@ const CustomerStatus = ({ onNext, onBack, defaultValues, direction }: ICustomerS
       >
         <div>
           <h2 className={`text-center text-3xl font-poppins font-semibold text-foreground ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>
-            Are you new or an existing Dosevana customer?
+            Are you new or an existing customer?
           </h2>
 
           <Radio.Group

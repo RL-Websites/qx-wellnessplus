@@ -137,6 +137,7 @@ const CompleteOrderPage = () => {
         // dmlToast.success({ title: "Patient has been invited successfully." });
         const prescription_uId = res?.data?.data?.u_id;
         setCartItems([]);
+        localStorage.removeItem("cartItems");
         navigate(`/patient-intake?prescription_u_id=${prescription_uId}`);
       },
       onError: (err) => {
@@ -192,7 +193,7 @@ const CompleteOrderPage = () => {
             handleBack={handleBack}
             handleSubmit={(data) => onSubmit(data)}
             isSubmitting={patientBookingMutation.isPending}
-            formData={formData}
+            formData={{ ...formData, ...{ clientSecret: clientSecret } }}
           />
         </StripeWrapper>
       )}

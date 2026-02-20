@@ -2,7 +2,7 @@ import { animationDelay, getAnimationClass } from "@/common/constants/constants"
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Group, Radio } from "@mantine/core";
 import { useState } from "react";
-import { get, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 // Validation schema
@@ -82,7 +82,7 @@ const CustomerStatus = ({ onNext, onBack, defaultValues, direction }: ICustomerS
     >
       <div>
         <h2 className={`text-center text-3xl font-poppins font-semibold text-foreground ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>
-          Are you new or an existing Wellness Plus customer?
+          Are you new or an existing customer?
         </h2>
 
         <Radio.Group
