@@ -130,4 +130,5 @@ export interface IPrevGlpMedDetails {
   lastDose?: string;
   currentMedType?: string;
   preferredMedType?: string;
+  preferredMedConsumptionType?: string;
 }

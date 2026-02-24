@@ -14,6 +14,10 @@ export const glpOneMedicationSchema = yup.object({
     is: "Yes",
     then: (schema) => schema.required("Please select which GLP-1 medication you use"),
   }),
+  glpOneMedicationConsumptionType: yup.string().when("takesGlpOneMedication", {
+    is: "Yes",
+    then: (schema) => schema.required("Please select your GLP-1 medication type"),
+  }),
 });
 
 export type glpOneMedicationSchemaType = yup.InferType<typeof glpOneMedicationSchema>;
@@ -37,13 +41,16 @@ const GlpOneMedication = ({ onNext, onBack, defaultValues, direction }: GlpOneMe
     defaultValues: {
       takesGlpOneMedication: defaultValues?.takesGlpOneMedication || "",
       glpOneMedicationDetails: defaultValues?.glpOneMedicationDetails || "",
+      glpOneMedicationConsumptionType: defaultValues?.glpOneMedicationConsumptionType || "",
     },
     resolver: yupResolver(glpOneMedicationSchema),
   });
 
   const takesGlpOneMedication = watch("takesGlpOneMedication");
   const glpOneMedicationDetails = watch("glpOneMedicationDetails");
+  const glpOneMedicationConsumptionType = watch("glpOneMedicationConsumptionType");
   const showDetails = takesGlpOneMedication === "Yes";
+  const showConsumptionType = showDetails && !!glpOneMedicationDetails;
 
   const handleSelect = (field: keyof glpOneMedicationSchemaType, value: string) => {
     if (errors[field]) {
@@ -52,6 +59,11 @@ const GlpOneMedication = ({ onNext, onBack, defaultValues, direction }: GlpOneMe
         setValue(field, value, { shouldValidate: true });
         if (field == "glpOneMedicationDetails") {
           setPrevGlpDetails((prev) => ({ ...prev, currentMedType: value }));
+          // Reset consumption type when medication changes
+          setValue("glpOneMedicationConsumptionType", "", { shouldValidate: false });
+        }
+        if (field == "glpOneMedicationConsumptionType") {
+          setPrevGlpDetails((prev) => ({ ...prev, preferredMedConsumptionType: value.toLowerCase() }));
         }
         clearErrors(field);
         setIsErrorFading(false);
@@ -60,6 +72,11 @@ const GlpOneMedication = ({ onNext, onBack, defaultValues, direction }: GlpOneMe
       setValue(field, value, { shouldValidate: true });
       if (field == "glpOneMedicationDetails") {
         setPrevGlpDetails((prev) => ({ ...prev, currentMedType: value }));
+        // Reset consumption type when medication changes
+        setValue("glpOneMedicationConsumptionType", "", { shouldValidate: false });
+      }
+      if (field == "glpOneMedicationConsumptionType") {
+        setPrevGlpDetails((prev) => ({ ...prev, preferredMedConsumptionType: value.toLowerCase() }));
       }
     }
   };
@@ -89,6 +106,7 @@ const GlpOneMedication = ({ onNext, onBack, defaultValues, direction }: GlpOneMe
 
   const takesGlpOptions = ["No", "Yes"];
   const glpDetailsOptions = ["Semaglutide", "Tirzepatide"];
+  const consumptionTypeOptions = ["Injection", "ODT"];
   const [isErrorFading, setIsErrorFading] = useState(false);
 
   return (
@@ -103,7 +121,9 @@ const GlpOneMedication = ({ onNext, onBack, defaultValues, direction }: GlpOneMe
           onChange={(value) => {
             handleSelect("takesGlpOneMedication", value);
             setValue("glpOneMedicationDetails", "");
+            setValue("glpOneMedicationConsumptionType", "");
             clearErrors("glpOneMedicationDetails");
+            clearErrors("glpOneMedicationConsumptionType");
           }}
           label="Are you currently or have you ever taken
 GLP-1 medication?"
@@ -174,6 +194,43 @@ GLP-1 medication?"
         )}
         {errors.glpOneMedicationDetails && (
           <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.glpOneMedicationDetails.message}</Text>
+        )}
+
+        {showConsumptionType && (
+          <Radio.Group
+            value={glpOneMedicationConsumptionType}
+            onChange={(value) => handleSelect("glpOneMedicationConsumptionType", value)}
+            label="Which type of GLP-1 medication do you use?"
+            classNames={{
+              root: " !block mt-6 w-full",
+              error: "sm:!text-end !text-start w-full",
+              label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2 text-center w-full",
+            }}
+            className={`${getAnimationClass("content", isExiting, isBackExiting, direction)}`}
+          >
+            <div className="grid md:grid-cols-2 gap-5 w-full">
+              {consumptionTypeOptions.map((option) => (
+                <Radio
+                  key={option}
+                  value={option}
+                  classNames={getBaseWebRadios(glpOneMedicationConsumptionType, option)}
+                  label={
+                    <div className="relative text-center">
+                      <span className="text-foreground font-poppins">{option}</span>
+                      {glpOneMedicationConsumptionType === option && (
+                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
+                          <i className="icon-tick text-sm/none"></i>
+                        </span>
+                      )}
+                    </div>
+                  }
+                />
+              ))}
+            </div>
+          </Radio.Group>
+        )}
+        {errors.glpOneMedicationConsumptionType && (
+          <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.glpOneMedicationConsumptionType.message}</Text>
         )}
 
         <div className={`flex justify-center gap-6 pt-4 ${getAnimationClass("btns", isExiting, isBackExiting, direction)}`}>
