@@ -200,7 +200,7 @@ GLP-1 medication?"
           <Radio.Group
             value={glpOneMedicationConsumptionType}
             onChange={(value) => handleSelect("glpOneMedicationConsumptionType", value)}
-            label="Which type of GLP-1 medication do you use?"
+            label="Is your GLP-1 medication an injection or oral tablet (ODT)?"
             classNames={{
               root: " !block mt-6 w-full",
               error: "sm:!text-end !text-start w-full",
