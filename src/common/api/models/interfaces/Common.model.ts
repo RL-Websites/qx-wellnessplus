@@ -25,4 +25,5 @@ export interface IGetMedicationListParams extends ICommonParams {
   lastDose?: string;
   currentMedType?: string;
   preferredMedType?: string;
+  preferredMedConsumptionType?: string;
 }
