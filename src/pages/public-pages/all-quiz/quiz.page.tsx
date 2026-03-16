@@ -49,6 +49,7 @@ import MultipleMedicine from "./quizes/weight-loss/MultipleMedicine";
 import WeightLossPregnant from "./quizes/weight-loss/Pregnant";
 import WeightLossWeight from "./quizes/weight-loss/Weight";
 import WeightLossGoal from "./quizes/weight-loss/WeightLossGoal";
+import MedicationConsumptionType from "./quizes/weight-loss/MedicationConsumptionType";
 
 const QuizPage = () => {
   const [activeStep, setActiveStep] = useState(1);
@@ -353,6 +354,15 @@ const QuizPage = () => {
           )}
 
           {activeStep === 10 + genderOffset && (
+            <MedicationConsumptionType
+              onNext={handleNext}
+              onBack={handleBack}
+              defaultValues={formData}
+              direction={direction}
+            />
+          )}
+
+          {activeStep === 11 + genderOffset && (
             <DiseaseList
               onNext={(data) => {
                 const { eligible, ...rest } = data;
@@ -369,7 +379,7 @@ const QuizPage = () => {
               direction={direction}
             />
           )}
-          {activeStep === 11 + genderOffset && (
+          {activeStep === 12 + genderOffset && (
             <CurrentState
               onNext={(data) => handleFinalSubmit(data)}
               onBack={handleBack}

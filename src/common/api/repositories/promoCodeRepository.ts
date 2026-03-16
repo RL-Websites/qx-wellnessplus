@@ -10,7 +10,7 @@ class PromoCodesRepository {
   // }
 
   getApplyPromoCode(params: any) {
-    return this.$http.get<IBaseResponse<any>>("promo/code/apply", { params: params });
+    return this.$http.get<IBaseResponse<any>>("promo-qx/code/apply", { params: params });
   }
 }
 
