@@ -1,4 +1,5 @@
 import { IMedicationRef } from "./Patient.model";
+import { ICustomer } from "./Prescription.model";
 
 export interface IStoreMedicineDTO {
   request_type: string;
@@ -78,6 +79,7 @@ export interface ICustomerMedicationRef {
   consultancy_fee: any;
   testosterone_fee: any;
   price_for_customer: any;
+  customer?:ICustomer,
   is_active: number;
   assign_by: null;
   created_at: Date;

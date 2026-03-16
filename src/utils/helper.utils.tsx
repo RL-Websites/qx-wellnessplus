@@ -3,6 +3,7 @@ import { Locations } from "@/common/constants/locations";
 import { ILocation } from "@/common/models/location";
 import {} from "@/data/dosespot.json";
 import { formatDate } from "./date.utils";
+import { ICustomer } from "@/common/api/models/interfaces/Prescription.model";
 
 export const getFullName = (firstName: string | null = "", lastName: string | null = ""): string => {
   return (firstName ? firstName : "") + " " + (lastName ? lastName : "");
@@ -130,4 +131,37 @@ export const isValidUrl = (url: string) => {
   } catch {
     return false;
   }
+};
+
+export const dosevanaCostGenerate = (item: any, customer?:ICustomer) => {
+  const price = Number(trimPrice(item?.price || 0));
+  const doctorFee = Number(trimPrice(item?.doctor_fee || 0));
+  const serviceFee = Number(trimPrice(item?.service_fee || 0));
+
+  if (item?.is_packaged == 1) {
+    return price + doctorFee + serviceFee;
+  }
+
+  let platformFee = serviceFee;
+  if (customer && customer?.platform_fee !== undefined && customer?.platform_fee !== null) {
+    platformFee = Number(customer?.platform_fee || 0);
+  }
+
+  if (!item?.is_required_intake) {
+    return price + platformFee;
+  }
+
+  let consultancyFee = doctorFee;
+  if (customer) {
+    const hasTestosteroneOverride = isTestosterone(item?.medication_category || "") && customer?.testosterone_fee;
+    consultancyFee = hasTestosteroneOverride ? Number(customer?.testosterone_fee || 0) : Number(customer?.consultancy_fee || item?.doctor_fee || 0);
+  }
+
+  return price + consultancyFee + platformFee;
+};
+
+export const isTestosterone = (medicine_name: string): boolean => {
+  const lowerCaseName = medicine_name?.toLowerCase() || "";
+
+  return lowerCaseName?.includes("testosterone");
 };
