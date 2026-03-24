@@ -58,9 +58,9 @@ export default function InjectionDate({ onNext, onBack, defaultValues, direction
     if (isOdt) {
       // ODT (melt) doses
       if (prevGlpDetails?.currentMedType === "Tirzepatide") {
-        setLastDoseOptions(["3 mg", "4 mg", "5 mg", "6 mg"]);
+        setLastDoseOptions(["3 mg", "4 mg", "5 mg", "6 mg", "10 mg", "20 mg"]);
       } else {
-        setLastDoseOptions(["1 mg", "2 mg", "2.75 mg", "4 mg", "5 mg", "6 mg"]);
+        setLastDoseOptions(["1 mg", "2 mg", "2.75 mg", "4 mg", "5 mg", "6 mg", "12 mg", "24 mg"]);
       }
     } else {
       // Injection doses

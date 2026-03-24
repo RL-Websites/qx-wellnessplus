@@ -39,6 +39,7 @@ export interface IMedicineListItem {
   id: number;
   client_id: number | null;
   name: string;
+  program_name?: string | null;
   sku: string;
   dose: string;
   strength: string;

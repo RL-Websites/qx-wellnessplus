@@ -207,7 +207,7 @@ const MedicationsPage = () => {
               <MedicationCard
                 key={index}
                 image={`${import.meta.env.VITE_BASE_PATH}/storage/${item?.image}`}
-                title={`${item?.name} ${item.strength ? item.strength + " " + item.unit : ""} `}
+                title={`${item?.program_name || item?.name} ${item.strength ? item.strength + " " + item.unit : ""} `}
                 cost={item?.customer_medication?.price}
                 lab_fee={stateWiseLabFee(item, selectedState)}
                 onAddToCart={() => handleAddToCart(item)}
