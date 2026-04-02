@@ -139,6 +139,7 @@ export interface IPublicPartnerDetailsMedicationRef {
   qty?: number;
   customer_price?: string;
   image: any;
+  lab_package?: ILabPackage | null;
   direction: any;
   is_active: number;
   created_by: number;
@@ -148,6 +149,32 @@ export interface IPublicPartnerDetailsMedicationRef {
   deleted_by: any;
   total_price: string;
 }
+
+export interface ILabPackage {
+  id: number;
+  lab_id: number;
+  package_name: string;
+  package_code: string;
+  price_all_state: string | null;
+  price_selected_state: string | null;
+  status: number;
+  created_at: string;
+  updated_at: string;
+  examinations: Examination[];
+}
+
+export interface Examination {
+  id: number;
+  lab_id: number;
+  name: string;
+  code: string;
+  price_all_state: string;
+  price_selected_state: string;
+  status: number;
+  created_at: string;
+  updated_at: string;
+}
+
 
 export interface IPublicPartnerPatientRef {
   id: number;
