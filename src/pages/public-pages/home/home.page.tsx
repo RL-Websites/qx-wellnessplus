@@ -1,6 +1,6 @@
 import { IUserData } from "@/common/api/models/interfaces/User.model";
 import CustomerApiRepository from "@/common/api/repositories/customerRepositoiry";
-import { animationDelay, getHomePageAnimationClass } from "@/common/constants/constants";
+import { animationDelay } from "@/common/constants/constants";
 import { customerAtom } from "@/common/states/customer.atom";
 import { userAtom } from "@/common/states/user.atom";
 import { isValidUrl } from "@/utils/helper.utils";
@@ -8,7 +8,7 @@ import { Button, Image, NavLink } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import { useAtom, useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
-import { Link, NavLink as RdNavLink, useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { NavLink as RdNavLink, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 const HomePage = () => {
   const userData = useAtomValue<IUserData | null>(userAtom);
   const [customerData, setCustomerData] = useAtom(customerAtom);
@@ -48,6 +48,26 @@ const HomePage = () => {
       setGlobalCustomerData(customerDetailsQuery?.data?.data?.data);
     }
   }, [customerDetailsQuery?.data?.data?.data]);
+
+  useEffect(() => {
+    if (customerData?.favicon) {
+      const faviconUrl = isValidUrl(customerData.favicon) ? customerData.favicon : `${import.meta.env.VITE_BASE_PATH}/storage/${customerData.favicon}`;
+
+      const link: HTMLLinkElement | null = document.querySelector("#dynamic-favicon");
+      if (link) {
+        // Add a cache-buster query parameter to force the browser to refresh the icon
+        const cacheBuster = `?v=${new Date().getTime()}`;
+        link.href = faviconUrl + cacheBuster;
+
+        // Update the type based on the actual file extension from the API
+        const extension = customerData.favicon.split(".").pop()?.toLowerCase();
+        if (extension === "svg") link.type = "image/svg+xml";
+        else if (extension === "png") link.type = "image/png";
+        else if (extension === "jpg" || extension === "jpeg") link.type = "image/jpeg";
+        else link.type = "image/x-icon";
+      }
+    }
+  }, [customerData]);
 
   return (
     <div className="site-main-bg">
