@@ -1,5 +1,5 @@
 import { cartItemsAtom } from "@/common/states/product.atom";
-import { calculatePrice, stateWiseLabFee } from "@/utils/helper.utils";
+import { calculatePrice, dosevanaCostGenerate, stateWiseLabFee } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Avatar, Button, TextInput } from "@mantine/core";
 import { useAtom, useAtomValue } from "jotai";
@@ -40,6 +40,7 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
   const [cartItems] = useAtom(cartItemsAtom);
 
   const [totalBillAmount, setTotalBillAmount] = useState<number>(0); // subtotal (products only)
+  const [totalDvCost, setTotalDvCost] = useState<number>(0); // subtotal (products only)
   const [labFee, setLabFee] = useState<number>(0); // separate lab fee
   const [finalTotal, setFinalTotal] = useState<number>(0);
   const [discount, setDiscount] = useState<number>(0);
@@ -56,10 +57,12 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
   useEffect(() => {
     if (cartItems?.length > 0) {
       let productTotal = 0;
+      let dosevanaTotal = 0;
       let labFeeTotal = 0;
 
       cartItems.forEach((item) => {
         productTotal += calculatePrice(item);
+        dosevanaTotal += dosevanaCostGenerate(item, item?.customer_medication?.customer);
         if (item?.lab_required == "1") {
           labFeeTotal += stateWiseLabFee(item, selectedState);
         }
@@ -69,6 +72,7 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
       labFeeTotal = Math.round(labFeeTotal * 100) / 100;
 
       setTotalBillAmount(productTotal);
+      setTotalDvCost(dosevanaTotal);
       setLabFee(labFeeTotal);
 
       const grossTotal = productTotal + labFeeTotal;
@@ -100,7 +104,7 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
 
   // promo apply mutation
   const applyPromoMutation = useMutation<any, AxiosError<IServerErrorResponse>, { promo_code: string; customerId: string }>({
-    mutationFn: ({ promo_code, customerId }) => promoCodesApiRepository.getApplyPromoCode({ code: promo_code, customerId }),
+    mutationFn: ({ promo_code, customerId }) => promoCodesApiRepository.getApplyPromoCode({ code: promo_code, customerId, totalBillAmount, totalDvCost }),
 
     onSuccess(response) {
       const apiData = response?.data?.data;
@@ -145,6 +149,7 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
   // called by RHF promo form
   const handleApplyPromo = (data: { promo_code?: string | null | undefined }) => {
     const customerId = customerData?.id.toString() || "";
+
     applyPromoMutation.mutate({ promo_code: data.promo_code ?? "", customerId });
   };
 
@@ -216,7 +221,7 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
                   </div>
                   <div className="space-y-2.5">
                     <h6 className="text-foreground break-all">
-                      {item?.name} {`${item?.strength ?? ""}${item?.unit ?? ""}`}
+                      {item?.name} {`${item?.strength || ""}${item?.unit || ""}`}
                     </h6>
                     <div className="text-gray">
                       {item?.medicine_type == "ODT" ? "Oral" : item?.medicine_type} | {item?.medication_category}

@@ -54,12 +54,23 @@ export default function InjectionDate({ onNext, onBack, defaultValues, direction
   });
 
   useEffect(() => {
-    if (prevGlpDetails?.currentMedType && prevGlpDetails?.currentMedType == "Tirzepatide") {
-      setLastDoseOptions(["2.5 mg", "5 mg", "7.5 mg", "10 mg", "12.5 mg", "15 mg"]);
+    const isOdt = prevGlpDetails?.preferredMedConsumptionType === "odt";
+    if (isOdt) {
+      // ODT (melt) doses
+      if (prevGlpDetails?.currentMedType === "Tirzepatide") {
+        setLastDoseOptions(["3 mg", "4 mg", "5 mg", "6 mg", "10 mg", "20 mg"]);
+      } else {
+        setLastDoseOptions(["1 mg", "2 mg", "2.75 mg", "4 mg", "5 mg", "6 mg", "12 mg", "24 mg"]);
+      }
     } else {
-      setLastDoseOptions(["0.25 mg", "0.50 mg", "1 mg", "1.7 mg", "2.5 mg", "5 mg"]);
+      // Injection doses
+      if (prevGlpDetails?.currentMedType && prevGlpDetails?.currentMedType == "Tirzepatide") {
+        setLastDoseOptions(["2.5 mg", "5 mg", "7.5 mg", "10 mg", "12.5 mg", "15 mg"]);
+      } else {
+        setLastDoseOptions(["0.25 mg", "0.50 mg", "1 mg", "1.7 mg", "2.5 mg", "5 mg"]);
+      }
     }
-  }, [prevGlpDetails?.currentMedType]);
+  }, [prevGlpDetails?.currentMedType, prevGlpDetails?.preferredMedConsumptionType]);
 
   const lastDose = watch("lastDose");
   const handleSelect = (field: keyof InjectionDateSchemaType, value: string) => {

@@ -1,101 +1,94 @@
 import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
 import { animationDelay, getAnimationClass } from "@/common/constants/constants";
+import { prevGlpMedDetails } from "@/common/states/product.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Radio, Text } from "@mantine/core";
+import { useAtom } from "jotai";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
-// Validation schema
-export const customerStatusSchema = yup.object({
-  customerStatus: yup.string().required("Please select a customer."),
+export const medicationConsumptionTypeSchema = yup.object({
+  medicationConsumptionType: yup.string().required("Please select a medication type."),
 });
 
-export type customerStatusSchemaType = yup.InferType<typeof customerStatusSchema>;
+export type medicationConsumptionTypeSchemaType = yup.InferType<typeof medicationConsumptionTypeSchema>;
 
-interface ICustomerStatusProps {
-  onNext: (data: customerStatusSchemaType & { inEligibleUser?: boolean }) => void;
+interface IMedicationConsumptionTypeProps {
+  onNext: (data: medicationConsumptionTypeSchemaType) => void;
   onBack: () => void;
-  defaultValues?: customerStatusSchemaType;
-  direction?: "forward" | "backward"; // Optional, if you want to handle direction-based animations later
+  defaultValues?: medicationConsumptionTypeSchemaType;
+  direction?: "forward" | "backward";
 }
 
-const CustomerStatus = ({ onNext, onBack, defaultValues, direction }: ICustomerStatusProps) => {
+const MedicationConsumptionType = ({ onNext, onBack, defaultValues, direction }: IMedicationConsumptionTypeProps) => {
+  const [, setPrevGlpDetails] = useAtom(prevGlpMedDetails);
   const {
     handleSubmit,
     setValue,
     watch,
     clearErrors,
     formState: { errors },
-  } = useForm<customerStatusSchemaType>({
+  } = useForm<medicationConsumptionTypeSchemaType>({
     defaultValues: {
-      customerStatus: defaultValues?.customerStatus || "",
+      medicationConsumptionType: defaultValues?.medicationConsumptionType || "",
     },
-    resolver: yupResolver(customerStatusSchema),
+    resolver: yupResolver(medicationConsumptionTypeSchema),
   });
 
-  const customerStatus = watch("customerStatus");
+  const medicationConsumptionType = watch("medicationConsumptionType");
 
-  const options = ["Existing", "New"];
+  const options = ["Injection", "ODT"];
 
   const handleSelect = (value: string) => {
-    if (errors.customerStatus) {
+    if (errors.medicationConsumptionType) {
       setIsErrorFading(true);
       setTimeout(() => {
-        setValue("customerStatus", value, { shouldValidate: true });
-        clearErrors("customerStatus");
+        setValue("medicationConsumptionType", value, { shouldValidate: true });
+        setPrevGlpDetails((prev) => ({ ...prev, preferredMedConsumptionType: value.toLowerCase() }));
+        clearErrors("medicationConsumptionType");
         setIsErrorFading(false);
       }, 300);
     } else {
-      setValue("customerStatus", value, { shouldValidate: true });
+      setValue("medicationConsumptionType", value, { shouldValidate: true });
+      setPrevGlpDetails((prev) => ({ ...prev, preferredMedConsumptionType: value.toLowerCase() }));
     }
   };
 
-  // const handleFormSubmit = (data: customerStatusSchemaType) => {
-  //   onNext({
-  //     ...data,
-  //     inEligibleUser: data.customerStatus === "New",
-  //   });
-  // };
-
   const [isExiting, setIsExiting] = useState(false);
   const [isBackExiting, setIsBackExiting] = useState(false);
+  const [isErrorFading, setIsErrorFading] = useState(false);
 
-  const handleFormSubmit = (data: customerStatusSchemaType) => {
+  const handleFormSubmit = (data: medicationConsumptionTypeSchemaType) => {
     setIsExiting(true);
-
-    // Wait for exit animation to complete
     setTimeout(() => {
       onNext(data);
       setIsExiting(false);
-    }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
+    }, animationDelay);
   };
 
   const handleBackClick = () => {
     setIsBackExiting(true);
-
-    // Wait for exit animation to complete
     setTimeout(() => {
       setIsBackExiting(false);
       onBack();
     }, animationDelay);
   };
-  const [isErrorFading, setIsErrorFading] = useState(false);
 
   return (
     <div className="px-4 pt-4 md:pt-10 lg:pt-16">
       <form
-        id="customerStatusForm"
+        id="medicationConsumptionTypeForm"
         onSubmit={handleSubmit(handleFormSubmit)}
         className="card-common-width-lg mx-auto space-y-6"
       >
         <div>
           <h2 className={`text-center text-3xl font-poppins font-semibold text-foreground ${getAnimationClass("title", isExiting, isBackExiting, direction)}`}>
-            Are you new or an existing customer?
+            Which GLP-1 medication type are you interested in?
           </h2>
 
           <Radio.Group
-            value={customerStatus}
+            value={medicationConsumptionType}
             onChange={handleSelect}
             className={`mt-6 w-full ${getAnimationClass("content", isExiting, isBackExiting, direction)}`}
           >
@@ -104,11 +97,11 @@ const CustomerStatus = ({ onNext, onBack, defaultValues, direction }: ICustomerS
                 <Radio
                   key={option}
                   value={option}
-                  classNames={getBaseWebRadios(customerStatus, option)}
+                  classNames={getBaseWebRadios(medicationConsumptionType, option)}
                   label={
                     <div className="relative text-center">
                       <span className="text-foreground font-poppins">{option}</span>
-                      {customerStatus === option && (
+                      {medicationConsumptionType === option && (
                         <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
                           <i className="icon-tick text-sm/none"></i>
                         </span>
@@ -119,8 +112,10 @@ const CustomerStatus = ({ onNext, onBack, defaultValues, direction }: ICustomerS
               ))}
             </div>
           </Radio.Group>
-          {errors.customerStatus && (
-            <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>{errors.customerStatus.message}</Text>
+          {errors.medicationConsumptionType && (
+            <Text className={`text-red-500 text-sm mt-5 text-center ${isErrorFading ? "error-fade-out" : "animate-pulseFade"}`}>
+              {errors.medicationConsumptionType.message}
+            </Text>
           )}
         </div>
 
@@ -135,7 +130,7 @@ const CustomerStatus = ({ onNext, onBack, defaultValues, direction }: ICustomerS
           <Button
             type="submit"
             className="w-[200px] animated-btn"
-            form="customerStatusForm"
+            form="medicationConsumptionTypeForm"
           >
             Next
           </Button>
@@ -145,4 +140,4 @@ const CustomerStatus = ({ onNext, onBack, defaultValues, direction }: ICustomerS
   );
 };
 
-export default CustomerStatus;
+export default MedicationConsumptionType;

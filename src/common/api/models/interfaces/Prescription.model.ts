@@ -104,6 +104,40 @@ export interface IPharmacy {
 export interface ICustomer {
   id: number;
   account_name: string;
+
+  contact_person_name?: string;
+  slug?: string;
+  email?: string;
+  phone?: string;
+  fax_number?: string;
+  logo?: string;
+  status?: string;
+  has_watched_video?: number;
+  address?: string;
+  state?: string;
+  city?: string;
+  zip_code?: string;
+  platform_fee?: number;
+  cc_processing_fee?: number;
+  refill_platform_fee?: number;
+  consultancy_fee?: number;
+  testosterone_fee?: number;
+  token?: string;
+  expires_at?: Date;
+  created_at?: Date;
+  updated_at?: Date;
+  deleted_at?: null;
+  deleted_by?: null;
+  payment_type?: string;
+  stripe_connect_id?: string;
+  stripe_connect_email?: string;
+  stripe_enabled?: number;
+  created_by?: null;
+  customer_from?: null;
+  customer_from_id?: null;
+  prescriptions_count?: number;
+  profile_image?: string;
+
 }
 
 export interface IPatient {

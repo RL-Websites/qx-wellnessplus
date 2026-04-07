@@ -282,6 +282,8 @@ export interface IPatientInfoDTO {
   // height: string;
   driving_lic_front?: string;
   driving_lic_back?: string;
+  driver_license_number?: string;
+  driver_license_state?: string;
 }
 
 export interface IPatientIntakeFormDTO {

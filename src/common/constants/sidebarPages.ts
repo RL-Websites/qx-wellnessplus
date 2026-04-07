@@ -72,74 +72,74 @@ export const SuperAdminSidebarData: ISidebarOrganization[] =
         // },
       ]
     : import.meta.env.VITE_ENV_NAME == "stage"
-    ? [
-        // {
-        //   id: 1,
-        //   to: "/admin/dashboard",
-        //   name: "Docmedilink",
-        //   logo: "/images/d-logo.svg",
-        //   type: "master",
-        //   pages: AdminSidebarPages,
-        // },
-        {
-          id: 1,
-          name: "Wellness Plus",
-          to: "/admin-client/dashboard",
-          logo: "/images/client-sidebar-logo.png",
-          type: "client",
-          pages: ClientSidebarPages,
-        },
-        // {
-        //   id: 3,
-        //   name: "Pharmacy",
-        //   to: "/admin-clinic/dashboard",
-        //   logo: "/images/pharmacy.svg",
-        //   type: "clinic",
-        //   pages: ClinicSidebarPages,
-        // },
-        // {
-        //   id: 4,
-        //   name: "Intake Review",
-        //   to: "/admin-spa/dashboard",
-        //   logo: "/images/spa.svg",
-        //   type: "spa",
-        //   pages: SpaSidebarPages,
-        // },
-      ]
-    : [
-        // {
-        //   id: 1,
-        //   to: "/admin/dashboard",
-        //   name: "Docmedilink",
-        //   logo: "/images/d-logo.svg",
-        //   type: "master",
-        //   pages: AdminSidebarPages,
-        // },
-        {
-          id: 1,
-          name: "Wellness Plus",
-          to: "/admin-client/dashboard",
-          logo: "/images/client-sidebar-logo.png",
-          type: "client",
-          pages: ClientSidebarPages,
-        },
-        // {
-        //   id: 3,
-        //   name: "Pharmacy",
-        //   to: "/admin-clinic/dashboard",
-        //   logo: "/images/pharmacy.svg",
-        //   type: "clinic",
-        //   pages: ClinicSidebarPages,
-        // },
-        // {
-        //   id: 4,
-        //   name: "Intake Review",
-        //   to: "/admin-spa/dashboard",
-        //   logo: "/images/spa.svg",
-        //   type: "spa",
-        //   pages: SpaSidebarPages,
-        // },
-      ];
+      ? [
+          // {
+          //   id: 1,
+          //   to: "/admin/dashboard",
+          //   name: "Docmedilink",
+          //   logo: "/images/d-logo.svg",
+          //   type: "master",
+          //   pages: AdminSidebarPages,
+          // },
+          {
+            id: 1,
+            name: "Wellness Plus",
+            to: "/admin-client/dashboard",
+            logo: "/images/client-sidebar-logo.png",
+            type: "client",
+            pages: ClientSidebarPages,
+          },
+          // {
+          //   id: 3,
+          //   name: "Pharmacy",
+          //   to: "/admin-clinic/dashboard",
+          //   logo: "/images/pharmacy.svg",
+          //   type: "clinic",
+          //   pages: ClinicSidebarPages,
+          // },
+          // {
+          //   id: 4,
+          //   name: "Intake Review",
+          //   to: "/admin-spa/dashboard",
+          //   logo: "/images/spa.svg",
+          //   type: "spa",
+          //   pages: SpaSidebarPages,
+          // },
+        ]
+      : [
+          // {
+          //   id: 1,
+          //   to: "/admin/dashboard",
+          //   name: "Docmedilink",
+          //   logo: "/images/d-logo.svg",
+          //   type: "master",
+          //   pages: AdminSidebarPages,
+          // },
+          {
+            id: 1,
+            name: "Wellness Plus",
+            to: "/admin-client/dashboard",
+            logo: "/images/client-sidebar-logo.png",
+            type: "client",
+            pages: ClientSidebarPages,
+          },
+          // {
+          //   id: 3,
+          //   name: "Pharmacy",
+          //   to: "/admin-clinic/dashboard",
+          //   logo: "/images/pharmacy.svg",
+          //   type: "clinic",
+          //   pages: ClinicSidebarPages,
+          // },
+          // {
+          //   id: 4,
+          //   name: "Intake Review",
+          //   to: "/admin-spa/dashboard",
+          //   logo: "/images/spa.svg",
+          //   type: "spa",
+          //   pages: SpaSidebarPages,
+          // },
+        ];
 
 export const ClientAdminSidebarPages: ISidebarLink[] = [
   {
@@ -204,7 +204,7 @@ export const PartnerAdminSidebarPages: ISidebarLink[] = [
     label: "Customer Users",
     to: "/partner/standard-users",
     leftSectionIcon: "icon-user-group",
-    classes: isPartner ? "" : "hidden",
+    classes: !isPartner ? "hidden" : "",
   },
   {
     label: "Helpful Documents",
