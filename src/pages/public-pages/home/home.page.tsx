@@ -3,7 +3,7 @@ import CustomerApiRepository from "@/common/api/repositories/customerRepositoiry
 import { animationDelay } from "@/common/constants/constants";
 import { customerAtom } from "@/common/states/customer.atom";
 import { userAtom } from "@/common/states/user.atom";
-import { isValidUrl } from "@/utils/helper.utils";
+import { imageUrl, isValidUrl } from "@/utils/helper.utils";
 import { Button, Image, NavLink } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import { useAtom, useAtomValue } from "jotai";
@@ -88,7 +88,8 @@ const HomePage = () => {
                       <>
                         {customerData?.logo ? (
                           <Image
-                            src={customerData?.logo ? (isValidUrl(customerData.logo) ? customerData.logo : `${import.meta.env.VITE_BASE_PATH}/storage/${customerData.logo}`) : ""}
+                            // src={customerData?.logo ? (isValidUrl(customerData.logo) ? customerData.logo : `${import.meta.env.VITE_BASE_PATH}/storage/${customerData.logo}`) : ""}
+                            src={imageUrl(customerData?.logo)}
                             alt={customerData?.logo ? customerData?.name : ""}
                             className="lg:w-16 md:w-12 w-10"
                           />
