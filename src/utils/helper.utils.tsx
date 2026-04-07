@@ -1,9 +1,9 @@
 import { IMedicineListItem } from "@/common/api/models/interfaces/Medication.model";
+import { ICustomer } from "@/common/api/models/interfaces/Prescription.model";
 import { Locations } from "@/common/constants/locations";
 import { ILocation } from "@/common/models/location";
 import {} from "@/data/dosespot.json";
 import { formatDate } from "./date.utils";
-import { ICustomer } from "@/common/api/models/interfaces/Prescription.model";
 
 export const getFullName = (firstName: string | null = "", lastName: string | null = ""): string => {
   return (firstName ? firstName : "") + " " + (lastName ? lastName : "");
@@ -133,7 +133,7 @@ export const isValidUrl = (url: string) => {
   }
 };
 
-export const dosevanaCostGenerate = (item: any, customer?:ICustomer) => {
+export const dosevanaCostGenerate = (item: any, customer?: ICustomer) => {
   const price = Number(trimPrice(item?.price || 0));
   const doctorFee = Number(trimPrice(item?.doctor_fee || 0));
   const serviceFee = Number(trimPrice(item?.service_fee || 0));
@@ -164,4 +164,38 @@ export const isTestosterone = (medicine_name: string): boolean => {
   const lowerCaseName = medicine_name?.toLowerCase() || "";
 
   return lowerCaseName?.includes("testosterone");
+};
+
+export const imageUrl = (imagePath: string, defaulPath: string = "/images/image-placeholder.png") => {
+  // console.log("Image Path:", imagePath);
+  if (!imagePath) {
+    return defaulPath;
+  }
+
+  if (imagePath.startsWith("blob:") || imagePath.startsWith("data:image")) {
+    return imagePath;
+  }
+
+  try {
+    const url = new URL(imagePath);
+    // Check if it's already a full URL (S3, CDN, etc.)
+    // S3 temporary URLs may not have extensions, so check the hostname too
+    if (url.hostname.includes("s3") || url.hostname.includes("amazonaws") || url.hostname.includes("cloudfront")) {
+      return imagePath; // Already a full S3/CDN URL
+    }
+    if (/\.(png|jpe?g|gif|webp|svg|ico|bmp|avif)(\?|#|$)/i.test(url.pathname)) {
+      return imagePath;
+    }
+  } catch {
+    // Fall through to local-image and storage-path handling.
+  }
+
+  if (imagePath.startsWith("/")) {
+    return imagePath;
+  }
+
+  const baseUrl = import.meta.env.VITE_AWS_IMAGE_BASE_URL || "";
+  const normalizedBase = baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl;
+  const normalizedPath = imagePath.startsWith("/") ? imagePath.slice(1) : imagePath;
+  return `${normalizedBase}/${normalizedPath}`;
 };
