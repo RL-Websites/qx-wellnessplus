@@ -165,37 +165,3 @@ export const isTestosterone = (medicine_name: string): boolean => {
 
   return lowerCaseName?.includes("testosterone");
 };
-
-export const imageUrl = (imagePath: string, defaulPath: string = "/images/image-placeholder.png") => {
-  // console.log("Image Path:", imagePath);
-  if (!imagePath) {
-    return defaulPath;
-  }
-
-  if (imagePath.startsWith("blob:") || imagePath.startsWith("data:image")) {
-    return imagePath;
-  }
-
-  try {
-    const url = new URL(imagePath);
-    // Check if it's already a full URL (S3, CDN, etc.)
-    // S3 temporary URLs may not have extensions, so check the hostname too
-    if (url.hostname.includes("s3") || url.hostname.includes("amazonaws") || url.hostname.includes("cloudfront")) {
-      return imagePath; // Already a full S3/CDN URL
-    }
-    if (/\.(png|jpe?g|gif|webp|svg|ico|bmp|avif)(\?|#|$)/i.test(url.pathname)) {
-      return imagePath;
-    }
-  } catch {
-    // Fall through to local-image and storage-path handling.
-  }
-
-  if (imagePath.startsWith("/")) {
-    return imagePath;
-  }
-
-  const baseUrl = import.meta.env.VITE_AWS_IMAGE_BASE_URL || "";
-  const normalizedBase = baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl;
-  const normalizedPath = imagePath.startsWith("/") ? imagePath.slice(1) : imagePath;
-  return `${normalizedBase}/${normalizedPath}`;
-};
