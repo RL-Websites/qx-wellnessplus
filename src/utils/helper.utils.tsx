@@ -1,9 +1,9 @@
 import { IMedicineListItem } from "@/common/api/models/interfaces/Medication.model";
+import { ICustomer } from "@/common/api/models/interfaces/Prescription.model";
 import { Locations } from "@/common/constants/locations";
 import { ILocation } from "@/common/models/location";
 import {} from "@/data/dosespot.json";
 import { formatDate } from "./date.utils";
-import { ICustomer } from "@/common/api/models/interfaces/Prescription.model";
 
 export const getFullName = (firstName: string | null = "", lastName: string | null = ""): string => {
   return (firstName ? firstName : "") + " " + (lastName ? lastName : "");
@@ -133,7 +133,7 @@ export const isValidUrl = (url: string) => {
   }
 };
 
-export const dosevanaCostGenerate = (item: any, customer?:ICustomer) => {
+export const dosevanaCostGenerate = (item: any, customer?: ICustomer) => {
   const price = Number(trimPrice(item?.price || 0));
   const doctorFee = Number(trimPrice(item?.doctor_fee || 0));
   const serviceFee = Number(trimPrice(item?.service_fee || 0));
