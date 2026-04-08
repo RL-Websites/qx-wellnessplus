@@ -50,6 +50,11 @@ const HomePage = () => {
   }, [customerDetailsQuery?.data?.data?.data]);
 
   useEffect(() => {
+    // Dynamically update the page title based on the API response
+    if (customerData?.name) {
+      document.title = customerData.name;
+    }
+
     if (customerData?.favicon) {
       const faviconUrl = isValidUrl(customerData.favicon) ? customerData.favicon : `${import.meta.env.VITE_BASE_PATH}/storage/${customerData.favicon}`;
 
