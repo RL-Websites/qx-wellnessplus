@@ -5,7 +5,7 @@ import dmlToast from "@/common/configs/toaster.config";
 import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { basicInfoAtom } from "@/common/states/customerBasic.atom";
 import StepFifteen from "@/pages/step-filteen";
-import { Progress } from "@mantine/core";
+import { Progress, Skeleton } from "@mantine/core";
 import { useWindowScroll } from "@mantine/hooks";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
@@ -249,6 +249,56 @@ const PatientIntake = () => {
   };
 
   const CurrentStepComponent = filteredSteps[activeStep - 1]?.component;
+
+  if (patientDetailsQuery.isLoading) {
+    return (
+      <div className="max-w-[800px] mx-auto pt-10 px-4">
+        {/* Header Skeleton */}
+        <Skeleton
+          height={45}
+          width="40%"
+          mx="auto"
+          mb="xl"
+          radius="md"
+        />
+        <div className="space-y-3 mb-12">
+          <Skeleton
+            height={20}
+            radius="sm"
+          />
+          <Skeleton
+            height={20}
+            radius="sm"
+          />
+          <Skeleton
+            height={20}
+            width="70%"
+            radius="sm"
+            mx="auto"
+          />
+        </div>
+        {/* Progress Bar Skeleton */}
+        <div className="max-w-[520px] mx-auto">
+          <Skeleton
+            height={8}
+            radius="xl"
+            mb="sm"
+          />
+          <Skeleton
+            height={15}
+            width={60}
+            mx="auto"
+          />
+        </div>
+        {/* Form Content Skeleton */}
+        <Skeleton
+          height={450}
+          mt={50}
+          radius="lg"
+        />
+      </div>
+    );
+  }
 
   return (
     <>
