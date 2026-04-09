@@ -146,7 +146,7 @@ const PatientIntake = () => {
                 weight: "",
                 full_body_image: "",
               },
-              questionnaires: [],
+              questionnaires: [{ question: "", key: "", answer: [""] }],
             },
             {
               onSuccess: () => {
