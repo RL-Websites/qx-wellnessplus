@@ -165,3 +165,34 @@ export const isTestosterone = (medicine_name: string): boolean => {
 
   return lowerCaseName?.includes("testosterone");
 };
+
+export const imageUrl = (imagePath: string, defaultPath: string = "/images/image-placeholder.png") => {
+  if (!imagePath) {
+    return defaultPath;
+  }
+
+  if (imagePath.startsWith("blob:") || imagePath.startsWith("data:image")) {
+    return imagePath;
+  }
+
+  try {
+    const url = new URL(imagePath);
+    if (url.hostname.includes("s3") || url.hostname.includes("amazonaws") || url.hostname.includes("cloudfront")) {
+      return imagePath;
+    }
+    if (/\.(png|jpe?g|gif|webp|svg|ico|bmp|avif)(\?|#|$)/i.test(url.pathname)) {
+      return imagePath;
+    }
+  } catch {
+    // Not a full URL, construct one
+  }
+
+  if (imagePath.startsWith("/")) {
+    return imagePath;
+  }
+
+  const baseUrl = import.meta.env.VITE_AWS_IMAGE_BASE_URL || "";
+  const normalizedBase = baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl;
+  const normalizedPath = imagePath.startsWith("/") ? imagePath.slice(1) : imagePath;
+  return `${normalizedBase}/${normalizedPath}`;
+};
