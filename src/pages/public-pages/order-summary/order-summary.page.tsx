@@ -44,10 +44,16 @@ const OrderSummary = () => {
   const handleNext = () => {
     console.log(userData, getAccessToken());
     if (userData && getAccessToken()) {
+
+
       navigate("/complete-order");
+
+      // alert("After Navigate");
     } else {
       navigate("/login");
     }
+
+    return;
   };
 
   return (

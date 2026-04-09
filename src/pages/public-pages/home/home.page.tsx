@@ -50,6 +50,11 @@ const HomePage = () => {
   }, [customerDetailsQuery?.data?.data?.data]);
 
   useEffect(() => {
+    // Dynamically update the page title based on the API response
+    if (customerData?.name) {
+      document.title = customerData.name;
+    }
+
     if (customerData?.favicon) {
       const faviconUrl = isValidUrl(customerData.favicon) ? customerData.favicon : `${import.meta.env.VITE_BASE_PATH}/storage/${customerData.favicon}`;
 
@@ -130,26 +135,30 @@ const HomePage = () => {
               >
                 Start Your Journey Now
               </Button>
-              <p className={`sm:text-lg text-base text-foreground font-medium md:text-start text-center`}>
-                Are you an existing customer?{" "}
-                <span
-                  className="text-primary font-semibold underline cursor-pointer"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setIsExiting(true);
-                    setTimeout(() => {
-                      setIsExiting(false);
-                      if (location.key !== "default") {
-                        navigate(-1);
-                      } else {
-                        navigate("/login");
-                      }
-                    }, animationDelay);
-                  }}
-                >
-                  Login Now
-                </span>
-              </p>
+
+              {!userData && (
+                <p className={`sm:text-lg text-base text-foreground font-medium md:text-start text-center`}>
+                  Are you an existing customer?{" "}
+                  <span
+                    className="text-primary font-semibold underline cursor-pointer"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setIsExiting(true);
+                      setTimeout(() => {
+                        setIsExiting(false);
+                        if (location.key !== "default") {
+                          navigate(-1);
+                        } else {
+                          navigate("/login");
+                        }
+                      }, animationDelay);
+                    }}
+                  >
+                    Login Now
+                  </span>
+                </p>
+              )}
+              
             </div>
           </div>
           {/* <div className="absolute inset-0 overflow-hidden pointer-events-none hidden md:block">
