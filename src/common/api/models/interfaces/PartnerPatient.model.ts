@@ -117,6 +117,7 @@ export interface IPublicPartnerDetailsRef {
   selling_price: string;
   doctor_name: any;
   doctor_npi: any;
+  is_required_intake?: number;
   created_at: string;
   updated_at: string;
   medication: IPublicPartnerDetailsMedicationRef;
