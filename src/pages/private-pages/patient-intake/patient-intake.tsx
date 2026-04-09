@@ -16,6 +16,7 @@ import FullBodyPhoto from "./intake-steps/FullbodyPhoto";
 
 import patientApiRepository from "@/common/api/repositories/patientRepository";
 import AnimatedStep from "@/common/components/AnimatedSteps";
+import { cartItemsAtom } from "@/common/states/product.atom";
 import { AnimatePresence } from "framer-motion";
 import MedicalHistory from "./intake-steps/hair-growth/medicalHistory";
 import SymptomHistory from "./intake-steps/hair-growth/symptomHistory";
@@ -59,6 +60,7 @@ interface StepConfig {
 }
 
 const PatientIntake = () => {
+  const [cartItems, setCartItems] = useAtom(cartItemsAtom);
   const [activeStep, setActiveStep] = useState(1);
   const [prevStep, setPrevStep] = useState(1);
   const [formData, setFormData] = useState<any>({});
@@ -127,6 +129,8 @@ const PatientIntake = () => {
     console.log(patientDetailsQuery?.data?.data?.data?.status);
     if (patientDetailsQuery?.data?.data?.data != undefined || patientDetailsQuery?.data?.data?.data != null) {
       if (patientDetailsQuery?.data?.data?.data?.status && patientDetailsQuery?.data?.data?.data?.status == "payment_completed") {
+        setCartItems([]);
+        localStorage.removeItem("cartItems");
         const medicationCats: string[] = patientDetailsQuery?.data?.data?.data?.prescription_details?.map((item) => item.medication.medication_category);
         const categories: string[] = [];
         if (medicationCats.some((cat) => ["Single Peptides", "Peptides Blends"].includes(cat))) categories.push("peptides");
