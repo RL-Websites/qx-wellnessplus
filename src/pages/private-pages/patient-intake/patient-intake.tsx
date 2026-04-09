@@ -127,7 +127,31 @@ const PatientIntake = () => {
     console.log(patientDetailsQuery?.data?.data?.data?.status);
     if (patientDetailsQuery?.data?.data?.data != undefined || patientDetailsQuery?.data?.data?.data != null) {
       if (patientDetailsQuery?.data?.data?.data?.status && patientDetailsQuery?.data?.data?.data?.status == "payment_completed") {
-        const medicationCats: string[] = patientDetailsQuery?.data?.data?.data?.prescription_details?.map((item) => item.medication.medication_category);
+        const prescriptionDetails = patientDetailsQuery?.data?.data?.data?.prescription_details || [];
+
+        // Filter to only prescription details that require intake (from prescription_details table, not medication)
+        const intakeRequiredDetails = prescriptionDetails.filter((item) => item.is_required_intake == 1);
+
+        // If no medications require intake, submit empty intake and jump to ThanksStep
+        if (intakeRequiredDetails.length === 0) {
+          intakeFormMutation.mutate(
+            { prescription_u_id: prescriptionUId || "", measurement: {}, questionnaires: [] },
+            {
+              onSuccess: () => {
+                setTotalDynamicSteps(1);
+                setActiveStep(2);
+              },
+              onError: (err) => {
+                const error = err as AxiosError<IServerErrorResponse>;
+                console.error(error);
+                dmlToast.error({ title: "Oops! Something went wrong. Please try again later." });
+              },
+            }
+          );
+          return;
+        }
+
+        const medicationCats: string[] = intakeRequiredDetails.map((item) => item.medication.medication_category);
         const categories: string[] = [];
         if (medicationCats.some((cat) => ["Single Peptides", "Peptides Blends"].includes(cat))) categories.push("peptides");
         if (medicationCats.some((cat) => ["Energy & Longevity"].includes(cat))) categories.push("energy");
