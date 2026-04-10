@@ -1,6 +1,7 @@
 export interface IQXCustomerDetails {
   name: string;
   logo: string;
+  favicon: string;
   slug: string;
   email: string;
   phone: string;

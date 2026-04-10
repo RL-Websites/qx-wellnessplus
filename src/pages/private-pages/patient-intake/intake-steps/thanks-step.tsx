@@ -18,7 +18,9 @@ const ThanksStep = ({ isActive }: { isActive: boolean }) => {
       // window.location.href = url;
       window.location.replace(url);
     }, 10000);
-  }, []);
+
+    return () => clearTimeout(timer);
+  }, [isActive, userId]);
 
   const goToDosvanaDashboard = () => {
     window.open(`${import.meta.env.VITE_DOSVANA_URL}/oauth/${userId}`, "_blank");

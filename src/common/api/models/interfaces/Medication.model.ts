@@ -56,6 +56,7 @@ export interface IMedicineListItem {
   lab_fee?: string;
   lab_fee_selected_state?: string;
   is_research_only: string;
+  is_required_intake: number;
   image: string;
   lab_required?: string;
   total_price?: string;
