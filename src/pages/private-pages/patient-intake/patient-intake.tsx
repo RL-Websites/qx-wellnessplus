@@ -5,7 +5,7 @@ import dmlToast from "@/common/configs/toaster.config";
 import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { basicInfoAtom } from "@/common/states/customerBasic.atom";
 import StepFifteen from "@/pages/step-filteen";
-import { Progress } from "@mantine/core";
+import { Progress, Skeleton } from "@mantine/core";
 import { useWindowScroll } from "@mantine/hooks";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
@@ -16,6 +16,7 @@ import FullBodyPhoto from "./intake-steps/FullbodyPhoto";
 
 import patientApiRepository from "@/common/api/repositories/patientRepository";
 import AnimatedStep from "@/common/components/AnimatedSteps";
+import { cartItemsAtom } from "@/common/states/product.atom";
 import { AnimatePresence } from "framer-motion";
 import MedicalHistory from "./intake-steps/hair-growth/medicalHistory";
 import SymptomHistory from "./intake-steps/hair-growth/symptomHistory";
@@ -59,6 +60,7 @@ interface StepConfig {
 }
 
 const PatientIntake = () => {
+  const [cartItems, setCartItems] = useAtom(cartItemsAtom);
   const [activeStep, setActiveStep] = useState(1);
   const [prevStep, setPrevStep] = useState(1);
   const [formData, setFormData] = useState<any>({});
@@ -127,7 +129,21 @@ const PatientIntake = () => {
     console.log(patientDetailsQuery?.data?.data?.data?.status);
     if (patientDetailsQuery?.data?.data?.data != undefined || patientDetailsQuery?.data?.data?.data != null) {
       if (patientDetailsQuery?.data?.data?.data?.status && patientDetailsQuery?.data?.data?.data?.status == "payment_completed") {
-        const medicationCats: string[] = patientDetailsQuery?.data?.data?.data?.prescription_details?.map((item) => item.medication.medication_category);
+        setCartItems([]);
+        localStorage.removeItem("cartItems");
+        const prescriptionDetails = patientDetailsQuery?.data?.data?.data?.prescription_details || [];
+
+        // Filter to only prescription details that require intake (from prescription_details table, not medication)
+        const intakeRequiredDetails = prescriptionDetails.filter((item) => item.is_required_intake == 1);
+
+        // If no medications require intake, skip intake and jump to ThanksStep directly
+        if (intakeRequiredDetails.length === 0) {
+          setTotalDynamicSteps(1);
+          setActiveStep(2);
+          return;
+        }
+
+        const medicationCats: string[] = intakeRequiredDetails.map((item) => item.medication.medication_category);
         const categories: string[] = [];
         if (medicationCats.some((cat) => ["Single Peptides", "Peptides Blends"].includes(cat))) categories.push("peptides");
         if (medicationCats.some((cat) => ["Energy & Longevity"].includes(cat))) categories.push("energy");
@@ -249,6 +265,56 @@ const PatientIntake = () => {
   };
 
   const CurrentStepComponent = filteredSteps[activeStep - 1]?.component;
+
+  if (patientDetailsQuery.isLoading) {
+    return (
+      <div className="max-w-[800px] mx-auto pt-10 px-4">
+        {/* Header Skeleton */}
+        <Skeleton
+          height={45}
+          width="40%"
+          mx="auto"
+          mb="xl"
+          radius="md"
+        />
+        <div className="space-y-3 mb-12">
+          <Skeleton
+            height={20}
+            radius="sm"
+          />
+          <Skeleton
+            height={20}
+            radius="sm"
+          />
+          <Skeleton
+            height={20}
+            width="70%"
+            radius="sm"
+            mx="auto"
+          />
+        </div>
+        {/* Progress Bar Skeleton */}
+        <div className="max-w-[520px] mx-auto">
+          <Skeleton
+            height={8}
+            radius="xl"
+            mb="sm"
+          />
+          <Skeleton
+            height={15}
+            width={60}
+            mx="auto"
+          />
+        </div>
+        {/* Form Content Skeleton */}
+        <Skeleton
+          height={450}
+          mt={50}
+          radius="lg"
+        />
+      </div>
+    );
+  }
 
   return (
     <>

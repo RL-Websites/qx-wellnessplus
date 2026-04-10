@@ -11,7 +11,7 @@ import { dobAtom } from "@/common/states/user.atom";
 import states from "@/data/state-list.json";
 import { formatDate } from "@/utils/date.utils";
 import { compressFileToBase64 } from "@/utils/fileUpload";
-import { getErrorMessage } from "@/utils/helper.utils";
+import { getErrorMessage, imageUrl } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ActionIcon, Anchor, Button, Group, Image, Input, NumberInput, Radio, Select, Text } from "@mantine/core";
 import { Dropzone, MIME_TYPES } from "@mantine/dropzone";
@@ -173,12 +173,22 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
         setZipCode(tempPatientDetails?.userable?.zipcode);
         setValue("latitude", tempPatientDetails?.userable?.latitude ? Number(tempPatientDetails?.userable?.latitude) : null);
         setValue("longitude", tempPatientDetails?.userable?.longitude ? Number(tempPatientDetails?.userable?.longitude) : null);
-        setFrontFile(tempPatientDetails?.userable?.base64_driving_license_front ? tempPatientDetails?.userable?.base64_driving_license_front : "");
-        setBackFile(tempPatientDetails?.userable?.base64_driving_license_back ? tempPatientDetails?.userable?.base64_driving_license_back : "");
-        setFrontBase64(tempPatientDetails?.userable?.base64_driving_license_front ? tempPatientDetails?.userable?.base64_driving_license_front : "");
-        setBackBase64(tempPatientDetails?.userable?.base64_driving_license_back ? tempPatientDetails?.userable?.base64_driving_license_back : "");
-        setValue("driving_lic_front", tempPatientDetails?.userable?.base64_driving_license_front ? tempPatientDetails?.userable?.base64_driving_license_front : "");
-        setValue("driving_lic_back", tempPatientDetails?.userable?.base64_driving_license_back ? tempPatientDetails?.userable?.base64_driving_license_back : "");
+
+        // Driving license: prefer base64 version, fall back to file path (S3 URL)
+        const frontBase64Val = tempPatientDetails?.userable?.base64_driving_license_front;
+        const backBase64Val = tempPatientDetails?.userable?.base64_driving_license_back;
+        const frontPathVal = tempPatientDetails?.userable?.driving_license_front;
+        const backPathVal = tempPatientDetails?.userable?.driving_license_back;
+
+        const resolvedFront = frontBase64Val || (frontPathVal ? imageUrl(frontPathVal) : "");
+        const resolvedBack = backBase64Val || (backPathVal ? imageUrl(backPathVal) : "");
+
+        setFrontFile(resolvedFront);
+        setBackFile(resolvedBack);
+        setFrontBase64(frontBase64Val || resolvedFront);
+        setBackBase64(backBase64Val || resolvedBack);
+        setValue("driving_lic_front", resolvedFront);
+        setValue("driving_lic_back", resolvedBack);
       }
     }
 
