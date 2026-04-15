@@ -77,18 +77,19 @@ const MedicationsPage = () => {
       setSelectedMedication(item);
       handleConfirmTestosterone.open();
     } else {
-      setCartItems((prev) => [...prev, item]);
+      setCartItems((prev) => [...prev, { ...item, shippingType: "Regular" }]);
     }
   };
 
-  const handleAgree = (qty: number) => {
+  const handleAgree = (qty: number, shippingType: string) => {
     if (pendingAddToCart) {
       const exists = cartItems.find((item) => item.id === pendingAddToCart.id);
+      const over_night_shipping_fee = customerData?.over_night_shipping_fee;
 
       if (!exists) {
-        setCartItems([...cartItems, { ...pendingAddToCart, qty }]);
+        setCartItems([...cartItems, { ...pendingAddToCart, qty, shippingType, over_night_shipping_fee }]);
       } else {
-        setCartItems(cartItems.map((item) => (item.id === pendingAddToCart.id ? { ...item, qty: item.qty + qty } : item)));
+        setCartItems(cartItems.map((item) => (item.id === pendingAddToCart.id ? { ...item, qty: item.qty + qty, shippingType, over_night_shipping_fee } : item)));
       }
     }
     handleConfirmMeds.close();
@@ -129,7 +130,7 @@ const MedicationsPage = () => {
       ...prev, // keep previous values
       lab_required: true, // add new field
     }));
-    setCartItems([...cartItems, { ...pendingAddToCart, lab_required }]);
+    setCartItems([...cartItems, { ...pendingAddToCart, lab_required, shippingType: "Regular" }]);
     handleConfirmTestosterone.close();
   };
 
@@ -266,6 +267,7 @@ const MedicationsPage = () => {
         onModalPressNo={handleAgree}
         okBtnLoading={false}
         medicationInfo={pendingAddToCart ? [pendingAddToCart] : []}
+        overNightShippingFee={customerData?.over_night_shipping_fee}
       />
       <ConfirmTestosteroneOnlyModal
         openModal={confirmTestosterone}
