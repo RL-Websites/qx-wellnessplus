@@ -69,6 +69,9 @@ const CompleteOrderPage = () => {
       cartItems.forEach((item) => {
         const price = calculatePrice(item);
         totalBill = totalBill + price;
+        if (item.shippingType === "Overnight") {
+          totalBill += Number(item.over_night_shipping_fee || 0);
+        }
       });
     }
   }, [cartItems, customerData]);

@@ -8,5 +8,6 @@ export interface IQXCustomerDetails {
   payment_type?: string;
   stripe_enabled?: number;
   stripe_connect_id?: string;
+  over_night_shipping_fee?: string;
   id: number;
 }

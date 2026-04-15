@@ -7,13 +7,15 @@ interface IConfirmationModalProps {
   openModal: boolean;
   onModalClose: (closeReason: boolean) => void;
   onModalPressYes: () => void;
-  onModalPressNo: (qty: number) => void;
+  onModalPressNo: (qty: number, shippingType: string) => void;
   okBtnLoading: boolean;
   medicationInfo?: IPartnerMedicineListItem[];
+  overNightShippingFee?: string | number;
 }
 
 function ConfirmProductOrderModal(modalProps: IConfirmationModalProps) {
   const [selectedQty, setSelectedQty] = useState<number>(1);
+  const [shippingType, setShippingType] = useState<string>("Regular");
 
   return (
     <Modal.Root
@@ -92,6 +94,34 @@ function ConfirmProductOrderModal(modalProps: IConfirmationModalProps) {
             <p className="pt-1">Please click "I Agree" to continue.</p>
           </div>
 
+          <h2 className="text-foreground text-2xl font-poppins font-semibold mb-4 animate-title">Shipping Type</h2>
+
+          <Radio.Group
+            value={shippingType}
+            onChange={(value) => setShippingType(value)}
+            className="mb-8 mt-6 w-full animate-content"
+          >
+            <div className="grid md:grid-cols-2 gap-5 w-full">
+              {["Regular", "Overnight"].map((type) => (
+                <Radio
+                  key={type}
+                  value={type}
+                  classNames={getBaseWebRadios(shippingType, type)}
+                  label={
+                    <div className="text-center relative">
+                      <span className="text-foreground">{type === "Overnight" ? `Overnight ($${modalProps.overNightShippingFee || "0"})` : "Regular"}</span>
+                      {shippingType === type && (
+                        <span className="absolute top-1/2 right-0 -translate-y-1/2 ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white">
+                          <i className="icon-tick text-base/none"></i>
+                        </span>
+                      )}
+                    </div>
+                  }
+                />
+              ))}
+            </div>
+          </Radio.Group>
+
           <div className="grid grid-cols-2 gap-3">
             <Button
               className="w-full"
@@ -106,7 +136,7 @@ function ConfirmProductOrderModal(modalProps: IConfirmationModalProps) {
             <Button
               color="primary"
               size="sm-2"
-              onClick={() => modalProps.onModalPressNo(selectedQty)}
+              onClick={() => modalProps.onModalPressNo(selectedQty, shippingType)}
               disabled={modalProps.okBtnLoading}
             >
               I Agree

@@ -13,23 +13,32 @@ const OrderSummary = () => {
   const [userData] = useAtom(userAtom);
   const [cartItems, setCartItems] = useAtom(cartItemsAtom);
   const [totalBillAmount, setTotalBillAmount] = useState<number>(0);
+  const [totalShippingFee, setTotalShippingFee] = useState<number>(0);
   const selectedState = useAtomValue(selectedStateAtom);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (cartItems?.length > 0) {
       let totalBill = 0;
+      let shippingFee = 0;
       cartItems.forEach((item) => {
         const price = calculatePrice(item);
         totalBill = totalBill + price;
         if (item?.lab_required == "1") {
           totalBill += stateWiseLabFee(item, selectedState || "");
         }
+        if (item.shippingType === "Overnight") {
+          shippingFee += Number(item.over_night_shipping_fee || 0);
+        }
       });
 
-      setTotalBillAmount(totalBill);
+      setTotalShippingFee(shippingFee);
+      setTotalBillAmount(totalBill + shippingFee);
+    } else {
+      setTotalBillAmount(0);
+      setTotalShippingFee(0);
     }
-  }, [cartItems]);
+  }, [cartItems, selectedState]);
 
   const handleRemoveItem = (id: number) => {
     setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
@@ -44,8 +53,6 @@ const OrderSummary = () => {
   const handleNext = () => {
     console.log(userData, getAccessToken());
     if (userData && getAccessToken()) {
-
-
       navigate("/complete-order");
 
       // alert("After Navigate");
@@ -67,16 +74,25 @@ const OrderSummary = () => {
                 key={item.id}
                 className="flex lg:flex-row flex-col gap-5 relative"
               >
-                <Avatar
-                  src={item.image ? `${import.meta.env.VITE_BASE_PATH}/storage/${item.image}` : "/placeholder.png"}
-                  size={129}
-                  radius={10}
-                >
-                  <img
-                    src="/images/product-img-placeholder.jpg"
-                    alt="product image"
-                  />
-                </Avatar>
+                <div className="flex flex-col gap-2">
+                  <Avatar
+                    src={item.image ? `${import.meta.env.VITE_BASE_PATH}/storage/${item.image}` : "/placeholder.png"}
+                    size={129}
+                    radius={10}
+                  >
+                    <img
+                      src="/images/product-img-placeholder.jpg"
+                      alt="product image"
+                    />
+                  </Avatar>
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs font-medium text-center w-fit ${
+                      item.shippingType === "Overnight" ? "bg-[#E1DCFD] text-foreground" : "bg-[#F7FBCE] text-foreground"
+                    }`}
+                  >
+                    {item.shippingType} Shipping
+                  </span>
+                </div>
                 <div className="lg:w-[calc(100%_-_154px)]">
                   <h6 className="text-xl font-semibold text-foreground font-poppins max-w-[300px]">
                     {item.name} {item.strength ? `${item.strength} ${item.unit || ""}` : ""}
@@ -97,20 +113,28 @@ const OrderSummary = () => {
         </div>
         <div className="card bg-opacity-60">
           <h6 className="card-title with-border text-foreground font-poppins font-semibold md:text-xl text-lg !border-foreground">Cart Total</h6>
-          <div className="h-[calc(100%_-_80px)] min-h-[120px] overflow-y-auto py-2.5 space-y-6">
-            {cartItems.map((item, idx) => (
-              <div
-                key={item.id}
-                className="flex flex-wrap items-center justify-between"
-              >
-                <span className="text-foreground text-lg inline-block max-w-[226px] break-all">
-                  {item.name} {item.strength ? `${item.strength || ""} ${item.unit}` : ""} x {item.qty}
-                </span>
-                <span className="text-foreground text-lg">
-                  ${item?.lab_required == "1" ? (calculatePrice(item) + stateWiseLabFee(item, selectedState)).toFixed(2) : calculatePrice(item).toFixed(2)}
-                </span>
+          <div className="h-[calc(100%_-_80px)] min-h-[120px] overflow-y-auto py-2.5 flex flex-col justify-between gap-6">
+            <div className="space-y-6">
+              {cartItems.map((item, idx) => (
+                <div
+                  key={item.id}
+                  className="flex flex-wrap items-center justify-between"
+                >
+                  <span className="text-foreground text-lg inline-block max-w-[226px] break-all">
+                    {item.name} {item.strength ? `${item.strength || ""} ${item.unit}` : ""} x {item.qty}
+                  </span>
+                  <span className="text-foreground text-lg">
+                    ${item?.lab_required == "1" ? (calculatePrice(item) + stateWiseLabFee(item, selectedState)).toFixed(2) : calculatePrice(item).toFixed(2)}
+                  </span>
+                </div>
+              ))}
+            </div>
+            {totalShippingFee > 0 && (
+              <div className="flex flex-wrap items-center justify-between">
+                <span className="text-[#6848FF] text-lg font-semibold">Overnight Shipping</span>
+                <span className="text-[#6848FF] text-lg font-semibold">${totalShippingFee.toFixed(2)}</span>
               </div>
-            ))}
+            )}
           </div>
           <div className="flex items-center justify-between border-t border-t-foreground pt-2">
             <span className="text-foreground font-poppins font-semibold md:text-xl text-lg !border-foreground">Total Package Price</span>
