@@ -136,30 +136,10 @@ const PatientIntake = () => {
         // Filter to only prescription details that require intake (from prescription_details table, not medication)
         const intakeRequiredDetails = prescriptionDetails.filter((item) => item.is_required_intake == 1);
 
-        // If no medications require intake, submit empty intake and jump to ThanksStep
+        // If no medications require intake, skip intake and jump to ThanksStep directly
         if (intakeRequiredDetails.length === 0) {
-          intakeFormMutation.mutate(
-            {
-              prescription_u_id: prescriptionUId || "",
-              measurement: {
-                height: "",
-                weight: "",
-                full_body_image: "",
-              },
-              questionnaires: [],
-            },
-            {
-              onSuccess: () => {
-                setTotalDynamicSteps(1);
-                setActiveStep(2);
-              },
-              onError: (err) => {
-                const error = err as AxiosError<IServerErrorResponse>;
-                console.error(error);
-                dmlToast.error({ title: "Oops! Something went wrong. Please try again later." });
-              },
-            }
-          );
+          setTotalDynamicSteps(1);
+          setActiveStep(2);
           return;
         }
 
