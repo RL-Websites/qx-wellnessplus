@@ -79,7 +79,7 @@ const HomePage = () => {
       <div className={`site-home-hero ${isExiting ? "site-home-hero-exit" : ""}`}>
         <div className="container mx-auto">
           <div className="header grid md:grid-cols-2 grid-cols-1  items-center justify-between ">
-            <div className="flex flex-col w-full gap-7 lg:py-16 py-10">
+            <div className="flex flex-col w-full  gap-7 lg:pt-24 pt-10 lg:pb-16 pb-10">
               <div>
                 <div className="logo flex items-center justify-between gap-2">
                   <NavLink
@@ -87,7 +87,7 @@ const HomePage = () => {
                     component={RdNavLink}
                     className={`p-0 bg-transparent hover:bg-transparent h-8 w-auto border-r border-r-grey-low`}
                     classNames={{
-                      label: "flex items-center gap-4",
+                      label: "flex flex-col items-center gap-2",
                     }}
                     label={
                       <>
@@ -95,12 +95,12 @@ const HomePage = () => {
                           <Image
                             src={customerData?.logo ? (isValidUrl(customerData.logo) ? customerData.logo : `${import.meta.env.VITE_BASE_PATH}/storage/${customerData.logo}`) : ""}
                             alt={customerData?.logo ? customerData?.name : ""}
-                            className="lg:w-16 md:w-12 w-10"
+                            className="lg:h-[120px] md:h-[100px] h-[80px]"
                           />
                         ) : (
                           ""
                         )}
-                        <span className="text-foreground font-impact md:text-[28px] text-2xl">{customerData?.name}</span>
+                        <span className="text-primary font-impact md:text-[28px] text-2xl">{customerData?.name}</span>
                       </>
                     }
                   />
@@ -158,7 +158,6 @@ const HomePage = () => {
                   </span>
                 </p>
               )}
-              
             </div>
           </div>
           {/* <div className="absolute inset-0 overflow-hidden pointer-events-none hidden md:block">
