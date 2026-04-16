@@ -81,7 +81,7 @@ const HomePage = () => {
           <div className="header grid md:grid-cols-2 grid-cols-1  items-center justify-between ">
             <div className="flex flex-col w-full  gap-7 lg:pt-24 pt-16 lg:pb-16 pb-10">
               <div>
-                <div className="logo flex items-center justify-between gap-2">
+                <div className="logo flex items-center md:justify-between justify-center gap-2 ">
                   <NavLink
                     to={userData?.userable_type ? "/" : "/"}
                     component={RdNavLink}
@@ -123,7 +123,7 @@ const HomePage = () => {
                 </div>
               </div>
 
-              <h1 className={`heading-xxxl text-foreground uppercase lg:mt-12 md:mt-8 mt-5 md:text-start text-center `}>Thanks for stopping by</h1>
+              <h1 className={`heading-xxxl text-foreground uppercase mt-12 md:text-start text-center `}>Thanks for stopping by</h1>
 
               <p className={`lg:text-[30px] md:text-2xl text-base font-semibold text-primary capitalize md:text-start text-center`}>Your Wellness Journey Starts Here</p>
 
