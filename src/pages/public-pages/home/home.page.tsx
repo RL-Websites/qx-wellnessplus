@@ -79,7 +79,7 @@ const HomePage = () => {
       <div className={`site-home-hero ${isExiting ? "site-home-hero-exit" : ""}`}>
         <div className="container mx-auto">
           <div className="header grid md:grid-cols-2 grid-cols-1  items-center justify-between ">
-            <div className="flex flex-col w-full  gap-7 lg:pt-24 pt-10 lg:pb-16 pb-10">
+            <div className="flex flex-col w-full  gap-7 lg:pt-24 pt-16 lg:pb-16 pb-10">
               <div>
                 <div className="logo flex items-center justify-between gap-2">
                   <NavLink

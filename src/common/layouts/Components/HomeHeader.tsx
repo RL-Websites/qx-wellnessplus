@@ -23,11 +23,11 @@ const HomeHeader = () => {
   const isLoginPage = location.pathname === "/login";
   const onAuthPage = location.pathname === "/registration" || location.pathname === "/forgot-password";
   return (
-    <div className="header md:flex grid grid-cols-3 md:gap-2 gap-10 items-center justify-between md:pb-12 pb-5">
-      <div className="md:order-1 order-3  col-span-3 text-center">
+    <div className="header  grid grid-cols-3 md:gap-2 gap-10 items-center justify-between md:pb-12 pb-5">
+      <div className="md:order-1 order-3 md:col-span-1 col-span-3 md:text-start text-center">
         <span className="text-foreground font-impact md:text-[28px] text-2xl">{customerData?.name}</span>
       </div>
-      <div className="logo flex items-center gap-2 md:order-2 order-1 col-span-2">
+      <div className="logo flex items-center gap-2 md:order-2 order-1 md:col-span-1 col-span-2">
         <NavLink
           to={location.pathname != "" ? "/category" : "/"}
           component={RdNavLink}
