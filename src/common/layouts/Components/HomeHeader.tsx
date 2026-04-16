@@ -41,7 +41,7 @@ const HomeHeader = () => {
                 <Image
                   src={customerData?.logo ? (isValidUrl(customerData.logo) ? customerData.logo : `${import.meta.env.VITE_BASE_PATH}/storage/${customerData.logo}`) : ""}
                   alt={customerData?.logo ? customerData?.name : ""}
-                  className="lg:h-[120px] md:h-[100px] h-[80px]"
+                  className="lg:h-[120px] md:h-[100px] h-[80px] inline-block"
                 />
               ) : (
                 ""
@@ -83,7 +83,6 @@ const HomeHeader = () => {
         ) : isLoginPage ? (
           <Button
             variant="outline"
-            size="sm-3"
             color="primary"
             className="font-semibold lg:text-lg md:text-base text-sm animated-btn"
             onClick={() => {
