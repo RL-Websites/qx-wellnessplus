@@ -8,14 +8,17 @@ interface IConfirmationModalProps {
   onModalClose: (closeReason: boolean) => void;
   onModalPressYes: () => void;
   onModalPressNo: (qty: number, shippingType: string) => void;
+  category_name?: string;
   okBtnLoading: boolean;
   medicationInfo?: IPartnerMedicineListItem[];
   overNightShippingFee?: string | number;
+  showShippingType?: boolean;
 }
 
 function ConfirmProductOrderModal(modalProps: IConfirmationModalProps) {
   const [selectedQty, setSelectedQty] = useState<number>(1);
   const [shippingType, setShippingType] = useState<string>("Regular");
+  const isQuantityCategory = ["Single Peptides", "Peptides Blends", "Energy & Longevity"].includes(modalProps.category_name || "");
 
   return (
     <Modal.Root
@@ -37,90 +40,97 @@ function ConfirmProductOrderModal(modalProps: IConfirmationModalProps) {
         </Modal.Header>
 
         <Modal.Body className="px-6 pb-6 pt-2">
-          <h2 className="text-foreground text-2xl font-poppins font-semibold mb-4 animate-title">Select Quantity</h2>
+          {isQuantityCategory && (
+            <>
+              <h2 className="text-foreground text-2xl font-poppins font-semibold mb-4 animate-title">Select Quantity</h2>
+              <Radio.Group
+                value={selectedQty.toString()}
+                onChange={(value) => setSelectedQty(Number(value))}
+                className="mb-8 mt-6 w-full animate-content"
+              >
+                <div className="grid md:grid-cols-2 gap-5 w-full">
+                  {["1", "2"].map((qty) => (
+                    <Radio
+                      key={qty}
+                      value={qty}
+                      classNames={getBaseWebRadios(selectedQty.toString(), qty)}
+                      label={
+                        <div className="text-center relative">
+                          <span className="text-foreground">
+                            {qty} pc{qty === "2" ? "s" : ""}
+                          </span>
+                          {selectedQty.toString() === qty && (
+                            <span className="absolute top-1/2 right-0 -translate-y-1/2 ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white">
+                              <i className="icon-tick text-base/none"></i>
+                            </span>
+                          )}
+                        </div>
+                      }
+                    />
+                  ))}
+                </div>
+              </Radio.Group>
 
-          <Radio.Group
-            value={selectedQty.toString()}
-            onChange={(value) => setSelectedQty(Number(value))}
-            className="mb-8 mt-6 w-full animate-content"
-          >
-            <div className="grid md:grid-cols-2 gap-5 w-full">
-              {["1", "2"].map((qty) => (
-                <Radio
-                  key={qty}
-                  value={qty}
-                  classNames={getBaseWebRadios(selectedQty.toString(), qty)}
-                  label={
-                    <div className="text-center relative">
-                      <span className="text-foreground">
-                        {qty} pc{qty === "2" ? "s" : ""}
-                      </span>
-                      {selectedQty.toString() === qty && (
-                        <span className="absolute top-1/2 right-0 -translate-y-1/2 ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white">
-                          <i className="icon-tick text-base/none"></i>
-                        </span>
-                      )}
-                    </div>
-                  }
-                />
-              ))}
-            </div>
-          </Radio.Group>
+              <div className="bg-warning-bg text-foreground text-sm rounded-xl px-4 py-4 space-y-3 mb-6">
+                <p className="font-semibold">Warning: Research Use Only</p>
+                <div className="flex gap-2 items-start">
+                  <i className="icon-check-circle text-lg mt-0.5" />
+                  <span>
+                    <strong>No Medical Claims:</strong> The product has not been evaluated by the FDA and is not intended to diagnose, treat, cure, or prevent any disease.
+                  </span>
+                </div>
 
-          <div className="bg-warning-bg text-foreground text-sm rounded-xl px-4 py-4 space-y-3 mb-6">
-            <p className="font-semibold">Warning: Research Use Only</p>
+                <div className="flex gap-2 items-start">
+                  <i className="icon-check-circle text-lg mt-0.5" />
+                  <span>
+                    <strong>Doctor Consultation:</strong> A consultation with one of our licensed physicians is required before shipment.
+                  </span>
+                </div>
 
-            <div className="flex gap-2 items-start">
-              <i className="icon-check-circle text-lg mt-0.5" />
-              <span>
-                <strong>No Medical Claims:</strong> The product has not been evaluated by the FDA and is not intended to diagnose, treat, cure, or prevent any disease.
-              </span>
-            </div>
+                <div className="flex gap-2 items-start">
+                  <i className="icon-check-circle text-lg mt-0.5" />
+                  <span>
+                    <strong>Research Use Only:</strong> You agree to use this product solely for research purposes.
+                  </span>
+                </div>
 
-            <div className="flex gap-2 items-start">
-              <i className="icon-check-circle text-lg mt-0.5" />
-              <span>
-                <strong>Doctor Consultation:</strong> A consultation with one of our licensed physicians is required before shipment.
-              </span>
-            </div>
+                <p className="pt-1">Please click "I Agree" to continue.</p>
+              </div>
+            </>
+          )}
 
-            <div className="flex gap-2 items-start">
-              <i className="icon-check-circle text-lg mt-0.5" />
-              <span>
-                <strong>Research Use Only:</strong> You agree to use this product solely for research purposes.
-              </span>
-            </div>
-
-            <p className="pt-1">Please click "I Agree" to continue.</p>
-          </div>
-
-          <h2 className="text-foreground text-2xl font-poppins font-semibold mb-4 animate-title">Shipping Type</h2>
-
-          <Radio.Group
-            value={shippingType}
-            onChange={(value) => setShippingType(value)}
-            className="mb-8 mt-6 w-full animate-content"
-          >
-            <div className="grid md:grid-cols-2 gap-5 w-full">
-              {["Regular", "Overnight"].map((type) => (
-                <Radio
-                  key={type}
-                  value={type}
-                  classNames={getBaseWebRadios(shippingType, type)}
-                  label={
-                    <div className="text-center relative">
-                      <span className="text-foreground">{type === "Overnight" ? `Overnight ($${modalProps.overNightShippingFee || "0"})` : "Regular"}</span>
-                      {shippingType === type && (
-                        <span className="absolute top-1/2 right-0 -translate-y-1/2 ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white">
-                          <i className="icon-tick text-base/none"></i>
-                        </span>
-                      )}
-                    </div>
-                  }
-                />
-              ))}
-            </div>
-          </Radio.Group>
+          {modalProps.showShippingType ? (
+            <>
+              <h2 className="text-foreground text-2xl font-poppins font-semibold mb-4 animate-title">Shipping Type</h2>
+              <Radio.Group
+                value={shippingType}
+                onChange={(value) => setShippingType(value)}
+                className="mb-8 mt-6 w-full animate-content"
+              >
+                <div className="grid md:grid-cols-2 gap-5 w-full">
+                  {["Regular", "Overnight"].map((type) => (
+                    <Radio
+                      key={type}
+                      value={type}
+                      classNames={getBaseWebRadios(shippingType, type)}
+                      label={
+                        <div className="text-center relative">
+                          <span className="text-foreground">{type === "Overnight" ? `Overnight ($${modalProps.overNightShippingFee || "0"})` : "Regular"}</span>
+                          {shippingType === type && (
+                            <span className="absolute top-1/2 right-0 -translate-y-1/2 ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white">
+                              <i className="icon-tick text-base/none"></i>
+                            </span>
+                          )}
+                        </div>
+                      }
+                    />
+                  ))}
+                </div>
+              </Radio.Group>
+            </>
+          ) : (
+            ""
+          )}
 
           <div className="grid grid-cols-2 gap-3">
             <Button
