@@ -7,7 +7,6 @@ import { userAtom } from "@/common/states/user.atom";
 import { isValidUrl } from "@/utils/helper.utils";
 import { Button, Image, NavLink } from "@mantine/core";
 import { useAtom, useAtomValue } from "jotai";
-import { useEffect, useState } from "react";
 import { Link, NavLink as RdNavLink, useLocation, useNavigate } from "react-router-dom";
 
 const HomeHeader = () => {
@@ -24,14 +23,17 @@ const HomeHeader = () => {
   const isLoginPage = location.pathname === "/login";
   const onAuthPage = location.pathname === "/registration" || location.pathname === "/forgot-password";
   return (
-    <div className="header flex items-center justify-between pb-12">
-      <div className="logo flex items-center gap-2">
+    <div className="header md:flex grid grid-cols-3 md:gap-2 gap-10 items-center justify-between md:pb-12 pb-5">
+      <div className="md:order-1 order-3  col-span-3 text-center">
+        <span className="text-foreground font-impact md:text-[28px] text-2xl">{customerData?.name}</span>
+      </div>
+      <div className="logo flex items-center gap-2 md:order-2 order-1 col-span-2">
         <NavLink
           to={location.pathname != "" ? "/category" : "/"}
           component={RdNavLink}
           classNames={{
             root: "p-0 h-8 bg-transparent",
-            label: "flex items-center gap-4",
+            label: "flex items-center md:justify-center gap-4",
           }}
           label={
             <>
@@ -39,17 +41,18 @@ const HomeHeader = () => {
                 <Image
                   src={customerData?.logo ? (isValidUrl(customerData.logo) ? customerData.logo : `${import.meta.env.VITE_BASE_PATH}/storage/${customerData.logo}`) : ""}
                   alt={customerData?.logo ? customerData?.name : ""}
-                  className="lg:w-16 md:w-12 w-10"
+                  className="lg:h-[120px] md:h-[100px] h-[80px]"
                 />
               ) : (
                 ""
               )}
-              <span className="text-foreground font-impact md:text-[28px] text-2xl">{customerData?.name}</span>
+              {/* <span className="text-foreground font-impact md:text-[28px] text-2xl">{customerData?.name}</span> */}
             </>
           }
         />
       </div>
-      <div className="flex items-center lg:gap-8 gap-5">
+
+      <div className="flex items-center justify-end lg:gap-8 gap-5 md:order-2 order-2 col-span-1 ">
         {cartItems.length > 0 && (
           <Link
             to="/order-summary"
