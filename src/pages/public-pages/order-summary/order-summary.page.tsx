@@ -7,6 +7,8 @@ import { Avatar, Button } from "@mantine/core";
 import { useAtom, useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
 import { NavLink as RdNavLink, useNavigate } from "react-router-dom";
+import LabSection from "./components/LabSection";
+import { LabSubmissionType } from "./components/LabTypeSectionModal";
 
 const OrderSummary = () => {
   const { getAccessToken } = useAuthToken();
@@ -14,6 +16,8 @@ const OrderSummary = () => {
   const [cartItems, setCartItems] = useAtom(cartItemsAtom);
   const [totalBillAmount, setTotalBillAmount] = useState<number>(0);
   const [totalShippingFee, setTotalShippingFee] = useState<number>(0);
+  const [selectedLabType, setSelectedLabType] = useState<LabSubmissionType | null>();
+  const [selectedReports, setSelectedReports] = useState<any[]>();
   const selectedState = useAtomValue(selectedStateAtom);
   const navigate = useNavigate();
 
@@ -50,12 +54,33 @@ const OrderSummary = () => {
     }
   }, [cartItems, navigate]);
 
+  // Get lab data from cart items
+  const labRequiredItem = cartItems.find((item) => {
+    const category = item?.medication_category;
+    const hasLabPackage = !!item?.lab_package;
+    return category?.toLowerCase() === "testosterone" || hasLabPackage;
+  });
+  const hasLabRequired = !!labRequiredItem;
+  const requiredLabExaminations = labRequiredItem?.lab_package?.examinations ?? [];
+
+  const disableChooseLabOptionMode = !!labRequiredItem?.lab_type;
+
   const handleNext = () => {
     console.log(userData, getAccessToken());
-    if (userData && getAccessToken()) {
-      navigate("/complete-order");
 
-      // alert("After Navigate");
+    // Validate lab selection if required
+    if (hasLabRequired && !selectedLabType) {
+      console.warn("Please select a lab submission option before continuing.");
+      return;
+    }
+
+    if (userData && getAccessToken()) {
+      navigate("/complete-order", {
+        state: {
+          lab_type: selectedLabType || null,
+          reports: selectedReports,
+        },
+      });
     } else {
       navigate("/login");
     }
@@ -66,6 +91,24 @@ const OrderSummary = () => {
   return (
     <div className="lg:pt-16 md:pt-10 pt-4">
       <h2 className="heading-text text-foreground uppercase text-center">Order Summary</h2>
+
+      {/* Lab Selection Component */}
+      {hasLabRequired && (
+        <>
+          {/* Lab Selection Section */}
+          <LabSection
+            disabledChooseLabOptionMode={disableChooseLabOptionMode}
+            examinations={requiredLabExaminations}
+            prescriptionId={labRequiredItem?.customer_medication?.id ?? null}
+            prescriptionDetailId={labRequiredItem?.id ?? null}
+            value={selectedLabType}
+            onSelectionChange={setSelectedLabType}
+            reports={selectedReports}
+            onReportsChange={setSelectedReports}
+          />
+        </>
+      )}
+
       <div className="grid md:grid-cols-2 md:gap-[30px] gap-5 pt-12">
         <div className="card bg-opacity-60">
           <div className="md:space-y-10 space-y-5">
