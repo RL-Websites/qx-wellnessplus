@@ -7,7 +7,6 @@ import { Avatar, Button } from "@mantine/core";
 import { useAtom, useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
 import { NavLink as RdNavLink, useNavigate } from "react-router-dom";
-import LabSection from "./components/LabSection";
 import { LabSubmissionType } from "./components/LabTypeSectionModal";
 
 const OrderSummary = () => {
@@ -93,9 +92,8 @@ const OrderSummary = () => {
       <h2 className="heading-text text-foreground uppercase text-center">Order Summary</h2>
 
       {/* Lab Selection Component */}
-      {hasLabRequired && (
+      {/* {hasLabRequired && (
         <>
-          {/* Lab Selection Section */}
           <LabSection
             disabledChooseLabOptionMode={disableChooseLabOptionMode}
             examinations={requiredLabExaminations}
@@ -107,7 +105,7 @@ const OrderSummary = () => {
             onReportsChange={setSelectedReports}
           />
         </>
-      )}
+      )} */}
 
       <div className="grid md:grid-cols-2 md:gap-[30px] gap-5 pt-12">
         <div className="card bg-opacity-60">
