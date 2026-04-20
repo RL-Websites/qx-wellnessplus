@@ -115,7 +115,7 @@ function ConfirmProductOrderModal(modalProps: IConfirmationModalProps) {
                       classNames={getBaseWebRadios(shippingType, type)}
                       label={
                         <div className="text-center relative">
-                          <span className="text-foreground">{type === "Overnight" ? `Overnight ($${modalProps.overNightShippingFee || "0"})` : "Regular"}</span>
+                          <span className="text-foreground">{type === "Overnight" ? `Overnight (+ $${modalProps.overNightShippingFee || "0"})` : "Regular"}</span>
                           {shippingType === type && (
                             <span className="absolute top-1/2 right-0 -translate-y-1/2 ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white">
                               <i className="icon-tick text-base/none"></i>
