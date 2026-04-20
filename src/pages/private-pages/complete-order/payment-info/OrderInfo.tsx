@@ -287,7 +287,7 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
                   )}
                 </tbody>
               </table>
-              <table className="w-full text-grey text-2xl font-bold border-t border-foreground mt-8">
+              <table className="w-full text-grey text-2xl font-bold border-t border-foreground">
                 <tbody>
                   <tr>
                     <td className="py-3 sm:text-xl text-base text-foreground">Total Package Price</td>
