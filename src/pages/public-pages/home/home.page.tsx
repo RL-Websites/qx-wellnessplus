@@ -95,7 +95,7 @@ const HomePage = () => {
                           <Image
                             src={customerData?.logo ? (isValidUrl(customerData.logo) ? customerData.logo : `${import.meta.env.VITE_BASE_PATH}/storage/${customerData.logo}`) : ""}
                             alt={customerData?.logo ? customerData?.name : ""}
-                            className="lg:h-[120px] md:h-[100px] h-[80px]"
+                            className="lg:h-[120px] md:h-[100px] h-[80px] !flex-auto"
                           />
                         ) : (
                           ""
