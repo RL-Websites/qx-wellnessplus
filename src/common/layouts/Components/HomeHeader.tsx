@@ -23,8 +23,8 @@ const HomeHeader = () => {
   const isLoginPage = location.pathname === "/login";
   const onAuthPage = location.pathname === "/registration" || location.pathname === "/forgot-password";
   return (
-    <div className="header  grid grid-cols-3 md:gap-2 gap-10 items-center justify-between md:pb-12 pb-5">
-      <div className="md:order-1 order-3 md:col-span-1 col-span-3 md:text-start text-center">
+    <div className="header  grid md:grid-cols-3 grid-cols-4 md:gap-2 gap-6 items-center justify-between md:pb-12 pb-5">
+      <div className="md:order-1 order-3 md:col-span-1 col-span-4 md:text-start text-center">
         <span className="text-foreground font-impact md:text-[28px] text-2xl">{customerData?.name}</span>
       </div>
       <div className="logo flex items-center gap-2 md:order-2 order-1 md:col-span-1 col-span-2">
@@ -52,7 +52,7 @@ const HomeHeader = () => {
         />
       </div>
 
-      <div className="flex items-center justify-end lg:gap-8 gap-5 md:order-2 order-2 col-span-1 ">
+      <div className="flex items-center justify-end lg:gap-8 gap-5 md:order-2 order-2 md:col-span-1 col-span-2">
         {cartItems.length > 0 && (
           <Link
             to="/order-summary"
