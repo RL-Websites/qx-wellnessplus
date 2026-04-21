@@ -26,7 +26,7 @@ interface PromoData {
   code: string;
   u_id: string;
   discount_value: string;
-  discount_type: "flat" | "percentage" | string;
+  discount_type: "fixed" | "percentage" | string;
   orders_count?: number;
   total_sales?: number;
   [key: string]: any;
@@ -87,10 +87,10 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
         setFinalTotal(grossTotal);
       } else {
         const discountVal = parseFloat(appliedPromo.discount_value || "0");
-        const discountType = (appliedPromo.discount_type || "flat").toLowerCase();
+        const discountType = (appliedPromo.discount_type || "fixed").toLowerCase();
         let calculatedDiscount = 0;
 
-        if (discountType === "flat") {
+        if (discountType === "fixed") {
           calculatedDiscount = discountVal;
         } else {
           calculatedDiscount = (productTotal * discountVal) / 100;
@@ -122,10 +122,10 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
 
       const subtotal = Number(totalBillAmount ?? 0) + Number(labFee ?? 0) + Number(totalShippingFee ?? 0);
       const discountVal = parseFloat(apiData.discount_value ?? "0");
-      const discountType = (apiData.discount_type ?? "flat").toLowerCase();
+      const discountType = (apiData.discount_type ?? "fixed").toLowerCase();
 
       let calculatedDiscount = 0;
-      if (discountType === "flat") {
+      if (discountType === "fixed") {
         calculatedDiscount = discountVal;
       } else {
         calculatedDiscount = (subtotal * discountVal) / 100;
