@@ -47,6 +47,12 @@ const CategoryPage = () => {
     }
   }, [categoryListQuery.data?.data?.data]);
 
+  // Reset exit animation state on mount so the page is visible when navigated to
+  // (e.g., after login, where the Login button had set this atom to true).
+  useEffect(() => {
+    setIsExiting(false);
+  }, []);
+
   // const handleCategoryClick = (categoryName: string) => {
   //   if (categoryName.includes("Peptides")) {
   //     const newCategory = ["Single Peptides", "Peptides Blends"];
