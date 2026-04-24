@@ -26,7 +26,7 @@ interface PromoData {
   code: string;
   u_id: string;
   discount_value: string;
-  discount_type: "flat" | "percentage" | string;
+  discount_type: "fixed" | "percentage" | string;
   orders_count?: number;
   total_sales?: number;
   [key: string]: any;
@@ -42,6 +42,7 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
   const [totalBillAmount, setTotalBillAmount] = useState<number>(0); // subtotal (products only)
   const [totalDvCost, setTotalDvCost] = useState<number>(0); // subtotal (products only)
   const [labFee, setLabFee] = useState<number>(0); // separate lab fee
+  const [totalShippingFee, setTotalShippingFee] = useState<number>(0);
   const [finalTotal, setFinalTotal] = useState<number>(0);
   const [discount, setDiscount] = useState<number>(0);
   const [code, setCode] = useState<string>("");
@@ -59,12 +60,16 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
       let productTotal = 0;
       let dosevanaTotal = 0;
       let labFeeTotal = 0;
+      let shippingFeeTotal = 0;
 
       cartItems.forEach((item) => {
         productTotal += calculatePrice(item);
         dosevanaTotal += dosevanaCostGenerate(item, item?.customer_medication?.customer);
         if (item?.lab_required == "1") {
           labFeeTotal += stateWiseLabFee(item, selectedState);
+        }
+        if (item.shippingType === "Overnight") {
+          shippingFeeTotal += Number(item.over_night_shipping_fee || 0);
         }
       });
 
@@ -74,17 +79,18 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
       setTotalBillAmount(productTotal);
       setTotalDvCost(dosevanaTotal);
       setLabFee(labFeeTotal);
+      setTotalShippingFee(shippingFeeTotal);
 
-      const grossTotal = productTotal + labFeeTotal;
+      const grossTotal = productTotal + labFeeTotal + shippingFeeTotal;
 
       if (!appliedPromo) {
         setFinalTotal(grossTotal);
       } else {
         const discountVal = parseFloat(appliedPromo.discount_value || "0");
-        const discountType = (appliedPromo.discount_type || "flat").toLowerCase();
+        const discountType = (appliedPromo.discount_type || "fixed").toLowerCase();
         let calculatedDiscount = 0;
 
-        if (discountType === "flat") {
+        if (discountType === "fixed") {
           calculatedDiscount = discountVal;
         } else {
           calculatedDiscount = (productTotal * discountVal) / 100;
@@ -97,6 +103,7 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
     } else {
       setTotalBillAmount(0);
       setLabFee(0);
+      setTotalShippingFee(0);
       setFinalTotal(0);
       setDiscount(0);
     }
@@ -113,12 +120,12 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
         return;
       }
 
-      const subtotal = Number(totalBillAmount ?? 0) + Number(labFee ?? 0);
+      const subtotal = Number(totalBillAmount ?? 0) + Number(labFee ?? 0) + Number(totalShippingFee ?? 0);
       const discountVal = parseFloat(apiData.discount_value ?? "0");
-      const discountType = (apiData.discount_type ?? "flat").toLowerCase();
+      const discountType = (apiData.discount_type ?? "fixed").toLowerCase();
 
       let calculatedDiscount = 0;
-      if (discountType === "flat") {
+      if (discountType === "fixed") {
         calculatedDiscount = discountVal;
       } else {
         calculatedDiscount = (subtotal * discountVal) / 100;
@@ -157,7 +164,7 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
   const handleRemovePromo = () => {
     setAppliedPromo(null);
     setDiscount(0);
-    setFinalTotal(Math.round((totalBillAmount + labFee) * 100) / 100);
+    setFinalTotal(Math.round((totalBillAmount + labFee + totalShippingFee) * 100) / 100);
     setCode("");
     reset();
     setValue("promo_code", "");
@@ -175,6 +182,7 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
       cart: cartItems,
       subtotal: totalBillAmount,
       lab_fee: labFee,
+      shipping_fee: totalShippingFee,
     };
 
     onNext(payload);
@@ -207,17 +215,26 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
                   className="flex gap-6 mt-6"
                   key={item.id ?? item.u_id}
                 >
-                  <div className="card-thumb w-[129px]">
-                    <Avatar
-                      src={item?.image ? `${import.meta.env.VITE_BASE_PATH}/storage/${item?.image}` : "/images/product-img-placeholder.jpg"}
-                      size={129}
-                      radius={10}
+                  <div className="flex flex-col gap-2">
+                    <div className="card-thumb w-[129px]">
+                      <Avatar
+                        src={item?.image ? `${import.meta.env.VITE_BASE_PATH}/storage/${item?.image}` : "/images/product-img-placeholder.jpg"}
+                        size={129}
+                        radius={10}
+                      >
+                        <img
+                          src="/images/product-img-placeholder.jpg"
+                          alt="product image"
+                        />
+                      </Avatar>
+                    </div>
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs font-medium text-center w-fit ${
+                        item.shippingType === "Overnight" ? "bg-[#E1DCFD] text-foreground" : "bg-[#F7FBCE] text-foreground"
+                      }`}
                     >
-                      <img
-                        src="/images/product-img-placeholder.jpg"
-                        alt="product image"
-                      />
-                    </Avatar>
+                      {item.shippingType} Shipping
+                    </span>
                   </div>
                   <div className="space-y-2.5">
                     <h6 className="text-foreground break-all">
@@ -255,6 +272,13 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
                     </tr>
                   )}
 
+                  {totalShippingFee > 0 && (
+                    <tr>
+                      <td className="py-3 text-[#6848FF] font-semibold">Overnight Shipping</td>
+                      <td className="py-3 text-right text-[#6848FF] font-semibold">${totalShippingFee.toFixed(2)}</td>
+                    </tr>
+                  )}
+
                   {discount > 0 && (
                     <tr>
                       <td className="py-3 text-primary font-semibold">Discount</td>
@@ -263,7 +287,7 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
                   )}
                 </tbody>
               </table>
-              <table className="w-full text-grey text-2xl font-bold border-t border-foreground mt-8">
+              <table className="w-full text-grey text-2xl font-bold border-t border-foreground">
                 <tbody>
                   <tr>
                     <td className="py-3 sm:text-xl text-base text-foreground">Total Package Price</td>

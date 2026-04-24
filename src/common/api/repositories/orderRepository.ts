@@ -22,6 +22,10 @@ class OrderRepository {
   patientIntakeFormSubmit(payload: IPatientIntakeFormDTO) {
     return this.$http.post<IBaseResponse<any>>("wellness-plus-qx/patient-data-fill-up-step-2", payload);
   }
+
+  labReportUploadRequest(payload: any) {
+    return this.$http.post<IBaseResponse<any>>("customer/patient/report/upload", payload);
+  }
 }
 
 const orderApiRepository = new OrderRepository($http);

@@ -5,11 +5,13 @@ import { useEffect, useState } from "react";
 interface IConfirmationModalProps {
   openModal: boolean;
   onModalClose: (closeReason: boolean) => void;
-  onModalPressYes: (labRequired: number) => void;
+  onModalPressYes: (labRequired: number, shippingType: string) => void;
   onModalPressNo: () => void;
   medicationName?: string;
   medicationInfo?: IPartnerMedicineListItem[];
   okBtnLoading: boolean;
+  overNightShippingFee?: string | number;
+  showShippingType?: boolean;
   medicationDetails: {
     name?: string;
     image?: string;
@@ -40,9 +42,12 @@ interface IConfirmationModalProps {
 function ConfirmTestosteroneOnlyModal(modalProps: IConfirmationModalProps) {
   if (!modalProps?.medicationDetails) return null;
   const [labRequired, setLabRequired] = useState<number>(1);
+  const [shippingType, setShippingType] = useState<string>("Regular");
+
   useEffect(() => {
     if (modalProps.openModal) {
       setLabRequired(1);
+      setShippingType("Regular");
     }
   }, [modalProps.openModal]);
 
@@ -102,7 +107,7 @@ function ConfirmTestosteroneOnlyModal(modalProps: IConfirmationModalProps) {
                     radio: "hidden",
                     inner: "hidden",
                     labelWrapper: "w-full",
-                    label: " block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointerborder-grey bg-transparent text-black",
+                    label: " block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointer border-grey bg-transparent text-black",
                   }}
                 />
                 <Radio
@@ -123,7 +128,7 @@ function ConfirmTestosteroneOnlyModal(modalProps: IConfirmationModalProps) {
                     radio: "hidden",
                     inner: "hidden",
                     labelWrapper: "w-full",
-                    label: " block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointerborder-grey bg-transparent text-black",
+                    label: " block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointer border-grey bg-transparent text-black",
                   }}
                 />
               </div>
@@ -202,6 +207,44 @@ function ConfirmTestosteroneOnlyModal(modalProps: IConfirmationModalProps) {
             </p>
           </div>
 
+          {modalProps.showShippingType && (
+            <div className="mt-6">
+              <Radio.Group
+                label="Shipping Type"
+                value={shippingType}
+                onChange={(value) => setShippingType(value)}
+                className="w-full animate-content"
+              >
+                <div className="grid md:grid-cols-2 gap-5 w-full mt-4">
+                  {["Regular", "Overnight"].map((type) => (
+                    <Radio
+                      key={type}
+                      icon={CheckIcon}
+                      value={type}
+                      label={
+                        <div className="relative text-center">
+                          <span className="text-foreground font-poppins">{type === "Overnight" ? `Overnight (+ $${modalProps.overNightShippingFee || "0"})` : "Regular"}</span>
+                          {shippingType === type && (
+                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-0 -right-1 -translate-y-1/2">
+                              <i className="icon-tick text-sm/none"></i>
+                            </span>
+                          )}
+                        </div>
+                      }
+                      classNames={{
+                        root: "relative w-full",
+                        radio: "hidden",
+                        inner: "hidden",
+                        labelWrapper: "w-full",
+                        label: " block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointer border-grey bg-transparent text-black",
+                      }}
+                    />
+                  ))}
+                </div>
+              </Radio.Group>
+            </div>
+          )}
+
           <div className="grid grid-cols-2 gap-2.5 mt-6">
             <Button
               className="w-full"
@@ -220,7 +263,7 @@ function ConfirmTestosteroneOnlyModal(modalProps: IConfirmationModalProps) {
               classNames={{
                 label: "sm:text-base text-sm",
               }}
-              onClick={() => modalProps.onModalPressYes(labRequired)}
+              onClick={() => modalProps.onModalPressYes(labRequired, shippingType)}
               disabled={modalProps.okBtnLoading}
             >
               I Agree

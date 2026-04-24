@@ -128,12 +128,12 @@ const Header = ({ onToggle }: HeaderPropsType) => {
               userData?.userable_type == "client"
                 ? "/client/dashboard"
                 : userData?.userable_type == "customer"
-                ? "/partner/dashboard"
-                : userData?.userable_type == "customer_standard_user"
-                ? "/partner/dashboard"
-                : userData?.userable_type == "partner_patient"
-                ? "/partner-patient/dashboard"
-                : "/admin-client/dashboard"
+                  ? "/partner/dashboard"
+                  : userData?.userable_type == "customer_standard_user"
+                    ? "/partner/dashboard"
+                    : userData?.userable_type == "partner_patient"
+                      ? "/partner-patient/dashboard"
+                      : "/admin-client/dashboard"
             }
             component={RdNavLink}
             className={`p-0 bg-transparent hover:bg-transparent h-8 border-r border-r-grey-low`}

@@ -187,6 +187,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
       // First, call your backend API
       await handleIntakeSubmit(payload);
       // Then confirm the payment with Stripe
+
       const { paymentIntent, error } = await stripe.confirmPayment({
         elements,
         confirmParams: {
@@ -205,7 +206,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
               },
             },
           },
-          return_url: `${import.meta.env.VITE_FRONTEND_URL}/partner-patient-booking-success`,
+          return_url: `${import.meta.env.VITE_FRONTEND_URL.replace(/\/+$/, "")}/partner-patient-booking-success`,
         },
         redirect: "if_required",
       });

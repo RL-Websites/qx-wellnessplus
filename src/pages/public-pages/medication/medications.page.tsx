@@ -65,31 +65,39 @@ const MedicationsPage = () => {
     }
   }, [medicineQuery.isFetched]);
 
-  // console.log(medicineQuery);
+  const addToCart = (item: any, qty: number, shippingType: string) => {
+    const exists = cartItems.find((cartItem) => cartItem.id === item.id);
+    const over_night_shipping_fee = customerData?.over_night_shipping_fee;
 
-  // console.log(medicines);
-
-  const handleAddToCart = (item: any) => {
-    setPendingAddToCart(item);
-    if (item.medication_category === "Single Peptides" || item.medication_category === "Peptides Blends" || item.medication_category === "Energy & Longevity") {
-      handleConfirmMeds.open();
-    } else if (item.medication_category === "Testosterone") {
-      setSelectedMedication(item);
-      handleConfirmTestosterone.open();
+    if (!exists) {
+      setCartItems([...cartItems, { ...item, qty, shippingType, over_night_shipping_fee }]);
     } else {
-      setCartItems((prev) => [...prev, item]);
+      setCartItems(cartItems.map((cartItem) => (cartItem.id === item.id ? { ...cartItem, qty: cartItem.qty + qty, shippingType, over_night_shipping_fee } : cartItem)));
     }
   };
 
-  const handleAgree = (qty: number) => {
-    if (pendingAddToCart) {
-      const exists = cartItems.find((item) => item.id === pendingAddToCart.id);
+  const handleAddToCart = (item: any) => {
+    if (item.medication_category === "Testosterone") {
+      setPendingAddToCart(item);
+      setSelectedMedication(item);
+      handleConfirmTestosterone.open();
+      return;
+    }
 
-      if (!exists) {
-        setCartItems([...cartItems, { ...pendingAddToCart, qty }]);
-      } else {
-        setCartItems(cartItems.map((item) => (item.id === pendingAddToCart.id ? { ...item, qty: item.qty + qty } : item)));
-      }
+    const isQuantityCategory = ["Single Peptides", "Peptides Blends", "Energy & Longevity"].includes(item.medication_category || "");
+    const showShippingType = !!item?.pharmacy?.is_over_night_shipping;
+
+    if (!isQuantityCategory && !showShippingType) {
+      addToCart(item, 1, "Regular");
+    } else {
+      setPendingAddToCart(item);
+      handleConfirmMeds.open();
+    }
+  };
+
+  const handleAgree = (qty: number, shippingType: string) => {
+    if (pendingAddToCart) {
+      addToCart(pendingAddToCart, qty, shippingType);
     }
     handleConfirmMeds.close();
     handleConfirmTestosterone.close();
@@ -124,12 +132,9 @@ const MedicationsPage = () => {
     }
   };
 
-  const onTestosteroneConfirm = (lab_required: string) => {
-    setPendingAddToCart((prev) => ({
-      ...prev, // keep previous values
-      lab_required: true, // add new field
-    }));
-    setCartItems([...cartItems, { ...pendingAddToCart, lab_required }]);
+  const onTestosteroneConfirm = (lab_required: string, shippingType: string) => {
+    const over_night_shipping_fee = customerData?.over_night_shipping_fee;
+    setCartItems([...cartItems, { ...pendingAddToCart, lab_required, shippingType, over_night_shipping_fee }]);
     handleConfirmTestosterone.close();
   };
 
@@ -266,18 +271,23 @@ const MedicationsPage = () => {
         onModalPressNo={handleAgree}
         okBtnLoading={false}
         medicationInfo={pendingAddToCart ? [pendingAddToCart] : []}
+        category_name={pendingAddToCart?.medication_category} // This line was already present
+        showShippingType={pendingAddToCart?.pharmacy?.is_over_night_shipping}
+        overNightShippingFee={customerData?.over_night_shipping_fee}
       />
       <ConfirmTestosteroneOnlyModal
         openModal={confirmTestosterone}
         onModalClose={handleConfirmTestosterone.close}
         medicationName={tempSelectedMedicine?.medicine?.name + " " + tempSelectedMedicine?.medicine?.strength + "" + tempSelectedMedicine?.medicine?.unit}
         medicationDetails={pendingAddToCart}
-        onModalPressYes={(labRequired) => {
-          onTestosteroneConfirm(String(labRequired));
+        onModalPressYes={(labRequired, shippingType) => {
+          onTestosteroneConfirm(String(labRequired), shippingType);
         }}
         onModalPressNo={handleConfirmTestosterone.close}
         medicationInfo={pendingAddToCart ? [pendingAddToCart] : []}
         okBtnLoading={false}
+        showShippingType={pendingAddToCart?.pharmacy?.is_over_night_shipping}
+        overNightShippingFee={customerData?.over_night_shipping_fee}
       />
     </div>
   );
