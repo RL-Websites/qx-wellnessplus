@@ -27,7 +27,6 @@ const WeightLossWeight = ({ onNext, onBack, defaultValues, direction }: IWeightL
     handleSubmit,
     register,
     setValue,
-    watch,
     clearErrors,
     formState: { errors },
   } = useForm<weightLossWeightSchemaType>({
@@ -37,23 +36,18 @@ const WeightLossWeight = ({ onNext, onBack, defaultValues, direction }: IWeightL
     resolver: yupResolver(weightLossWeightSchema),
   });
 
-  const weightLossWeight = watch("weightlossweight");
-
   const handleSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\D/g, "");
 
     if (errors.weightlossweight) {
       setIsErrorFading(true);
-
-      // Step 1: Update value immediately so typing feels responsive
       setValue("weightlossweight", value);
 
-      // Step 2: Wait for fade-out animation before clearing error
       setTimeout(() => {
-        clearErrors("weightlossweight"); // remove the message
+        clearErrors("weightlossweight");
         setIsErrorFading(false);
         setValue("weightlossweight", value, { shouldValidate: true });
-      }, 300); // 300ms = your CSS fade-out duration
+      }, 0);
     } else {
       setValue("weightlossweight", value, { shouldValidate: true });
     }
@@ -102,9 +96,12 @@ const WeightLossWeight = ({ onNext, onBack, defaultValues, direction }: IWeightL
               classNames={{ ...InputErrorMessage, error: `${isErrorFading ? "error-fade-out" : "animate-pulseFade"}` }}
             >
               <Input
+                type="text"
                 inputMode="numeric"
-                {...register("weightlossweight")}
-                onChange={handleSelect}
+                pattern="[0-9]*"
+                {...register("weightlossweight", {
+                  onChange: handleSelect,
+                })}
               />
             </Input.Wrapper>
           </div>
