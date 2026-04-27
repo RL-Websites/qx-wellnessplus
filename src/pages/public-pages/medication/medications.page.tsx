@@ -13,7 +13,7 @@ import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { customerAtom } from "@/common/states/customer.atom";
 import { cartItemsAtom, prevGlpMedDetails } from "@/common/states/product.atom";
 import { selectedStateAtom } from "@/common/states/state.atom";
-import { stateWiseLabFee } from "@/utils/helper.utils";
+import { imageUrl, stateWiseLabFee } from "@/utils/helper.utils";
 import { useQuery } from "@tanstack/react-query";
 import { useAtom, useAtomValue } from "jotai";
 import { NavLink as RdNavLink } from "react-router-dom";
@@ -223,7 +223,7 @@ const MedicationsPage = () => {
             return (
               <MedicationCard
                 key={index}
-                image={`${import.meta.env.VITE_BASE_PATH}/storage/${item?.image}`}
+                image={imageUrl(item?.image, "/images/product-img-placeholder.jpg")}
                 title={`${item?.program_name || item?.name} ${item.strength ? item.strength + " " + item.unit : ""} `}
                 cost={item?.customer_medication?.price}
                 lab_fee={stateWiseLabFee(item, selectedState)}
