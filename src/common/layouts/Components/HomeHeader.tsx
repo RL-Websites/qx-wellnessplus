@@ -32,7 +32,7 @@ const HomeHeader = () => {
           to={location.pathname != "" ? "/category" : "/"}
           component={RdNavLink}
           classNames={{
-            root: "p-0 h-8 bg-transparent",
+            root: "p-0 h-8 bg-transparent hover:bg-transparent",
             label: "flex items-center md:justify-center gap-4",
           }}
           label={

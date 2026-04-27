@@ -56,9 +56,7 @@ function ConfirmProductOrderModal(modalProps: IConfirmationModalProps) {
                       classNames={getBaseWebRadios(selectedQty.toString(), qty)}
                       label={
                         <div className="text-center relative">
-                          <span className="text-foreground">
-                            {qty} pc{qty === "2" ? "s" : ""}
-                          </span>
+                          <span className="text-foreground">{qty}</span>
                           {selectedQty.toString() === qty && (
                             <span className="absolute top-1/2 right-0 -translate-y-1/2 ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white">
                               <i className="icon-tick text-base/none"></i>

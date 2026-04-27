@@ -7,7 +7,10 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 export const weightLossWeightSchema = yup.object({
-  weightlossweight: yup.string().required("Please add your current weight"),
+  weightlossweight: yup
+    .string()
+    .required("Please add your current weight")
+    .matches(/^[1-9]\d*$/, "Please enter a valid weight greater than 0"),
 });
 
 export type weightLossWeightSchemaType = yup.InferType<typeof weightLossWeightSchema>;
@@ -37,7 +40,7 @@ const WeightLossWeight = ({ onNext, onBack, defaultValues, direction }: IWeightL
   const weightLossWeight = watch("weightlossweight");
 
   const handleSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+    const value = e.target.value.replace(/\D/g, "");
 
     if (errors.weightlossweight) {
       setIsErrorFading(true);
@@ -99,7 +102,7 @@ const WeightLossWeight = ({ onNext, onBack, defaultValues, direction }: IWeightL
               classNames={{ ...InputErrorMessage, error: `${isErrorFading ? "error-fade-out" : "animate-pulseFade"}` }}
             >
               <Input
-                type="text"
+                inputMode="numeric"
                 {...register("weightlossweight")}
                 onChange={handleSelect}
               />

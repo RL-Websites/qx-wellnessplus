@@ -2,7 +2,7 @@ import useAuthToken from "@/common/hooks/useAuthToken";
 import { cartItemsAtom } from "@/common/states/product.atom";
 import { selectedStateAtom } from "@/common/states/state.atom";
 import { userAtom } from "@/common/states/user.atom";
-import { calculatePrice, stateWiseLabFee } from "@/utils/helper.utils";
+import { calculatePrice, generateMedName, stateWiseLabFee } from "@/utils/helper.utils";
 import { Avatar, Button } from "@mantine/core";
 import { useAtom, useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
@@ -136,7 +136,7 @@ const OrderSummary = () => {
                 </div>
                 <div className="lg:w-[calc(100%_-_154px)]">
                   <h6 className="text-xl font-semibold text-foreground font-poppins max-w-[300px]">
-                    {item.name} {item.strength ? `${item.strength} ${item.unit || ""}` : ""}
+                    {generateMedName(item) !== item.name ? generateMedName(item) : `${item.name} ${item.strength ? `${item.strength || ""} ${item.unit}` : ""}`}
                   </h6>
                   <div className="flex items-center gap-2.5 pt-2.5 font-poppins">
                     <span className="text-lg text-foreground">{item.medication_category}</span>
@@ -162,7 +162,12 @@ const OrderSummary = () => {
                   className="flex flex-wrap items-center justify-between"
                 >
                   <span className="text-foreground text-lg inline-block max-w-[226px] break-all">
-                    {item.name} {item.strength ? `${item.strength || ""} ${item.unit}` : ""} x {item.qty}
+                    {/* {item.name} {item.strength ? `${item.strength || ""} ${item.unit}` : ""} x {item.qty} */}
+                    {generateMedName(item) !== item.name && (
+                      <>
+                        {generateMedName(item)} x {item.qty}
+                      </>
+                    )}
                   </span>
                   <span className="text-foreground text-lg">
                     ${item?.lab_required == "1" ? (calculatePrice(item) + stateWiseLabFee(item, selectedState)).toFixed(2) : calculatePrice(item).toFixed(2)}
