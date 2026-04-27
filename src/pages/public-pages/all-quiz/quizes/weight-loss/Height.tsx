@@ -10,7 +10,11 @@ import * as yup from "yup";
 
 export const weightLossHeightSchema = yup.object({
   weightlossheightFeet: yup.string().required("Please enter your height in feet").matches(/^\d+$/, "Feet must be a number"),
-  weightlossheightInch: yup.string().required("Please enter your height in inches").matches(/^\d+$/, "Inches must be a number"),
+  weightlossheightInch: yup
+    .string()
+    .required("Please enter your height in inches")
+    .matches(/^\d+$/, "Inches must be a number")
+    .test("max-inches", "Inches cannot exceed 11", (val) => Number(val) <= 12),
 });
 
 export type weightLossHeightSchemaType = yup.InferType<typeof weightLossHeightSchema>;

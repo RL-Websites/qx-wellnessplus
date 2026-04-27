@@ -196,3 +196,14 @@ export const imageUrl = (imagePath: string, defaultPath: string = "/images/image
   const normalizedPath = imagePath.startsWith("/") ? imagePath.slice(1) : imagePath;
   return `${normalizedBase}/${normalizedPath}`;
 };
+
+export const generateMedName = (item: any) => {
+  if (item?.program_name) {
+    return item?.program_name;
+  }
+  let name = item?.name;
+  if (item?.strength) {
+    name += " " + item?.strength + "" + item?.unit;
+  }
+  return name;
+};

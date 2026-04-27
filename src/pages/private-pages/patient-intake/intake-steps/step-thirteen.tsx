@@ -52,7 +52,7 @@ const StepThirteen = ({ onNext, onBack, defaultValues }: StepThirteenProps) => {
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid sm:grid-cols-2 gap-5">
           {["Yes", "No"].map((option) => (
             <Radio
               key={option}

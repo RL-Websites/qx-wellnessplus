@@ -1,5 +1,5 @@
 import { cartItemsAtom } from "@/common/states/product.atom";
-import { calculatePrice, dosevanaCostGenerate, stateWiseLabFee } from "@/utils/helper.utils";
+import { calculatePrice, dosevanaCostGenerate, generateMedName, stateWiseLabFee } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Avatar, Button, TextInput } from "@mantine/core";
 import { useAtom, useAtomValue } from "jotai";
@@ -237,9 +237,7 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
                     </span>
                   </div>
                   <div className="space-y-2.5">
-                    <h6 className="text-foreground break-all">
-                      {item?.name} {`${item?.strength || ""}${item?.unit || ""}`}
-                    </h6>
+                    <h6 className="text-foreground break-all">{generateMedName(item) !== item.name && <>{generateMedName(item)}</>}</h6>
                     <div className="text-gray">
                       {item?.medicine_type == "ODT" ? "Oral" : item?.medicine_type} | {item?.medication_category}
                     </div>
