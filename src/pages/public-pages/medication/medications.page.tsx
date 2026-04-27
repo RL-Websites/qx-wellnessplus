@@ -132,9 +132,21 @@ const MedicationsPage = () => {
     }
   };
 
-  const onTestosteroneConfirm = (lab_required: string, shippingType: string) => {
+  const onTestosteroneConfirm = (lab_required: string, shippingType: string, lab_type: string | null, reports: any[]) => {
     const over_night_shipping_fee = customerData?.over_night_shipping_fee;
-    setCartItems([...cartItems, { ...pendingAddToCart, lab_required, shippingType, over_night_shipping_fee }]);
+    setCartItems([
+      ...cartItems,
+      {
+        ...pendingAddToCart,
+        lab_required,
+        shippingType,
+        over_night_shipping_fee,
+        lab_type: lab_type ?? undefined,
+        // Patient is selecting for themselves on QX, so always "now".
+        lab_selection_mode: lab_type ? "now" : null,
+        reports: reports ?? [],
+      },
+    ]);
     handleConfirmTestosterone.close();
   };
 
@@ -280,8 +292,8 @@ const MedicationsPage = () => {
         onModalClose={handleConfirmTestosterone.close}
         medicationName={tempSelectedMedicine?.medicine?.name + " " + tempSelectedMedicine?.medicine?.strength + "" + tempSelectedMedicine?.medicine?.unit}
         medicationDetails={pendingAddToCart}
-        onModalPressYes={(labRequired, shippingType) => {
-          onTestosteroneConfirm(String(labRequired), shippingType);
+        onModalPressYes={(labRequired, shippingType, labType, reports) => {
+          onTestosteroneConfirm(String(labRequired), shippingType, labType, reports);
         }}
         onModalPressNo={handleConfirmTestosterone.close}
         medicationInfo={pendingAddToCart ? [pendingAddToCart] : []}

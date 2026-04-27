@@ -243,6 +243,9 @@ export interface IPatientBookingPatientInfoDTO {
   payment?: IPatientBookingPaymentRef;
   medications?: any[];
   clientSecret?: string;
+  lab_type?: "preferred_lab" | "own_lab" | "dosevana_lab" | null;
+  lab_selection_mode?: "now" | "later" | null;
+  reports?: any[];
 }
 
 export interface IPatientPaymentAuthorizeConfirmDTO {

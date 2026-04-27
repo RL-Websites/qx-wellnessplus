@@ -146,6 +146,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
       qty_ordered: item.qty,
       customer_medication_id: item.customer_medication.id, // customerMedication er medication_id
       labRequired: item.lab_required ? item.lab_required : null,
+      shippingType: item.shippingType === "Overnight" ? "overnight" : "regular",
     }));
     const payload: IPatientBookingPatientInfoDTO = {
       slug: customerData?.slug || "",
@@ -155,6 +156,9 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
       billing: data.billing,
       patient: formData?.patient,
       medications: medications,
+      lab_type: formData?.lab_type ?? null,
+      lab_selection_mode: formData?.lab_selection_mode ?? null,
+      reports: formData?.reports ?? [],
     };
     setTempSubmitPayload(payload);
     handlePaymentConfirmation.open();

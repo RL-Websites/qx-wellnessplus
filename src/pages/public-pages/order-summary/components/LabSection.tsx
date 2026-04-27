@@ -1,4 +1,4 @@
-import { ActionIcon, Button } from "@mantine/core";
+import { Button } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 import LabReportUploadAndView from "./LabReportUploadAndView";
@@ -87,15 +87,7 @@ const LabSection = ({
           {!disabledChooseLabOptionMode && (
             <div className="space-y-3">
               <h6 className="font-semibold text-foreground">One or more medications in this treatment require lab work.</h6>
-              <div className="flex flex-wrap items-center justify-between">
-                <p className="text-foreground/70 font-poppins">Select one of the options below to proceed with the required blood tests</p>
-                <ActionIcon
-                  variant="transparent"
-                  onClick={setIsModalOpen.open}
-                >
-                  <i className="icon-setting-01 text-2xl/none"></i>
-                </ActionIcon>
-              </div>
+              <p className="text-foreground/70 font-poppins">Select one of the options below to proceed with the required blood tests</p>
               <Button
                 size="sm-2"
                 onClick={setIsModalOpen.open}
@@ -109,13 +101,12 @@ const LabSection = ({
           {selectedOption ? (
             <SelectedLabOption
               selectedOption={selectedOption}
-              // handleDownloadLabRequisition={handleDownloadLabRequisition}
-              // isDownloading={isDownloading}
               // If not disabled, allow editing the lab option
               onEditLabOption={!disabledChooseLabOptionMode ? setIsModalOpen.open : undefined}
               setIsUploadModalOpen={setIsUploadModalOpen.open}
               visibleExaminations={visibleExaminations}
               allowLabDocuments={allowLabDocuments}
+              prescriptionId={prescriptionId}
             />
           ) : (
             ""

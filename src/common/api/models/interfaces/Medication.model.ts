@@ -39,6 +39,8 @@ export interface IMedicineListItem {
   shippingType: string;
   lab_package?: any;
   lab_type?: string;
+  lab_selection_mode?: "now" | "later" | null;
+  reports?: any[];
   u_id: number;
   id: number;
   client_id: number | null;
