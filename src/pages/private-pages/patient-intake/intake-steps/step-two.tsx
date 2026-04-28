@@ -68,7 +68,7 @@ const StepTwo = ({ onNext, onBack, defaultValues }: StepTwoProps) => {
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid sm:grid-cols-2 gap-5">
           {doesDietOptions.map((option) => (
             <Radio
               key={option}
@@ -99,7 +99,7 @@ const StepTwo = ({ onNext, onBack, defaultValues }: StepTwoProps) => {
             label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           }}
         >
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid sm:grid-cols-2 gap-5">
             {agreeOptions.map((option) => (
               <Radio
                 key={option}

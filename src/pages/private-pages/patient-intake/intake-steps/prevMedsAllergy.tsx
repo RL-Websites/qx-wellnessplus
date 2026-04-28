@@ -12,10 +12,10 @@ export const MedsAllergySchema = yup.object({
     then: (schema) => schema.required("Please mention the allergies you previously had."),
   }),
   hasAllergyAnyMedication: yup.string().required("Please select at least one value"),
-    nameAllergyAnyMedication: yup.string().when("hasAllergyAnyMedication", {
-      is: "Yes",
-      then: (schema) => schema.required("Please mention the medication allergies you have."),
-    }),
+  nameAllergyAnyMedication: yup.string().when("hasAllergyAnyMedication", {
+    is: "Yes",
+    then: (schema) => schema.required("Please mention the medication allergies you have."),
+  }),
   prescribed: yup.string().required("Please select at least one value."),
   medicines: yup.string().when("prescribed", {
     is: "Yes",
@@ -64,8 +64,6 @@ const MedsAllergy = ({ onNext, onBack, defaultValues }: MedsAllergyProps) => {
   const showAllergyNames = hasAllergy === "Yes";
   const showMedicineNames = prescribed === "Yes";
 
-
-
   const yesNoOptions = ["Yes", "No"];
 
   const handleSelect = (field: keyof MedsAllergySchemaType, value: string) => {
@@ -92,7 +90,7 @@ const MedsAllergy = ({ onNext, onBack, defaultValues }: MedsAllergyProps) => {
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
         }}
       >
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid sm:grid-cols-2 gap-5">
           {yesNoOptions.map((option) => (
             <Radio
               key={option}
@@ -157,7 +155,7 @@ const MedsAllergy = ({ onNext, onBack, defaultValues }: MedsAllergyProps) => {
             label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           }}
         >
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid sm:grid-cols-2 gap-5">
             {yesNoOptions.map((option) => (
               <Radio
                 key={option}
@@ -209,8 +207,6 @@ const MedsAllergy = ({ onNext, onBack, defaultValues }: MedsAllergyProps) => {
         )}
       </div>
 
-
-
       {/* Prescribed Medicines Section */}
       <div>
         <p className="text-foreground text-base pb-6">
@@ -228,7 +224,7 @@ const MedsAllergy = ({ onNext, onBack, defaultValues }: MedsAllergyProps) => {
             label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2",
           }}
         >
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid sm:grid-cols-2 gap-5">
             {yesNoOptions.map((option) => (
               <Radio
                 key={option}

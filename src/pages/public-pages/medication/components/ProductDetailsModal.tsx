@@ -26,7 +26,7 @@ interface IProductDetailsModalProps {
     is_research_only?: number;
     total_price?: string;
     customer_medication?: { price?: string };
-    direction_sig?: string;
+    direction?: string;
   } | null;
 }
 
@@ -86,7 +86,7 @@ function ProductDetailsModal({ openModal, onModalClose, medicationDetails }: IPr
               </div> */}
               <div className="space-y-2">
                 <h6 className="text-fs-sp font-semibold">Direction/Sig :</h6>
-                <p className="text-fs-md">{medicationDetails?.direction_sig || "N/A"}</p>
+                <p className="text-fs-md">{medicationDetails?.direction || "N/A"}</p>
               </div>
               <div className="space-y-2">
                 <h6 className="text-fs-sp font-semibold">Medication Category :</h6>
