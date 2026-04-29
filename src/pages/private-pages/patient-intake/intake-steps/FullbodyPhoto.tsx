@@ -156,7 +156,7 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
                   }
                 }}
                 min={0}
-                max={12}
+                max={11}
                 hideControls
                 clampBehavior="strict"
               />
