@@ -2,7 +2,7 @@ import useAuthToken from "@/common/hooks/useAuthToken";
 import { cartItemsAtom } from "@/common/states/product.atom";
 import { selectedStateAtom } from "@/common/states/state.atom";
 import { userAtom } from "@/common/states/user.atom";
-import { calculatePrice, generateMedName, stateWiseLabFee } from "@/utils/helper.utils";
+import { calculatePrice, generateMedName, imageUrl, stateWiseLabFee } from "@/utils/helper.utils";
 import { Avatar, Button } from "@mantine/core";
 import { useAtom, useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
@@ -119,7 +119,7 @@ const OrderSummary = () => {
               >
                 <div className="flex flex-col gap-2">
                   <Avatar
-                    src={item.image ? `${import.meta.env.VITE_BASE_PATH}/storage/${item.image}` : "/placeholder.png"}
+                    src={imageUrl(item?.image, "/images/product-img-placeholder.jpg")}
                     size={129}
                     radius={10}
                   >
