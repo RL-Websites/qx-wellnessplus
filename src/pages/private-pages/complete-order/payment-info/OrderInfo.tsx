@@ -1,5 +1,5 @@
 import { cartItemsAtom } from "@/common/states/product.atom";
-import { calculatePrice, dosevanaCostGenerate, generateMedName, stateWiseLabFee } from "@/utils/helper.utils";
+import { calculatePrice, dosevanaCostGenerate, generateMedName, imageUrl, stateWiseLabFee } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Avatar, Button, TextInput } from "@mantine/core";
 import { useAtom, useAtomValue } from "jotai";
@@ -218,7 +218,7 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
                   <div className="flex flex-col gap-2">
                     <div className="card-thumb w-[129px]">
                       <Avatar
-                        src={item?.image ? `${import.meta.env.VITE_BASE_PATH}/storage/${item?.image}` : "/images/product-img-placeholder.jpg"}
+                        src={imageUrl(item?.image, "/images/product-img-placeholder.jpg")}
                         size={129}
                         radius={10}
                       >
