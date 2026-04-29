@@ -275,6 +275,7 @@ const MedicationsPage = () => {
         medicationInfo={pendingAddToCart ? [pendingAddToCart] : []}
         category_name={pendingAddToCart?.medication_category} // This line was already present
         showShippingType={pendingAddToCart?.pharmacy?.is_over_night_shipping}
+        is_research_only={pendingAddToCart?.is_research_only}
         overNightShippingFee={customerData?.over_night_shipping_fee}
       />
       <ConfirmTestosteroneOnlyModal
