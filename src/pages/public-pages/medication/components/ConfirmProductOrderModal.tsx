@@ -49,8 +49,8 @@ function ConfirmProductOrderModal(modalProps: IConfirmationModalProps) {
                 onChange={(value) => setSelectedQty(Number(value))}
                 className="mb-8 mt-6 w-full animate-content"
               >
-                <div className="grid md:grid-cols-2 gap-5 w-full">
-                  {["1", "2"].map((qty) => (
+                <div className="grid md:grid-cols-3 grid-cols-2 gap-5 w-full">
+                  {["1", "2", "3"].map((qty) => (
                     <Radio
                       key={qty}
                       value={qty}
