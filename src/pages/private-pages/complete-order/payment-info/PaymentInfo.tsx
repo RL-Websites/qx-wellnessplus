@@ -52,9 +52,6 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
   const [shippingStateSearchVal, setShippingStateSearchVal] = useState<string>("");
   const [billingStateSearchVal, setBillingStateSearchVal] = useState<string>("");
   const [totalBillAmount, setTotalBillAmount] = useState<number>(0);
-  // Tracks whether the patient-data-fill-up booking call has already succeeded for
-  // this checkout session. Prevents duplicate Prescription rows when the user
-  // retries Payment after a Stripe-side failure (no card entered, declined, SCA, etc.).
   const [bookingSubmitted, setBookingSubmitted] = useState<boolean>(false);
 
   const navigate = useNavigate();
@@ -192,11 +189,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
         ...formData,
         ...temptSubmitPayload,
       };
-      // First, call your backend API — but only once per checkout session.
-      // If a previous attempt already created the prescription on the server, skip
-      // this call to avoid duplicate Prescription/PrescriptionDetail rows. The
-      // backend is also idempotent on `clientSecret`, but guarding here saves a
-      // round-trip and keeps the UX snappy on retry.
+
       if (!bookingSubmitted) {
         await handleIntakeSubmit(payload);
         setBookingSubmitted(true);
