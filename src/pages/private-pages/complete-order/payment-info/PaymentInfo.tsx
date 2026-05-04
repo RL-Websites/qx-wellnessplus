@@ -214,7 +214,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
               },
             },
           },
-          return_url: `${import.meta.env.VITE_FRONTEND_URL.replace(/\/+$/, "")}/partner-patient-booking-success`,
+          return_url: `${window.location.origin.replace(/\/+$/, "")}/partner-patient-booking-success`,
         },
         redirect: "if_required",
       });
