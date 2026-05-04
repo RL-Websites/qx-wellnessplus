@@ -77,6 +77,13 @@ export const basicInfoValidationSchema = yup.object({
   longitude: yup.number().nullable(),
   driving_lic_front: yup.string().required("Please upload an image of the front side of your driving license."),
   driving_lic_back: yup.string().required("Please upload an image of the back side of your driving license."),
+  driver_license_number: yup
+    .string()
+    .trim()
+    .min(5, "Driver license number must be at least 5 characters")
+    .max(20, "Driver license number must not exceed 20 characters")
+    .required("Driver license number is required"),
+  driver_license_state: yup.string().trim().required("Driver license issue state is required"),
 });
 
 export type BasicInfoFormFieldsType = yup.InferType<typeof basicInfoValidationSchema>;

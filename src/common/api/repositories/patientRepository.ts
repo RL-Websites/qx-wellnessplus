@@ -27,6 +27,10 @@ class PatientRepository {
   publicGetPatientDetails(params: IPublicPatientDetailsParams) {
     return this.$http.get<IBaseResponse<IPublicPartnerPrescriptionDetails>>("customer/public-prescription-details", { params: params });
   }
+
+  downloadLabRequisition(prescriptionId: number | string) {
+    return this.$http.get(`patient/prescription/lab-requisition-download/${prescriptionId}`, { responseType: "blob" });
+  }
 }
 
 const patientApiRepository = new PatientRepository($http);

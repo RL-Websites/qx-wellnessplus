@@ -3,7 +3,7 @@ import { calculatePrice, dosevanaCostGenerate, generateMedName, imageUrl, stateW
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Avatar, Button, TextInput } from "@mantine/core";
 import { useAtom, useAtomValue } from "jotai";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { IServerErrorResponse } from "@/common/api/models/interfaces/ApiResponse.model";
@@ -11,6 +11,8 @@ import promoCodesApiRepository from "@/common/api/repositories/promoCodeReposito
 import dmlToast from "@/common/configs/toaster.config";
 import { customerAtom } from "@/common/states/customer.atom";
 import { selectedStateAtom } from "@/common/states/state.atom";
+import LabSection from "@/pages/public-pages/order-summary/components/LabSection";
+import { LabSubmissionType } from "@/pages/public-pages/order-summary/components/LabTypeSectionModal";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import * as yup from "yup";
@@ -49,6 +51,36 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
   const [appliedPromo, setAppliedPromo] = useState<PromoData | null>(null);
   const [customerData] = useAtom(customerAtom);
   const selectedState = useAtomValue(selectedStateAtom);
+  const [selectedLabType, setSelectedLabType] = useState<LabSubmissionType | null>(formData?.lab_type ?? null);
+  const [selectedReports, setSelectedReports] = useState<any[]>(formData?.reports ?? []);
+
+  // Detect lab-required item (TRT/Hormone/lab-package medications)
+  const labRequiredItem = useMemo(
+    () =>
+      cartItems?.find((item) => {
+        const category = item?.medication_category;
+        const hasLabPackage = !!item?.lab_package;
+        return item?.lab_required == "1" || category?.toLowerCase() === "testosterone" || hasLabPackage;
+      }),
+    [cartItems]
+  );
+  const hasLabRequired = !!labRequiredItem;
+  const requiredLabExaminations = labRequiredItem?.lab_package?.examinations ?? [];
+  const disableChooseLabOptionMode = !!labRequiredItem?.lab_type;
+
+  // Lab option is selected upstream (testosterone modal on /medications) and persisted on
+  // the cart item. Seed local state from there so SelectedLabOption renders the saved
+  // choice instead of an empty card.
+  useEffect(() => {
+    if (!labRequiredItem) return;
+    if (!selectedLabType && labRequiredItem.lab_type) {
+      setSelectedLabType(labRequiredItem.lab_type as LabSubmissionType);
+    }
+    if ((!selectedReports || selectedReports.length === 0) && Array.isArray(labRequiredItem.reports) && labRequiredItem.reports.length > 0) {
+      setSelectedReports(labRequiredItem.reports);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [labRequiredItem?.lab_type, labRequiredItem?.reports]);
 
   const { handleSubmit, register, setValue, reset } = useForm({
     resolver: yupResolver(promoSchema),
@@ -62,10 +94,14 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
       let labFeeTotal = 0;
       let shippingFeeTotal = 0;
 
+      // Lab fee is only billed when patient picks the Dosevana-managed lab option.
+      // own_lab / preferred_lab => $0 (handled outside checkout).
+      const chargeLabFee = selectedLabType === "dosevana_lab";
+
       cartItems.forEach((item) => {
         productTotal += calculatePrice(item);
         dosevanaTotal += dosevanaCostGenerate(item, item?.customer_medication?.customer);
-        if (item?.lab_required == "1") {
+        if (chargeLabFee && item?.lab_required == "1") {
           labFeeTotal += stateWiseLabFee(item, selectedState);
         }
         if (item.shippingType === "Overnight") {
@@ -107,7 +143,7 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
       setFinalTotal(0);
       setDiscount(0);
     }
-  }, [cartItems, appliedPromo, selectedState]);
+  }, [cartItems, appliedPromo, selectedState, selectedLabType]);
 
   // promo apply mutation
   const applyPromoMutation = useMutation<any, AxiosError<IServerErrorResponse>, { promo_code: string; customerId: string }>({
@@ -172,6 +208,14 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
 
   // final submit
   const submitFormWithPatientCard = (shippingData: any) => {
+    if (hasLabRequired && !selectedLabType) {
+      dmlToast.error({
+        title: "Lab option required",
+        message: "Please choose a lab option before continuing.",
+      });
+      return;
+    }
+
     const payload: any = {
       patient: {
         ...formData?.patient,
@@ -183,6 +227,10 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
       subtotal: totalBillAmount,
       lab_fee: labFee,
       shipping_fee: totalShippingFee,
+      lab_type: selectedLabType ?? null,
+      // QX patient is selecting for themselves, so always "now".
+      lab_selection_mode: hasLabRequired && selectedLabType ? "now" : null,
+      reports: selectedReports ?? [],
     };
 
     onNext(payload);
@@ -203,6 +251,24 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
     <>
       <form id="payment-form">
         <h1 className="heading-text text-foreground uppercase text-center pb-10">Payment Information</h1>
+
+        {hasLabRequired && (
+          <LabSection
+            disabledChooseLabOptionMode={disableChooseLabOptionMode}
+            examinations={requiredLabExaminations}
+            // QX is payment-first: no real Prescription exists yet at this step,
+            // so don't pass an id (a customer_medication id is NOT a prescription id
+            // and would cause the download endpoint to 500). Requisition becomes
+            // downloadable from the post-checkout order/prescription screens.
+            prescriptionId={null}
+            prescriptionDetailId={null}
+            value={selectedLabType}
+            onSelectionChange={setSelectedLabType}
+            reports={selectedReports}
+            onReportsChange={setSelectedReports}
+          />
+        )}
+
         <div className="grid lg:grid-cols-2 gap-6 mt-10">
           {/* Cart Section */}
           <div className="card card-bg">
@@ -242,7 +308,10 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
                       {item?.medicine_type == "ODT" ? "Oral" : item?.medicine_type} | {item?.medication_category === "Single Peptides" ? "Anti-Aging" : item?.medication_category}
                     </div>
                     <div className="text-foreground">
-                      Price: ${item?.lab_required == "1" ? (Number(calculatePrice(item)) + stateWiseLabFee(item, selectedState)).toFixed(2) : calculatePrice(item).toFixed(2)}
+                      Price: $
+                      {item?.lab_required == "1" && selectedLabType === "dosevana_lab"
+                        ? (Number(calculatePrice(item)) + stateWiseLabFee(item, selectedState)).toFixed(2)
+                        : calculatePrice(item).toFixed(2)}
                     </div>
                   </div>
                 </div>

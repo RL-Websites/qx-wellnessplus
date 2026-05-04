@@ -46,6 +46,9 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
   const [gender, setGender] = useState<string | null>(selectedGender || null);
   const [selectedState, setSelectedState] = useAtom(selectedStateAtom);
   const [stateSearchVal, setStateSearchVal] = useState<string>(selectedState || "");
+  // Separate searchable-Select state for the driver-license issue state (independent
+  // of the address state) — mirrors wellness-plus-front's StepOne.tsx.
+  const [dlStateSearchVal, dlSetStateSearchVal] = useState<string>("");
   const [address, setAddress] = useState<string>("");
   const [zipCode, setZipCode] = useState<any>(null);
   const [frontFile, setFrontFile] = useState<string>();
@@ -174,6 +177,15 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
         setValue("latitude", tempPatientDetails?.userable?.latitude ? Number(tempPatientDetails?.userable?.latitude) : null);
         setValue("longitude", tempPatientDetails?.userable?.longitude ? Number(tempPatientDetails?.userable?.longitude) : null);
 
+        // Prefill driver license number / issue state from registered patient profile
+        if (tempPatientDetails?.userable?.driver_license_number) {
+          setValue("driver_license_number", tempPatientDetails.userable.driver_license_number, { shouldValidate: true });
+        }
+        if (tempPatientDetails?.userable?.driver_license_state) {
+          setValue("driver_license_state", tempPatientDetails.userable.driver_license_state, { shouldValidate: true });
+          dlSetStateSearchVal(tempPatientDetails.userable.driver_license_state);
+        }
+
         // Driving license: prefer base64 version, fall back to file path (S3 URL)
         const frontBase64Val = tempPatientDetails?.userable?.base64_driving_license_front;
         const backBase64Val = tempPatientDetails?.userable?.base64_driving_license_back;
@@ -234,6 +246,13 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
           setSelectedState(formData.patient.state);
           setStateSearchVal(formData.patient.state);
           setValue("state", formData.patient.state, { shouldValidate: true });
+        }
+        if (formData?.patient?.driver_license_number) {
+          setValue("driver_license_number", formData.patient.driver_license_number, { shouldValidate: true });
+        }
+        if (formData?.patient?.driver_license_state) {
+          setValue("driver_license_state", formData.patient.driver_license_state, { shouldValidate: true });
+          dlSetStateSearchVal(formData.patient.driver_license_state);
         }
         setValue("city", formData?.patient?.city);
         setZipCode(formData?.patient?.zip_code);
@@ -300,6 +319,8 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
         zip_code: data?.zip_code,
         driving_lic_back: backBase64 || undefined,
         driving_lic_front: frontBase64 || undefined,
+        driver_license_number: data?.driver_license_number,
+        driver_license_state: data?.driver_license_state,
       },
     };
     onNext(payload);
@@ -597,6 +618,41 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
               </p>
             </div>
           </div>
+          <Input.Wrapper
+            className="sm:col-span-1 col-span-2 w-full"
+            label="Driving License Number"
+            withAsterisk
+            error={getErrorMessage(errors.driver_license_number)}
+          >
+            <Input
+              {...register("driver_license_number")}
+              type="text"
+              error={getErrorMessage(errors.driver_license_number?.message)}
+            />
+          </Input.Wrapper>
+          <Select
+            label="Driver License Issue State"
+            withAsterisk
+            classNames={{
+              wrapper: "bg-grey-btn rounded-md",
+            }}
+            rightSection={<i className="icon-down-arrow text-sm"></i>}
+            searchable
+            searchValue={dlStateSearchVal}
+            onSearchChange={dlSetStateSearchVal}
+            value={watch("driver_license_state") || null}
+            className="sm:col-span-1 col-span-2 w-full"
+            data={states?.map((item) => ({ value: item?.StateName, label: item?.StateName }))}
+            {...register("driver_license_state")}
+            error={getErrorMessage(errors.driver_license_state)}
+            onChange={(value, option) => {
+              setValue("driver_license_state", value || "", { shouldValidate: true });
+              if (value) {
+                dlSetStateSearchVal(option.label);
+                clearErrors("driver_license_state");
+              }
+            }}
+          />
           <div className="md:col-span-1 col-span-2">
             <h6 className="font-poppins extra-form-text-medium text-foreground mb-2">
               Upload Driving License (Front Side)<span className="dml-InputWrapper-required dml-NumberInput-required">*</span>

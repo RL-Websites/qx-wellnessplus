@@ -65,10 +65,12 @@ const OrderSummary = () => {
   const disableChooseLabOptionMode = !!labRequiredItem?.lab_type;
 
   const handleNext = () => {
-    console.log(userData, getAccessToken());
+    // Lab option is now captured at add-to-cart time (e.g. testosterone modal on /medications),
+    // so prefer the value persisted on the cart item over the (now usually unused) local state.
+    const effectiveLabType = selectedLabType ?? (labRequiredItem?.lab_type as LabSubmissionType | undefined) ?? null;
+    const effectiveReports = selectedReports ?? labRequiredItem?.reports ?? [];
 
-    // Validate lab selection if required
-    if (hasLabRequired && !selectedLabType) {
+    if (hasLabRequired && !effectiveLabType) {
       console.warn("Please select a lab submission option before continuing.");
       return;
     }
@@ -76,8 +78,8 @@ const OrderSummary = () => {
     if (userData && getAccessToken()) {
       navigate("/complete-order", {
         state: {
-          lab_type: selectedLabType || null,
-          reports: selectedReports,
+          lab_type: effectiveLabType,
+          reports: effectiveReports,
         },
       });
     } else {
@@ -117,7 +119,7 @@ const OrderSummary = () => {
               >
                 <div className="flex flex-col gap-2">
                   <Avatar
-                    src={imageUrl(item?.image, "/placeholder.png")}
+                    src={imageUrl(item?.image, "/images/product-img-placeholder.jpg")}
                     size={129}
                     radius={10}
                   >

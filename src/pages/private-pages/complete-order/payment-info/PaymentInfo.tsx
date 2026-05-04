@@ -52,6 +52,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
   const [shippingStateSearchVal, setShippingStateSearchVal] = useState<string>("");
   const [billingStateSearchVal, setBillingStateSearchVal] = useState<string>("");
   const [totalBillAmount, setTotalBillAmount] = useState<number>(0);
+  const [bookingSubmitted, setBookingSubmitted] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -146,6 +147,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
       qty_ordered: item.qty,
       customer_medication_id: item.customer_medication.id, // customerMedication er medication_id
       labRequired: item.lab_required ? item.lab_required : null,
+      shippingType: item.shippingType === "Overnight" ? "overnight" : "regular",
     }));
     const payload: IPatientBookingPatientInfoDTO = {
       slug: customerData?.slug || "",
@@ -155,6 +157,9 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
       billing: data.billing,
       patient: formData?.patient,
       medications: medications,
+      lab_type: formData?.lab_type ?? null,
+      lab_selection_mode: formData?.lab_selection_mode ?? null,
+      reports: formData?.reports ?? [],
     };
     setTempSubmitPayload(payload);
     handlePaymentConfirmation.open();
@@ -184,8 +189,11 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
         ...formData,
         ...temptSubmitPayload,
       };
-      // First, call your backend API
-      await handleIntakeSubmit(payload);
+
+      if (!bookingSubmitted) {
+        await handleIntakeSubmit(payload);
+        setBookingSubmitted(true);
+      }
       // Then confirm the payment with Stripe
 
       const { paymentIntent, error } = await stripe.confirmPayment({
