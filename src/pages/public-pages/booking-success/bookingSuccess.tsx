@@ -168,7 +168,7 @@ const BookingSuccess = () => {
             </p>
             <p className="text-center w-[500px] mx-auto ">Please wait... It will redirect you to the intake form section! You can also Click the button below to continue</p>
             <div className="flex justify-center mt-5">
-              <Link to={prescriptionUId ? `/partner-patient-intake?prescription_u_id=${prescriptionUId}` : ""}>
+              <Link to={prescriptionUId ? `/patient-intake?prescription_u_id=${prescriptionUId}` : ""}>
                 <Button
                   size={buttonSize}
                   className="sm:w-[400px] w-[200px]"
