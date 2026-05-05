@@ -110,7 +110,7 @@ function ProductDetailsModal({ openModal, onModalClose, medicationDetails }: IPr
               </div>
               <div className="space-y-2">
                 <h6 className="text-fs-sp font-semibold">Package Price :</h6>
-                <p className="text-fs-md">${medicationDetails?.customer_medication?.price}</p>
+                <p className="text-fs-md">${Number(medicationDetails?.customer_medication?.price).toFixed(2)}</p>
               </div>
             </div>
           </div>
