@@ -1,6 +1,7 @@
 import { IPartnerMedicineListItem } from "@/common/api/models/interfaces/Medication.model";
 import { getBaseWebRadios } from "@/common/configs/baseWebRedios";
 import { Button, Modal, Radio } from "@mantine/core";
+import { IconCircleCheck, IconInfoCircleFilled } from "@tabler/icons-react";
 import { useState } from "react";
 
 interface IConfirmationModalProps {
@@ -73,30 +74,85 @@ function ConfirmProductOrderModal(modalProps: IConfirmationModalProps) {
           )}
 
           {modalProps.is_research_only == 1 ? (
-            <div className="bg-warning-bg text-foreground text-sm rounded-xl px-4 py-4 space-y-3 mb-6">
-              <p className="font-semibold">Warning: Research Use Only</p>
-              <div className="flex gap-2 items-start">
-                <i className="icon-check-circle text-lg mt-0.5" />
-                <span>
-                  <strong>No Medical Claims:</strong> The product has not been evaluated by the FDA and is not intended to diagnose, treat, cure, or prevent any disease.
-                </span>
-              </div>
+            // <div className="bg-warning-bg text-foreground text-sm rounded-xl px-4 py-4 space-y-3 mb-6">
+            //   <p className="font-semibold">Warning: Research Use Only</p>
+            //   <div className="flex gap-2 items-start">
+            //     <i className="icon-check-circle text-lg mt-0.5" />
+            //     <span>
+            //       <strong>No Medical Claims:</strong> The product has not been evaluated by the FDA and is not intended to diagnose, treat, cure, or prevent any disease.
+            //     </span>
+            //   </div>
 
-              <div className="flex gap-2 items-start">
-                <i className="icon-check-circle text-lg mt-0.5" />
-                <span>
-                  <strong>Doctor Consultation:</strong> A consultation with one of our licensed physicians is required before shipment.
-                </span>
-              </div>
+            //   <div className="flex gap-2 items-start">
+            //     <i className="icon-check-circle text-lg mt-0.5" />
+            //     <span>
+            //       <strong>Doctor Consultation:</strong> A consultation with one of our licensed physicians is required before shipment.
+            //     </span>
+            //   </div>
 
-              <div className="flex gap-2 items-start">
-                <i className="icon-check-circle text-lg mt-0.5" />
-                <span>
-                  <strong>Research Use Only:</strong> You agree to use this product solely for research purposes.
-                </span>
-              </div>
+            //   <div className="flex gap-2 items-start">
+            //     <i className="icon-check-circle text-lg mt-0.5" />
+            //     <span>
+            //       <strong>Research Use Only:</strong> You agree to use this product solely for research purposes.
+            //     </span>
+            //   </div>
 
-              <p className="pt-1">Please click "I Agree" to continue.</p>
+            //   <p className="pt-1">Please click "I Agree" to continue.</p>
+            // </div>
+            <div className="my-5 space-y-5 rounded-xl border border-dashed border-[#EF3154] bg-[#FFF0EE] px-5 py-5 text-[#C7002A] sm:px-6">
+              <div className="flex items-center gap-2.5">
+                <IconInfoCircleFilled
+                  size={24}
+                  className="shrink-0"
+                />
+                <h6 className="text-[#C7002A] font-semibold">Final Sale Notice - Please Read Carefully</h6>
+              </div>
+              <p className="text-sm font-medium leading-relaxed text-[#C7002A] sm:text-base">
+                Physician-grade products & supplies are provided as-is and are non-refundable and non-replaceable.
+              </p>
+              <ul className="space-y-3.5 text-sm leading-relaxed sm:text-base">
+                <li className="flex gap-2">
+                  <IconCircleCheck
+                    size={17}
+                    stroke={2.4}
+                    className="mt-1 shrink-0"
+                  />
+                  <span>No refunds</span>
+                </li>
+                <li className="flex gap-2">
+                  <IconCircleCheck
+                    size={17}
+                    stroke={2.4}
+                    className="mt-1 shrink-0"
+                  />
+                  <span>No replacements</span>
+                </li>
+                <li className="flex gap-2">
+                  <IconCircleCheck
+                    size={17}
+                    stroke={2.4}
+                    className="mt-1 shrink-0"
+                  />
+                  <span>No guarantees</span>
+                </li>
+                <li className="flex gap-2">
+                  <IconCircleCheck
+                    size={17}
+                    stroke={2.4}
+                    className="mt-1 shrink-0"
+                  />
+                  <span>No additional supplies or instructions</span>
+                </li>
+                <li className="flex gap-2">
+                  <IconCircleCheck
+                    size={17}
+                    stroke={2.4}
+                    className="mt-1 shrink-0"
+                  />
+                  <span>Reconstitution instructions will not be provided.</span>
+                </li>
+              </ul>
+              <p className="text-sm font-medium leading-relaxed text-[#C7002A] sm:text-base">By proceeding, you acknowledge and accept these terms.</p>
             </div>
           ) : (
             ""

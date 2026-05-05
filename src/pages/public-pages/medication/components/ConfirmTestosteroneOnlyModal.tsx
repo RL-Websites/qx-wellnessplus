@@ -142,7 +142,7 @@ function ConfirmTestosteroneOnlyModal(modalProps: IConfirmationModalProps) {
                         <div className="relative text-center">
                           <span className="text-foreground font-poppins">{type === "Overnight" ? `Overnight (+ $${modalProps.overNightShippingFee || "0"})` : "Regular"}</span>
                           {shippingType === type && (
-                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:-right-2 -right-1 -translate-y-1/2">
+                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:-right-4 -right-3 -translate-y-1/2">
                               <i className="icon-tick text-sm/none"></i>
                             </span>
                           )}

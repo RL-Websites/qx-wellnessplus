@@ -23,7 +23,7 @@ const MedicationCard = (medicationProps: IMedicationProps) => {
             <img
               src={medicationProps?.image}
               alt=""
-              className="max-w-full min-h-[326px] mx-auto"
+              className="max-w-full w-full min-h-[326px] mx-auto"
             />
             <span className="absolute size-8 top-4 right-4 rounded-full cursor-pointer">
               <i className="icon-info-2 text-4xl/none text-white"></i>
@@ -39,7 +39,7 @@ const MedicationCard = (medicationProps: IMedicationProps) => {
             <div className="grid sm:grid-cols-2 gap-4 mt-3">
               <div className="flex flex-col justify-center items-center border-2 border-[#8FCADD] rounded-xl p-2">
                 <span className="text-foreground text-sm">Without Lab</span>
-                <span className="text-foreground sm:text-lg text-base font-bold">${medicationProps?.cost}</span>
+                <span className="text-foreground sm:text-lg text-base font-bold">${Number(medicationProps?.cost).toFixed(2)}</span>
               </div>
               <div className="flex flex-col justify-center items-center border-2 border-[#8FCADD] rounded-xl p-2">
                 <span className="text-foreground text-sm">With Lab</span>
@@ -48,7 +48,7 @@ const MedicationCard = (medicationProps: IMedicationProps) => {
             </div>
           ) : (
             <div className="flex flex-col justify-center items-center border-2 border-[#8FCADD] rounded-xl p-2 mt-3">
-              <span className="text-foreground sm:text-lg text-base font-bold">${medicationProps?.cost}</span>
+              <span className="text-foreground sm:text-lg text-base font-bold">${Number(medicationProps?.cost).toFixed(2)}</span>
             </div>
           )}
         </div>
