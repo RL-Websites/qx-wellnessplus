@@ -17,7 +17,7 @@ import { imageUrl, stateWiseLabFee } from "@/utils/helper.utils";
 //import { stateWiseLabFee } from "@/utils/helper.utils";
 import { useQuery } from "@tanstack/react-query";
 import { useAtom, useAtomValue } from "jotai";
-import { NavLink as RdNavLink } from "react-router-dom";
+import { Link, NavLink as RdNavLink } from "react-router-dom";
 import ConfirmTestosteroneOnlyModal from "./components/ConfirmTestosteroneOnlyModal";
 
 const MedicationsPage = () => {
@@ -245,10 +245,15 @@ const MedicationsPage = () => {
         <div className="fixed left-0 bottom-16 w-full animate-fadeInUp">
           <div className="bg-warning-bg px-10 lg:py-6 py-5 flex md:flex-row flex-col items-center justify-between rounded-2xl md:mx-5 mx-4 md:gap-2 gap-4">
             <div className="flex md:flex-row flex-col items-center lg:gap-14 md:gap-8 gap-2">
-              <div className="relative">
-                <i className="icon-orders text-4xl/none"></i>
-                <span className="text-base text-white rounded-full bg-primary size-5 absolute -top-2.5 -right-3 text-center leading-5">{totalCartCount}</span>
-              </div>
+              <Link
+                to="/order-summary"
+                className="relative"
+              >
+                <div className="relative">
+                  <i className="icon-orders text-4xl/none"></i>
+                  <span className="text-base text-white rounded-full bg-primary size-5 absolute -top-2.5 -right-3 text-center leading-5">{totalCartCount}</span>
+                </div>
+              </Link>
               <span className="text-foreground md:text-xl sm:text-lg text-base md:text-start text-center font-medium">
                 {totalCartCount > 0 && (
                   <div>

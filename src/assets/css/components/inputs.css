@@ -131,6 +131,11 @@
 .dml-Input-Calendar {
   [data-baseweb="base-input"] {
     position: relative;
+    background: white;
+    input {
+      background: transparent;
+      z-index: 1;
+    }
     &:after {
       font-family: "icomoon";
       content: "\e905";
@@ -139,8 +144,10 @@
       position: absolute;
       right: 22.54px;
       top: 50%;
+      z-index: 0;
       transform: translateY(-50%);
       color: var(--dml-color-grey);
+      cursor: pointer;
     }
   }
   .css-fGNHjk {
