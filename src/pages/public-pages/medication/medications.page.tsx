@@ -78,8 +78,8 @@ const MedicationsPage = () => {
   };
 
   const handleAddToCart = (item: any) => {
-    if (item.medication_category === "Testosterone") {
-      setPendingAddToCart(item);
+	    if (item.medication_category === "Testosterone" || ["Optimal", "Optimal Protocol"].includes(item.medication_category || "") || item.is_optimal_protocol) {
+	      setPendingAddToCart(item);
       setSelectedMedication(item);
       handleConfirmTestosterone.open();
       return;
