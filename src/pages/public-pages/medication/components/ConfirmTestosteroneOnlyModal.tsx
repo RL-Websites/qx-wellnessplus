@@ -40,8 +40,9 @@ interface IConfirmationModalProps {
     total_price?: string;
     customer_medication?: { id?: number; price?: string };
     direction_sig?: string;
-    lab_package?: any;
-  } | null;
+	    lab_package?: any;
+	    is_optimal_protocol?: string | boolean;
+	  } | null;
 }
 
 function ConfirmTestosteroneOnlyModal(modalProps: IConfirmationModalProps) {
@@ -49,6 +50,8 @@ function ConfirmTestosteroneOnlyModal(modalProps: IConfirmationModalProps) {
   const [shippingType, setShippingType] = useState<string>("Regular");
   const [selectedLabType, setSelectedLabType] = useState<LabSubmissionType | null>(null);
   const [selectedReports, setSelectedReports] = useState<any[]>([]);
+  const isOptimalMedication = Boolean(modalProps.medicationDetails?.is_optimal_protocol) || ["optimal", "optimal protocol"].includes(modalProps.medicationDetails?.medication_category?.toLowerCase() || "");
+  const treatmentTitle = isOptimalMedication ? "Packaged/Optimal Treatment" : "Testosterone Treatments";
 
   useEffect(() => {
     if (modalProps.openModal) {
@@ -100,7 +103,7 @@ function ConfirmTestosteroneOnlyModal(modalProps: IConfirmationModalProps) {
         </Modal.Header>
         <Modal.Body className="pt-0 pb-lg">
           <div className="bg-tag-bg py-4 px-5 rounded-xl space-y-2 animate-content">
-            <h6 className="text-tag-bg-deep font-semibold">Lab Testing is Mandatory for All Testosterone Treatments.</h6>
+	            <h6 className="text-tag-bg-deep font-semibold">Lab Testing is Mandatory for All {treatmentTitle}.</h6>
             <p className="text-tag-bg-deep text-sm">
               Your lab results are required for the doctor's review before approval. Please choose how you would like to provide them below.
             </p>
