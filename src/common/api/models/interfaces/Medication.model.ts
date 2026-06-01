@@ -37,7 +37,17 @@ export interface IMedicineCategory {
 export interface IMedicineListItem {
   is_packaged: any;
   shippingType: string;
-  lab_package?: any;
+  lab_package?: {
+    id?: number;
+    package_name?: string;
+    price_all_state?: string | number;
+    price_selected_state?: string | number;
+    customer_lab_packages?: Array<{
+      id?: number;
+      price_all_state?: string | number;
+      price_selected_state?: string | number;
+    }>;
+  };
   lab_type?: string;
   lab_selection_mode?: "now" | "later" | null;
   reports?: any[];

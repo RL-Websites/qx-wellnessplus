@@ -5,6 +5,7 @@ interface IMedicationProps {
   title: string;
   cost: string;
   lab_fee?: number;
+  lab_required?: string;
   disabled: boolean;
   onAddToCart: () => void;
   onShowDetails: () => void;
@@ -35,7 +36,7 @@ const MedicationCard = (medicationProps: IMedicationProps) => {
         )}
         <div className="">
           <p className="text-foreground text-sm  font-bold">Package Price</p>
-          {medicationProps?.selectedCategory?.includes("Testosterone") ? (
+          {medicationProps?.lab_required === "1" && Number(medicationProps?.lab_fee) > 0 ? (
             <div className="grid sm:grid-cols-2 gap-4 mt-3">
               <div className="flex flex-col justify-center items-center border-2 border-[#8FCADD] rounded-xl p-2">
                 <span className="text-foreground text-sm">Without Lab</span>
