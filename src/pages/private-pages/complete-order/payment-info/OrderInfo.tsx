@@ -58,9 +58,7 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
   const labRequiredItem = useMemo(
     () =>
       cartItems?.find((item) => {
-        const category = item?.medication_category;
-        const hasLabPackage = !!item?.lab_package;
-        return item?.lab_required == "1" || category?.toLowerCase() === "testosterone" || hasLabPackage;
+        return item?.is_lab_required == 1 || item?.lab_required === "1";
       }),
     [cartItems]
   );

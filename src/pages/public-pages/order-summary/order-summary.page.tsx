@@ -53,11 +53,9 @@ const OrderSummary = () => {
     }
   }, [cartItems, navigate]);
 
-  // Get lab data from cart items
+  // Get lab data from cart items — only items that actually require a lab
   const labRequiredItem = cartItems.find((item) => {
-    const category = item?.medication_category;
-    const hasLabPackage = !!item?.lab_package;
-    return category?.toLowerCase() === "testosterone" || hasLabPackage;
+    return item?.is_lab_required == 1 || item?.lab_required === "1";
   });
   const hasLabRequired = !!labRequiredItem;
   const requiredLabExaminations = labRequiredItem?.lab_package?.examinations ?? [];
