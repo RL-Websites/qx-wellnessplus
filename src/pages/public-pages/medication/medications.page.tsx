@@ -78,8 +78,14 @@ const MedicationsPage = () => {
   };
 
   const handleAddToCart = (item: any) => {
-	    if (item.medication_category === "Testosterone" || ["Optimal", "Optimal Protocol"].includes(item.medication_category || "") || item.is_optimal_protocol) {
-	      setPendingAddToCart(item);
+    const isTestosteroneCategory =
+      item.medication_category === "Testosterone" ||
+      ["Optimal", "Optimal Protocol"].includes(item.medication_category || "") ||
+      item.is_optimal_protocol;
+    const requiresLab = item.is_lab_required == 1 || !!item.lab_package_id;
+
+    if (isTestosteroneCategory && requiresLab) {
+      setPendingAddToCart(item);
       setSelectedMedication(item);
       handleConfirmTestosterone.open();
       return;
