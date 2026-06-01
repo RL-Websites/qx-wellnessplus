@@ -312,6 +312,7 @@ const QuizPage = () => {
           {activeStep === 6 + genderOffset && (
             <GlpOneMedication
               onNext={(data) => {
+                if (isProcessingRef.current) return;
                 handleNext(data);
                 if (data.takesGlpOneMedication === "No") {
                   setSkipInjectionDate(true);
