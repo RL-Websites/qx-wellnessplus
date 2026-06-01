@@ -4,7 +4,7 @@ import { prevGlpMedDetails } from "@/common/states/product.atom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Radio, Text } from "@mantine/core";
 import { useAtom } from "jotai";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -30,7 +30,7 @@ interface GlpOneMedicationProps {
 }
 
 const GlpOneMedication = ({ onNext, onBack, defaultValues, direction }: GlpOneMedicationProps) => {
-  const [prevGlpDetails, setPrevGlpDetails] = useAtom(prevGlpMedDetails);
+  const [, setPrevGlpDetails] = useAtom(prevGlpMedDetails);
   const {
     handleSubmit,
     setValue,
@@ -83,13 +83,17 @@ const GlpOneMedication = ({ onNext, onBack, defaultValues, direction }: GlpOneMe
 
   const [isExiting, setIsExiting] = useState(false);
   const [isBackExiting, setIsBackExiting] = useState(false);
+  const isSubmittingRef = useRef(false);
 
   const handleFormSubmit = (data: glpOneMedicationSchemaType) => {
+    if (isSubmittingRef.current) return;
+    isSubmittingRef.current = true;
     setIsExiting(true);
 
     // Wait for exit animation to complete
     setTimeout(() => {
       onNext(data);
+      isSubmittingRef.current = false;
       setIsExiting(false);
     }, animationDelay); // ✅ Matches animation duration (400ms + 100ms delay)
   };
@@ -245,6 +249,7 @@ GLP-1 medication?"
             type="submit"
             className="w-[200px] animated-btn"
             form="glpOneMedicationForm"
+            disabled={isExiting}
           >
             Next
           </Button>

@@ -137,7 +137,9 @@ const OrderSummary = () => {
                 <div className="lg:w-[calc(100%_-_154px)]">
                   <h6 className="text-xl font-semibold text-foreground font-poppins max-w-[300px]">{generateMedName(item)}</h6>
                   <div className="flex items-center gap-2.5 pt-2.5 font-poppins">
-                    <span className="text-lg text-foreground">{item.medication_category === "Single Peptides" ? "Anti-Aging" : item.medication_category}</span>
+                    <span className="text-lg text-foreground">
+                      {item.medication_category === "Single Peptides" ? "Anti-Aging" : item.medication_category === "Testosterone" ? "TRT/HRT" : item.medication_category}
+                    </span>
                     <span className="text-lg text-foreground">|</span>
                     <span className="text-lg text-foreground">{item.medicine_type == "ODT" ? "Oral" : item.medicine_type}</span>
                   </div>
@@ -164,7 +166,10 @@ const OrderSummary = () => {
                     {generateMedName(item)} x {item.qty}
                   </span>
                   <span className="text-foreground text-lg">
-                    ${(item?.lab_required == "1" && item?.lab_type === "dosevana_lab") ? (calculatePrice(item) + stateWiseLabFee(item, selectedState)).toFixed(2) : calculatePrice(item).toFixed(2)}
+                    $
+                    {item?.lab_required == "1" && item?.lab_type === "dosevana_lab"
+                      ? (calculatePrice(item) + stateWiseLabFee(item, selectedState)).toFixed(2)
+                      : calculatePrice(item).toFixed(2)}
                   </span>
                 </div>
               ))}

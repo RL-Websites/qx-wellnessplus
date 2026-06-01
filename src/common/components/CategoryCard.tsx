@@ -23,7 +23,7 @@ const CategoryCard = (cardProps: ICardProps) => {
       <div className="card-title">
         {cardProps?.title && (
           <h4 className="font-poppins font-medium lg:text-3xl md:text-2xl sm:text-xl text-base">
-            {cardProps.title?.toLowerCase() == "peptides" ? "ANTI-AGING" : cardProps.title?.toUpperCase()}
+            {cardProps.title?.toLowerCase() == "peptides" ? "ANTI-AGING" : cardProps.title?.toLowerCase() == "testosterone" ? "TRT/HRT" : cardProps.title?.toUpperCase()}
           </h4>
         )}
       </div>
