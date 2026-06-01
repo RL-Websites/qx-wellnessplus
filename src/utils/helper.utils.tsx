@@ -191,7 +191,8 @@ export const imageUrl = (imagePath: string, defaultPath: string = "/images/image
     return imagePath;
   }
 
-  const baseUrl = import.meta.env.VITE_AWS_IMAGE_BASE_URL || `${import.meta.env.VITE_BASE_PATH}/storage`;
+  //const baseUrl = import.meta.env.VITE_AWS_IMAGE_BASE_URL || `${import.meta.env.VITE_BASE_PATH}/storage`;
+  const baseUrl = import.meta.env.VITE_AWS_IMAGE_BASE_URL;
   const normalizedBase = baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl;
   const normalizedPath = imagePath.startsWith("/") ? imagePath.slice(1) : imagePath;
   return `${normalizedBase}/${normalizedPath}`;
