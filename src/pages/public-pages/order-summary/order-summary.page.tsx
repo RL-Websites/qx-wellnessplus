@@ -27,7 +27,7 @@ const OrderSummary = () => {
       cartItems.forEach((item) => {
         const price = calculatePrice(item);
         totalBill = totalBill + price;
-        if (item?.lab_required == "1") {
+        if (item?.lab_required == "1" && item?.lab_type === "dosevana_lab") {
           totalBill += stateWiseLabFee(item, selectedState || "");
         }
         if (item.shippingType === "Overnight") {
@@ -166,7 +166,7 @@ const OrderSummary = () => {
                     {generateMedName(item)} x {item.qty}
                   </span>
                   <span className="text-foreground text-lg">
-                    ${item?.lab_required == "1" ? (calculatePrice(item) + stateWiseLabFee(item, selectedState)).toFixed(2) : calculatePrice(item).toFixed(2)}
+                    ${(item?.lab_required == "1" && item?.lab_type === "dosevana_lab") ? (calculatePrice(item) + stateWiseLabFee(item, selectedState)).toFixed(2) : calculatePrice(item).toFixed(2)}
                   </span>
                 </div>
               ))}
