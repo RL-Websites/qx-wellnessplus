@@ -24,7 +24,7 @@ const LAB_OPTIONS: LabOption[] = [
     title: "Upload Existing Lab Results",
     description: [
       "If recent lab results are available, they may be uploaded for medical review.",
-      "The lab report must be completed within the last 90 days and include the required tests. Based on the patient's profile, the system will display the necessary tests (e.g., Testosterone, Estradiol, PSA, CBC for men or hormone panel tests for women).",
+      "The lab report must be completed within the last 90 days and include the required tests. Based on the patient's profile, the system will display the necessary tests (e.g., TRT/HRT, Estradiol, PSA, CBC for men or hormone panel tests for women).",
       "If required tests are missing, the order may be cancelled after doctor review. Medication will not be charged, but the doctor review fee may still apply.",
     ],
     submissionType: "own_lab",

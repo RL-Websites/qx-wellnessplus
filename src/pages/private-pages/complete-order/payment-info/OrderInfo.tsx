@@ -305,7 +305,8 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
                   <div className="space-y-2.5">
                     <h6 className="text-foreground break-all">{generateMedName(item)}</h6>
                     <div className="text-gray">
-                      {item?.medicine_type == "ODT" ? "Oral" : item?.medicine_type} | {item?.medication_category === "Single Peptides" ? "Anti-Aging" : item?.medication_category}
+                      {item?.medication_category === "Single Peptides" ? "Anti-Aging" : item.medication_category === "Testosterone" ? "TRT/HRT" : item?.medication_category} |
+                      {item?.medicine_type == "ODT" ? "Oral" : item?.medicine_type}
                     </div>
                     <div className="text-foreground">
                       Price: $
