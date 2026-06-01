@@ -228,7 +228,8 @@ const MedicationsPage = () => {
                 image={imageUrl(item?.image, "/images/product-img-placeholder.jpg")}
                 title={`${item?.program_name || item?.name} ${item.strength ? item.strength + " " + item.unit : ""} `}
                 cost={item?.customer_medication?.price}
-                lab_fee={stateWiseLabFee(item, selectedState)}
+                lab_fee={item?.is_lab_required == 1 ? stateWiseLabFee(item, selectedState) : 0}
+                lab_required={item?.is_lab_required == 1 ? "1" : "0"}
                 onAddToCart={() => handleAddToCart(item)}
                 onShowDetails={() => handelDetailsModal(item)}
                 disabled={isInCart} // pass this prop to your MedicationCard
