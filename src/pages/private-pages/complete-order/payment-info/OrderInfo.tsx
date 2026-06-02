@@ -1,9 +1,9 @@
 import { cartItemsAtom } from "@/common/states/product.atom";
-import { calculatePrice, dosevanaCostGenerate, stateWiseLabFee } from "@/utils/helper.utils";
+import { calculatePrice, dosevanaCostGenerate, generateMedName, imageUrl, stateWiseLabFee } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Avatar, Button, TextInput } from "@mantine/core";
 import { useAtom, useAtomValue } from "jotai";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { IServerErrorResponse } from "@/common/api/models/interfaces/ApiResponse.model";
@@ -11,6 +11,8 @@ import promoCodesApiRepository from "@/common/api/repositories/promoCodeReposito
 import dmlToast from "@/common/configs/toaster.config";
 import { customerAtom } from "@/common/states/customer.atom";
 import { selectedStateAtom } from "@/common/states/state.atom";
+import LabSection from "@/pages/public-pages/order-summary/components/LabSection";
+import { LabSubmissionType } from "@/pages/public-pages/order-summary/components/LabTypeSectionModal";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import * as yup from "yup";
@@ -26,7 +28,7 @@ interface PromoData {
   code: string;
   u_id: string;
   discount_value: string;
-  discount_type: "flat" | "percentage" | string;
+  discount_type: "fixed" | "percentage" | string;
   orders_count?: number;
   total_sales?: number;
   [key: string]: any;
@@ -42,12 +44,41 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
   const [totalBillAmount, setTotalBillAmount] = useState<number>(0); // subtotal (products only)
   const [totalDvCost, setTotalDvCost] = useState<number>(0); // subtotal (products only)
   const [labFee, setLabFee] = useState<number>(0); // separate lab fee
+  const [totalShippingFee, setTotalShippingFee] = useState<number>(0);
   const [finalTotal, setFinalTotal] = useState<number>(0);
   const [discount, setDiscount] = useState<number>(0);
   const [code, setCode] = useState<string>("");
   const [appliedPromo, setAppliedPromo] = useState<PromoData | null>(null);
   const [customerData] = useAtom(customerAtom);
   const selectedState = useAtomValue(selectedStateAtom);
+  const [selectedLabType, setSelectedLabType] = useState<LabSubmissionType | null>(formData?.lab_type ?? null);
+  const [selectedReports, setSelectedReports] = useState<any[]>(formData?.reports ?? []);
+
+  // Detect lab-required item (TRT/Hormone/lab-package medications)
+  const labRequiredItem = useMemo(
+    () =>
+      cartItems?.find((item) => {
+        return item?.is_lab_required == 1 || item?.lab_required === "1";
+      }),
+    [cartItems]
+  );
+  const hasLabRequired = !!labRequiredItem;
+  const requiredLabExaminations = labRequiredItem?.lab_package?.examinations ?? [];
+  const disableChooseLabOptionMode = !!labRequiredItem?.lab_type;
+
+  // Lab option is selected upstream (testosterone modal on /medications) and persisted on
+  // the cart item. Seed local state from there so SelectedLabOption renders the saved
+  // choice instead of an empty card.
+  useEffect(() => {
+    if (!labRequiredItem) return;
+    if (!selectedLabType && labRequiredItem.lab_type) {
+      setSelectedLabType(labRequiredItem.lab_type as LabSubmissionType);
+    }
+    if ((!selectedReports || selectedReports.length === 0) && Array.isArray(labRequiredItem.reports) && labRequiredItem.reports.length > 0) {
+      setSelectedReports(labRequiredItem.reports);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [labRequiredItem?.lab_type, labRequiredItem?.reports]);
 
   const { handleSubmit, register, setValue, reset } = useForm({
     resolver: yupResolver(promoSchema),
@@ -59,12 +90,20 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
       let productTotal = 0;
       let dosevanaTotal = 0;
       let labFeeTotal = 0;
+      let shippingFeeTotal = 0;
+
+      // Lab fee is only billed when patient picks the Dosevana-managed lab option.
+      // own_lab / preferred_lab => $0 (handled outside checkout).
+      const chargeLabFee = selectedLabType === "dosevana_lab";
 
       cartItems.forEach((item) => {
         productTotal += calculatePrice(item);
         dosevanaTotal += dosevanaCostGenerate(item, item?.customer_medication?.customer);
-        if (item?.lab_required == "1") {
+        if (chargeLabFee && item?.lab_required == "1") {
           labFeeTotal += stateWiseLabFee(item, selectedState);
+        }
+        if (item.shippingType === "Overnight") {
+          shippingFeeTotal += Number(item.over_night_shipping_fee || 0);
         }
       });
 
@@ -74,17 +113,18 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
       setTotalBillAmount(productTotal);
       setTotalDvCost(dosevanaTotal);
       setLabFee(labFeeTotal);
+      setTotalShippingFee(shippingFeeTotal);
 
-      const grossTotal = productTotal + labFeeTotal;
+      const grossTotal = productTotal + labFeeTotal + shippingFeeTotal;
 
       if (!appliedPromo) {
         setFinalTotal(grossTotal);
       } else {
         const discountVal = parseFloat(appliedPromo.discount_value || "0");
-        const discountType = (appliedPromo.discount_type || "flat").toLowerCase();
+        const discountType = (appliedPromo.discount_type || "fixed").toLowerCase();
         let calculatedDiscount = 0;
 
-        if (discountType === "flat") {
+        if (discountType === "fixed") {
           calculatedDiscount = discountVal;
         } else {
           calculatedDiscount = (productTotal * discountVal) / 100;
@@ -97,10 +137,11 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
     } else {
       setTotalBillAmount(0);
       setLabFee(0);
+      setTotalShippingFee(0);
       setFinalTotal(0);
       setDiscount(0);
     }
-  }, [cartItems, appliedPromo, selectedState]);
+  }, [cartItems, appliedPromo, selectedState, selectedLabType]);
 
   // promo apply mutation
   const applyPromoMutation = useMutation<any, AxiosError<IServerErrorResponse>, { promo_code: string; customerId: string }>({
@@ -113,12 +154,12 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
         return;
       }
 
-      const subtotal = Number(totalBillAmount ?? 0) + Number(labFee ?? 0);
+      const subtotal = Number(totalBillAmount ?? 0) + Number(labFee ?? 0) + Number(totalShippingFee ?? 0);
       const discountVal = parseFloat(apiData.discount_value ?? "0");
-      const discountType = (apiData.discount_type ?? "flat").toLowerCase();
+      const discountType = (apiData.discount_type ?? "fixed").toLowerCase();
 
       let calculatedDiscount = 0;
-      if (discountType === "flat") {
+      if (discountType === "fixed") {
         calculatedDiscount = discountVal;
       } else {
         calculatedDiscount = (subtotal * discountVal) / 100;
@@ -157,7 +198,7 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
   const handleRemovePromo = () => {
     setAppliedPromo(null);
     setDiscount(0);
-    setFinalTotal(Math.round((totalBillAmount + labFee) * 100) / 100);
+    setFinalTotal(Math.round((totalBillAmount + labFee + totalShippingFee) * 100) / 100);
     setCode("");
     reset();
     setValue("promo_code", "");
@@ -165,6 +206,14 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
 
   // final submit
   const submitFormWithPatientCard = (shippingData: any) => {
+    if (hasLabRequired && !selectedLabType) {
+      dmlToast.error({
+        title: "Lab option required",
+        message: "Please choose a lab option before continuing.",
+      });
+      return;
+    }
+
     const payload: any = {
       patient: {
         ...formData?.patient,
@@ -175,6 +224,11 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
       cart: cartItems,
       subtotal: totalBillAmount,
       lab_fee: labFee,
+      shipping_fee: totalShippingFee,
+      lab_type: selectedLabType ?? null,
+      // QX patient is selecting for themselves, so always "now".
+      lab_selection_mode: hasLabRequired && selectedLabType ? "now" : null,
+      reports: selectedReports ?? [],
     };
 
     onNext(payload);
@@ -195,6 +249,24 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
     <>
       <form id="payment-form">
         <h1 className="heading-text text-foreground uppercase text-center pb-10">Payment Information</h1>
+
+        {hasLabRequired && (
+          <LabSection
+            disabledChooseLabOptionMode={disableChooseLabOptionMode}
+            examinations={requiredLabExaminations}
+            // QX is payment-first: no real Prescription exists yet at this step,
+            // so don't pass an id (a customer_medication id is NOT a prescription id
+            // and would cause the download endpoint to 500). Requisition becomes
+            // downloadable from the post-checkout order/prescription screens.
+            prescriptionId={null}
+            prescriptionDetailId={null}
+            value={selectedLabType}
+            onSelectionChange={setSelectedLabType}
+            reports={selectedReports}
+            onReportsChange={setSelectedReports}
+          />
+        )}
+
         <div className="grid lg:grid-cols-2 gap-6 mt-10">
           {/* Cart Section */}
           <div className="card card-bg">
@@ -207,27 +279,38 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
                   className="flex gap-6 mt-6"
                   key={item.id ?? item.u_id}
                 >
-                  <div className="card-thumb w-[129px]">
-                    <Avatar
-                      src={item?.image ? `${import.meta.env.VITE_BASE_PATH}/storage/${item?.image}` : "/images/product-img-placeholder.jpg"}
-                      size={129}
-                      radius={10}
+                  <div className="flex flex-col gap-2">
+                    <div className="card-thumb w-[129px]">
+                      <Avatar
+                        src={imageUrl(item?.image, "/images/product-img-placeholder.jpg")}
+                        size={129}
+                        radius={10}
+                      >
+                        <img
+                          src="/images/product-img-placeholder.jpg"
+                          alt="product image"
+                        />
+                      </Avatar>
+                    </div>
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs font-medium text-center w-fit ${
+                        item.shippingType === "Overnight" ? "bg-[#E1DCFD] text-foreground" : "bg-[#F7FBCE] text-foreground"
+                      }`}
                     >
-                      <img
-                        src="/images/product-img-placeholder.jpg"
-                        alt="product image"
-                      />
-                    </Avatar>
+                      {item.shippingType} Shipping
+                    </span>
                   </div>
                   <div className="space-y-2.5">
-                    <h6 className="text-foreground break-all">
-                      {item?.name} {`${item?.strength || ""}${item?.unit || ""}`}
-                    </h6>
+                    <h6 className="text-foreground break-all">{generateMedName(item)}</h6>
                     <div className="text-gray">
-                      {item?.medicine_type == "ODT" ? "Oral" : item?.medicine_type} | {item?.medication_category}
+                      {item?.medication_category === "Single Peptides" ? "Anti-Aging" : item.medication_category === "Testosterone" ? "TRT/HRT" : item?.medication_category} |
+                      {item?.medicine_type == "ODT" ? "Oral" : item?.medicine_type}
                     </div>
                     <div className="text-foreground">
-                      Price: ${item?.lab_required == "1" ? (Number(calculatePrice(item)) + stateWiseLabFee(item, selectedState)).toFixed(2) : calculatePrice(item).toFixed(2)}
+                      Price: $
+                      {item?.lab_required == "1" && selectedLabType === "dosevana_lab"
+                        ? (Number(calculatePrice(item)) + stateWiseLabFee(item, selectedState)).toFixed(2)
+                        : calculatePrice(item).toFixed(2)}
                     </div>
                   </div>
                 </div>
@@ -255,6 +338,13 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
                     </tr>
                   )}
 
+                  {totalShippingFee > 0 && (
+                    <tr>
+                      <td className="py-3 text-[#6848FF] font-semibold">Overnight Shipping</td>
+                      <td className="py-3 text-right text-[#6848FF] font-semibold">${totalShippingFee.toFixed(2)}</td>
+                    </tr>
+                  )}
+
                   {discount > 0 && (
                     <tr>
                       <td className="py-3 text-primary font-semibold">Discount</td>
@@ -263,7 +353,7 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
                   )}
                 </tbody>
               </table>
-              <table className="w-full text-grey text-2xl font-bold border-t border-foreground mt-8">
+              <table className="w-full text-grey text-2xl font-bold border-t border-foreground">
                 <tbody>
                   <tr>
                     <td className="py-3 sm:text-xl text-base text-foreground">Total Package Price</td>

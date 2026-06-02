@@ -79,15 +79,15 @@ const HomePage = () => {
       <div className={`site-home-hero ${isExiting ? "site-home-hero-exit" : ""}`}>
         <div className="container mx-auto">
           <div className="header grid md:grid-cols-2 grid-cols-1  items-center justify-between ">
-            <div className="flex flex-col w-full gap-7 lg:py-16 py-10">
+            <div className="flex flex-col w-full  gap-7 lg:pt-24 pt-16 lg:pb-16 pb-10">
               <div>
-                <div className="logo flex items-center justify-between gap-2">
+                <div className="logo flex items-center md:justify-between justify-center gap-2 ">
                   <NavLink
                     to={userData?.userable_type ? "/" : "/"}
                     component={RdNavLink}
                     className={`p-0 bg-transparent hover:bg-transparent h-8 w-auto border-r border-r-grey-low`}
                     classNames={{
-                      label: "flex items-center gap-4",
+                      label: "flex flex-col items-center gap-2",
                     }}
                     label={
                       <>
@@ -95,12 +95,12 @@ const HomePage = () => {
                           <Image
                             src={imageUrl(customerData?.logo)}
                             alt={customerData?.logo ? customerData?.name : ""}
-                            className="lg:w-16 md:w-12 w-10"
+                            className="lg:h-[120px] md:h-[100px] h-[80px] !flex-auto"
                           />
                         ) : (
                           ""
                         )}
-                        <span className="text-foreground font-impact md:text-[28px] text-2xl">{customerData?.name}</span>
+                        <span className="text-primary font-impact md:text-[28px] text-2xl">{customerData?.name}</span>
                       </>
                     }
                   />
@@ -123,7 +123,7 @@ const HomePage = () => {
                 </div>
               </div>
 
-              <h1 className={`heading-xxxl text-foreground uppercase lg:mt-12 md:mt-8 mt-5 md:text-start text-center `}>Thanks for stopping by</h1>
+              <h1 className={`heading-xxxl text-foreground uppercase mt-12 md:text-start text-center `}>Thanks for stopping by</h1>
 
               <p className={`lg:text-[30px] md:text-2xl text-base font-semibold text-primary capitalize md:text-start text-center`}>Your Wellness Journey Starts Here</p>
 
@@ -158,7 +158,6 @@ const HomePage = () => {
                   </span>
                 </p>
               )}
-              
             </div>
           </div>
           {/* <div className="absolute inset-0 overflow-hidden pointer-events-none hidden md:block">

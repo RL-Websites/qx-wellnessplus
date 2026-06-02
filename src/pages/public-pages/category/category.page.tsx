@@ -47,6 +47,12 @@ const CategoryPage = () => {
     }
   }, [categoryListQuery.data?.data?.data]);
 
+  // Reset exit animation state on mount so the page is visible when navigated to
+  // (e.g., after login, where the Login button had set this atom to true).
+  useEffect(() => {
+    setIsExiting(false);
+  }, []);
+
   // const handleCategoryClick = (categoryName: string) => {
   //   if (categoryName.includes("Peptides")) {
   //     const newCategory = ["Single Peptides", "Peptides Blends"];
@@ -104,7 +110,7 @@ const CategoryPage = () => {
         <div className="w-16 h-16 border-4 border-gray-200 border-t-primary rounded-full animate-spin"></div>
       </div>
     ) : (
-      <div className={`space-y-12 category-main ${isExiting ? "category-main-exit" : ""}`}>
+      <div className={`space-y-12 category-main md:mt-10 ${isExiting ? "category-main-exit" : ""}`}>
         <h4 className="heading-text text-center text-foreground uppercase">Choose A Treatment</h4>
 
         <div

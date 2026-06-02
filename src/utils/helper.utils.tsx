@@ -114,14 +114,24 @@ export const calculatePrice = (item: IMedicineListItem) => {
 export const stateWiseLabFee = (medicine?: IMedicineListItem, patientState?: string) => {
   const states = ["Alaska", "Connecticut", "Massachusetts", "New Hampshire", "Rhode Island"];
 
-  if (!patientState) Number(medicine?.lab_fee);
+  const customerLabPackage = medicine?.lab_package?.customer_lab_packages?.[0];
+  const allStatesFee = Number(
+    customerLabPackage?.price_all_state ??
+    medicine?.lab_package?.price_all_state ??
+    medicine?.lab_fee ??
+    0
+  );
+  const selectedStateFee = Number(
+    customerLabPackage?.price_selected_state ??
+    medicine?.lab_package?.price_selected_state ??
+    medicine?.lab_fee_selected_state ??
+    allStatesFee
+  );
+
+  if (!patientState) return allStatesFee;
   const isStateMatched = states.some((state) => state.toLowerCase() === patientState?.toLowerCase());
 
-  if (isStateMatched) {
-    return Number(medicine?.lab_fee_selected_state);
-  } else {
-    return Number(medicine?.lab_fee);
-  }
+  return isStateMatched ? selectedStateFee : allStatesFee;
 };
 
 export const isValidUrl = (url: string) => {
@@ -191,8 +201,20 @@ export const imageUrl = (imagePath: string, defaultPath: string = "/images/image
     return imagePath;
   }
 
+  //const baseUrl = import.meta.env.VITE_AWS_IMAGE_BASE_URL || `${import.meta.env.VITE_BASE_PATH}/storage`;
   const baseUrl = import.meta.env.VITE_AWS_IMAGE_BASE_URL || "";
   const normalizedBase = baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl;
   const normalizedPath = imagePath.startsWith("/") ? imagePath.slice(1) : imagePath;
   return `${normalizedBase}/${normalizedPath}`;
+};
+
+export const generateMedName = (item: any) => {
+  if (item?.program_name) {
+    return item?.program_name;
+  }
+  let name = item?.name;
+  if (item?.strength) {
+    name += " " + item?.strength + "" + item?.unit;
+  }
+  return name;
 };

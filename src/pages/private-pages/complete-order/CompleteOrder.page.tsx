@@ -69,6 +69,9 @@ const CompleteOrderPage = () => {
       cartItems.forEach((item) => {
         const price = calculatePrice(item);
         totalBill = totalBill + price;
+        if (item.shippingType === "Overnight") {
+          totalBill += Number(item.over_night_shipping_fee || 0);
+        }
       });
     }
   }, [cartItems, customerData]);
@@ -87,6 +90,9 @@ const CompleteOrderPage = () => {
       code: orderInfoData.code,
       amount: orderInfoData.final_total,
       prescription_u_id: orderInfoData.prescription_u_id,
+      lab_type: orderInfoData.lab_type ?? null,
+      lab_selection_mode: orderInfoData.lab_selection_mode ?? null,
+      reports: orderInfoData.reports ?? [],
     }));
     if (cartItems?.length > 0 && customerData?.payment_type == "stripe") {
       const payload: ICreatePaymentIntentDTO = {

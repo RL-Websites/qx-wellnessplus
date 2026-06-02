@@ -24,7 +24,6 @@ const WeightLossGoal = ({ onNext, onBack, defaultValues, direction }: IWeightLos
     handleSubmit,
     register,
     setValue,
-    watch,
     clearErrors,
     formState: { errors },
   } = useForm<weightLossGoalSchemaType>({
@@ -34,18 +33,17 @@ const WeightLossGoal = ({ onNext, onBack, defaultValues, direction }: IWeightLos
     resolver: yupResolver(weightLossGoalSchema),
   });
 
-  const weightLossGoal = watch("weightlossgoal");
-
   const handleSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+    const value = e.target.value.replace(/\D/g, "");
 
     if (errors.weightlossgoal) {
       setIsErrorFading(true);
+      setValue("weightlossgoal", value);
       setTimeout(() => {
-        setValue("weightlossgoal", value, { shouldValidate: true });
         clearErrors("weightlossgoal");
         setIsErrorFading(false);
-      }, 300);
+        setValue("weightlossgoal", value, { shouldValidate: true });
+      }, 0);
     } else {
       setValue("weightlossgoal", value, { shouldValidate: true });
     }
@@ -95,6 +93,8 @@ const WeightLossGoal = ({ onNext, onBack, defaultValues, direction }: IWeightLos
             >
               <Input
                 type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
                 {...register("weightlossgoal", {
                   onChange: handleSelect,
                 })}

@@ -1,16 +1,22 @@
 import { IPartnerMedicineListItem } from "@/common/api/models/interfaces/Medication.model";
+import dmlToast from "@/common/configs/toaster.config";
+import LabSection from "@/pages/public-pages/order-summary/components/LabSection";
+import { LabSubmissionType } from "@/pages/public-pages/order-summary/components/LabTypeSectionModal";
 import { ActionIcon, Button, CheckIcon, Modal, Radio } from "@mantine/core";
 import { useEffect, useState } from "react";
 
 interface IConfirmationModalProps {
   openModal: boolean;
   onModalClose: (closeReason: boolean) => void;
-  onModalPressYes: (labRequired: number) => void;
+  onModalPressYes: (labRequired: number, shippingType: string, labType: LabSubmissionType | null, reports: any[]) => void;
   onModalPressNo: () => void;
   medicationName?: string;
   medicationInfo?: IPartnerMedicineListItem[];
   okBtnLoading: boolean;
+  overNightShippingFee?: string | number;
+  showShippingType?: boolean;
   medicationDetails: {
+    id?: number;
     name?: string;
     image?: string;
     cost?: string;
@@ -32,19 +38,42 @@ interface IConfirmationModalProps {
     unit?: string;
     is_research_only?: number;
     total_price?: string;
-    customer_medication?: { price?: string };
+    customer_medication?: { id?: number; price?: string };
     direction_sig?: string;
-  } | null;
+	    lab_package?: any;
+	    is_optimal_protocol?: string | boolean;
+	  } | null;
 }
 
 function ConfirmTestosteroneOnlyModal(modalProps: IConfirmationModalProps) {
   if (!modalProps?.medicationDetails) return null;
-  const [labRequired, setLabRequired] = useState<number>(1);
+  const [shippingType, setShippingType] = useState<string>("Regular");
+  const [selectedLabType, setSelectedLabType] = useState<LabSubmissionType | null>(null);
+  const [selectedReports, setSelectedReports] = useState<any[]>([]);
+  const isOptimalMedication = Boolean(modalProps.medicationDetails?.is_optimal_protocol) || ["optimal", "optimal protocol"].includes(modalProps.medicationDetails?.medication_category?.toLowerCase() || "");
+  const treatmentTitle = isOptimalMedication ? "Packaged/Optimal Treatment" : "Testosterone Treatments";
+
   useEffect(() => {
     if (modalProps.openModal) {
-      setLabRequired(1);
+      setShippingType("Regular");
+      setSelectedLabType(null);
+      setSelectedReports([]);
     }
   }, [modalProps.openModal]);
+
+  const examinations = modalProps?.medicationDetails?.lab_package?.examinations ?? [];
+
+  const handleAgree = () => {
+    if (!selectedLabType) {
+      dmlToast.error({
+        title: "Lab option required",
+        message: "Please choose a lab option before continuing.",
+      });
+      return;
+    }
+    // labRequired is always 1 for testosterone (mandatory).
+    modalProps.onModalPressYes(1, shippingType, selectedLabType, selectedReports);
+  };
 
   return (
     <Modal.Root
@@ -73,134 +102,68 @@ function ConfirmTestosteroneOnlyModal(modalProps: IConfirmationModalProps) {
           </ActionIcon>
         </Modal.Header>
         <Modal.Body className="pt-0 pb-lg">
-          <div className="">
-            <Radio.Group
-              label="Select Option"
-              value={String(labRequired)}
-              onChange={(value) => {
-                setLabRequired(Number(value));
-              }}
-              name="favoriteFramework"
-              className="mt-6 w-full animate-content"
-            >
-              <div className="grid md:grid-cols-2 gap-5 w-full">
-                <Radio
-                  icon={CheckIcon}
-                  value="1"
-                  label={
-                    <div className="relative text-center">
-                      <span className="text-foreground font-poppins">With Lab</span>
-                      {labRequired === 1 && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
-                          <i className="icon-tick text-sm/none"></i>
-                        </span>
-                      )}
-                    </div>
-                  }
-                  classNames={{
-                    root: "relative w-full",
-                    radio: "hidden",
-                    inner: "hidden",
-                    labelWrapper: "w-full",
-                    label: " block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointerborder-grey bg-transparent text-black",
-                  }}
-                />
-                <Radio
-                  icon={CheckIcon}
-                  value="2"
-                  label={
-                    <div className="relative text-center">
-                      <span className="text-foreground font-poppins">Without Lab</span>
-                      {labRequired === 2 && (
-                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:right-3 -right-2 -translate-y-1/2">
-                          <i className="icon-tick text-sm/none"></i>
-                        </span>
-                      )}
-                    </div>
-                  }
-                  classNames={{
-                    root: "relative w-full",
-                    radio: "hidden",
-                    inner: "hidden",
-                    labelWrapper: "w-full",
-                    label: " block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointerborder-grey bg-transparent text-black",
-                  }}
-                />
-              </div>
-            </Radio.Group>
-          </div>
-          <div className="bg-tag-bg py-6 px-6 rounded-xl mt-5 space-y-4 animate-content">
-            <h6 className="text-tag-bg-deep font-semibold text-lg">Lab Testing is Mandatory for All Testosterone Treatments.</h6>
-
-            <p className="text-tag-bg-deep">Your lab results are required for the doctor's review before approval.</p>
-
-            <p className="text-tag-bg-deep">You have two options:</p>
-
-            <div className="space-y-4">
-              <div>
-                <p className="text-tag-bg-deep">
-                  <span className="inline-flex items-center mr-2">
-                    <svg
-                      className="w-4 h-4 text-green-600"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </span>
-                  <strong>Option 1 — Quest Diagnostics (Recommended):</strong>
-                </p>
-                <ul className="list-disc pl-8 mt-2 space-y-1 text-tag-bg-deep">
-                  <li>Get your lab test done at any Quest Diagnostics location.</li>
-                  <li>Simple scheduling and direct integration with our system.</li>
-                  <li>Fastest way to get your prescription reviewed.</li>
-                </ul>
-              </div>
-
-              <div>
-                <p className="text-tag-bg-deep">
-                  <span className="inline-flex items-center mr-2">
-                    <svg
-                      className="w-4 h-4 text-green-600"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </span>
-                  <strong>Option 2 — Use Your Own Preferred Lab:</strong>
-                </p>
-                <p className="text-tag-bg-deep pl-6 mt-1 mb-2">You may choose a different certified lab.</p>
-                <p className="text-tag-bg-deep pl-6 mb-2">
-                  <strong>Required Panels:</strong>
-                </p>
-                <ul className="list-disc pl-12 space-y-1 text-tag-bg-deep">
-                  <li>Total Testosterone</li>
-                  <li>Free Testosterone</li>
-                  <li>CBC (Complete Blood Count)</li>
-                  <li>CMP (Comprehensive Metabolic Panel)</li>
-                  <li>Lipid Panel</li>
-                  <li>PSA (for men 40+)</li>
-                </ul>
-              </div>
-            </div>
-
+          <div className="bg-tag-bg py-4 px-5 rounded-xl space-y-2 animate-content">
+	            <h6 className="text-tag-bg-deep font-semibold">Lab Testing is Mandatory for All {treatmentTitle}.</h6>
             <p className="text-tag-bg-deep text-sm">
-              After testing, upload your lab report directly to your Dosevana portal. Please ensure your report is clear and includes all mandatory panels.
-            </p>
-
-            <p className="text-yellow-800 font-medium">
-              <strong>Important:</strong> Without these lab results, our doctors cannot proceed with your prescription.
+              Your lab results are required for the doctor's review before approval. Please choose how you would like to provide them below.
             </p>
           </div>
+
+          {/*
+            No real Prescription exists at this pre-checkout step (QX is payment-first),
+            so we intentionally do NOT pass `prescriptionId`. SelectedLabOption will hide
+            the "Download Lab Requisition" button and show a "available after the order
+            is placed" notice instead. The selected lab option is persisted on the cart
+            item and the requisition becomes downloadable from the order/prescription
+            screens after checkout.
+          */}
+          <LabSection
+            examinations={examinations}
+            prescriptionId={null}
+            prescriptionDetailId={null}
+            value={selectedLabType}
+            onSelectionChange={setSelectedLabType}
+            reports={selectedReports}
+            onReportsChange={setSelectedReports}
+          />
+
+          {modalProps.showShippingType && (
+            <div className="mt-6">
+              <Radio.Group
+                label="Shipping Type"
+                value={shippingType}
+                onChange={(value) => setShippingType(value)}
+                className="w-full animate-content"
+              >
+                <div className="grid md:grid-cols-2 gap-5 w-full mt-4">
+                  {["Regular", "Overnight"].map((type) => (
+                    <Radio
+                      key={type}
+                      icon={CheckIcon}
+                      value={type}
+                      label={
+                        <div className="relative text-center">
+                          <span className="text-foreground font-poppins">{type === "Overnight" ? `Overnight (+ $${modalProps.overNightShippingFee || "0"})` : "Regular"}</span>
+                          {shippingType === type && (
+                            <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-600 text-white absolute top-1/2 md:-right-4 -right-3 -translate-y-1/2">
+                              <i className="icon-tick text-sm/none"></i>
+                            </span>
+                          )}
+                        </div>
+                      }
+                      classNames={{
+                        root: "relative w-full",
+                        radio: "hidden",
+                        inner: "hidden",
+                        labelWrapper: "w-full",
+                        label: " block w-full h-full px-6 py-4 rounded-2xl border text-center text-base font-medium cursor-pointer border-grey bg-transparent text-black",
+                      }}
+                    />
+                  ))}
+                </div>
+              </Radio.Group>
+            </div>
+          )}
 
           <div className="grid grid-cols-2 gap-2.5 mt-6">
             <Button
@@ -220,7 +183,7 @@ function ConfirmTestosteroneOnlyModal(modalProps: IConfirmationModalProps) {
               classNames={{
                 label: "sm:text-base text-sm",
               }}
-              onClick={() => modalProps.onModalPressYes(labRequired)}
+              onClick={handleAgree}
               disabled={modalProps.okBtnLoading}
             >
               I Agree

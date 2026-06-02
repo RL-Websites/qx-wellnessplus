@@ -26,7 +26,7 @@ interface IProductDetailsModalProps {
     is_research_only?: number;
     total_price?: string;
     customer_medication?: { price?: string };
-    direction_sig?: string;
+    direction?: string;
   } | null;
 }
 
@@ -86,11 +86,17 @@ function ProductDetailsModal({ openModal, onModalClose, medicationDetails }: IPr
               </div> */}
               <div className="space-y-2">
                 <h6 className="text-fs-sp font-semibold">Direction/Sig :</h6>
-                <p className="text-fs-md">{medicationDetails?.direction_sig || "N/A"}</p>
+                <p className="text-fs-md">{medicationDetails?.direction || "N/A"}</p>
               </div>
               <div className="space-y-2">
                 <h6 className="text-fs-sp font-semibold">Medication Category :</h6>
-                <p className="text-fs-md">{medicationDetails?.medication_category}</p>
+                <p className="text-fs-md">
+                  {medicationDetails?.medication_category == "Single Peptides"
+                    ? "Anti-Aging"
+                    : medicationDetails?.medication_category === "Testosterone"
+                      ? "TRT/HRT"
+                      : medicationDetails?.medication_category}
+                </p>
               </div>
               <div className="space-y-2">
                 <h6 className="text-fs-sp font-semibold">Medication Type :</h6>
@@ -110,7 +116,7 @@ function ProductDetailsModal({ openModal, onModalClose, medicationDetails }: IPr
               </div>
               <div className="space-y-2">
                 <h6 className="text-fs-sp font-semibold">Package Price :</h6>
-                <p className="text-fs-md">${medicationDetails?.customer_medication?.price}</p>
+                <p className="text-fs-md">${Number(medicationDetails?.customer_medication?.price).toFixed(2)}</p>
               </div>
             </div>
           </div>

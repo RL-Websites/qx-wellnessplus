@@ -13,10 +13,11 @@ import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { customerAtom } from "@/common/states/customer.atom";
 import { cartItemsAtom, prevGlpMedDetails } from "@/common/states/product.atom";
 import { selectedStateAtom } from "@/common/states/state.atom";
-import { stateWiseLabFee } from "@/utils/helper.utils";
+import { imageUrl, stateWiseLabFee } from "@/utils/helper.utils";
+//import { stateWiseLabFee } from "@/utils/helper.utils";
 import { useQuery } from "@tanstack/react-query";
 import { useAtom, useAtomValue } from "jotai";
-import { NavLink as RdNavLink } from "react-router-dom";
+import { Link, NavLink as RdNavLink } from "react-router-dom";
 import ConfirmTestosteroneOnlyModal from "./components/ConfirmTestosteroneOnlyModal";
 
 const MedicationsPage = () => {
@@ -65,31 +66,45 @@ const MedicationsPage = () => {
     }
   }, [medicineQuery.isFetched]);
 
-  // console.log(medicineQuery);
+  const addToCart = (item: any, qty: number, shippingType: string) => {
+    const exists = cartItems.find((cartItem) => cartItem.id === item.id);
+    const over_night_shipping_fee = customerData?.over_night_shipping_fee;
 
-  // console.log(medicines);
-
-  const handleAddToCart = (item: any) => {
-    setPendingAddToCart(item);
-    if (item.medication_category === "Single Peptides" || item.medication_category === "Peptides Blends" || item.medication_category === "Energy & Longevity") {
-      handleConfirmMeds.open();
-    } else if (item.medication_category === "Testosterone") {
-      setSelectedMedication(item);
-      handleConfirmTestosterone.open();
+    if (!exists) {
+      setCartItems([...cartItems, { ...item, qty, shippingType, over_night_shipping_fee }]);
     } else {
-      setCartItems((prev) => [...prev, item]);
+      setCartItems(cartItems.map((cartItem) => (cartItem.id === item.id ? { ...cartItem, qty: cartItem.qty + qty, shippingType, over_night_shipping_fee } : cartItem)));
     }
   };
 
-  const handleAgree = (qty: number) => {
-    if (pendingAddToCart) {
-      const exists = cartItems.find((item) => item.id === pendingAddToCart.id);
+  const handleAddToCart = (item: any) => {
+    const isTestosteroneCategory =
+      item.medication_category === "Testosterone" ||
+      ["Optimal", "Optimal Protocol"].includes(item.medication_category || "") ||
+      item.is_optimal_protocol;
+    const requiresLab = item.is_lab_required == 1 || !!item.lab_package_id;
 
-      if (!exists) {
-        setCartItems([...cartItems, { ...pendingAddToCart, qty }]);
-      } else {
-        setCartItems(cartItems.map((item) => (item.id === pendingAddToCart.id ? { ...item, qty: item.qty + qty } : item)));
-      }
+    if (isTestosteroneCategory && requiresLab) {
+      setPendingAddToCart(item);
+      setSelectedMedication(item);
+      handleConfirmTestosterone.open();
+      return;
+    }
+
+    const isQuantityCategory = ["Single Peptides", "Peptides Blends", "Energy & Longevity"].includes(item.medication_category || "");
+    const showShippingType = !!item?.pharmacy?.is_over_night_shipping;
+
+    if (!isQuantityCategory && !showShippingType) {
+      addToCart(item, 1, "Regular");
+    } else {
+      setPendingAddToCart(item);
+      handleConfirmMeds.open();
+    }
+  };
+
+  const handleAgree = (qty: number, shippingType: string) => {
+    if (pendingAddToCart) {
+      addToCart(pendingAddToCart, qty, shippingType);
     }
     handleConfirmMeds.close();
     handleConfirmTestosterone.close();
@@ -124,12 +139,21 @@ const MedicationsPage = () => {
     }
   };
 
-  const onTestosteroneConfirm = (lab_required: string) => {
-    setPendingAddToCart((prev) => ({
-      ...prev, // keep previous values
-      lab_required: true, // add new field
-    }));
-    setCartItems([...cartItems, { ...pendingAddToCart, lab_required }]);
+  const onTestosteroneConfirm = (lab_required: string, shippingType: string, lab_type: string | null, reports: any[]) => {
+    const over_night_shipping_fee = customerData?.over_night_shipping_fee;
+    setCartItems([
+      ...cartItems,
+      {
+        ...pendingAddToCart,
+        lab_required,
+        shippingType,
+        over_night_shipping_fee,
+        lab_type: lab_type ?? undefined,
+        // Patient is selecting for themselves on QX, so always "now".
+        lab_selection_mode: lab_type ? "now" : null,
+        reports: reports ?? [],
+      },
+    ]);
     handleConfirmTestosterone.close();
   };
 
@@ -206,10 +230,12 @@ const MedicationsPage = () => {
             return (
               <MedicationCard
                 key={index}
-                image={`${import.meta.env.VITE_BASE_PATH}/storage/${item?.image}`}
+                //image={`${import.meta.env.VITE_BASE_PATH}/storage/${item?.image}`}
+                image={imageUrl(item?.image, "/images/product-img-placeholder.jpg")}
                 title={`${item?.program_name || item?.name} ${item.strength ? item.strength + " " + item.unit : ""} `}
                 cost={item?.customer_medication?.price}
-                lab_fee={stateWiseLabFee(item, selectedState)}
+                lab_fee={item?.is_lab_required == 1 ? stateWiseLabFee(item, selectedState) : 0}
+                lab_required={item?.is_lab_required == 1 ? "1" : "0"}
                 onAddToCart={() => handleAddToCart(item)}
                 onShowDetails={() => handelDetailsModal(item)}
                 disabled={isInCart} // pass this prop to your MedicationCard
@@ -226,10 +252,15 @@ const MedicationsPage = () => {
         <div className="fixed left-0 bottom-16 w-full animate-fadeInUp">
           <div className="bg-warning-bg px-10 lg:py-6 py-5 flex md:flex-row flex-col items-center justify-between rounded-2xl md:mx-5 mx-4 md:gap-2 gap-4">
             <div className="flex md:flex-row flex-col items-center lg:gap-14 md:gap-8 gap-2">
-              <div className="relative">
-                <i className="icon-orders text-4xl/none"></i>
-                <span className="text-base text-white rounded-full bg-primary size-5 absolute -top-2.5 -right-3 text-center leading-5">{totalCartCount}</span>
-              </div>
+              <Link
+                to="/order-summary"
+                className="relative"
+              >
+                <div className="relative">
+                  <i className="icon-orders text-4xl/none"></i>
+                  <span className="text-base text-white rounded-full bg-primary size-5 absolute -top-2.5 -right-3 text-center leading-5">{totalCartCount}</span>
+                </div>
+              </Link>
               <span className="text-foreground md:text-xl sm:text-lg text-base md:text-start text-center font-medium">
                 {totalCartCount > 0 && (
                   <div>
@@ -266,18 +297,24 @@ const MedicationsPage = () => {
         onModalPressNo={handleAgree}
         okBtnLoading={false}
         medicationInfo={pendingAddToCart ? [pendingAddToCart] : []}
+        category_name={pendingAddToCart?.medication_category} // This line was already present
+        showShippingType={pendingAddToCart?.pharmacy?.is_over_night_shipping}
+        is_research_only={pendingAddToCart?.is_research_only}
+        overNightShippingFee={customerData?.over_night_shipping_fee}
       />
       <ConfirmTestosteroneOnlyModal
         openModal={confirmTestosterone}
         onModalClose={handleConfirmTestosterone.close}
         medicationName={tempSelectedMedicine?.medicine?.name + " " + tempSelectedMedicine?.medicine?.strength + "" + tempSelectedMedicine?.medicine?.unit}
         medicationDetails={pendingAddToCart}
-        onModalPressYes={(labRequired) => {
-          onTestosteroneConfirm(String(labRequired));
+        onModalPressYes={(labRequired, shippingType, labType, reports) => {
+          onTestosteroneConfirm(String(labRequired), shippingType, labType, reports);
         }}
         onModalPressNo={handleConfirmTestosterone.close}
         medicationInfo={pendingAddToCart ? [pendingAddToCart] : []}
         okBtnLoading={false}
+        showShippingType={pendingAddToCart?.pharmacy?.is_over_night_shipping}
+        overNightShippingFee={customerData?.over_night_shipping_fee}
       />
     </div>
   );

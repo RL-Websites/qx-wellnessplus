@@ -35,6 +35,22 @@ export interface IMedicineCategory {
 }
 
 export interface IMedicineListItem {
+  is_packaged: any;
+  shippingType: string;
+  lab_package?: {
+    id?: number;
+    package_name?: string;
+    price_all_state?: string | number;
+    price_selected_state?: string | number;
+    customer_lab_packages?: Array<{
+      id?: number;
+      price_all_state?: string | number;
+      price_selected_state?: string | number;
+    }>;
+  };
+  lab_type?: string;
+  lab_selection_mode?: "now" | "later" | null;
+  reports?: any[];
   u_id: number;
   id: number;
   client_id: number | null;
@@ -56,15 +72,20 @@ export interface IMedicineListItem {
   lab_fee?: string;
   lab_fee_selected_state?: string;
   is_research_only: string;
+  is_optimal_protocol?: string | boolean;
   is_required_intake: number;
   image: string;
   lab_required?: string;
+  is_lab_required?: string | number;
+  lab_package_id?: number;
+  lab_id?: number;
   total_price?: string;
   direction: string | null;
   is_active: number;
   dosage_directions: IDosageDirection[];
   customer_count: number;
   customer_medication: ICustomerMedicationRef;
+  over_night_shipping_fee?: number;
   qty: number;
   pharmacy?: {
     id: number;
@@ -81,7 +102,7 @@ export interface ICustomerMedicationRef {
   consultancy_fee: any;
   testosterone_fee: any;
   price_for_customer: any;
-  customer?:ICustomer,
+  customer?: ICustomer;
   is_active: number;
   assign_by: null;
   created_at: Date;

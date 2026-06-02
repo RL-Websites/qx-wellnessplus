@@ -111,7 +111,7 @@ export default function CurrentState({ onNext, onBack, defaultValues, direction 
               wrapper: "bg-grey-btn rounded-md",
               error: isErrorFading ? "error-fade-out" : "animate-pulseFade",
             }}
-            rightSection={<i className="icon-down-arrow text-sm"></i>}
+            rightSection={<i className="icon-down-arrow text-sm pointer-events-none"></i>}
             searchable
             searchValue={stateSearchVal}
             onSearchChange={setStateSearchVal}

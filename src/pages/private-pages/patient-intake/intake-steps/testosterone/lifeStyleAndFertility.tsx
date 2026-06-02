@@ -177,7 +177,7 @@ const LifestyleAndFertility = ({ onNext, onBack, defaultValues, isFinalStep, isL
       <Radio.Group
         value={hasChildrenOrPlans}
         onChange={(val) => handleSelect("hasChildrenOrPlans", val)}
-        label="Do you have children or plan to have children in the future? (Testosterone therapy may affect fertility.)"
+        label="Do you have children or plan to have children in the future? (TRT/HRT therapy may affect fertility.)"
         classNames={{
           root: "w-full",
           label: "lg:!text-3xl md:!text-2xl sm:text-xl text-lg pb-2 pt",

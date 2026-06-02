@@ -7,7 +7,10 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 export const weightLossWeightSchema = yup.object({
-  weightlossweight: yup.string().required("Please add your current weight"),
+  weightlossweight: yup
+    .string()
+    .required("Please add your current weight")
+    .matches(/^[1-9]\d*$/, "Please enter a valid weight greater than 0"),
 });
 
 export type weightLossWeightSchemaType = yup.InferType<typeof weightLossWeightSchema>;
@@ -24,7 +27,6 @@ const WeightLossWeight = ({ onNext, onBack, defaultValues, direction }: IWeightL
     handleSubmit,
     register,
     setValue,
-    watch,
     clearErrors,
     formState: { errors },
   } = useForm<weightLossWeightSchemaType>({
@@ -34,23 +36,18 @@ const WeightLossWeight = ({ onNext, onBack, defaultValues, direction }: IWeightL
     resolver: yupResolver(weightLossWeightSchema),
   });
 
-  const weightLossWeight = watch("weightlossweight");
-
   const handleSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+    const value = e.target.value.replace(/\D/g, "");
 
     if (errors.weightlossweight) {
       setIsErrorFading(true);
-
-      // Step 1: Update value immediately so typing feels responsive
       setValue("weightlossweight", value);
 
-      // Step 2: Wait for fade-out animation before clearing error
       setTimeout(() => {
-        clearErrors("weightlossweight"); // remove the message
+        clearErrors("weightlossweight");
         setIsErrorFading(false);
         setValue("weightlossweight", value, { shouldValidate: true });
-      }, 300); // 300ms = your CSS fade-out duration
+      }, 0);
     } else {
       setValue("weightlossweight", value, { shouldValidate: true });
     }
@@ -100,8 +97,11 @@ const WeightLossWeight = ({ onNext, onBack, defaultValues, direction }: IWeightL
             >
               <Input
                 type="text"
-                {...register("weightlossweight")}
-                onChange={handleSelect}
+                inputMode="numeric"
+                pattern="[0-9]*"
+                {...register("weightlossweight", {
+                  onChange: handleSelect,
+                })}
               />
             </Input.Wrapper>
           </div>

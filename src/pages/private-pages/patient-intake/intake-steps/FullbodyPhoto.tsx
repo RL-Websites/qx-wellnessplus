@@ -2,7 +2,7 @@ import { heightAtom, weightAtom } from "@/common/states/height.atom";
 import { compressFileToBase64 } from "@/utils/fileUpload";
 import { getErrorMessage } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { ActionIcon, Anchor, Button, Image, Input, NumberInput, Text } from "@mantine/core";
+import { ActionIcon, Anchor, Button, Image, NumberInput, Text } from "@mantine/core";
 import { Dropzone, MIME_TYPES } from "@mantine/dropzone";
 import { IconX } from "@tabler/icons-react";
 import { useAtom } from "jotai";
@@ -12,14 +12,8 @@ import * as yup from "yup";
 
 export const fullBodyPhotoSchema = yup.object({
   measurement: yup.object({
-    height_feet: yup
-      .string()
-      .required(({ label }) => `${label} is required`)
-      .label("Height"),
-    height_inch: yup
-      .string()
-      .required(({ label }) => `${label} is required`)
-      .label("Height"),
+    height_feet: yup.string().required("Height feet is required"),
+    height_inch: yup.string().required("Height inch is required"),
     weight: yup
       .string()
       .required(({ label }) => `${label} is required`)
@@ -110,7 +104,7 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
   };
 
   return (
-    <>
+    <div>
       <form
         id="stepFullBodyForm"
         onSubmit={handleSubmit(onNext)}
@@ -120,48 +114,67 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
           <h6 className="text-[30px] font-semibold text-foreground font-poppins">Progress Tracking</h6>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Input.Wrapper
-            label="Current Height"
-            required
-            className="md:col-span-1 col-span-2"
-            styles={{
-              label: { fontWeight: 500, marginBottom: "0.5rem" },
-            }}
-            withAsterisk
-          >
+          <div className="md:col-span-1 col-span-2">
+            <label className="mb-2 block text-sm font-medium text-foreground">
+              Current Height <span className="text-danger">*</span>
+            </label>
             <div className="grid grid-cols-2 gap-5">
-              <NumberInput
-                placeholder="Feet"
-                value={heightFeet}
-                {...register("measurement.height_feet")}
-                onChange={(value) => {
-                  setValue("measurement.height_feet", value.toString());
-                  if (value) {
-                    clearErrors("measurement.height_feet");
-                  }
-                }}
-                min={0}
-                max={99}
-                hideControls
-                clampBehavior="strict"
-              />
-              <NumberInput
-                placeholder="Inches"
-                value={heightInch}
-                {...register("measurement.height_inch")}
-                onChange={(value) => {
-                  setValue("measurement.height_inch", value.toString());
-                  if (value) {
-                    clearErrors("measurement.height_inch");
-                  }
-                }}
-                min={0}
-                max={12}
-                hideControls
-                clampBehavior="strict"
-              />
+              <div>
+                <NumberInput
+                  placeholder="Feet"
+                  value={heightFeet}
+                  onChange={(value) => {
+                    const currentValue = value?.toString() || "";
+                    setHeightFeet(currentValue);
+                    setValue("measurement.height_feet", currentValue);
+                    if (currentValue) {
+                      clearErrors("measurement.height_feet");
+                    }
+                  }}
+                  min={0}
+                  max={99}
+                  hideControls
+                  clampBehavior="strict"
+                />
+                {errors.measurement?.height_feet && (
+                  <Text
+                    color="red"
+                    size="sm"
+                    mt="xs"
+                  >
+                    {getErrorMessage(errors.measurement?.height_feet)}
+                  </Text>
+                )}
+              </div>
+              <div>
+                <NumberInput
+                  placeholder="Inches"
+                  value={heightInch}
+                  onChange={(value) => {
+                    const currentValue = value?.toString() || "";
+                    setHeightInch(currentValue);
+                    setValue("measurement.height_inch", currentValue);
+                    if (currentValue) {
+                      clearErrors("measurement.height_inch");
+                    }
+                  }}
+                  min={0}
+                  max={11}
+                  hideControls
+                  clampBehavior="strict"
+                />
+                {errors.measurement?.height_inch && (
+                  <Text
+                    color="red"
+                    size="sm"
+                    mt="xs"
+                  >
+                    {getErrorMessage(errors.measurement?.height_inch)}
+                  </Text>
+                )}
+              </div>
             </div>
-          </Input.Wrapper>
+          </div>
           <NumberInput
             className="md:col-span-1 col-span-2"
             classNames={{
@@ -288,7 +301,7 @@ const FullBodyPhoto = ({ onNext, defaultValues }: FullBodyPhotoProps) => {
           Next
         </Button>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -52,6 +52,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
   const [shippingStateSearchVal, setShippingStateSearchVal] = useState<string>("");
   const [billingStateSearchVal, setBillingStateSearchVal] = useState<string>("");
   const [totalBillAmount, setTotalBillAmount] = useState<number>(0);
+  const [bookingSubmitted, setBookingSubmitted] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -142,11 +143,20 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
   const billingState = watch("billing.state");
 
   const submitFormWithPatientCard = (data) => {
-    const medications = cartItems?.map((item) => ({
+    const medications = cartItems?.map((item: any) => ({
       qty_ordered: item.qty,
       customer_medication_id: item.customer_medication.id, // customerMedication er medication_id
-      labRequired: item.lab_required ? item.lab_required : null,
+      labRequired: item.lab_required ?? (item.is_lab_required == 1 ? "1" : null),
+      shippingType: item.shippingType === "Overnight" ? "overnight" : "regular",
     }));
+    // Fall back to the lab option captured on the cart item (set by the testosterone
+    // modal at add-to-cart time) when formData hasn't carried it forward.
+    const cartLabItem = cartItems?.find(
+      (item: any) => item?.is_lab_required == 1 || item?.lab_required === "1"
+    ) as any;
+    const effectiveLabType = formData?.lab_type ?? cartLabItem?.lab_type ?? null;
+    const effectiveLabSelectionMode =
+      formData?.lab_selection_mode ?? cartLabItem?.lab_selection_mode ?? (effectiveLabType ? "now" : null);
     const payload: IPatientBookingPatientInfoDTO = {
       slug: customerData?.slug || "",
       cart_total: formData?.amount.toFixed(2) || 0,
@@ -155,6 +165,9 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
       billing: data.billing,
       patient: formData?.patient,
       medications: medications,
+      lab_type: effectiveLabType,
+      lab_selection_mode: effectiveLabSelectionMode,
+      reports: formData?.reports ?? cartLabItem?.reports ?? [],
     };
     setTempSubmitPayload(payload);
     handlePaymentConfirmation.open();
@@ -184,9 +197,13 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
         ...formData,
         ...temptSubmitPayload,
       };
-      // First, call your backend API
-      await handleIntakeSubmit(payload);
+
+      if (!bookingSubmitted) {
+        await handleIntakeSubmit(payload);
+        setBookingSubmitted(true);
+      }
       // Then confirm the payment with Stripe
+
       const { paymentIntent, error } = await stripe.confirmPayment({
         elements,
         confirmParams: {
@@ -205,7 +222,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
               },
             },
           },
-          return_url: `${import.meta.env.VITE_FRONTEND_URL}/partner-patient-booking-success`,
+          return_url: `${import.meta.env.VITE_FRONTEND_URL.replace(/\/+$/, "")}/partner-patient-booking-success`,
         },
         redirect: "if_required",
       });
@@ -258,11 +275,19 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
       }
     } catch (error: any) {
       console.error("❌ Booking failed:", error);
+      const respData = error?.response?.data;
+      const fieldErrors = respData?.message && typeof respData.message === "object" ? respData.message : respData?.errors;
+      const flatMessages =
+        fieldErrors && typeof fieldErrors === "object"
+          ? Object.values(fieldErrors).flat().filter(Boolean).join(", ")
+          : null;
+      const titleText =
+        flatMessages ||
+        (typeof respData?.message === "string" ? respData.message : null) ||
+        error?.message ||
+        "Something went wrong. Please try again.";
       dmlToast.error({
-        title:
-          error?.response?.data?.message || // backend-defined error
-          error?.message || // generic JS/axios error
-          "Something went wrong. Please try again.", // fallback
+        title: titleText,
       });
       setCapturingPayment(false);
       handlePaymentConfirmation.close();
