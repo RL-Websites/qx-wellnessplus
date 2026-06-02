@@ -40,6 +40,16 @@ const promoSchema = yup.object().shape({
 
 const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) => {
   const [cartItems] = useAtom(cartItemsAtom);
+  const [storedCartItems, setStoredCartItems] = useState<any[]>(() => {
+    if (typeof window === "undefined") return [];
+
+    try {
+      const savedCartItems = window.localStorage.getItem("cartItems");
+      return savedCartItems ? (JSON.parse(savedCartItems) ?? []) : [];
+    } catch {
+      return [];
+    }
+  });
 
   const [totalBillAmount, setTotalBillAmount] = useState<number>(0); // subtotal (products only)
   const [totalDvCost, setTotalDvCost] = useState<number>(0); // subtotal (products only)
@@ -53,14 +63,21 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
   const selectedState = useAtomValue(selectedStateAtom);
   const [selectedLabType, setSelectedLabType] = useState<LabSubmissionType | null>(formData?.lab_type ?? null);
   const [selectedReports, setSelectedReports] = useState<any[]>(formData?.reports ?? []);
+  const activeCartItems = cartItems?.length > 0 ? cartItems : formData?.cart?.length > 0 ? formData.cart : storedCartItems;
+
+  useEffect(() => {
+    if (cartItems?.length > 0) {
+      setStoredCartItems(cartItems);
+    }
+  }, [cartItems]);
 
   // Detect lab-required item (TRT/Hormone/lab-package medications)
   const labRequiredItem = useMemo(
     () =>
-      cartItems?.find((item) => {
+      activeCartItems?.find((item) => {
         return item?.is_lab_required == 1 || item?.lab_required === "1";
       }),
-    [cartItems]
+    [activeCartItems]
   );
   const hasLabRequired = !!labRequiredItem;
   const requiredLabExaminations = labRequiredItem?.lab_package?.examinations ?? [];
@@ -86,7 +103,7 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
 
   // compute subtotal and lab fee separately
   useEffect(() => {
-    if (cartItems?.length > 0) {
+    if (activeCartItems?.length > 0) {
       let productTotal = 0;
       let dosevanaTotal = 0;
       let labFeeTotal = 0;
@@ -96,7 +113,7 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
       // own_lab / preferred_lab => $0 (handled outside checkout).
       const chargeLabFee = selectedLabType === "dosevana_lab";
 
-      cartItems.forEach((item) => {
+      activeCartItems.forEach((item) => {
         productTotal += calculatePrice(item);
         dosevanaTotal += dosevanaCostGenerate(item, item?.customer_medication?.customer);
         if (chargeLabFee && item?.lab_required == "1") {
@@ -141,7 +158,7 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
       setFinalTotal(0);
       setDiscount(0);
     }
-  }, [cartItems, appliedPromo, selectedState, selectedLabType]);
+  }, [activeCartItems, appliedPromo, selectedState, selectedLabType]);
 
   // promo apply mutation
   const applyPromoMutation = useMutation<any, AxiosError<IServerErrorResponse>, { promo_code: string; customerId: string }>({
@@ -221,7 +238,7 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
       final_total: finalTotal,
       discount: discount,
       code: code,
-      cart: cartItems,
+      cart: activeCartItems,
       subtotal: totalBillAmount,
       lab_fee: labFee,
       shipping_fee: totalShippingFee,
@@ -274,7 +291,7 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
               <h3 className="font-poppins font-semibold lg:text-3xl text-2xl">Cart</h3>
             </div>
             <div className="max-h-[300px] overflow-y-auto">
-              {cartItems?.map((item) => (
+              {activeCartItems?.map((item) => (
                 <div
                   className="flex gap-6 mt-6"
                   key={item.id ?? item.u_id}
@@ -303,7 +320,7 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
                   <div className="space-y-2.5">
                     <h6 className="text-foreground break-all">{generateMedName(item)}</h6>
                     <div className="text-gray">
-                      {item?.medication_category === "Single Peptides" ? "Anti-Aging" : item.medication_category === "Testosterone" ? "TRT/HRT" : item?.medication_category} |
+                      {item?.medication_category === "Single Peptides" ? "Anti-Aging" : item.medication_category === "Testosterone" ? "TRT/HRT" : item?.medication_category} |{" "}
                       {item?.medicine_type == "ODT" ? "Oral" : item?.medicine_type}
                     </div>
                     <div className="text-foreground">
