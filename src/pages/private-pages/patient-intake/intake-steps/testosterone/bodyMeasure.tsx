@@ -11,11 +11,21 @@ export const bodyMeasureSchema = yup.object({
   measurement: yup.object({
     height_feet: yup
       .string()
-      .required(({ label }) => `${label} is required`)
+      .required("Feet is required")
+      .test("not-zero", "Feet must be greater than 0", (value) => !!value && value !== "0")
       .label("Feet"),
     height_inch: yup
       .string()
-      .required(({ label }) => `${label} is required`)
+      .required("Inches is required")
+      .test(
+        "valid-inches",
+        "Inches must be between 0 and 11",
+        (value) => {
+          if (value === undefined || value === null || value === "") return false;
+          const num = Number(value);
+          return Number.isInteger(num) && num >= 0 && num <= 11;
+        }
+      )
       .label("Inches"),
     weight: yup
       .string()
@@ -36,7 +46,7 @@ interface BodyMeasureProps {
 const BodyMeasure = ({ onNext, onBack, defaultValues, isLoading = false }: BodyMeasureProps) => {
   const [heightObj, setHeightObj] = useAtom(heightAtom);
   const [heightFeet, setHeightFeet] = useState<string>("");
-  const [heightInch, setHeightInch] = useState<string>("");
+  const [heightInch, setHeightInch] = useState<string>("0");
   const [weight, setWeight] = useState<string>("");
 
   const {
@@ -50,25 +60,27 @@ const BodyMeasure = ({ onNext, onBack, defaultValues, isLoading = false }: BodyM
     defaultValues: {
       measurement: {
         height_feet: defaultValues?.measurement?.height_feet || "",
-        height_inch: defaultValues?.measurement?.height_inch || "",
+        height_inch: defaultValues?.measurement?.height_inch ?? "0",
         weight: defaultValues?.measurement?.weight || "",
       },
     },
   });
 
   useEffect(() => {
+    const inchDefault = defaultValues?.measurement?.height_inch ?? "0";
+
     if (defaultValues?.measurement?.height_feet) {
       setValue("measurement.height_feet", defaultValues.measurement.height_feet);
       setHeightFeet(defaultValues.measurement.height_feet || "");
-      setValue("measurement.height_inch", defaultValues.measurement.height_inch);
-      setHeightInch(defaultValues.measurement.height_inch || "");
+      setValue("measurement.height_inch", inchDefault);
+      setHeightInch(inchDefault);
       setValue("measurement.weight", defaultValues.measurement.weight);
       setWeight(defaultValues.measurement.weight || "");
     } else {
       setValue("measurement.height_feet", heightObj?.height_feet?.toString() || "");
       setHeightFeet(heightObj?.height_feet?.toString() || "");
-      setValue("measurement.height_inch", heightObj?.height_inch?.toString() || "");
-      setHeightInch(heightObj?.height_inch?.toString() || "");
+      setValue("measurement.height_inch", heightObj?.height_inch?.toString() ?? "");
+      setHeightInch(heightObj?.height_inch?.toString() ?? "");
     }
   }, [defaultValues, heightObj, setValue]);
 
@@ -100,9 +112,9 @@ const BodyMeasure = ({ onNext, onBack, defaultValues, isLoading = false }: BodyM
               const v = value?.toString() || "";
               setHeightFeet(v);
               setValue("measurement.height_feet", v);
-              if (v) clearErrors("measurement.height_feet");
+              if (v && v !== "0") clearErrors("measurement.height_feet");
             }}
-            min={0}
+            min={1}
             max={99}
             hideControls
             clampBehavior="strict"
@@ -110,13 +122,13 @@ const BodyMeasure = ({ onNext, onBack, defaultValues, isLoading = false }: BodyM
 
           <NumberInput
             placeholder="Inches"
-            value={heightInch}
+            value={heightInch === "" ? undefined : Number(heightInch)}
             {...register("measurement.height_inch")}
             onChange={(value) => {
               const v = value?.toString() || "";
               setHeightInch(v);
               setValue("measurement.height_inch", v);
-              if (v) clearErrors("measurement.height_inch");
+              if (v !== "") clearErrors("measurement.height_inch");
             }}
             min={0}
             max={11}
