@@ -40,22 +40,7 @@ const promoSchema = yup.object().shape({
 
 const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) => {
   const [cartItems] = useAtom(cartItemsAtom);
-  const [storedCartItems, setStoredCartItems] = useState<any[]>(() => {
-    if (typeof window === "undefined") return [];
 
-    try {
-      const savedCartItems = window.localStorage.getItem("cartItems");
-      return savedCartItems ? (JSON.parse(savedCartItems) ?? []) : [];
-    } catch {
-      return [];
-    }
-  });
-
-  const [totalBillAmount, setTotalBillAmount] = useState<number>(0); // subtotal (products only)
-  const [totalDvCost, setTotalDvCost] = useState<number>(0); // subtotal (products only)
-  const [labFee, setLabFee] = useState<number>(0); // separate lab fee
-  const [totalShippingFee, setTotalShippingFee] = useState<number>(0);
-  const [finalTotal, setFinalTotal] = useState<number>(0);
   const [discount, setDiscount] = useState<number>(0);
   const [code, setCode] = useState<string>("");
   const [appliedPromo, setAppliedPromo] = useState<PromoData | null>(null);
@@ -63,21 +48,70 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
   const selectedState = useAtomValue(selectedStateAtom);
   const [selectedLabType, setSelectedLabType] = useState<LabSubmissionType | null>(formData?.lab_type ?? null);
   const [selectedReports, setSelectedReports] = useState<any[]>(formData?.reports ?? []);
-  const activeCartItems = cartItems?.length > 0 ? cartItems : formData?.cart?.length > 0 ? formData.cart : storedCartItems;
 
-  useEffect(() => {
-    if (cartItems?.length > 0) {
-      setStoredCartItems(cartItems);
+  const computedTotals = useMemo(() => {
+    let productTotal = 0;
+    let dosevanaTotal = 0;
+    let labFeeTotal = 0;
+    let shippingFeeTotal = 0;
+
+    const chargeLabFee = selectedLabType === "dosevana_lab";
+
+    cartItems?.forEach((item) => {
+      productTotal += calculatePrice(item);
+      dosevanaTotal += dosevanaCostGenerate(item, item?.customer_medication?.customer);
+      if (chargeLabFee && item?.lab_required == "1") {
+        labFeeTotal += stateWiseLabFee(item, selectedState);
+      }
+      if (item.shippingType === "Overnight") {
+        shippingFeeTotal += Number(item.over_night_shipping_fee || 0);
+      }
+    });
+
+    productTotal = Math.round(productTotal * 100) / 100;
+    labFeeTotal = Math.round(labFeeTotal * 100) / 100;
+
+    const grossTotal = productTotal + labFeeTotal + shippingFeeTotal;
+
+    return {
+      productTotal,
+      dosevanaTotal,
+      labFeeTotal,
+      shippingFeeTotal,
+      grossTotal,
+    };
+  }, [cartItems, selectedLabType, selectedState]);
+
+  const totalBillAmount = computedTotals.productTotal;
+  const totalDvCost = computedTotals.dosevanaTotal;
+  const labFee = computedTotals.labFeeTotal;
+  const totalShippingFee = computedTotals.shippingFeeTotal;
+  const finalTotal = useMemo(() => {
+    if (!appliedPromo) {
+      return computedTotals.grossTotal;
     }
-  }, [cartItems]);
+
+    const discountVal = parseFloat(appliedPromo.discount_value ?? "0");
+    const discountType = (appliedPromo.discount_type ?? "fixed").toLowerCase();
+    let calculatedDiscount = 0;
+
+    if (discountType === "fixed") {
+      calculatedDiscount = discountVal;
+    } else {
+      calculatedDiscount = (computedTotals.grossTotal * discountVal) / 100;
+    }
+
+    calculatedDiscount = Math.round(calculatedDiscount * 100) / 100;
+    return Math.max(0, Math.round((computedTotals.grossTotal - calculatedDiscount) * 100) / 100);
+  }, [appliedPromo, computedTotals.grossTotal]);
 
   // Detect lab-required item (TRT/Hormone/lab-package medications)
   const labRequiredItem = useMemo(
     () =>
-      activeCartItems?.find((item) => {
+      cartItems?.find((item) => {
         return item?.is_lab_required == 1 || item?.lab_required === "1";
       }),
-    [activeCartItems]
+    [cartItems]
   );
   const hasLabRequired = !!labRequiredItem;
   const requiredLabExaminations = labRequiredItem?.lab_package?.examinations ?? [];
@@ -101,68 +135,10 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
     resolver: yupResolver(promoSchema),
   });
 
-  // compute subtotal and lab fee separately
-  useEffect(() => {
-    if (activeCartItems?.length > 0) {
-      let productTotal = 0;
-      let dosevanaTotal = 0;
-      let labFeeTotal = 0;
-      let shippingFeeTotal = 0;
-
-      // Lab fee is only billed when patient picks the Dosevana-managed lab option.
-      // own_lab / preferred_lab => $0 (handled outside checkout).
-      const chargeLabFee = selectedLabType === "dosevana_lab";
-
-      activeCartItems.forEach((item) => {
-        productTotal += calculatePrice(item);
-        dosevanaTotal += dosevanaCostGenerate(item, item?.customer_medication?.customer);
-        if (chargeLabFee && item?.lab_required == "1") {
-          labFeeTotal += stateWiseLabFee(item, selectedState);
-        }
-        if (item.shippingType === "Overnight") {
-          shippingFeeTotal += Number(item.over_night_shipping_fee || 0);
-        }
-      });
-
-      productTotal = Math.round(productTotal * 100) / 100;
-      labFeeTotal = Math.round(labFeeTotal * 100) / 100;
-
-      setTotalBillAmount(productTotal);
-      setTotalDvCost(dosevanaTotal);
-      setLabFee(labFeeTotal);
-      setTotalShippingFee(shippingFeeTotal);
-
-      const grossTotal = productTotal + labFeeTotal + shippingFeeTotal;
-
-      if (!appliedPromo) {
-        setFinalTotal(grossTotal);
-      } else {
-        const discountVal = parseFloat(appliedPromo.discount_value || "0");
-        const discountType = (appliedPromo.discount_type || "fixed").toLowerCase();
-        let calculatedDiscount = 0;
-
-        if (discountType === "fixed") {
-          calculatedDiscount = discountVal;
-        } else {
-          calculatedDiscount = (productTotal * discountVal) / 100;
-        }
-
-        calculatedDiscount = Math.round(calculatedDiscount * 100) / 100;
-        setDiscount(calculatedDiscount);
-        setFinalTotal(Math.max(0, Math.round((grossTotal - calculatedDiscount) * 100) / 100));
-      }
-    } else {
-      setTotalBillAmount(0);
-      setLabFee(0);
-      setTotalShippingFee(0);
-      setFinalTotal(0);
-      setDiscount(0);
-    }
-  }, [activeCartItems, appliedPromo, selectedState, selectedLabType]);
 
   // promo apply mutation
   const applyPromoMutation = useMutation<any, AxiosError<IServerErrorResponse>, { promo_code: string; customerId: string }>({
-    mutationFn: ({ promo_code, customerId }) => promoCodesApiRepository.getApplyPromoCode({ code: promo_code, customerId, totalBillAmount, totalDvCost }),
+    mutationFn: ({ promo_code, customerId }) => promoCodesApiRepository.getApplyPromoCode({ code: promo_code, customerId, totalBillAmount: computedTotals.productTotal, totalDvCost: computedTotals.dosevanaTotal }),
 
     onSuccess(response) {
       const apiData = response?.data?.data;
@@ -171,7 +147,7 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
         return;
       }
 
-      const subtotal = Number(totalBillAmount ?? 0) + Number(labFee ?? 0) + Number(totalShippingFee ?? 0);
+      const subtotal = Number(computedTotals.grossTotal ?? 0);
       const discountVal = parseFloat(apiData.discount_value ?? "0");
       const discountType = (apiData.discount_type ?? "fixed").toLowerCase();
 
@@ -183,10 +159,7 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
       }
 
       calculatedDiscount = Math.round(calculatedDiscount * 100) / 100;
-      const computedFinal = Math.max(0, Math.round((subtotal - calculatedDiscount) * 100) / 100);
-
       setDiscount(calculatedDiscount);
-      setFinalTotal(computedFinal);
       setAppliedPromo(apiData);
       setCode(apiData.code ?? "");
 
@@ -215,7 +188,6 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
   const handleRemovePromo = () => {
     setAppliedPromo(null);
     setDiscount(0);
-    setFinalTotal(Math.round((totalBillAmount + labFee + totalShippingFee) * 100) / 100);
     setCode("");
     reset();
     setValue("promo_code", "");
@@ -238,7 +210,7 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
       final_total: finalTotal,
       discount: discount,
       code: code,
-      cart: activeCartItems,
+      cart: cartItems,
       subtotal: totalBillAmount,
       lab_fee: labFee,
       shipping_fee: totalShippingFee,
@@ -291,7 +263,7 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
               <h3 className="font-poppins font-semibold lg:text-3xl text-2xl">Cart</h3>
             </div>
             <div className="max-h-[300px] overflow-y-auto">
-              {activeCartItems?.map((item) => (
+              {cartItems?.map((item) => (
                 <div
                   className="flex gap-6 mt-6"
                   key={item.id ?? item.u_id}
@@ -320,7 +292,7 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
                   <div className="space-y-2.5">
                     <h6 className="text-foreground break-all">{generateMedName(item)}</h6>
                     <div className="text-gray">
-                      {item?.medication_category === "Single Peptides" ? "Anti-Aging" : item.medication_category === "Testosterone" ? "TRT/HRT" : item?.medication_category} |{" "}
+                      {item?.medication_category === "Single Peptides" ? "Anti-Aging" : item.medication_category === "Testosterone" ? "TRT/HRT" : item?.medication_category} |
                       {item?.medicine_type == "ODT" ? "Oral" : item?.medicine_type}
                     </div>
                     <div className="text-foreground">
