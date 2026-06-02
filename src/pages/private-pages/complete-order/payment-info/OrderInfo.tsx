@@ -135,10 +135,10 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
     resolver: yupResolver(promoSchema),
   });
 
-
   // promo apply mutation
   const applyPromoMutation = useMutation<any, AxiosError<IServerErrorResponse>, { promo_code: string; customerId: string }>({
-    mutationFn: ({ promo_code, customerId }) => promoCodesApiRepository.getApplyPromoCode({ code: promo_code, customerId, totalBillAmount: computedTotals.productTotal, totalDvCost: computedTotals.dosevanaTotal }),
+    mutationFn: ({ promo_code, customerId }) =>
+      promoCodesApiRepository.getApplyPromoCode({ code: promo_code, customerId, totalBillAmount: computedTotals.productTotal, totalDvCost: computedTotals.dosevanaTotal }),
 
     onSuccess(response) {
       const apiData = response?.data?.data;
