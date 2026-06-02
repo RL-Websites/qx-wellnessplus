@@ -63,7 +63,7 @@ const OrderSummary = () => {
   const disableChooseLabOptionMode = !!labRequiredItem?.lab_type;
 
   const handleNext = () => {
-    // Lab option is now captured at add-to-cart time (e.g. testosterone modal on /medications), all add
+    // Lab option is now captured at add-to-cart time (e.g. testosterone modal on /medications)
     // so prefer the value persisted on the cart item over the (now usually unused) local state.
     const effectiveLabType = selectedLabType ?? (labRequiredItem?.lab_type as LabSubmissionType | undefined) ?? null;
     const effectiveReports = selectedReports ?? labRequiredItem?.reports ?? [];
