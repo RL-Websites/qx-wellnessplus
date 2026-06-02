@@ -37,14 +37,14 @@ function LabTypeSectionModal({ opened, onClose, onSave, draftSelection, onSelect
       padding={0}
       radius="lg"
     >
-      <Modal.Header>
+      <Modal.Header className="md:!px-4 !px-0">
         <h2 className="text-2xl lg:text-4xl xl:text-5xl !font-poppins !font-bold">Select Lab Option</h2>
         <i
           className="icon-cross1 text-2xl/none cursor-pointer text-primary"
           onClick={onClose}
         ></i>
       </Modal.Header>
-      <div className="bg-white px-4">
+      <div className="bg-white md:px-4 px-0">
         <div className="border-b border-[#1F4A63]">
           <p className="text-xl lg:text-2xl xl:text-3xl font-medium text-foreground">Tests Needed for Your Lab Work</p>
           <div className="my-6 flex flex-wrap gap-2">
@@ -112,7 +112,7 @@ function LabTypeSectionModal({ opened, onClose, onSave, draftSelection, onSelect
             <Button
               onClick={onSave}
               size="sm-2"
-              className="w-32 sm:w-40"
+              className="w-full sm:w-40"
             >
               Save
             </Button>
