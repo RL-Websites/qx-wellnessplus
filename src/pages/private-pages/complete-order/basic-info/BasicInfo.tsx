@@ -488,11 +488,12 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
                     minDate={minDate}
                     value={dob}
                     mask="99/99/9999"
-                    error={true}
+                    error={Boolean(errors?.dob)}
                     onChange={(data) => {
-                      setDob([data.date]);
-                      setValue("dob", [data.date]);
-                      if (data.date) {
+                      const selectedDate = data.date;
+                      setDob(selectedDate);
+                      setValue("dob", selectedDate ? [formatDate(selectedDate, "MM-DD-YYYY")] : []);
+                      if (selectedDate) {
                         clearErrors("dob");
                       }
                     }}
