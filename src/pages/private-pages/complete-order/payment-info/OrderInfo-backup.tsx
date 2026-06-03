@@ -54,7 +54,7 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
   const [selectedLabType, setSelectedLabType] = useState<LabSubmissionType | null>(formData?.lab_type ?? null);
   const [selectedReports, setSelectedReports] = useState<any[]>(formData?.reports ?? []);
 
-  // Detect lab-required item (TRT/Hormone/lab-package medications)
+  // Detect lab-required item (TRT/Hormone/lab-package medications) fix
   const labRequiredItem = useMemo(
     () =>
       cartItems?.find((item) => {
