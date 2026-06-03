@@ -197,9 +197,8 @@ const OrderSummary = () => {
           Back
         </Button>
         <Button
-          type="submit"
+          type="button"
           className="lg:w-[200px] w-[150px]"
-          form="stepTwoForm"
           onClick={handleNext}
         >
           Next
