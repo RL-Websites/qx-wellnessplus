@@ -46,7 +46,7 @@ const BasicInfo = ({ userData, onNext, formData, isSubmitting }: BasicInfoPropTy
   const [gender, setGender] = useState<string | null>(selectedGender || null);
   const [selectedState, setSelectedState] = useAtom(selectedStateAtom);
   const [stateSearchVal, setStateSearchVal] = useState<string>(selectedState || "");
-  // Separate searchable-Select state for the driver-license issue state (independent
+  // Separate searchable-Select state for the driver-license issue state (independent done
   // of the address state) — mirrors wellness-plus-front's StepOne.tsx.
   const [dlStateSearchVal, dlSetStateSearchVal] = useState<string>("");
   const [address, setAddress] = useState<string>("");
