@@ -40,13 +40,14 @@
 html,
 body,
 #root {
-  overscroll-behavior-y: none;
+  overscroll-behavior-y: auto;
+  @media all and (max-width: 768px) {
+    overscroll-behavior-y: none;
+  }
 }
-
-
-
-@media all and (max-width: 768px) {
-  .home-safe-area {
+.home-safe-area {
+  @apply pt-16 pb-24;
+  @media all and (max-width: 768px) {
     padding-top: calc(env(safe-area-inset-top, 0px) + 4rem);
     padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 6rem);
   }
