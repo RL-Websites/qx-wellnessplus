@@ -13,12 +13,12 @@ const getLabOptionIdFromSubmissionType = (value?: LabSubmissionType | null): Lab
 };
 
 const LAB_OPTIONS: LabOption[] = [
-  {
-    id: "preferred-lab",
-    title: "Patient's Preferred Lab (Requisition Provided)",
-    description: ["A lab requisition form will be provided that can be taken to any laboratory of choice.", "Payment will be made directly to the lab at the time of the visit."],
-    submissionType: "preferred_lab",
-  },
+  // {
+  //   id: "preferred-lab",
+  //   title: "Patient's Preferred Lab (Requisition Provided)",
+  //   description: ["A lab requisition form will be provided that can be taken to any laboratory of choice.", "Payment will be made directly to the lab at the time of the visit."],
+  //   submissionType: "preferred_lab",
+  // },
   {
     id: "upload-results",
     title: "Upload Existing Lab Results",
@@ -72,7 +72,7 @@ const LabSection = ({
   const [isUploadModalOpen, setIsUploadModalOpen] = useDisclosure(false);
   const [uploadedReports, setUploadedReports] = useState<any[]>([]);
   const visibleExaminations = examinations.filter((exam) => !!(exam?.name || exam?.code));
-  const [draftSelection, setDraftSelection] = useState<LabOptionId>(getLabOptionIdFromSubmissionType(value) ?? "preferred-lab");
+  const [draftSelection, setDraftSelection] = useState<LabOptionId>(getLabOptionIdFromSubmissionType(value) ?? "dosevana-lab");
   const savedSelection = getLabOptionIdFromSubmissionType(value);
   const selectedOption = LAB_OPTIONS.find((option) => option.id === savedSelection) ?? null;
 

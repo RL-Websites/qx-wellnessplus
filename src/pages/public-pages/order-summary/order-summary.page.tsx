@@ -187,7 +187,7 @@ const OrderSummary = () => {
           </div>
         </div>
       </div>
-      <div className="flex justify-between gap-6 pt-4">
+      <div className="flex justify-between gap-6 pt-4 sm:pb-0 pb-10">
         <Button
           variant="outline"
           className="lg:w-[200px] w-[150px]"
@@ -197,9 +197,8 @@ const OrderSummary = () => {
           Back
         </Button>
         <Button
-          type="submit"
+          type="button"
           className="lg:w-[200px] w-[150px]"
-          form="stepTwoForm"
           onClick={handleNext}
         >
           Next

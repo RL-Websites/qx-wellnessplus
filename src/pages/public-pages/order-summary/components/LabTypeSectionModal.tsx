@@ -33,7 +33,7 @@ function LabTypeSectionModal({ opened, onClose, onSave, draftSelection, onSelect
       onClose={onClose}
       withCloseButton={false}
       centered
-      size={"1130px"}
+      size={"900px"}
       padding={0}
       radius="lg"
     >
@@ -59,7 +59,7 @@ function LabTypeSectionModal({ opened, onClose, onSave, draftSelection, onSelect
           </div>
         </div>
         <div className="pt-6">
-          <div className="grid gap-3 lg:grid-cols-3">
+          <div className="grid gap-3 lg:grid-cols-2">
             {options.map((option) => {
               const isSelected = draftSelection === option.id;
 
@@ -81,7 +81,7 @@ function LabTypeSectionModal({ opened, onClose, onSave, draftSelection, onSelect
                     </span>
                   ) : null}
 
-                  <div className={`pb-2 text-center ${option.id === "preferred-lab" ? "border-b border-primary" : "border-b border-[#EDF0F4]"}`}>
+                  <div className={`pb-2 text-center ${option.id === "dosevana-lab" ? "border-b border-primary" : "border-b border-[#EDF0F4]"}`}>
                     <h3 className="text-base/normal md:text-xl/normal font-semibold text-foreground">{option.title}</h3>
                   </div>
 
