@@ -97,6 +97,11 @@ const CompleteOrderPage = () => {
     if (cartItems?.length > 0 && customerData?.payment_type == "stripe") {
       const payload: ICreatePaymentIntentDTO = {
         amount: orderInfoData.final_total || 0,
+        platform: "QX",
+        // Package medications bill again per cycle, so the payment method has to be
+        // saved. Sending this for a one-off order would strip the non-card options
+        // out of the Payment Element, so it is strictly cart-driven.
+        save_payment_method: cartItems?.some((item: any) => item?.is_packaged == 1),
       };
       createPaymentIntentMutation.mutate(payload, {
         onSuccess: (res) => {

@@ -2,11 +2,13 @@ import { IServerErrorResponse } from "@/common/api/models/interfaces/ApiResponse
 import { IPatientPaymentAuthorizeConfirmDTO } from "@/common/api/models/interfaces/PartnerPatient.model";
 import paymentRepository from "@/common/api/repositories/paymentRepository";
 import dmlToast from "@/common/configs/toaster.config";
+import { cartItemsAtom } from "@/common/states/product.atom";
 import { Button, Image, Text } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { loadStripe } from "@stripe/stripe-js";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { useSetAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
@@ -17,6 +19,7 @@ const BookingSuccess = () => {
   const [paymentStatus, setPaymentStatus] = useState<"loading" | "succeeded" | "failed" | "processing">("loading");
   const [updateTitle, setUpdateTitle] = useState<string | null>(null);
   const navigate = useNavigate();
+  const setCartItems = useSetAtom(cartItemsAtom);
   const [params] = useSearchParams();
   let buttonSize: "md" | "lg" = "md";
   if (isLargeScreen) {
@@ -98,6 +101,11 @@ const BookingSuccess = () => {
             paymentAuthorizeMn.mutate(payload, {
               onSuccess: (res) => {
                 const prescription_uId = res?.data?.data?.u_id;
+                // The inline checkout clears these itself; a redirect-based method
+                // comes back here instead, so the cart has to be cleared on this path
+                // as well or the patient can re-order what they just paid for.
+                setCartItems([]);
+                localStorage.removeItem("cartItems");
                 setPrescriptionUId(prescription_uId);
                 setTimeout(() => {
                   navigate(`/patient-intake?prescription_u_id=${prescription_uId}`);
@@ -119,8 +127,15 @@ const BookingSuccess = () => {
           }
 
           case "processing": {
+            // ACH, Cash App and the BNPL options settle out of band. Tell the backend
+            // so the order is parked as `payment_processing` instead of being left at
+            // intent_created — the Stripe webhook finalises it and emails the intake
+            // link once the funds clear.
             setPaymentStatus("processing");
             setUpdateTitle("Your payment is still processing...");
+            setCartItems([]);
+            localStorage.removeItem("cartItems");
+            paymentAuthorizeMn.mutate({ payment_intent_id: payment_intent, client_secret });
             break;
           }
 
@@ -221,12 +236,17 @@ const BookingSuccess = () => {
             w={300}
           />
           <Text
-            className="text-3xl mt-48 fw={700}"
+            className="text-3xl mt-12"
+            fw={700}
             c="secondary"
           >
             {"Payment is Processing"}
           </Text>
-          <p className="text-gray-500 mt-4">{"Your payment is still being processed. This may take a few minutes."}</p>
+          <p className="text-gray-500 mt-4 max-w-[600px] mx-auto">
+            {
+              "Your order is confirmed and your payment is being processed by your bank or payment provider. This can take a few minutes to a few business days. We will email you a link to your intake form as soon as it clears — you do not need to pay again."
+            }
+          </p>
         </div>
       )}
     </div>

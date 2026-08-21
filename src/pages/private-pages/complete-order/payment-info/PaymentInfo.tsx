@@ -238,41 +238,69 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
         return;
       }
 
-      // Handle successful Stripe intent
-      if (paymentIntent) {
-        const payload: IPatientPaymentAuthorizeConfirmDTO = {
-          payment_intent_id: paymentIntent.id,
-          client_secret: paymentIntent.client_secret || "",
-        };
-        paymentAuthorizeMn.mutate(payload, {
-          onSuccess: (res) => {
-            // dmlToast.success({ title: "Patient has been invited successfully." });
-            const prescription_uId = res?.data?.data?.u_id;
-            setCartItems([]);
-            localStorage.removeItem("cartItems");
-            navigate(`/patient-intake?prescription_u_id=${prescription_uId}`);
-            console.log(res);
-          },
-          onError: (err) => {
-            const error = err as AxiosError<IServerErrorResponse>;
-            dmlToast.error({ title: error.message });
-          },
-        });
-
-        setCapturingPayment(false);
-        handlePaymentConfirmation.close();
-        // ✅ Both backend and Stripe succeeded — continue to next step
-        setCapturingPayment(false);
-        handlePaymentConfirmation.close();
-        // your further code here
-      } else {
+      if (!paymentIntent) {
         dmlToast.error({
           title: "Stripe payment intent initializing error.",
           message: "Please refresh the page and try again.",
         });
         setCapturingPayment(false);
         handlePaymentConfirmation.close();
+        return;
       }
+
+      // The intent status decides what happens next. Only cards land on
+      // succeeded/requires_capture synchronously — ACH, Cash App and the BNPL
+      // options come back as `processing`, and treating that as a failure is what
+      // made non-card checkout look broken.
+      if (paymentIntent.status === "requires_payment_method" || paymentIntent.status === "canceled") {
+        dmlToast.error({
+          title: "Your payment could not be completed. Please try another payment method.",
+        });
+        setCapturingPayment(false);
+        handlePaymentConfirmation.close();
+        return;
+      }
+
+      if (paymentIntent.status === "requires_action" || paymentIntent.status === "requires_confirmation") {
+        dmlToast.error({
+          title: "Additional authentication is required. Please complete the verification step and try again.",
+        });
+        setCapturingPayment(false);
+        handlePaymentConfirmation.close();
+        return;
+      }
+
+      const isProcessing = paymentIntent.status === "processing";
+
+      const authorizePayload: IPatientPaymentAuthorizeConfirmDTO = {
+        payment_intent_id: paymentIntent.id,
+        client_secret: paymentIntent.client_secret || "",
+      };
+      paymentAuthorizeMn.mutate(authorizePayload, {
+        onSuccess: (res) => {
+          const prescription_uId = res?.data?.data?.u_id;
+          setCartItems([]);
+          localStorage.removeItem("cartItems");
+          if (isProcessing) {
+            // Funds are still in flight, so the order is parked and the intake form
+            // is not open yet. The booking-success page owns that waiting state and
+            // re-checks the intent with Stripe.
+            navigate(
+              `/partner-patient-booking-success?payment_intent=${paymentIntent.id}&payment_intent_client_secret=${encodeURIComponent(paymentIntent.client_secret || "")}`
+            );
+            return;
+          }
+          navigate(`/patient-intake?prescription_u_id=${prescription_uId}`);
+        },
+        onError: (err) => {
+          const error = err as AxiosError<IServerErrorResponse>;
+          const serverMessage = error?.response?.data?.message;
+          dmlToast.error({ title: typeof serverMessage === "string" ? serverMessage : error.message });
+        },
+      });
+
+      setCapturingPayment(false);
+      handlePaymentConfirmation.close();
     } catch (error: any) {
       console.error("❌ Booking failed:", error);
       const respData = error?.response?.data;
