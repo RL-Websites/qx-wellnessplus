@@ -151,4 +151,17 @@ interface UserInterface {
 export interface ICreatePaymentIntentDTO {
   amount: number;
   prescription_id?: number;
+  /**
+   * QX creates the intent before the prescription exists, so the backend cannot
+   * infer the platform from `prescription.platform_name`. Sending it explicitly is
+   * what makes the qx-checkout Stripe webhook able to match this intent.
+   */
+  platform?: "QX";
+  /**
+   * Only true when the cart contains a package medication. It makes the backend
+   * attach a Stripe customer and set `setup_future_usage`, which is required to
+   * bill later cycles — but it also hides every payment method that cannot be
+   * reused off-session, so never send it for a one-off order.
+   */
+  save_payment_method?: boolean;
 }
