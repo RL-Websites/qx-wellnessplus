@@ -246,6 +246,11 @@ export interface IPatientBookingPatientInfoDTO {
   lab_type?: "preferred_lab" | "own_lab" | "dosevana_lab" | null;
   lab_selection_mode?: "now" | "later" | null;
   reports?: any[];
+  /**
+   * QX only. Identifies the checkout attempt so the backend can claim any lab report
+   * staged before the prescription existed.
+   */
+  checkout_key?: string;
 }
 
 export interface IPatientPaymentAuthorizeConfirmDTO {

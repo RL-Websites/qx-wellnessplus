@@ -93,6 +93,9 @@ const CompleteOrderPage = () => {
       lab_type: orderInfoData.lab_type ?? null,
       lab_selection_mode: orderInfoData.lab_selection_mode ?? null,
       reports: orderInfoData.reports ?? [],
+      // Mapped explicitly like the rest — this object is a whitelist, so anything
+      // not named here never reaches the booking payload.
+      checkout_key: (orderInfoData as any).checkout_key,
     }));
     if (cartItems?.length > 0 && customerData?.payment_type == "stripe") {
       const payload: ICreatePaymentIntentDTO = {

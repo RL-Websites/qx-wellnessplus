@@ -13,7 +13,7 @@ import { selectedCategoryAtom } from "@/common/states/category.atom";
 import { customerAtom } from "@/common/states/customer.atom";
 import { cartItemsAtom, prevGlpMedDetails } from "@/common/states/product.atom";
 import { selectedStateAtom } from "@/common/states/state.atom";
-import { imageUrl, stateWiseLabFee } from "@/utils/helper.utils";
+import { imageUrl, isLabRequiredItem, stateWiseLabFee } from "@/utils/helper.utils";
 //import { stateWiseLabFee } from "@/utils/helper.utils";
 import { useQuery } from "@tanstack/react-query";
 import { useAtom, useAtomValue } from "jotai";
@@ -78,7 +78,7 @@ const MedicationsPage = () => {
   };
 
   const handleAddToCart = (item: any) => {
-    const requiresLab = item.is_lab_required == 1 || !!item.lab_package_id;
+    const requiresLab = isLabRequiredItem(item);
 
     /*
      * Any lab-required medication has to capture its lab option here, not just

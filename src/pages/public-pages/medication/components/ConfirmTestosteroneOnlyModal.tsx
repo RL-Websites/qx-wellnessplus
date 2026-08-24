@@ -137,6 +137,13 @@ function ConfirmTestosteroneOnlyModal(modalProps: IConfirmationModalProps) {
             examinations={examinations}
             prescriptionId={null}
             prescriptionDetailId={null}
+            /*
+             * Mirrors Dosevana's MedicationLabChoice, which also passes false while
+             * picking products. QX additionally cannot stage an upload without a
+             * signed-in patient, and on /medications there usually is not one — the
+             * payment step offers it after registration.
+             */
+            allowLabDocuments={false}
             value={selectedLabType}
             onSelectionChange={setSelectedLabType}
             reports={selectedReports}

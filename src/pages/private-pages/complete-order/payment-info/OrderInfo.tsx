@@ -1,5 +1,6 @@
 import { cartItemsAtom } from "@/common/states/product.atom";
-import { calculatePrice, dosevanaCostGenerate, generateMedName, imageUrl, stateWiseLabFee } from "@/utils/helper.utils";
+import useCheckoutKey from "@/common/hooks/useCheckoutKey";
+import { calculatePrice, dosevanaCostGenerate, findLabRequiredItem, generateMedName, imageUrl, isLabRequiredItem, stateWiseLabFee } from "@/utils/helper.utils";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Avatar, Button, TextInput } from "@mantine/core";
 import { useAtom, useAtomValue } from "jotai";
@@ -39,8 +40,9 @@ const promoSchema = yup.object().shape({
 });
 
 const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) => {
-  const [cartItems] = useAtom(cartItemsAtom);
+  const [cartItems, setCartItems] = useAtom(cartItemsAtom);
 
+  const { checkoutKey, ensureCheckoutKey } = useCheckoutKey();
   const [discount, setDiscount] = useState<number>(0);
   const [code, setCode] = useState<string>("");
   const [appliedPromo, setAppliedPromo] = useState<PromoData | null>(null);
@@ -60,7 +62,7 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
     cartItems?.forEach((item) => {
       productTotal += calculatePrice(item);
       dosevanaTotal += dosevanaCostGenerate(item, item?.customer_medication?.customer);
-      if (chargeLabFee && item?.lab_required == "1") {
+      if (chargeLabFee && isLabRequiredItem(item)) {
         labFeeTotal += stateWiseLabFee(item, selectedState);
       }
       if (item.shippingType === "Overnight") {
@@ -106,16 +108,34 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
   }, [appliedPromo, computedTotals.grossTotal]);
 
   // Detect lab-required item (TRT/Hormone/lab-package medications)
-  const labRequiredItem = useMemo(
-    () =>
-      cartItems?.find((item) => {
-        return item?.is_lab_required == 1 || item?.lab_required === "1";
-      }),
-    [cartItems]
-  );
+  // Same gate as /medications and /order-summary — see isLabRequiredItem.
+  const labRequiredItem = useMemo(() => findLabRequiredItem(cartItems), [cartItems]);
   const hasLabRequired = !!labRequiredItem;
   const requiredLabExaminations = labRequiredItem?.lab_package?.examinations ?? [];
   const disableChooseLabOptionMode = !!labRequiredItem?.lab_type;
+
+  /*
+   * Write uploads onto the cart item as well as local state. The backend claims the
+   * files by checkout_key so this is not what makes them stick — but it is what keeps
+   * them on screen if the patient steps back to the cart and forward again, and a
+   * report that silently disappears reads as a failed upload.
+   */
+  const persistLabReports = (labReports: any[]) => {
+    setSelectedReports(labReports);
+    if (!labRequiredItem) return;
+    setCartItems((prev) => prev.map((item) => (item.id === labRequiredItem.id ? { ...item, reports: labReports } : item)));
+  };
+
+  /*
+   * Mint the checkout key here rather than during render — ensureCheckoutKey writes
+   * to an atom, and doing that while rendering is a state update mid-render. Only
+   * needed once a lab is actually involved, so casual visitors never get a key.
+   */
+  useEffect(() => {
+    if (hasLabRequired) {
+      ensureCheckoutKey();
+    }
+  }, [hasLabRequired]);
 
   // Lab option is selected upstream (testosterone modal on /medications) and persisted on
   // the cart item. Seed local state from there so SelectedLabOption renders the saved
@@ -218,6 +238,8 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
       // QX patient is selecting for themselves, so always "now".
       lab_selection_mode: hasLabRequired && selectedLabType ? "now" : null,
       reports: selectedReports ?? [],
+      // Lets patient-data-fill-up claim any lab report staged during this checkout.
+      checkout_key: ensureCheckoutKey(),
     };
 
     onNext(payload);
@@ -249,10 +271,19 @@ const OrderInfo = ({ formData, handleBack, onNext, isSubmitting }: PropTypes) =>
             // downloadable from the post-checkout order/prescription screens.
             prescriptionId={null}
             prescriptionDetailId={null}
+            /*
+             * Upload is offered here and nowhere earlier: this is the first step where
+             * the patient is authenticated, and the staging endpoint is patient-scoped
+             * on purpose (an anonymous upload endpoint would accept files from anyone).
+             * The report is stored against checkoutKey now and claimed by
+             * patient-data-fill-up once the order exists.
+             */
+            allowLabDocuments={true}
+            checkoutKey={checkoutKey}
             value={selectedLabType}
             onSelectionChange={setSelectedLabType}
             reports={selectedReports}
-            onReportsChange={setSelectedReports}
+            onReportsChange={persistLabReports}
           />
         )}
 

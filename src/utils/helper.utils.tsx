@@ -113,6 +113,29 @@ export const trimPrice = (price: string) => {
  */
 export const isCartItemOrderable = (item: any): boolean => !!item?.customer_medication?.id;
 
+/**
+ * Does this item actually need the patient to choose a lab option?
+ *
+ * Mirrors the gate Dosevana's patient booking step uses
+ * (partner-patient-intake/booking-steps/StepTwo.tsx):
+ *   is_lab_required AND lab_package_id
+ *
+ * The flag on its own is not enough. Without a lab package there are no
+ * examinations to show and no fee to price, so demanding a "lab option" gives the
+ * patient a requirement with nothing behind it — which is exactly how a Weight Loss
+ * product flagged lab-required, but with no package attached, jammed the QX cart.
+ *
+ * Dosevana additionally excludes optimal/packaged products, because their lab choice
+ * is made per refill cycle. QX carries neither packaged medications nor refills, and
+ * has no per-cycle step, so anything lab-required here is handled at checkout.
+ */
+export const isLabRequiredItem = (item: any): boolean => {
+  const flagged = item?.is_lab_required == 1 || item?.lab_required === "1";
+  return flagged && !!item?.lab_package_id;
+};
+
+export const findLabRequiredItem = (items?: any[]): any | undefined => items?.find((item) => isLabRequiredItem(item));
+
 export const calculatePrice = (item: IMedicineListItem) => {
   const customerMedication = item?.customer_medication;
   const fees =

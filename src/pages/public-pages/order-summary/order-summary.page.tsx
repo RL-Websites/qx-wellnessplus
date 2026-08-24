@@ -1,18 +1,21 @@
 import dmlToast from "@/common/configs/toaster.config";
 import useAuthToken from "@/common/hooks/useAuthToken";
+import useCheckoutKey from "@/common/hooks/useCheckoutKey";
 import { cartItemsAtom } from "@/common/states/product.atom";
 import { selectedStateAtom } from "@/common/states/state.atom";
 import { useAuth } from "@/context/AuthContextProvider";
-import { calculatePrice, generateMedName, imageUrl, isCartItemOrderable, stateWiseLabFee } from "@/utils/helper.utils";
+import { calculatePrice, findLabRequiredItem, generateMedName, imageUrl, isCartItemOrderable, isLabRequiredItem, stateWiseLabFee } from "@/utils/helper.utils";
 import { Avatar, Button } from "@mantine/core";
 import { useAtom, useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
 import { NavLink as RdNavLink, useNavigate } from "react-router-dom";
+import LabSection from "./components/LabSection";
 import { LabSubmissionType } from "./components/LabTypeSectionModal";
 
 const OrderSummary = () => {
   const { getAccessToken } = useAuthToken();
   const { userLoading } = useAuth();
+  const { checkoutKey, ensureCheckoutKey } = useCheckoutKey();
   const [cartItems, setCartItems] = useAtom(cartItemsAtom);
   const [totalBillAmount, setTotalBillAmount] = useState<number>(0);
   const [totalShippingFee, setTotalShippingFee] = useState<number>(0);
@@ -28,7 +31,7 @@ const OrderSummary = () => {
       cartItems.forEach((item) => {
         const price = calculatePrice(item);
         totalBill = totalBill + price;
-        if (item?.lab_required == "1" && item?.lab_type === "dosevana_lab") {
+        if (isLabRequiredItem(item) && item?.lab_type === "dosevana_lab") {
           totalBill += stateWiseLabFee(item, selectedState || "");
         }
         if (item.shippingType === "Overnight") {
@@ -72,13 +75,55 @@ const OrderSummary = () => {
   }, [cartItems, navigate]);
 
   // Get lab data from cart items — only items that actually require a lab
-  const labRequiredItem = cartItems.find((item) => {
-    return item?.is_lab_required == 1 || item?.lab_required === "1";
-  });
+  const labRequiredItem = findLabRequiredItem(cartItems);
   const hasLabRequired = !!labRequiredItem;
   const requiredLabExaminations = labRequiredItem?.lab_package?.examinations ?? [];
 
-  const disableChooseLabOptionMode = !!labRequiredItem?.lab_type;
+  /*
+   * Persist the choice onto the cart item rather than keeping it in local state.
+   * The cart is the single source of truth downstream: the total below prices the
+   * lab fee from it, OrderInfo reads it back at the payment step, and PaymentInfo
+   * puts it in the booking payload.
+   */
+  const applyLabType = (labType: LabSubmissionType | null) => {
+    setSelectedLabType(labType);
+    if (!labRequiredItem) return;
+    setCartItems((prev) =>
+      prev.map((item) =>
+        item.id === labRequiredItem.id
+          ? {
+              ...item,
+              lab_required: "1",
+              lab_type: labType ?? undefined,
+              // The QX patient is choosing for themselves, so never "later".
+              lab_selection_mode: labType ? "now" : null,
+            }
+          : item
+      )
+    );
+  };
+
+  const applyLabReports = (labReports: any[]) => {
+    setSelectedReports(labReports);
+    if (!labRequiredItem) return;
+    setCartItems((prev) => prev.map((item) => (item.id === labRequiredItem.id ? { ...item, reports: labReports } : item)));
+  };
+
+  /*
+   * Dosevana's rule is that lab documents appear once the order exists
+   * (MedicationLabChoice passes allowLabDocuments={false} pre-order, the booking step
+   * leaves it on). QX is payment-first, so instead the rule is "once we have a patient
+   * to stage the upload against" — the staging endpoint is patient-scoped. A returning
+   * patient who logged in before reaching the cart can upload right here; an anonymous
+   * visitor uploads at the payment step, after registration.
+   */
+  const canUploadLabReport = !userLoading && !!getAccessToken();
+
+  useEffect(() => {
+    if (hasLabRequired && canUploadLabReport) {
+      ensureCheckoutKey();
+    }
+  }, [hasLabRequired, canUploadLabReport]);
 
   const handleNext = () => {
     // Lab option is now captured at add-to-cart time (e.g. testosterone modal on /medications)
@@ -87,18 +132,16 @@ const OrderSummary = () => {
     const effectiveReports = selectedReports ?? labRequiredItem?.reports ?? [];
 
     /*
-     * A missing lab option must NOT block here. This page has no lab picker (the
-     * choice is made in the add-to-cart modal), so returning early left the button
-     * dead with only a console warning — the page became impossible to leave for any
-     * cart that predates the add-to-cart fix. The payment step renders LabSection
-     * whenever a lab is required and refuses to submit without a choice, so it is
-     * both the right place to gate and a place the patient can actually act.
+     * Blocking is legitimate again now that this page renders the picker above — the
+     * patient can act on the message without leaving. It stayed unblocked while the
+     * picker was commented out, because a gate with no control is a dead end.
      */
     if (hasLabRequired && !effectiveLabType) {
       dmlToast.warning({
         title: "Lab option needed",
-        message: "Please choose a lab option on the next step to continue.",
+        message: "Please choose how you want to complete your lab work to continue.",
       });
+      return;
     }
 
     /*
@@ -128,21 +171,34 @@ const OrderSummary = () => {
     <div className="lg:pt-16 md:pt-10 pt-4">
       <h2 className="heading-text text-foreground uppercase text-center">Order Summary</h2>
 
-      {/* Lab Selection Component */}
-      {/* {hasLabRequired && (
-        <>
-          <LabSection
-            disabledChooseLabOptionMode={disableChooseLabOptionMode}
-            examinations={requiredLabExaminations}
-            prescriptionId={labRequiredItem?.customer_medication?.id ?? null}
-            prescriptionDetailId={labRequiredItem?.id ?? null}
-            value={selectedLabType}
-            onSelectionChange={setSelectedLabType}
-            reports={selectedReports}
-            onReportsChange={setSelectedReports}
-          />
-        </>
-      )} */}
+      {/*
+        Lab selection. Mirrors Dosevana's booking step, which renders LabSelection
+        inline whenever a lab-required detail is present.
+
+        Two QX-specific differences, both forced by QX being payment-first:
+        - no prescriptionId / prescriptionDetailId — the Prescription does not exist
+          until patient-data-fill-up runs after payment;
+        - allowLabDocuments={false} — the upload API requires an existing
+          prescription_detail_id, so an upload control here could only fail. Patients
+          who pick "own lab" are emailed an auto-login link to the portal's
+          order-details page by OwnLabPrescriptionJob once the order exists.
+      */}
+      {hasLabRequired && (
+        <LabSection
+          // Nothing is committed server-side yet, so the patient may still change
+          // their mind here even though the add-to-cart modal already asked.
+          disabledChooseLabOptionMode={false}
+          examinations={requiredLabExaminations}
+          prescriptionId={null}
+          prescriptionDetailId={null}
+          allowLabDocuments={canUploadLabReport}
+          checkoutKey={checkoutKey}
+          value={selectedLabType ?? (labRequiredItem?.lab_type as LabSubmissionType | undefined) ?? null}
+          onSelectionChange={applyLabType}
+          reports={selectedReports ?? labRequiredItem?.reports ?? []}
+          onReportsChange={applyLabReports}
+        />
+      )}
 
       <div className="grid md:grid-cols-2 md:gap-[30px] gap-5 pt-12">
         <div className="card bg-opacity-60">
@@ -204,7 +260,7 @@ const OrderSummary = () => {
                   </span>
                   <span className="text-foreground text-lg">
                     $
-                    {item?.lab_required == "1" && item?.lab_type === "dosevana_lab"
+                    {isLabRequiredItem(item) && item?.lab_type === "dosevana_lab"
                       ? (calculatePrice(item) + stateWiseLabFee(item, selectedState)).toFixed(2)
                       : calculatePrice(item).toFixed(2)}
                   </span>
