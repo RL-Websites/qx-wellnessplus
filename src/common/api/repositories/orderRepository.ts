@@ -25,6 +25,14 @@ class OrderRepository {
     return this.$http.post<IBaseResponse<any>>("wellness-plus-qx/patient-data-fill-up-step-2", payload);
   }
 
+  /**
+   * Pre-order lab upload. QX has no prescription_detail_id at checkout, so the
+   * report is staged against the checkout key and claimed by patient-data-fill-up.
+   */
+  stageLabReport(payload: any) {
+    return this.$http.post<IBaseResponse<any>>("wellness-plus-qx/lab-report/stage", payload);
+  }
+
   labReportUploadRequest(payload: any) {
     return this.$http.post<IBaseResponse<any>>("customer/patient/report/upload", payload);
   }

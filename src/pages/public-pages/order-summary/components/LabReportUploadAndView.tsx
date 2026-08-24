@@ -18,6 +18,8 @@ interface ModalProps {
   openModal: boolean;
   onModalClose: (reason) => void;
   prescriptionDetailId?: number | string;
+  /** Present only in the QX pre-order flow — see the mutation below. */
+  checkoutKey?: string;
   reports?: any[];
   mode?: Mode;
   uploadPage?: string;
@@ -45,6 +47,7 @@ const LabReportUploadAndView: React.FC<ModalProps> = ({
   mode = "view",
   reports,
   prescriptionDetailId,
+  checkoutKey,
   uploadPage = "trt_cycle",
   skipSendingToDoctor = false,
   onUploaded,
@@ -144,8 +147,13 @@ const LabReportUploadAndView: React.FC<ModalProps> = ({
     }
   };
 
+  /*
+   * Two endpoints, one widget. With a checkoutKey the order does not exist yet, so
+   * the report is staged (WellnessQXPatientController::stageLabReport) and claimed
+   * later; without one this is an ordinary upload against an existing detail.
+   */
   const labReportMutation = useMutation({
-    mutationFn: (payload: any) => orderApiRepository.labReportUploadRequest(payload),
+    mutationFn: (payload: any) => (checkoutKey ? orderApiRepository.stageLabReport(payload) : orderApiRepository.labReportUploadRequest(payload)),
   });
 
   const closeModal = (reason) => {
@@ -163,12 +171,14 @@ const LabReportUploadAndView: React.FC<ModalProps> = ({
 
     if (filePayload.length === 0) return;
 
-    const payload = {
-      prescription_detail_id: prescriptionDetailId,
-      uploadPage,
-      file: filePayload,
-      skipSendingToDoctor,
-    };
+    const payload = checkoutKey
+      ? { checkout_key: checkoutKey, file: filePayload }
+      : {
+          prescription_detail_id: prescriptionDetailId,
+          uploadPage,
+          file: filePayload,
+          skipSendingToDoctor,
+        };
 
     labReportMutation.mutate(payload, {
       onSuccess(res) {

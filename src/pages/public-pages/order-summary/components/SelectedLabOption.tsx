@@ -10,6 +10,10 @@ function SelectedLabOption(props: {
   setIsUploadModalOpen: (value: boolean) => void;
   visibleExaminations: any[];
   allowLabDocuments?: boolean;
+  /** QX pre-order upload key — an alternative credential to prescriptionId. */
+  checkoutKey?: string;
+  /** Reports already on file, so the patient can see the upload landed. */
+  uploadedReports?: any[];
   onEditLabOption?: () => void; // New prop for editing
   isHiddenExaminationTitle?: boolean;
   prescriptionId?: number | string | null;
@@ -19,6 +23,8 @@ function SelectedLabOption(props: {
     setIsUploadModalOpen,
     visibleExaminations,
     allowLabDocuments = true,
+    checkoutKey,
+    uploadedReports = [],
     isHiddenExaminationTitle = false,
     prescriptionId = null,
   } = props;
@@ -124,7 +130,14 @@ function SelectedLabOption(props: {
               <p className="m-0 text-xs text-[#8A8F97] sm:text-sm">Lab requisition will be available after the order is placed.</p>
             )
           ) : selectedOption.submissionType === "own_lab" ? (
-            prescriptionId ? (
+            /*
+             * A prescription is no longer the only way to file a report. QX uploads
+             * during checkout, before the order exists, staging the file against a
+             * checkout key that patient-data-fill-up later claims — so either
+             * credential is enough to offer the button. (The requisition download
+             * above still genuinely needs a prescription id: that endpoint takes one.)
+             */
+            prescriptionId || checkoutKey ? (
               <div className="flex w-full flex-wrap items-center gap-3">
                 <Button
                   variant="filled"
@@ -140,12 +153,39 @@ function SelectedLabOption(props: {
                 >
                   Upload Lab Report
                 </Button>
-                <p className="m-0 text-xs text-[#8A8F97] sm:text-sm">(You may upload the lab reports at a later time, if convenient.)</p>
+                {uploadedReports.length === 0 ? (
+                  <p className="m-0 text-xs text-[#8A8F97] sm:text-sm">(You may upload the lab reports at a later time, if convenient.)</p>
+                ) : (
+                  <p className="m-0 text-xs text-[#8A8F97] sm:text-sm">(Upload another file if your results span more than one document.)</p>
+                )}
               </div>
             ) : (
               <p className="m-0 text-xs text-[#8A8F97] sm:text-sm">You'll be able to upload your lab report after the order is placed.</p>
             )
           ) : null}
+
+          {/*
+            Name what we hold. A toast disappears, so without this the patient has no
+            standing evidence the upload worked and re-uploads the same file "to be
+            safe" — or abandons, assuming it failed.
+          */}
+          {selectedOption.submissionType === "own_lab" && uploadedReports.length > 0 && (
+            <div className="mt-3 flex w-full flex-col gap-2">
+              {uploadedReports.map((report: any, index: number) => (
+                <div
+                  key={report?.id ?? index}
+                  className="flex items-center gap-2 rounded-lg border border-[#CFE9D8] bg-[#F3FBF6] px-3 py-2"
+                >
+                  <IconCircleCheckFilled
+                    size={16}
+                    className="shrink-0 text-[#1F9254]"
+                  />
+                  <span className="truncate text-xs text-[#1F5133] sm:text-sm">{report?.file_original_name || report?.name || "Lab report"}</span>
+                  <span className="ml-auto shrink-0 text-[11px] font-medium uppercase tracking-wide text-[#1F9254]">Uploaded</span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
       <LabExaminationOptions

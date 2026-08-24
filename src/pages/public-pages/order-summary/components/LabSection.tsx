@@ -1,6 +1,6 @@
 import { Button } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LabReportUploadAndView from "./LabReportUploadAndView";
 import LabTypeSectionModal, { LabExamination, LabOption, LabOptionId, LabSubmissionType } from "./LabTypeSectionModal";
 import SelectedLabOption from "./SelectedLabOption";
@@ -53,6 +53,8 @@ interface LabSelectionProps {
   isHiddenExaminationTitle?: boolean;
   autoOpenModalTrigger?: number;
   disabledChooseLabOptionMode?: boolean;
+  /** QX pre-order upload key; forwarded to LabReportUploadAndView. */
+  checkoutKey?: string;
 }
 
 const LabSection = ({
@@ -67,10 +69,27 @@ const LabSection = ({
   allowLabDocuments = true,
   disabledChooseLabOptionMode = false,
   autoOpenModalTrigger = 0,
+  checkoutKey,
 }: LabSelectionProps) => {
   const [isModalOpen, setIsModalOpen] = useDisclosure(false);
   const [isUploadModalOpen, setIsUploadModalOpen] = useDisclosure(false);
-  const [uploadedReports, setUploadedReports] = useState<any[]>([]);
+  const [uploadedReports, setUploadedReports] = useState<any[]>(reports ?? []);
+
+  /*
+   * Keep the local list in step with what the parent holds (Dosevana's LabSelection
+   * does the same). Without this the list started empty on every mount, so a report
+   * uploaded on the cart page vanished from the UI as soon as the patient moved to
+   * the payment step — it was still stored, but nothing said so.
+   *
+   * The identity check matters: callers pass `reports ?? []`, a fresh array on every
+   * render, so setting state unconditionally here would re-render forever.
+   */
+  useEffect(() => {
+    const next = reports ?? [];
+    setUploadedReports((prev) =>
+      prev.length === next.length && prev.every((report, index) => String(report?.id) === String(next[index]?.id)) ? prev : next
+    );
+  }, [reports]);
   const visibleExaminations = examinations.filter((exam) => !!(exam?.name || exam?.code));
   const [draftSelection, setDraftSelection] = useState<LabOptionId>(getLabOptionIdFromSubmissionType(value) ?? "dosevana-lab");
   const savedSelection = getLabOptionIdFromSubmissionType(value);
@@ -106,6 +125,8 @@ const LabSection = ({
               setIsUploadModalOpen={setIsUploadModalOpen.open}
               visibleExaminations={visibleExaminations}
               allowLabDocuments={allowLabDocuments}
+              checkoutKey={checkoutKey}
+              uploadedReports={uploadedReports}
               prescriptionId={prescriptionId}
             />
           ) : (
@@ -128,6 +149,7 @@ const LabSection = ({
           openModal={isUploadModalOpen}
           onModalClose={() => setIsUploadModalOpen.close()}
           prescriptionDetailId={prescriptionDetailId ?? undefined}
+          checkoutKey={checkoutKey}
           reports={uploadedReports}
           onUploaded={(newReports) => {
             setUploadedReports((prev) => {

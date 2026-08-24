@@ -6,6 +6,7 @@ import AddressAutoGoogle from "@/common/components/AddressAutoGoogle";
 import ConfirmationModal from "@/common/components/ConfirmationModal";
 import { InputErrorMessage } from "@/common/configs/inputErrorMessage";
 import dmlToast from "@/common/configs/toaster.config";
+import useCheckoutKey from "@/common/hooks/useCheckoutKey";
 import { customerAtom } from "@/common/states/customer.atom";
 import { cartItemsAtom } from "@/common/states/product.atom";
 import states from "@/data/state-list.json";
@@ -55,6 +56,7 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
   const [bookingSubmitted, setBookingSubmitted] = useState<boolean>(false);
 
   const navigate = useNavigate();
+  const { clearCheckoutKey } = useCheckoutKey();
 
   const paymentAuthorizeMn = useMutation({ mutationFn: (payload: IPatientPaymentAuthorizeConfirmDTO) => paymentRepository.patientPaymentAuthorizeConfirm(payload) });
 
@@ -281,6 +283,8 @@ const PaymentInfo = ({ formData, handleBack, handleSubmit, isSubmitting }: PropT
           const prescription_uId = res?.data?.data?.u_id;
           setCartItems([]);
           localStorage.removeItem("cartItems");
+          // The order owns the staged reports now; the next checkout needs a new key.
+          clearCheckoutKey();
           if (isProcessing) {
             // Funds are still in flight, so the order is parked and the intake form
             // is not open yet. The booking-success page owns that waiting state and
