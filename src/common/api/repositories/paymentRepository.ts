@@ -21,7 +21,8 @@ class PaymentRepository {
   }
 
   patientPaymentAuthorizeConfirm(payload: IPatientPaymentAuthorizeConfirmDTO) {
-    return this.$http.post<IBaseResponse<any>>("/customer/patient/payment-authorized-confirmation", { payment: payload });
+    // QX-only confirmation endpoint — see WellnessQXPaymentController.
+    return this.$http.post<IBaseResponse<any>>("wellness-plus-qx/payment-authorized-confirmation", { payment: payload });
   }
 
   getCardList(params: ICommonParams) {

@@ -78,13 +78,16 @@ const MedicationsPage = () => {
   };
 
   const handleAddToCart = (item: any) => {
-    const isTestosteroneCategory =
-      item.medication_category === "Testosterone" ||
-      ["Optimal", "Optimal Protocol"].includes(item.medication_category || "") ||
-      item.is_optimal_protocol;
     const requiresLab = item.is_lab_required == 1 || !!item.lab_package_id;
 
-    if (isTestosteroneCategory && requiresLab) {
+    /*
+     * Any lab-required medication has to capture its lab option here, not just
+     * testosterone/optimal ones. Gating this on the category let a lab-required
+     * product from any other category into the cart with no `lab_type`, and the
+     * order-summary "Next" button then refused to advance with no visible reason.
+     * The modal titles itself from the medication, so it reads correctly either way.
+     */
+    if (requiresLab) {
       setPendingAddToCart(item);
       setSelectedMedication(item);
       handleConfirmTestosterone.open();
@@ -141,19 +144,24 @@ const MedicationsPage = () => {
 
   const onTestosteroneConfirm = (lab_required: string, shippingType: string, lab_type: string | null, reports: any[]) => {
     const over_night_shipping_fee = customerData?.over_night_shipping_fee;
-    setCartItems([
-      ...cartItems,
-      {
-        ...pendingAddToCart,
-        lab_required,
-        shippingType,
-        over_night_shipping_fee,
-        lab_type: lab_type ?? undefined,
-        // Patient is selecting for themselves on QX, so always "now".
-        lab_selection_mode: lab_type ? "now" : null,
-        reports: reports ?? [],
-      },
-    ]);
+    const confirmedItem = {
+      ...pendingAddToCart,
+      lab_required,
+      shippingType,
+      over_night_shipping_fee,
+      lab_type: lab_type ?? undefined,
+      // Patient is selecting for themselves on QX, so always "now".
+      lab_selection_mode: lab_type ? "now" : null,
+      reports: reports ?? [],
+    };
+
+    // Replace rather than append: re-confirming an item that is already in the cart
+    // used to add a second row for the same medication.
+    setCartItems(
+      cartItems.some((cartItem) => cartItem.id === confirmedItem.id)
+        ? cartItems.map((cartItem) => (cartItem.id === confirmedItem.id ? { ...cartItem, ...confirmedItem } : cartItem))
+        : [...cartItems, confirmedItem]
+    );
     handleConfirmTestosterone.close();
   };
 

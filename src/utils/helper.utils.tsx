@@ -104,12 +104,25 @@ export const trimPrice = (price: string) => {
   return price?.replace(",", "") || "";
 };
 
-export const calculatePrice = (item: IMedicineListItem) => {
-  const fees =
-    Number(item.medication_category == "Testosterone" ? item.customer_medication.testosterone_fee : item.customer_medication.consultancy_fee) +
-    Number(item.customer_medication.platform_fee);
+/**
+ * A cart item can only be priced and ordered if it still carries its
+ * customer_medication link — the order payload is built from
+ * `customer_medication.id`. Stale items persisted in localStorage from an older
+ * build (or a product since detached from the customer) do not, and used to crash
+ * the order-summary render.
+ */
+export const isCartItemOrderable = (item: any): boolean => !!item?.customer_medication?.id;
 
-  return Number(item.customer_price) * Number(item.qty) - fees * (Number(item.qty) - 1);
+export const calculatePrice = (item: IMedicineListItem) => {
+  const customerMedication = item?.customer_medication;
+  const fees =
+    Number((item?.medication_category == "Testosterone" ? customerMedication?.testosterone_fee : customerMedication?.consultancy_fee) || 0) +
+    Number(customerMedication?.platform_fee || 0);
+
+  const qty = Number(item?.qty) || 0;
+  const price = Number(item?.customer_price) || 0;
+
+  return price * qty - fees * (qty - 1);
 };
 export const stateWiseLabFee = (medicine?: IMedicineListItem, patientState?: string) => {
   const states = ["Alaska", "Connecticut", "Massachusetts", "New Hampshire", "Rhode Island"];

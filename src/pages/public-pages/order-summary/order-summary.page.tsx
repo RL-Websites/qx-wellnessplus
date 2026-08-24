@@ -1,8 +1,9 @@
+import dmlToast from "@/common/configs/toaster.config";
 import useAuthToken from "@/common/hooks/useAuthToken";
 import { cartItemsAtom } from "@/common/states/product.atom";
 import { selectedStateAtom } from "@/common/states/state.atom";
-import { userAtom } from "@/common/states/user.atom";
-import { calculatePrice, generateMedName, imageUrl, stateWiseLabFee } from "@/utils/helper.utils";
+import { useAuth } from "@/context/AuthContextProvider";
+import { calculatePrice, generateMedName, imageUrl, isCartItemOrderable, stateWiseLabFee } from "@/utils/helper.utils";
 import { Avatar, Button } from "@mantine/core";
 import { useAtom, useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
@@ -11,7 +12,7 @@ import { LabSubmissionType } from "./components/LabTypeSectionModal";
 
 const OrderSummary = () => {
   const { getAccessToken } = useAuthToken();
-  const [userData] = useAtom(userAtom);
+  const { userLoading } = useAuth();
   const [cartItems, setCartItems] = useAtom(cartItemsAtom);
   const [totalBillAmount, setTotalBillAmount] = useState<number>(0);
   const [totalShippingFee, setTotalShippingFee] = useState<number>(0);
@@ -47,6 +48,23 @@ const OrderSummary = () => {
     setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
   };
 
+  /*
+   * The cart is persisted in localStorage, so it can outlive the shape the API
+   * returns. An item without its customer_medication link cannot be priced or
+   * ordered and used to throw during render, leaving a blank page. Drop those
+   * instead, so a stale cart self-heals rather than trapping the patient.
+   */
+  useEffect(() => {
+    const orderableItems = cartItems.filter(isCartItemOrderable);
+    if (orderableItems.length !== cartItems.length) {
+      setCartItems(orderableItems);
+      dmlToast.error({
+        title: "Cart updated",
+        message: "An item in your cart is no longer available and has been removed.",
+      });
+    }
+  }, [cartItems, setCartItems]);
+
   useEffect(() => {
     if (cartItems.length === 0) {
       navigate("/category");
@@ -68,12 +86,33 @@ const OrderSummary = () => {
     const effectiveLabType = selectedLabType ?? (labRequiredItem?.lab_type as LabSubmissionType | undefined) ?? null;
     const effectiveReports = selectedReports ?? labRequiredItem?.reports ?? [];
 
+    /*
+     * A missing lab option must NOT block here. This page has no lab picker (the
+     * choice is made in the add-to-cart modal), so returning early left the button
+     * dead with only a console warning — the page became impossible to leave for any
+     * cart that predates the add-to-cart fix. The payment step renders LabSection
+     * whenever a lab is required and refuses to submit without a choice, so it is
+     * both the right place to gate and a place the patient can actually act.
+     */
     if (hasLabRequired && !effectiveLabType) {
-      console.warn("Please select a lab submission option before continuing.");
+      dmlToast.warning({
+        title: "Lab option needed",
+        message: "Please choose a lab option on the next step to continue.",
+      });
+    }
+
+    /*
+     * Do not bounce to /login while the session is still being resolved. userAtom is
+     * populated asynchronously by AuthContextProvider, so a logged-in patient who
+     * clicked before that resolved was sent to /login, which immediately sent them
+     * back here — the "stuck on order summary" loop. A stored token is enough to
+     * proceed; AuthGuard on /complete-order does the authoritative check.
+     */
+    if (userLoading) {
       return;
     }
 
-    if (userData && getAccessToken()) {
+    if (getAccessToken()) {
       navigate("/complete-order", {
         state: {
           lab_type: effectiveLabType,
@@ -83,8 +122,6 @@ const OrderSummary = () => {
     } else {
       navigate("/login");
     }
-
-    return;
   };
 
   return (
@@ -200,6 +237,8 @@ const OrderSummary = () => {
           type="button"
           className="lg:w-[200px] w-[150px]"
           onClick={handleNext}
+          // Session still resolving: show it rather than letting the click no-op.
+          loading={userLoading}
         >
           Next
         </Button>

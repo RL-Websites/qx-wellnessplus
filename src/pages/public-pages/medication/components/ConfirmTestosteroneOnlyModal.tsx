@@ -46,12 +46,9 @@ interface IConfirmationModalProps {
 }
 
 function ConfirmTestosteroneOnlyModal(modalProps: IConfirmationModalProps) {
-  if (!modalProps?.medicationDetails) return null;
   const [shippingType, setShippingType] = useState<string>("Regular");
   const [selectedLabType, setSelectedLabType] = useState<LabSubmissionType | null>(null);
   const [selectedReports, setSelectedReports] = useState<any[]>([]);
-  const isOptimalMedication = Boolean(modalProps.medicationDetails?.is_optimal_protocol) || ["optimal", "optimal protocol"].includes(modalProps.medicationDetails?.medication_category?.toLowerCase() || "");
-  const treatmentTitle = isOptimalMedication ? "Packaged/Optimal Treatment" : "Testosterone Treatments";
 
   useEffect(() => {
     if (modalProps.openModal) {
@@ -60,6 +57,25 @@ function ConfirmTestosteroneOnlyModal(modalProps: IConfirmationModalProps) {
       setSelectedReports([]);
     }
   }, [modalProps.openModal]);
+
+  /*
+   * Bail out only AFTER the hooks. medicationDetails is null until a medication is
+   * picked, so returning before the hooks changed this component's hook count
+   * between renders — that is the "Internal React error: Expected static flag was
+   * missing" warning in the console.
+   */
+  if (!modalProps?.medicationDetails) return null;
+
+  const isOptimalMedication = Boolean(modalProps.medicationDetails?.is_optimal_protocol) || ["optimal", "optimal protocol"].includes(modalProps.medicationDetails?.medication_category?.toLowerCase() || "");
+
+  /*
+   * Derive the copy from the medication's own category. Hardcoding "Testosterone
+   * Treatments" was fine while only testosterone opened this modal; every
+   * lab-required product opens it now, so a Weight Loss patient would otherwise be
+   * told that lab work is mandatory for testosterone treatments.
+   */
+  const treatmentCategory = (modalProps.medicationDetails?.medication_category || "").trim();
+  const treatmentTitle = isOptimalMedication ? "Packaged/Optimal Treatment" : treatmentCategory ? `${treatmentCategory} Treatments` : "these Treatments";
 
   const examinations = modalProps?.medicationDetails?.lab_package?.examinations ?? [];
 

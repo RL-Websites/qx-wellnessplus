@@ -12,7 +12,9 @@ class OrderRepository {
   }
 
   createPaymentIntent(payload: ICreatePaymentIntentDTO) {
-    return this.$http.post<IBaseResponse<any>>("customer/create-payment-intent", payload);
+    // QX has its own checkout endpoints (WellnessQXPaymentController) so the partner
+    // flow's payment controller is never touched by QX-specific changes.
+    return this.$http.post<IBaseResponse<any>>("wellness-plus-qx/create-payment-intent", payload);
   }
 
   patientBooking(payload: IPatientBookingPatientInfoDTO) {
